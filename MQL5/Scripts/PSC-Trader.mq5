@@ -1,11 +1,11 @@
 //+------------------------------------------------------------------+
-//|                                                 	PSC-Trader.mq4 |
-//|                               Copyright 2015-2018, EarnForex.com |
+//|                                                 	PSC-Trader.mq5 |
+//|                               Copyright 2015-2020, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2015-2018, EarnForex.com"
+#property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.06"
+#property version   "1.07"
 #include <Trade/Trade.mqh>
 
 /*
@@ -22,7 +22,7 @@ You can control script settings via Position Size Calculator panel (Script tab).
 
 */
 
-bool DisableTradingWhenLinesAreHidden, SubtractPositions, SubtractPendingOrders;
+bool DisableTradingWhenLinesAreHidden, SubtractPositions, SubtractPendingOrders, DoNotApplyStopLoss, DoNotApplyTakeProfit;
 int MaxSlippage = 0, MaxSpread, MaxEntrySLDistance, MinEntrySLDistance, MagicNumber = 0;
 double MaxPositionSize;
 
@@ -210,15 +210,25 @@ void OnStart()
    if (StringLen(EdtMaxPositionSize) > 0) MaxPositionSize = StringToDouble(ObjectGetString(0, EdtMaxPositionSize, OBJPROP_TEXT));
    Print("Max position size = ", DoubleToString(MaxPositionSize, ps_decimals));
 	   
-   // Checkbox for subtracting open positions volume from the position size
+   // Checkbox for subtracting open positions volume from the position size.
    string ChkSubtractPositions = FindCheckboxObjectByPostfix("m_ChkSubtractPositionsButton");
    if (StringLen(ChkSubtractPositions) > 0) SubtractPositions = ObjectGetInteger(0, ChkSubtractPositions, OBJPROP_STATE);
    Print("Subtract open positions volume = ", SubtractPositions);
 
-   // Checkbox for subtracting pending orders volume from the position size
+   // Checkbox for subtracting pending orders volume from the position size.
    string ChkSubtractPendingOrders = FindCheckboxObjectByPostfix("m_ChkSubtractPendingOrdersButton");
    if (StringLen(ChkSubtractPendingOrders) > 0) SubtractPendingOrders = ObjectGetInteger(0, ChkSubtractPendingOrders, OBJPROP_STATE);
    Print("Subtract pending orders volume = ", SubtractPendingOrders);
+   
+   // Checkbox for not applying stop-loss to the position.
+   string ChkDoNotApplyStopLoss = FindCheckboxObjectByPostfix("m_ChkDoNotApplyStopLossButton");
+   if (ChkDoNotApplyStopLoss != "") DoNotApplyStopLoss = ObjectGetInteger(0, ChkDoNotApplyStopLoss, OBJPROP_STATE);
+   Print("Do not apply stop-loss = ", DoNotApplyStopLoss);
+
+   // Checkbox for not applying take-profit to the position.
+   string ChkDoNotApplyTakeProfit = FindCheckboxObjectByPostfix("m_ChkDoNotApplyTakeProfitButton");
+   if (ChkDoNotApplyTakeProfit != "") DoNotApplyTakeProfit = ObjectGetInteger(0, ChkDoNotApplyTakeProfit, OBJPROP_STATE);
+   Print("Do not apply take-profit = ", DoNotApplyTakeProfit);
 
    Trade = new CTrade;
    Trade.SetDeviationInPoints(MaxSlippage);
@@ -286,6 +296,9 @@ void OnStart()
    	   }
    	}
 
+      if (DoNotApplyStopLoss) sl = 0;
+      if (DoNotApplyTakeProfit) tp = 0;
+
       if (!Trade.OrderOpen(Symbol(), ot, PositionSize, 0, el, sl, tp, 0, 0, Commentary))
       {
          Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
@@ -310,6 +323,16 @@ void OnStart()
 			order_sl = 0;
 			order_tp = 0;
 		}
+      if (DoNotApplyStopLoss)
+      {
+         sl = 0;
+         order_sl = 0;
+      }
+      if (DoNotApplyTakeProfit)
+      {
+         tp = 0;
+         order_tp = 0;
+      }
 
    	if ((SubtractPendingOrders) || (SubtractPositions))
    	{
@@ -355,7 +378,7 @@ void OnStart()
          Print("Deal ID: ", deal);
 
 			// Market execution mode - application of SL/TP.
-			if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
+			if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && ((sl != 0) || (tp != 0)))
 			{
 	   		// Not all brokers return deal.
 	   		if (deal != 0)
