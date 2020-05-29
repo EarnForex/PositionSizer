@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.07"
+#property version   "1.08"
 #include <Trade/Trade.mqh>
 
 /*
@@ -89,6 +89,10 @@ void OnStart()
    
    Print("Detected position size: ", DoubleToString(PositionSize, ps_decimals), ".");
    
+   double MinLot = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MIN);
+   double MaxLot = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MAX);
+   double LotStep = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_STEP);
+
    if (PositionSize <= 0)
    {
       Print("Wrong position size value!");
@@ -132,7 +136,54 @@ void OnStart()
    }
    else Print("No take-profit detected.");
    
-	// Magic number
+   // Try reading multiple TP levels.
+   int n = 0;
+   double ScriptTPValue[];
+   int ScriptTPShareValue[];
+   double volume_share_sum = 0;
+   while (true)
+   {
+      ArrayResize(ScriptTPValue, n + 1);
+      ArrayResize(ScriptTPShareValue, n + 1);
+      ScriptTPValue[n] = 0;
+   	string ScriptTPObjectName = FindEditObjectByPostfix("m_EdtScriptTPEdit" + IntegerToString(n + 1));
+      if (ScriptTPObjectName != "") ScriptTPValue[n] = NormalizeDouble(StringToDouble(ObjectGetString(0, ScriptTPObjectName, OBJPROP_TEXT)), _Digits);
+      else break;
+      Print("Detected Multiple TP #", n + 1, " = ", ScriptTPValue[n]);
+
+   	ScriptTPShareValue[n] = 0;
+   	string ScriptTPShareObjectName = FindEditObjectByPostfix("m_EdtScriptTPShareEdit" + IntegerToString(n + 1));
+      if (ScriptTPShareObjectName != "") ScriptTPShareValue[n] = (int)StringToInteger(ObjectGetString(0, ScriptTPShareObjectName, OBJPROP_TEXT));
+      else break;
+      Print("Detected Multiple TP Share #", n + 1, " = ", ScriptTPShareValue[n]);
+   	
+   	volume_share_sum += ScriptTPShareValue[n];
+   	
+   	n++;
+   }
+   if (n > 0)
+   {
+      Print("Multiple TP volume share sum = ", volume_share_sum, ".");
+      if ((volume_share_sum < 99) || (volume_share_sum > 100))
+      {
+         Print("Incorrect volume sum for multiple TPs - not taking any trades.");
+         return;
+      }
+   }   
+   
+   if ((n == 0) || (AccountInfoInteger(ACCOUNT_MARGIN_MODE) == ACCOUNT_MARGIN_MODE_RETAIL_NETTING))
+   {
+      if (n > 0)
+      {
+         Print("Netting mode detected. Multiple TPs won't work. Setting one TP at 100% volume.");
+      }
+      // No multiple TPs, use single TP for 100% of volume.
+      n = 1;
+      ScriptTPValue[0] = tp;
+      ScriptTPShareValue[0] = 100;
+   }
+  
+  	// Magic number
    string EdtMagicNumber = FindEditObjectByPostfix("m_EdtMagicNumber");
    if (EdtMagicNumber != "") MagicNumber = (int)StringToInteger(ObjectGetString(0, EdtMagicNumber, OBJPROP_TEXT));
    Print("Magic number = ", MagicNumber);
@@ -296,14 +347,43 @@ void OnStart()
    	   }
    	}
 
-      if (DoNotApplyStopLoss) sl = 0;
-      if (DoNotApplyTakeProfit) tp = 0;
-
-      if (!Trade.OrderOpen(Symbol(), ot, PositionSize, 0, el, sl, tp, 0, 0, Commentary))
+      // Going through a cycle to execute multiple TP trades.
+      for (int j = 0; j < n; j++)
       {
-         Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
+         tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+         double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
+      
+         if (position_size < MinLot) 
+         {
+            Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+            continue;
+         }
+         else if (position_size > MaxLot)
+         {
+            Print("Position size ", position_size, " > broker's maximum position size. Reducing it.");
+            position_size = MaxLot;
+         }
+         double steps = 0;
+         if (LotStep != 0) steps = position_size / LotStep;
+         if (MathFloor(steps) < steps)
+         {
+            position_size = MathFloor(steps) * LotStep;
+            Print("Adjusting position size to the broker's Lot Step parameter.");
+         }
+
+         if (DoNotApplyStopLoss) sl = 0;
+         if (DoNotApplyTakeProfit) tp = 0;
+   
+         if (!Trade.OrderOpen(Symbol(), ot, position_size, 0, el, sl, tp, 0, 0, Commentary))
+         {
+            Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
+         }
+         else
+         {
+            if (n == 1) Print("Order executed. Ticket: ", Trade.ResultOrder(), ".");
+            else Print("Order #", j, " executed. Ticket: ", Trade.ResultOrder(), ".");
+         }
       }
-      else Print("Order executed. Ticket: ", Trade.ResultOrder(), ".");
    }
    // Instant
    else
@@ -312,27 +392,6 @@ void OnStart()
       if (sl > el) ot = ORDER_TYPE_SELL;
       // Buy
       else ot = ORDER_TYPE_BUY;
-
-	   double order_sl = sl;
-	   double order_tp = tp;      
-	
-		// Market execution mode - preparation.
-		if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
-		{
-			// No SL/TP allowed on instant orders.
-			order_sl = 0;
-			order_tp = 0;
-		}
-      if (DoNotApplyStopLoss)
-      {
-         sl = 0;
-         order_sl = 0;
-      }
-      if (DoNotApplyTakeProfit)
-      {
-         tp = 0;
-         order_tp = 0;
-      }
 
    	if ((SubtractPendingOrders) || (SubtractPositions))
    	{
@@ -355,66 +414,110 @@ void OnStart()
    	   }
    	}
 
-      if (!Trade.PositionOpen(Symbol(), ot, PositionSize, el, order_sl, order_tp, Commentary))
+      // Going through a cycle to execute multiple TP trades.
+      for (int j = 0; j < n; j++)
       {
-         Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
-      }
-      else
-      {
-      	MqlTradeResult result;
-      	Trade.Result(result);
-      	if ((Trade.ResultRetcode() != 10008) && (Trade.ResultRetcode() != 10009) && (Trade.ResultRetcode() != 10010))
-      	{
-      	   Print("Error opening a position. Return code: ", Trade.ResultRetcodeDescription());
-      	   return;
-      	}
-      	
-         Print("Initial return code: ", Trade.ResultRetcodeDescription());
+   	   double order_sl = sl;
+   	   double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+         double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
+      
+         if (position_size < MinLot) 
+         {
+            Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+            continue;
+         }
+         else if (position_size > MaxLot)
+         {
+            Print("Position size ", position_size, " > broker's maximum position size. Reducing it.");
+            position_size = MaxLot;
+         }
+         double steps = 0;
+         if (LotStep != 0) steps = position_size / LotStep;
+         if (MathFloor(steps) < steps)
+         {
+            position_size = MathFloor(steps) * LotStep;
+            Print("Adjusting position size to the broker's Lot Step parameter.");
+         }
 
-         ulong order = result.order;
-         Print("Order ID: ", order);
+   		// Market execution mode - preparation.
+   		if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
+   		{
+   			// No SL/TP allowed on instant orders.
+   			order_sl = 0;
+   			order_tp = 0;
+   		}
+         if (DoNotApplyStopLoss)
+         {
+            sl = 0;
+            order_sl = 0;
+         }
+         if (DoNotApplyTakeProfit)
+         {
+            tp = 0;
+            order_tp = 0;
+         }
 
-         ulong deal = result.deal;
-         Print("Deal ID: ", deal);
-
-			// Market execution mode - application of SL/TP.
-			if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && ((sl != 0) || (tp != 0)))
-			{
-	   		// Not all brokers return deal.
-	   		if (deal != 0)
-	   		{
-   	   		if (HistorySelect(TimeCurrent() - 60, TimeCurrent()))
+         if (!Trade.PositionOpen(Symbol(), ot, position_size, el, order_sl, order_tp, Commentary))
+         {
+            Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
+         }
+         else
+         {
+         	MqlTradeResult result;
+         	Trade.Result(result);
+         	if ((Trade.ResultRetcode() != 10008) && (Trade.ResultRetcode() != 10009) && (Trade.ResultRetcode() != 10010))
+         	{
+         	   Print("Error opening a position. Return code: ", Trade.ResultRetcodeDescription());
+         	   return;
+         	}
+         	
+            Print("Initial return code: ", Trade.ResultRetcodeDescription());
+   
+            ulong order = result.order;
+            Print("Order ID: ", order);
+   
+            ulong deal = result.deal;
+            Print("Deal ID: ", deal);
+            tp = ScriptTPValue[j];
+   			// Market execution mode - application of SL/TP.
+   			if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && ((sl != 0) || (tp != 0)))
+   			{
+   	   		// Not all brokers return deal.
+   	   		if (deal != 0)
    	   		{
-   		   		if (HistoryDealSelect(deal))
-   		   		{
-   						long position = HistoryDealGetInteger(deal, DEAL_POSITION_ID);
-   			      	Print("Position ID: ", position);
-   		
-   			      	if (!Trade.PositionModify(position, sl, tp)) Print("Error modifying position: ", GetLastError());
+      	   		if (HistorySelect(TimeCurrent() - 60, TimeCurrent()))
+      	   		{
+      		   		if (HistoryDealSelect(deal))
+      		   		{
+      						long position = HistoryDealGetInteger(deal, DEAL_POSITION_ID);
+      			      	Print("Position ID: ", position);
+      		
+      			      	if (!Trade.PositionModify(position, sl, tp)) Print("Error modifying position: ", GetLastError());
+      			      	else Print("SL/TP applied successfully.");
+      			      }
+      			      else Print("Error selecting deal: ", GetLastError());
+        			   }
+      			   else Print("Error selecting deal history: ", GetLastError());
+     			   }
+   			   // Wait for position to open then find it using the order ID.
+   			   else
+   			   {
+   			      // Run a waiting cycle until the order becomes a positoin.
+   			      for (int i = 0; i < 10; i++)
+   			      {
+   			         Print("Waiting...");
+   			         Sleep(1000);
+   			         if (PositionSelectByTicket(order)) break;
+   			      }
+   			      if (!PositionSelectByTicket(order)) Print("Error selecting position: ", GetLastError());
+   			      else
+   			      {
+                     if (!Trade.PositionModify(order, sl, tp)) Print("Error modifying position: ", GetLastError());
    			      	else Print("SL/TP applied successfully.");
    			      }
-   			      else Print("Error selecting deal: ", GetLastError());
-     			   }
-   			   else Print("Error selecting deal history: ", GetLastError());
-  			   }
-			   // Wait for position to open then find it using the order ID.
-			   else
-			   {
-			      // Run a waiting cycle until the order becomes a positoin.
-			      for (int i = 0; i < 10; i++)
-			      {
-			         Print("Waiting...");
-			         Sleep(1000);
-			         if (PositionSelectByTicket(order)) break;
-			      }
-			      if (!PositionSelectByTicket(order)) Print("Error selecting position: ", GetLastError());
-			      else
-			      {
-                  if (!Trade.PositionModify(order, sl, tp)) Print("Error modifying position: ", GetLastError());
-			      	else Print("SL/TP applied successfully.");
-			      }
-			   }
-			}
+   			   }
+   			}
+         }
       }
    }
 

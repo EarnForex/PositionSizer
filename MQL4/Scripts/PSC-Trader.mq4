@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.07"
+#property version   "1.08"
 #property strict
 #include <stdlib.mqh>
 
@@ -89,6 +89,10 @@ void OnStart()
       
    Print("Detected position size: ", DoubleToString(PositionSize, ps_decimals), ".");
 
+   double MinLot = MarketInfo(Symbol(), MODE_MINLOT);
+   double MaxLot = MarketInfo(Symbol(), MODE_MAXLOT);
+   double LotStep = MarketInfo(Symbol(), MODE_LOTSTEP);
+
    if (PositionSize <= 0)
    {
       Print("Wrong position size value!");
@@ -129,6 +133,48 @@ void OnStart()
       Print("Detected take-profit level: ", DoubleToString(tp, Digits), ".");
    }
    else Print("No take-profit detected.");
+   
+   // Try reading multiple TP levels.
+   int n = 0;
+   double ScriptTPValue[];
+   int ScriptTPShareValue[];
+   double volume_share_sum = 0;
+   while (true)
+   {
+      ArrayResize(ScriptTPValue, n + 1);
+      ArrayResize(ScriptTPShareValue, n + 1);
+      ScriptTPValue[n] = 0;
+   	string ScriptTPObjectName = FindEditObjectByPostfix("m_EdtScriptTPEdit" + IntegerToString(n + 1));
+      if (ScriptTPObjectName != "") ScriptTPValue[n] = NormalizeDouble(StringToDouble(ObjectGetString(0, ScriptTPObjectName, OBJPROP_TEXT)), _Digits);
+      else break;
+      Print("Detected Multiple TP #", n + 1, " = ", ScriptTPValue[n]);
+
+   	ScriptTPShareValue[n] = 0;
+   	string ScriptTPShareObjectName = FindEditObjectByPostfix("m_EdtScriptTPShareEdit" + IntegerToString(n + 1));
+      if (ScriptTPShareObjectName != "") ScriptTPShareValue[n] = (int)StringToInteger(ObjectGetString(0, ScriptTPShareObjectName, OBJPROP_TEXT));
+      else break;
+      Print("Detected Multiple TP Share #", n + 1, " = ", ScriptTPShareValue[n]);
+   	
+   	volume_share_sum += ScriptTPShareValue[n];
+   	
+   	n++;
+   }
+   if (n > 0)
+   {
+      Print("Multiple TP volume share sum = ", volume_share_sum, ".");
+      if ((volume_share_sum < 99) || (volume_share_sum > 100))
+      {
+         Print("Incorrect volume sum for multiple TPs - not taking any trades.");
+         return;
+      }
+   }   
+   else
+   {
+      // No multiple TPs, use single TP for 100% of volume.
+      n = 1;
+      ScriptTPValue[0] = tp;
+      ScriptTPShareValue[0] = 100;
+   }
    
 	// Magic number
    string EdtMagicNumber = FindEditObjectByPostfix("m_EdtMagicNumber");
@@ -259,27 +305,6 @@ void OnStart()
       else ot = OP_BUY;
    }
    
-   double order_sl = sl;
-   double order_tp = tp;      
-
-	// Market execution mode - preparation.
-	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
-	{
-		// No SL/TP allowed on instant orders.
-		order_sl = 0;
-		order_tp = 0;
-	}
-   if (DoNotApplyStopLoss)
-   {
-      sl = 0;
-      order_sl = 0;
-   }
-   if (DoNotApplyTakeProfit)
-   {
-      tp = 0;
-      order_tp = 0;
-   }
-
 	if ((SubtractPendingOrders) || (SubtractPositions))
 	{
 	   double existing_volume_buy = 0, existing_volume_sell = 0;
@@ -305,29 +330,77 @@ void OnStart()
 	   }
 	}
 
-   int ticket = OrderSend(Symbol(), ot, PositionSize, el, MaxSlippage, order_sl, order_tp, Commentary, MagicNumber);
-   if (ticket == -1)
+   // Going through a cycle to execute multiple TP trades.
+   for (int j = 0; j < n; j++)
    {
-      int error = GetLastError();
-      Print("Execution failed. Error: ", IntegerToString(error), " - ", ErrorDescription(error), ".");
-   }
-   else Print("Order executed. Ticket: ", ticket, ".");
+      double order_sl = sl;
+      double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+      double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
+   
+      if (position_size < MinLot) 
+      {
+         Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+         continue;
+      }
+      else if (position_size > MaxLot)
+      {
+         Print("Position size ", position_size, " > broker's maximum position size. Reducing it.");
+         position_size = MaxLot;
+      }
+      double steps = 0;
+      if (LotStep != 0) steps = position_size / LotStep;
+      if (MathFloor(steps) < steps)
+      {
+         position_size = MathFloor(steps) * LotStep;
+         Print("Adjusting position size to the broker's Lot Step parameter.");
+      }
 
-	// Market execution mode - applying SL/TP.
-	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && (ticket != -1) && ((sl != 0) || (tp != 0)))
-	{
-		if (!OrderSelect(ticket, SELECT_BY_TICKET))
-		{
-			Print("Failed to find the order to apply SL/TP.");
-			return;
-		}
-		for (int i = 0; i < 10; i++)
-		{
-		   bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
-		   if (result) break;
-		   else Print("Error modifying the order: ", GetLastError());
-		}
-	}
+   	// Market execution mode - preparation.
+   	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
+   	{
+   		// No SL/TP allowed on instant orders.
+   		order_sl = 0;
+   		order_tp = 0;
+   	}
+      if (DoNotApplyStopLoss)
+      {
+         sl = 0;
+         order_sl = 0;
+      }
+      if (DoNotApplyTakeProfit)
+      {
+         tp = 0;
+         order_tp = 0;
+      }
+   
+      int ticket = OrderSend(Symbol(), ot, position_size, el, MaxSlippage, order_sl, order_tp, Commentary, MagicNumber);
+      if (ticket == -1)
+      {
+         int error = GetLastError();
+         Print("Execution failed. Error: ", IntegerToString(error), " - ", ErrorDescription(error), ".");
+      }
+      else
+      {
+         if (n == 1) Print("Order executed. Ticket: ", ticket, ".");
+         else Print("Order #", j, " executed. Ticket: ", ticket, ".");
+      }
+      tp = ScriptTPValue[j];
+   	// Market execution mode - applying SL/TP.
+   	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && (ticket != -1) && ((sl != 0) || (tp != 0)))
+   	{
+   		if (!OrderSelect(ticket, SELECT_BY_TICKET))
+   		{
+   			Print("Failed to find the order to apply SL/TP.");
+   			return;
+   		}
+   		for (int i = 0; i < 10; i++)
+   		{
+   		   bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
+   		   if (result) break;
+   		   else Print("Error modifying the order: ", GetLastError());
+   		}
+   	}
+   }
 }
 
 string FindEditObjectByPostfix(const string postfix)
