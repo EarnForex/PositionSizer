@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.08"
+#property version   "1.09"
 #property strict
 #include <stdlib.mqh>
 
@@ -46,6 +46,12 @@ void OnStart()
    double el = 0, sl = 0, tp = 0; // Entry level, stop-loss, and take-profit.
    int ot; // Order type.
    ENTRY_TYPE entry_type;
+
+   if (!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED))
+   {
+      Alert("AutoTrading disabled! Please enable AutoTrading.");
+      return;
+   }
 
    Window = WindowFind("Position Size Calculator" + IntegerToString(ChartID()));
    if (Window == -1)

@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.08"
+#property version   "1.09"
 #include <Trade/Trade.mqh>
 
 /*
@@ -48,6 +48,12 @@ void OnStart()
    ENUM_ORDER_TYPE ot; // Order type.
    ENTRY_TYPE entry_type;
 
+   if (!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED))
+   {
+      Alert("Algo Trading disabled! Please enable Algo Trading.");
+      return;
+   }
+   
    Window = ChartWindowFind(0, "Position Size Calculator" + IntegerToString(ChartID()));
    
    if (Window == -1)
