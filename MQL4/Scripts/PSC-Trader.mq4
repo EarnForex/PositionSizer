@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2020, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.09"
+#property version   "1.10"
 #property strict
 #include <stdlib.mqh>
 
@@ -23,7 +23,7 @@ You can control script settings via Position Size Calculator panel (Script tab).
 
 */
 
-bool DisableTradingWhenLinesAreHidden, SubtractPositions, SubtractPendingOrders, DoNotApplyStopLoss, DoNotApplyTakeProfit;
+bool DisableTradingWhenLinesAreHidden, SubtractPositions, SubtractPendingOrders, DoNotApplyStopLoss, DoNotApplyTakeProfit, AskForConfirmation;
 int MaxSlippage = 0, MaxSpread, MaxEntrySLDistance, MinEntrySLDistance, MagicNumber = 0;
 double MaxPositionSize;
 
@@ -40,8 +40,6 @@ enum ENTRY_TYPE
 //+------------------------------------------------------------------+
 void OnStart()
 {
-   int Window;
-
    string ps = ""; // Position size string.
    double el = 0, sl = 0, tp = 0; // Entry level, stop-loss, and take-profit.
    int ot; // Order type.
@@ -53,44 +51,36 @@ void OnStart()
       return;
    }
 
-   Window = WindowFind("Position Size Calculator" + IntegerToString(ChartID()));
-   if (Window == -1)
+   // WindowFind() is very poor at finding indicators by their short name in MT4. Using ChartIndicatorName comparison instead.
+   bool psc_found = false;
+   int chart_indicators_total = ChartIndicatorsTotal(0, 0);
+   for (int i = 0; i < chart_indicators_total; i++)
    {
-      // Trying to find the new version's position size object.
-      ps = FindEditObjectByPostfix("m_EdtPosSize");
-      ps = ObjectGetString(0, ps, OBJPROP_TEXT);
-      // Trying to find the legacy version's position size object.
-     	if (StringLen(ps) == 0) ps = ObjectGetString(0, "PositionSize", OBJPROP_TEXT);
-	   if (StringLen(ps) == 0)
+      if (ChartIndicatorName(0, 0, i) == "Position Size Calculator" + IntegerToString(ChartID()))
       {
-         Alert("Position Size Calculator not found!");
-         return;
+         psc_found = true;
+         break;
       }
    }
-
-	if (StringLen(ps) == 0)
-	{
-		// Trying to find the new version's position size object.
-	   ps = FindEditObjectByPostfix("m_EdtPosSize");
-	   ps = ObjectGetString(0, ps, OBJPROP_TEXT);
-	   // Trying to find the legacy version's position size object.
-	   if (StringLen(ps) == 0) ps = ObjectGetString(0, "PositionSize", OBJPROP_TEXT);
-		if (StringLen(ps) == 0)
-	   {
-	      Alert("Position Size object not found!");
-	      return;
-	   }
-	}
-   int len = StringLen(ps);
-   string ps_proc = "";
-   for (int i = len - 1; i >= 0; i--)
+   if (!psc_found)
    {
-      string c = StringSubstr(ps, i, 1);
-      if (c != " ") ps_proc = c + ps_proc;
-      else break;
+      Alert("Position Size Calculator not found!");
+      return;
    }
+
+	// Trying to find the position size object.
+   ps = FindObjectByPostfix("m_EdtPosSize", OBJ_EDIT);
+   ps = ObjectGetString(0, ps, OBJPROP_TEXT);
+	if (StringLen(ps) == 0)
+   {
+      Alert("Position Size object not found!");
+      return;
+   }
+
+   // Replace thousand separaptors.
+   StringReplace(ps, ",", "");
    
-   double PositionSize = StringToDouble(ps_proc);
+   double PositionSize = StringToDouble(ps);
    int ps_decimals = CountDecimalPlaces(PositionSize);
       
    Print("Detected position size: ", DoubleToString(PositionSize, ps_decimals), ".");
@@ -105,7 +95,11 @@ void OnStart()
       return;
    }
    
-   el = ObjectGetDouble(0, "EntryLine", OBJPROP_PRICE);
+   string ObjectPrefix = ""; // To be found.
+   string el_name = FindObjectByPostfix("EntryLine", OBJ_HLINE);
+   int el_name_starts_at = StringFind(el_name, "EntryLine");
+   if (el_name_starts_at > 0) ObjectPrefix = StringSubstr(el_name, 0, el_name_starts_at);
+   el = ObjectGetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE);
    if (el <= 0)
    {
       Alert("Entry Line not found!");
@@ -122,17 +116,16 @@ void OnStart()
    
    Print("Detected entry type: ", EnumToString(entry_type), ".");
    
-   sl = ObjectGetDouble(0, "StopLossLine", OBJPROP_PRICE);
+   sl = ObjectGetDouble(0, ObjectPrefix + "StopLossLine", OBJPROP_PRICE);
    if (sl <= 0)
    {
       Alert("Stop-Loss Line not found!");
       return;
    }
-   
    sl = NormalizeDouble(sl, Digits);
    Print("Detected stop-loss level: ", DoubleToString(sl, Digits), ".");
-   
-   tp = ObjectGetDouble(0, "TakeProfitLine", OBJPROP_PRICE);
+
+   tp = ObjectGetDouble(0, ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE);
    if (tp > 0)
    {
       tp = NormalizeDouble(tp, Digits);
@@ -150,13 +143,13 @@ void OnStart()
       ArrayResize(ScriptTPValue, n + 1);
       ArrayResize(ScriptTPShareValue, n + 1);
       ScriptTPValue[n] = 0;
-   	string ScriptTPObjectName = FindEditObjectByPostfix("m_EdtScriptTPEdit" + IntegerToString(n + 1));
+   	string ScriptTPObjectName = FindObjectByPostfix("m_EdtScriptTPEdit" + IntegerToString(n + 1), OBJ_EDIT);
       if (ScriptTPObjectName != "") ScriptTPValue[n] = NormalizeDouble(StringToDouble(ObjectGetString(0, ScriptTPObjectName, OBJPROP_TEXT)), _Digits);
       else break;
       Print("Detected Multiple TP #", n + 1, " = ", ScriptTPValue[n]);
 
    	ScriptTPShareValue[n] = 0;
-   	string ScriptTPShareObjectName = FindEditObjectByPostfix("m_EdtScriptTPShareEdit" + IntegerToString(n + 1));
+   	string ScriptTPShareObjectName = FindObjectByPostfix("m_EdtScriptTPShareEdit" + IntegerToString(n + 1), OBJ_EDIT);
       if (ScriptTPShareObjectName != "") ScriptTPShareValue[n] = (int)StringToInteger(ObjectGetString(0, ScriptTPShareObjectName, OBJPROP_TEXT));
       else break;
       Print("Detected Multiple TP Share #", n + 1, " = ", ScriptTPShareValue[n]);
@@ -183,23 +176,23 @@ void OnStart()
    }
    
 	// Magic number
-   string EdtMagicNumber = FindEditObjectByPostfix("m_EdtMagicNumber");
+   string EdtMagicNumber = FindObjectByPostfix("m_EdtMagicNumber", OBJ_EDIT);
    if (EdtMagicNumber != "") MagicNumber = (int)StringToInteger(ObjectGetString(0, EdtMagicNumber, OBJPROP_TEXT));
    Print("Magic number = ", MagicNumber);
 
 	// Order commentary
-   string EdtScriptCommentary = FindEditObjectByPostfix("m_EdtScriptCommentary");
+   string EdtScriptCommentary = FindObjectByPostfix("m_EdtScriptCommentary", OBJ_EDIT);
    if (EdtScriptCommentary != "") Commentary = ObjectGetString(0, EdtScriptCommentary, OBJPROP_TEXT);
    Print("Order commentary = ", Commentary);
 
    // Checkbox for disabling trading when hidden lines
-   string ChkDisableTradingWhenLinesAreHidden = FindCheckboxObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton");
+   string ChkDisableTradingWhenLinesAreHidden = FindObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton", OBJ_EDIT);
    if (ChkDisableTradingWhenLinesAreHidden != "") DisableTradingWhenLinesAreHidden = ObjectGetInteger(0, ChkDisableTradingWhenLinesAreHidden, OBJPROP_STATE);
    Print("Disable trading when lines are hidden = ", DisableTradingWhenLinesAreHidden);
 
 	// Entry line
    bool EntryLineHidden = false;
-   int EL_Hidden = (int)ObjectGetInteger(0, "EntryLine", OBJPROP_TIMEFRAMES);
+   int EL_Hidden = (int)ObjectGetInteger(0, ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES);
    if (EL_Hidden == OBJ_NO_PERIODS) EntryLineHidden = true; 
    Print("Entry line hidden = ", EntryLineHidden);
 
@@ -210,11 +203,11 @@ void OnStart()
 	}
 
 	// Other fuses
-   string EdtMaxSlippage = FindEditObjectByPostfix("m_EdtMaxSlippage");
+   string EdtMaxSlippage = FindObjectByPostfix("m_EdtMaxSlippage", OBJ_EDIT);
    if (EdtMaxSlippage != "") MaxSlippage = (int)StringToInteger(ObjectGetString(0, EdtMaxSlippage, OBJPROP_TEXT));
    Print("Max slippage = ", MaxSlippage);
 
-   string EdtMaxSpread = FindEditObjectByPostfix("m_EdtMaxSpread");
+   string EdtMaxSpread = FindObjectByPostfix("m_EdtMaxSpread", OBJ_EDIT);
    if (EdtMaxSpread != "") MaxSpread = (int)StringToInteger(ObjectGetString(0, EdtMaxSpread, OBJPROP_TEXT));
    Print("Max spread = ", MaxSpread);
    
@@ -228,7 +221,7 @@ void OnStart()
 	   }
 	}
 	
-   string EdtMaxEntrySLDistance = FindEditObjectByPostfix("m_EdtMaxEntrySLDistance");
+   string EdtMaxEntrySLDistance = FindObjectByPostfix("m_EdtMaxEntrySLDistance", OBJ_EDIT);
    if (EdtMaxEntrySLDistance != "") MaxEntrySLDistance = (int)StringToInteger(ObjectGetString(0, EdtMaxEntrySLDistance, OBJPROP_TEXT));
    Print("Max Entry/SL distance = ", MaxEntrySLDistance);
 
@@ -242,7 +235,7 @@ void OnStart()
 	   }
 	}
 	
-   string EdtMinEntrySLDistance = FindEditObjectByPostfix("m_EdtMinEntrySLDistance");
+   string EdtMinEntrySLDistance = FindObjectByPostfix("m_EdtMinEntrySLDistance", OBJ_EDIT);
    if (EdtMinEntrySLDistance != "") MinEntrySLDistance = (int)StringToInteger(ObjectGetString(0, EdtMinEntrySLDistance, OBJPROP_TEXT));
    Print("Min Entry/SL distance = ", MinEntrySLDistance);
 
@@ -256,29 +249,34 @@ void OnStart()
 	   }
 	}
 	
-   string EdtMaxPositionSize = FindEditObjectByPostfix("m_EdtMaxPositionSize");
+   string EdtMaxPositionSize = FindObjectByPostfix("m_EdtMaxPositionSize", OBJ_EDIT);
    if (EdtMaxPositionSize != "") MaxPositionSize = StringToDouble(ObjectGetString(0, EdtMaxPositionSize, OBJPROP_TEXT));
    Print("Max position size = ", DoubleToString(MaxPositionSize, ps_decimals));
 	   
    // Checkbox for subtracting open positions volume from the position size.
-   string ChkSubtractPositions = FindCheckboxObjectByPostfix("m_ChkSubtractPositionsButton");
+   string ChkSubtractPositions = FindObjectByPostfix("m_ChkSubtractPositionsButton", OBJ_BITMAP_LABEL);
    if (ChkSubtractPositions != "") SubtractPositions = ObjectGetInteger(0, ChkSubtractPositions, OBJPROP_STATE);
    Print("Subtract open positions volume = ", SubtractPositions);
 
    // Checkbox for subtracting pending orders volume from the position size.
-   string ChkSubtractPendingOrders = FindCheckboxObjectByPostfix("m_ChkSubtractPendingOrdersButton");
+   string ChkSubtractPendingOrders = FindObjectByPostfix("m_ChkSubtractPendingOrdersButton", OBJ_BITMAP_LABEL);
    if (ChkSubtractPendingOrders != "") SubtractPendingOrders = ObjectGetInteger(0, ChkSubtractPendingOrders, OBJPROP_STATE);
    Print("Subtract pending orders volume = ", SubtractPendingOrders);
    
    // Checkbox for not applying stop-loss to the position.
-   string ChkDoNotApplyStopLoss = FindCheckboxObjectByPostfix("m_ChkDoNotApplyStopLossButton");
+   string ChkDoNotApplyStopLoss = FindObjectByPostfix("m_ChkDoNotApplyStopLossButton", OBJ_BITMAP_LABEL);
    if (ChkDoNotApplyStopLoss != "") DoNotApplyStopLoss = ObjectGetInteger(0, ChkDoNotApplyStopLoss, OBJPROP_STATE);
    Print("Do not apply stop-loss = ", DoNotApplyStopLoss);
 
    // Checkbox for not applying take-profit to the position.
-   string ChkDoNotApplyTakeProfit = FindCheckboxObjectByPostfix("m_ChkDoNotApplyTakeProfitButton");
+   string ChkDoNotApplyTakeProfit = FindObjectByPostfix("m_ChkDoNotApplyTakeProfitButton", OBJ_BITMAP_LABEL);
    if (ChkDoNotApplyTakeProfit != "") DoNotApplyTakeProfit = ObjectGetInteger(0, ChkDoNotApplyTakeProfit, OBJPROP_STATE);
    Print("Do not apply take-profit = ", DoNotApplyTakeProfit);
+
+   // Checkbox for asking for confirmation.
+   string ChkAskForConfirmation = FindObjectByPostfix("m_ChkAskForConfirmationButton", OBJ_BITMAP_LABEL);
+   if (ChkAskForConfirmation != "") AskForConfirmation = ObjectGetInteger(0, ChkAskForConfirmation, OBJPROP_STATE);
+   Print("Ask for confirmation = ", AskForConfirmation);
 
 	ENUM_SYMBOL_TRADE_EXECUTION Execution_Mode = (ENUM_SYMBOL_TRADE_EXECUTION)SymbolInfoInteger(Symbol(), SYMBOL_TRADE_EXEMODE);
 	Print("Execution mode: ", EnumToString(Execution_Mode));
@@ -336,6 +334,66 @@ void OnStart()
 	   }
 	}
 
+   if (AskForConfirmation)
+   {
+      // Evoke confirmation modal window.
+      string caption = "Execute the trade?";
+      string message;
+      string order_type_text = "";
+      string currency = AccountInfoString(ACCOUNT_CURRENCY);
+      switch(ot)
+      {
+         case OP_BUY:
+         order_type_text = "Buy";
+         break;
+         case OP_BUYSTOP:
+         order_type_text = "Buy Stop";
+         break;
+         case OP_BUYLIMIT:
+         order_type_text = "Buy Limit";
+         break;
+         case OP_SELL:
+         order_type_text = "Sell";
+         break;
+         case OP_SELLSTOP:
+         order_type_text = "Sell Stop";
+         break;
+         case OP_SELLLIMIT:
+         order_type_text = "Sell Limit";
+         break;
+         default:
+         break;
+      }
+      
+      message = "Order: " + order_type_text + "\n";
+      message += "Size: " + DoubleToString(PositionSize, ps_decimals);
+      if (n > 1) message += " (multiple)";
+      message += "\n";
+      // Find Account Size button and edit.
+      string account_button = FindObjectByPostfix("m_BtnAccount", OBJ_BUTTON);
+      account_button = ObjectGetString(0, account_button, OBJPROP_TEXT);
+      message += account_button;
+      string account_value = FindObjectByPostfix("m_EdtAccount", OBJ_EDIT);
+      account_value = ObjectGetString(0, account_value, OBJPROP_TEXT);
+      message += ": " + account_value + " " + currency + "\n";
+      string risk = FindObjectByPostfix("m_EdtRiskMRes", OBJ_EDIT);
+      risk = ObjectGetString(0, risk, OBJPROP_TEXT);
+      message += "Risk: " + risk + " " + currency + "\n";
+      
+      message += "Entry: " + DoubleToString(el, _Digits) + "\n";
+      if (!DoNotApplyStopLoss) message += "Stop-loss: " + DoubleToString(sl, _Digits) + "\n";
+      if ((tp > 0) && (!DoNotApplyTakeProfit)) message += "Take-profit: " + DoubleToString(tp, _Digits);
+      if (n > 1) message += " (multiple)";
+      message += "\n";
+      
+      int ret = MessageBox(message, caption, MB_OKCANCEL|MB_ICONWARNING);
+      if (ret == IDCANCEL)
+      {
+         Print("Trade canceled.");
+         return;
+      }
+   }
+
    // Going through a cycle to execute multiple TP trades.
    for (int j = 0; j < n; j++)
    {
@@ -390,7 +448,7 @@ void OnStart()
          if (n == 1) Print("Order executed. Ticket: ", ticket, ".");
          else Print("Order #", j, " executed. Ticket: ", ticket, ".");
       }
-      tp = ScriptTPValue[j];
+      if (!DoNotApplyTakeProfit) tp = ScriptTPValue[j];
    	// Market execution mode - applying SL/TP.
    	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && (ticket != -1) && ((sl != 0) || (tp != 0)))
    	{
@@ -409,42 +467,18 @@ void OnStart()
    }
 }
 
-string FindEditObjectByPostfix(const string postfix)
+string FindObjectByPostfix(const string postfix, const ENUM_OBJECT object_type)
 {
-	int obj_total = ObjectsTotal(0, 0, OBJ_EDIT);
+	int obj_total = ObjectsTotal(0, 0, object_type);
 	string name = "";
 	bool found = false;
 	for (int i = 0; i < obj_total; i++)
 	{
-		name = ObjectName(0, i, 0, OBJ_EDIT);
+		name = ObjectName(0, i, 0, object_type);
 		string pattern = StringSubstr(name, StringLen(name) - StringLen(postfix));
-		if (StringCompare(pattern, postfix) == 0)
-		{
-			found = true;
-			break;
-		}
+		if (StringCompare(pattern, postfix) == 0) return(name);
 	}
-	if (found) return(name);
-	else return("");
-}
-
-string FindCheckboxObjectByPostfix(const string postfix)
-{
-	int obj_total = ObjectsTotal(0, 0, OBJ_BITMAP_LABEL);
-	string name = "";
-	bool found = false;
-	for (int i = 0; i < obj_total; i++)
-	{
-		name = ObjectName(0, i, 0, OBJ_BITMAP_LABEL);
-		string pattern = StringSubstr(name, StringLen(name) - StringLen(postfix));
-		if (StringCompare(pattern, postfix) == 0)
-		{
-			found = true;
-			break;
-		}
-	}
-	if (found) return(name);
-	else return("");
+	return("");
 }
 
 // Calculate volume of open positions and/or pending orders.
