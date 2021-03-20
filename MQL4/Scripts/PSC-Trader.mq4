@@ -1,11 +1,11 @@
 //+------------------------------------------------------------------+
 //|                                                 	PSC-Trader.mq4 |
-//|                               Copyright 2015-2020, EarnForex.com |
+//|                               Copyright 2015-2021, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2015-2020, EarnForex.com"
+#property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.10"
+#property version   "1.11"
 #property strict
 #include <stdlib.mqh>
 
@@ -186,7 +186,7 @@ void OnStart()
    Print("Order commentary = ", Commentary);
 
    // Checkbox for disabling trading when hidden lines
-   string ChkDisableTradingWhenLinesAreHidden = FindObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton", OBJ_EDIT);
+   string ChkDisableTradingWhenLinesAreHidden = FindObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton", OBJ_BITMAP_LABEL);
    if (ChkDisableTradingWhenLinesAreHidden != "") DisableTradingWhenLinesAreHidden = ObjectGetInteger(0, ChkDisableTradingWhenLinesAreHidden, OBJPROP_STATE);
    Print("Disable trading when lines are hidden = ", DisableTradingWhenLinesAreHidden);
 
@@ -413,6 +413,7 @@ void OnStart()
       }
       double steps = 0;
       if (LotStep != 0) steps = position_size / LotStep;
+      if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
       if (MathFloor(steps) < steps)
       {
          position_size = MathFloor(steps) * LotStep;

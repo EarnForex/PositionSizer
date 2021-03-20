@@ -1,11 +1,11 @@
 //+------------------------------------------------------------------+
 //|                                                 	PSC-Trader.mq5 |
-//|                               Copyright 2015-2020, EarnForex.com |
+//|                               Copyright 2015-2021, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2015-2020, EarnForex.com"
+#property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.10"
+#property version   "1.11"
 #include <Trade/Trade.mqh>
 
 /*
@@ -206,7 +206,7 @@ void OnStart()
    Print("Order commentary = ", Commentary);
 
    // Checkbox
-   string ChkDisableTradingWhenLinesAreHidden = FindObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton", OBJ_EDIT);
+   string ChkDisableTradingWhenLinesAreHidden = FindObjectByPostfix("m_ChkDisableTradingWhenLinesAreHiddenButton", OBJ_BITMAP_LABEL);
    if (StringLen(ChkDisableTradingWhenLinesAreHidden) > 0) DisableTradingWhenLinesAreHidden = ObjectGetInteger(0, ChkDisableTradingWhenLinesAreHidden, OBJPROP_STATE);
    Print("Disable trading when lines are hidden = ", DisableTradingWhenLinesAreHidden);
 
