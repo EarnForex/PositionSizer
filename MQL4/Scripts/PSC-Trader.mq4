@@ -395,10 +395,14 @@ void OnStart()
    }
 
    // Going through a cycle to execute multiple TP trades.
-   for (int j = 0; j < n; j++)
+   // ak
+   double AccumulatedPositionSize = 0;
+   double ArrayPositionSize[];
+   
+   ArrayResize(ArrayPositionSize, n + 1);
+   
+   for (int j = n; j >= 0; j--)
    {
-      double order_sl = sl;
-      double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
       double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
    
       if (position_size < MinLot) 
@@ -420,6 +424,28 @@ void OnStart()
          Print("Adjusting position size to the broker's Lot Step parameter.");
       }
 
+      // ak
+      if ( j > 0) 
+      {
+         AccumulatedPositionSize += position_size;
+      } 
+      else 
+      {
+         position_size = PositionSize - AccumulatedPositionSize;
+      }
+      
+      Print(PositionSize, "-----------", position_size);
+      
+      ArrayPositionSize[j] = position_size;
+   }
+   
+   for (int j = 0; j < n; j++)
+   {
+      double order_sl = sl;
+      double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+      double position_size = ArrayPositionSize[j];
+      
+      
    	// Market execution mode - preparation.
    	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
    	{
