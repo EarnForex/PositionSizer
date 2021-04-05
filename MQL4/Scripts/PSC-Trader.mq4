@@ -395,6 +395,9 @@ void OnStart()
    }
 
    // Going through a cycle to execute multiple TP trades.
+   // ak
+   double AccumulatedPositionSize = 0;
+   
    for (int j = 0; j < n; j++)
    {
       double order_sl = sl;
@@ -420,6 +423,16 @@ void OnStart()
          Print("Adjusting position size to the broker's Lot Step parameter.");
       }
 
+      // ak
+      if ( j < n-1) 
+      {
+         AccumulatedPositionSize += position_size;
+      } 
+      else 
+      {
+         position_size = PositionSize - AccumulatedPositionSize;
+      }
+      
    	// Market execution mode - preparation.
    	if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
    	{
