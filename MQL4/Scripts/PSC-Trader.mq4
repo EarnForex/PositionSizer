@@ -398,7 +398,7 @@ void OnStart()
    // ak
    double AccumulatedPositionSize = 0;
    
-   for (int j = 0; j < n; j++)
+   for (int j = n-1; j >= 0; j--)
    {
       double order_sl = sl;
       double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
@@ -424,7 +424,7 @@ void OnStart()
       }
 
       // ak
-      if ( j < n-1) 
+      if ( j > 0) 
       {
          AccumulatedPositionSize += position_size;
       } 
