@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.11"
+#property version   "1.12"
 #include <Trade/Trade.mqh>
 
 /*
@@ -374,10 +374,14 @@ void OnStart()
          return;
       }
       
-      // Going through a cycle to execute multiple TP trades.
-      for (int j = 0; j < n; j++)
+      double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
+      double ArrayPositionSize[]; // PS for each trade.
+      ArrayResize(ArrayPositionSize, n);
+      
+      // Cycle to calculate volume for each partial trade.
+      // The goal is to use normal rounded down values for additional TPs and then throw the remainder to the main TP.
+      for (int j = n - 1; j >= 0; j--)
       {
-         tp = NormalizeDouble(ScriptTPValue[j], _Digits);
          double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
       
          if (position_size < MinLot) 
@@ -397,6 +401,25 @@ void OnStart()
             position_size = MathFloor(steps) * LotStep;
             Print("Adjusting position size to the broker's Lot Step parameter.");
          }
+   
+         // If this is one of the additional TPs, then count its PS towards total PS that will be open for additional TPs.
+         if (j > 0) 
+         {
+            AccumulatedPositionSize += position_size;
+         } 
+         else // For the main TP, use the remaining part of the total PS.
+         {
+            position_size = PositionSize - AccumulatedPositionSize;
+         }
+         ArrayPositionSize[j] = position_size;
+      }
+      int LotStep_digits = CountDecimalPlaces(LotStep); // Required for proper volume normalization.
+      
+      // Going through a cycle to execute multiple TP trades.
+      for (int j = 0; j < n; j++)
+      {
+         tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+         double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
 
          if (DoNotApplyStopLoss) sl = 0;
          if (DoNotApplyTakeProfit) tp = 0;
@@ -447,11 +470,14 @@ void OnStart()
          return;
       }
 
-      // Going through a cycle to execute multiple TP trades.
-      for (int j = 0; j < n; j++)
+      double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
+      double ArrayPositionSize[]; // PS for each trade.
+      ArrayResize(ArrayPositionSize, n);
+      
+      // Cycle to calculate volume for each partial trade.
+      // The goal is to use normal rounded down values for additional TPs and then throw the remainder to the main TP.
+      for (int j = n - 1; j >= 0; j--)
       {
-   	   double order_sl = sl;
-   	   double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
          double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
       
          if (position_size < MinLot) 
@@ -471,7 +497,27 @@ void OnStart()
             position_size = MathFloor(steps) * LotStep;
             Print("Adjusting position size to the broker's Lot Step parameter.");
          }
-
+   
+         // If this is one of the additional TPs, then count its PS towards total PS that will be open for additional TPs.
+         if (j > 0) 
+         {
+            AccumulatedPositionSize += position_size;
+         } 
+         else // For the main TP, use the remaining part of the total PS.
+         {
+            position_size = PositionSize - AccumulatedPositionSize;
+         }
+         ArrayPositionSize[j] = position_size;
+      }
+      int LotStep_digits = CountDecimalPlaces(LotStep); // Required for proper volume normalization.
+      
+      // Going through a cycle to execute multiple TP trades.
+      for (int j = 0; j < n; j++)
+      {
+   	   double order_sl = sl;
+   	   double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
+         double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
+      
    		// Market execution mode - preparation.
    		if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant))
    		{

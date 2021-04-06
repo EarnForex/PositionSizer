@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.11"
+#property version   "1.12"
 #property strict
 #include <stdlib.mqh>
 
@@ -394,14 +394,13 @@ void OnStart()
       }
    }
 
-   // Going through a cycle to execute multiple TP trades.
-   // ak
-   double AccumulatedPositionSize = 0;
-   double ArrayPositionSize[];
+   double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
+   double ArrayPositionSize[]; // PS for each trade.
+   ArrayResize(ArrayPositionSize, n);
    
-   ArrayResize(ArrayPositionSize, n + 1);
-   
-   for (int j = n; j >= 0; j--)
+   // Cycle to calculate volume for each partial trade.
+   // The goal is to use normal rounded down values for additional TPs and then throw the remainder to the main TP.
+   for (int j = n - 1; j >= 0; j--)
    {
       double position_size = PositionSize * ScriptTPShareValue[j] / 100.0;
    
@@ -424,26 +423,25 @@ void OnStart()
          Print("Adjusting position size to the broker's Lot Step parameter.");
       }
 
-      // ak
-      if ( j > 0) 
+      // If this is one of the additional TPs, then count its PS towards total PS that will be open for additional TPs.
+      if (j > 0) 
       {
          AccumulatedPositionSize += position_size;
       } 
-      else 
+      else // For the main TP, use the remaining part of the total PS.
       {
          position_size = PositionSize - AccumulatedPositionSize;
       }
-      
-      Print(PositionSize, "-----------", position_size);
-      
       ArrayPositionSize[j] = position_size;
    }
    
+   int LotStep_digits = CountDecimalPlaces(LotStep); // Required for proper volume normalization.
+   // Going through a cycle to execute multiple TP trades.
    for (int j = 0; j < n; j++)
    {
       double order_sl = sl;
       double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
-      double position_size = ArrayPositionSize[j];
+      double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
       
       
    	// Market execution mode - preparation.
