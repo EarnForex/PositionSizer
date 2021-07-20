@@ -434,6 +434,8 @@ void OnStart()
       }
       ArrayPositionSize[j] = position_size;
    }
+
+   bool isOrderPlacementFailing = false;  // track if any of the order-operations fail
    
    int LotStep_digits = CountDecimalPlaces(LotStep); // Required for proper volume normalization.
    // Going through a cycle to execute multiple TP trades.
@@ -467,6 +469,7 @@ void OnStart()
       {
          int error = GetLastError();
          Print("Execution failed. Error: ", IntegerToString(error), " - ", ErrorDescription(error), ".");
+         isOrderPlacementFailing = true;
       }
       else
       {
@@ -480,16 +483,25 @@ void OnStart()
    		if (!OrderSelect(ticket, SELECT_BY_TICKET))
    		{
    			Print("Failed to find the order to apply SL/TP.");
-   			return;
+   			isOrderPlacementFailing = true;
+   			break;
    		}
    		for (int i = 0; i < 10; i++)
    		{
    		   bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
-   		   if (result) break;
-   		   else Print("Error modifying the order: ", GetLastError());
+   		   if (result) 
+   		   {
+   		      break;
+   		   } 
+   		   else
+   		   {
+   		      Print("Error modifying the order: ", GetLastError());
+   		      isOrderPlacementFailing = true;
+   		   }
    		}
    	}
    }
+   if (n > 0) PlaySound(isOrderPlacementFailing ? "timeout.wav" : "ok.wav"); 
 }
 
 string FindObjectByPostfix(const string postfix, const ENUM_OBJECT object_type)

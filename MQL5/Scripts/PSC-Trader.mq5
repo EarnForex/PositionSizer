@@ -324,6 +324,8 @@ void OnStart()
 	   Print("Found existing sell volume = ", DoubleToString(existing_volume_sell, ps_decimals));
 	}
 
+   bool isOrderPlacementFailing = false;  // track if any of the order-operations fail
+
    if ((entry_type == Pending) || (entry_type == StopLimit))
    {
       // Sell
@@ -427,6 +429,7 @@ void OnStart()
          if (!Trade.OrderOpen(Symbol(), ot, position_size, entry_type == StopLimit ? el : 0, entry_type == StopLimit ? sp : el, sl, tp, 0, 0, Commentary))
          {
             Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
+            isOrderPlacementFailing = true;
          }
          else
          {
@@ -539,6 +542,7 @@ void OnStart()
          if (!Trade.PositionOpen(Symbol(), ot, position_size, el, order_sl, order_tp, Commentary))
          {
             Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
+            isOrderPlacementFailing = true;
          }
          else
          {
@@ -547,7 +551,8 @@ void OnStart()
          	if ((Trade.ResultRetcode() != 10008) && (Trade.ResultRetcode() != 10009) && (Trade.ResultRetcode() != 10010))
          	{
          	   Print("Error opening a position. Return code: ", Trade.ResultRetcodeDescription());
-         	   return;
+         	   isOrderPlacementFailing = true;
+         	   break;
          	}
          	
             Print("Initial return code: ", Trade.ResultRetcodeDescription());
@@ -571,12 +576,24 @@ void OnStart()
       						long position = HistoryDealGetInteger(deal, DEAL_POSITION_ID);
       			      	Print("Position ID: ", position);
       		
-      			      	if (!Trade.PositionModify(position, sl, tp)) Print("Error modifying position: ", GetLastError());
+      			      	if (!Trade.PositionModify(position, sl, tp)) 
+      			      	{
+      			      	   Print("Error modifying position: ", GetLastError());
+      			      	   isOrderPlacementFailing = true;
+      			      	}
       			      	else Print("SL/TP applied successfully.");
       			      }
-      			      else Print("Error selecting deal: ", GetLastError());
+      			      else
+      			      {
+      			         Print("Error selecting deal: ", GetLastError());
+      			         isOrderPlacementFailing = true;
+      			      }
         			   }
-      			   else Print("Error selecting deal history: ", GetLastError());
+      			   else
+      			   {
+      			      Print("Error selecting deal history: ", GetLastError());
+      			      isOrderPlacementFailing = true;
+      			   }
      			   }
    			   // Wait for position to open then find it using the order ID.
    			   else
@@ -588,10 +605,18 @@ void OnStart()
    			         Sleep(1000);
    			         if (PositionSelectByTicket(order)) break;
    			      }
-   			      if (!PositionSelectByTicket(order)) Print("Error selecting position: ", GetLastError());
+   			      if (!PositionSelectByTicket(order)) 
+   			      {
+   			         Print("Error selecting position: ", GetLastError());
+   			         isOrderPlacementFailing = true;
+   			      }
    			      else
    			      {
-                     if (!Trade.PositionModify(order, sl, tp)) Print("Error modifying position: ", GetLastError());
+                     if (!Trade.PositionModify(order, sl, tp)) 
+                     {
+                        Print("Error modifying position: ", GetLastError());
+                        isOrderPlacementFailing = true;
+                     }
    			      	else Print("SL/TP applied successfully.");
    			      }
    			   }
@@ -599,7 +624,8 @@ void OnStart()
          }
       }
    }
-
+   if (n > 0) PlaySound(isOrderPlacementFailing ? "timeout.wav" : "ok.wav"); 
+   
    delete Trade;
 }
 
