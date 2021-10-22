@@ -6,8 +6,8 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/"
-#property version   "2.40"
-string    Version = "2.40";
+#property version   "2.41"
+string    Version = "2.41";
 #property indicator_chart_window
 #property indicator_plots 0
 
@@ -37,6 +37,7 @@ input bool PanelOnTopOfChart = true; // PanelOnTopOfChart: Draw chart as backgro
 input bool HideAccSize = false; // HideAccSize: Hide account size?
 input bool ShowPipValue = false; // ShowPipValue: Show pip value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
+input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
 input group "Fonts"
 input color sl_label_font_color = clrLime; // SL Label  Color
 input color tp_label_font_color = clrYellow; // TP Label Font Color
@@ -98,17 +99,16 @@ input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance
 input bool ShowSpread = false; // ShowSpread: If true, shows current spread in window caption.
 input double AdditionalFunds = 0; // AdditionalFunds: Added to account balance for risk calculation.
 input double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
-input bool UseFixedSLDistance = false; // UseFixedSLDistance: SL distance in points instead of level.
-input bool UseFixedTPDistance = false; // UseFixedTPDistance: TP distance in points instead of level.
+input bool SLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
+input bool TPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
 input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
+input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
 input int ScriptTakePorfitsNumber = 1; // ScriptTakePorfitsNumber: More than 1 target for script to split trades.
 input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
 input bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
 input double QuickRisk1 = 0; // QuickRisk1: First quick risk button, in percentage points.
 input double QuickRisk2 = 0; // QuickRisk2: Second quick risk button, in percentage points.
 input string ObjectPrefix = "PSC_"; // ObjectPrefix: To prevent confusion with other indicators/EAs.
-
-QCPositionSizeCalculator ExtDialog;
 
 // Global variables:
 bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
@@ -119,6 +119,8 @@ uint LastRecalculationTime = 0;
 //+------------------------------------------------------------------+
 int OnInit()
 {
+    MathSrand(GetTickCount() + 293029); // Used by CreateInstanceId() in Dialog.mqh (standard library). Keep the second number unique across other panel indicators/EAs.
+    
     string indicator_short_name = "Position Size Calculator" + IntegerToString(ChartID());
 
     IndicatorSetString(INDICATOR_SHORTNAME, indicator_short_name);
@@ -240,6 +242,19 @@ int OnInit()
         ExtDialog.FixatePanelPosition(); // Remember the panel's new position for the INI file.
     }
 
+    if ((StartPanelMinimized) && (!ExtDialog.IsMinimized()) && (!Dont_Move_the_Panel_to_Default_Corner_X_Y)) // Minimize only if needs minimization. We check Dont_Move_the_Panel_to_Default_Corner_X_Y to make sure we didn't load an INI-file. An INI-file already contains a more preferred state for the panel.
+    {
+        // No access to the minmax button, no way to edit the chart height.
+        // Dummy variables for passing as references.
+        long lparam = 0;
+        double dparam = 0;
+        string sparam = "";
+        // Increasing the height of the panel beyond that of the chart will trigger its minimization.
+        ExtDialog.Height((int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS) + 1);
+        // Call the chart event processing function.
+        ExtDialog.ChartEvent(CHARTEVENT_CHART_CHANGE, lparam, dparam, sparam);
+    }
+
     EventSetTimer(1);
 
     if (ShowATROptions) ExtDialog.InitATR();
@@ -350,11 +365,11 @@ void OnChartEvent(const int id,
             ((id == CHARTEVENT_OBJECT_DRAG) && ((sparam == ObjectPrefix + "EntryLine") || (sparam == ObjectPrefix + "StopLossLine") || (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) || (sparam == ObjectPrefix + "StopPriceLine"))))
     {
         // Moving lines when fixed SL/TP distance is enabled. Should set a new fixed SL/TP distance.
-        if ((id == CHARTEVENT_OBJECT_DRAG) && ((UseFixedTPDistance) || (ShowATROptions)))
+        if ((id == CHARTEVENT_OBJECT_DRAG) && ((TPDistanceInPoints) || (ShowATROptions)))
         {
             if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
             else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
-            else if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1)
+            else if ((ScriptTakePorfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
             {
                 int len = StringLen(ObjectPrefix + "TakeProfitLine");
                 int i = (int)StringToInteger(StringSubstr(sparam, len));

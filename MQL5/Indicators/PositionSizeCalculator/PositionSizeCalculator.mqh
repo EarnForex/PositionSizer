@@ -67,6 +67,7 @@ public:
     virtual void     UpdateScriptTPShareEdit(int i);
     virtual void     CheckAndRestoreLines();
     virtual void     DummyObjectSelect(string dummy_name);
+    virtual bool     IsMinimized() {return m_minimized;}
 
     // Remember the panel's location to have the same location for minimized and maximized states.
     int       remember_top, remember_left;
@@ -399,7 +400,7 @@ bool QCPositionSizeCalculator::CreateObjects()
     y += element_height + v_spacing;
 
     string stoploss_label_text = "Stop-loss:         ";
-    if (UseFixedSLDistance) stoploss_label_text = "SL, points:        ";
+    if (SLDistanceInPoints) stoploss_label_text = "SL, points:        ";
 
     if (DefaultSL > 0) // Use button to quickly set SL.
     {
@@ -413,7 +414,7 @@ bool QCPositionSizeCalculator::CreateObjects()
     y += element_height + v_spacing;
 
     string takeprofit_label_text = "Take-profit:       ";
-    if (UseFixedTPDistance) takeprofit_label_text = "TP, points:        ";
+    if (TPDistanceInPoints) takeprofit_label_text = "TP, points:        ";
     if (!ButtonCreate(m_BtnTakeProfit, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_BtnTakeProfit", takeprofit_label_text, "Set TP based on SL or enable locked TP mode"))                    return false;
     if (!EditCreate(m_EdtTP, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtTP", ""))                                                                 return false;
     if (!LabelCreate(m_LblTPWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblTPWarning", ""))                                               return false;
@@ -430,7 +431,7 @@ bool QCPositionSizeCalculator::CreateObjects()
         ArrayResize(AdditionalOutputReward, ScriptTakePorfitsNumber - 1); // Double array.
         string additional_tp_label_beginning = "Take-profit ";
         string additional_tp_label_end = ":";
-        if (UseFixedTPDistance)
+        if (TPDistanceInPoints)
         {
             additional_tp_label_beginning = "TP ";
             additional_tp_label_end = ", points:";
@@ -986,7 +987,7 @@ bool QCPositionSizeCalculator::InitObjects()
 
     if ((TP_Multiplier < 0.999) || (TP_Multiplier > 1.001))
     {
-        if (!UseFixedTPDistance)
+        if (!TPDistanceInPoints)
         {
             if (!m_BtnTakeProfit.Text("Take-profit x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":")) return false;
         }
@@ -1281,7 +1282,7 @@ bool QCPositionSizeCalculator::DisplayValues()
     if (!m_BtnEntry.Text(EnumToString(sets.TradeDirection)))                                          return false;
     /* Entry Warning  */ if (!m_LblEntryWarning.Text(WarningEntry))                                                        return false;
 
-    /* Stop-Loss      */ if (!UseFixedSLDistance)
+    /* Stop-Loss      */ if (!SLDistanceInPoints)
     {
         if (!m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)))                                return false;
     }
@@ -1289,14 +1290,14 @@ bool QCPositionSizeCalculator::DisplayValues()
 
     /* SL Warning     */ if (!m_LblSLWarning.Text(WarningSL))                                                              return false;
 
-    /* Take Profit    */ if (!UseFixedTPDistance)
+    /* Take Profit    */ if (!TPDistanceInPoints)
     {
         if (!m_EdtTP.Text(DoubleToString(sets.TakeProfitLevel, _Digits)))                              return false;
     }
     else if (!m_EdtTP.Text(IntegerToString(sets.TakeProfit)))                                           return false;
     for (int i = 1; i < ScriptTakePorfitsNumber; i++)
     {
-        if (!UseFixedTPDistance)
+        if (!TPDistanceInPoints)
         {
             // Price level.
             if (!AdditionalTPEdits[i - 1].Text(DoubleToString(sets.ScriptTP[i], _Digits)))               return false;
@@ -1304,7 +1305,10 @@ bool QCPositionSizeCalculator::DisplayValues()
         else
         {
             // Points.
-            if (!AdditionalTPEdits[i - 1].Text(IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point))))               return false;
+            string tp_text = "0";
+            // If line's value was zero, then pips distance should be also zero.
+            if (sets.ScriptTP[i] != 0) tp_text = IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point));
+            if (!AdditionalTPEdits[i - 1].Text(tp_text))                                                                         return false;
         }
     }
 
@@ -1371,7 +1375,7 @@ bool QCPositionSizeCalculator::DisplayValues()
     if (ShowATROptions)
     {
         double buf[1] = {0};
-        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
         double atr = buf[0];
         m_LblATRValue.Text("ATR = " + DoubleToString(atr, _Digits));
     }
@@ -1541,7 +1545,7 @@ void QCPositionSizeCalculator::RefreshValues()
     if ((ShowATROptions) && ((sets.ATRMultiplierSL > 0) || (sets.ATRMultiplierTP > 0)))
     {
         double buf[1] = {0};
-        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
         double atr = buf[0];
         if (atr != 0) // if atr == 0, the indicator data hasn't loaded yet.
         {
@@ -1597,7 +1601,7 @@ void QCPositionSizeCalculator::RefreshValues()
 
         if (sets.EntryType == Instant)
         {
-            if (!UseFixedSLDistance)
+            if (!SLDistanceInPoints)
             {
                 if (sets.StopLossLevel < SymbolInfoDouble(Symbol(), SYMBOL_ASK)) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
                 else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
@@ -1626,7 +1630,7 @@ void QCPositionSizeCalculator::RefreshValues()
         }
 
         // Set line based on the entered SL distance.
-        if (UseFixedSLDistance)
+        if (SLDistanceInPoints)
         {
             if (sets.TradeDirection == Long) sets.StopLossLevel = sets.EntryLevel - sets.StopLoss * _Point;
             else sets.StopLossLevel = sets.EntryLevel + sets.StopLoss * _Point;
@@ -1635,7 +1639,7 @@ void QCPositionSizeCalculator::RefreshValues()
 
 
         // Set line based on the entered TP distance.
-        if (UseFixedTPDistance)
+        if (TPDistanceInPoints)
         {
             if (sets.TakeProfit > 0)
             {
@@ -1648,8 +1652,11 @@ void QCPositionSizeCalculator::RefreshValues()
             {
                 for (int i = 1; i < ScriptTakePorfitsNumber; i++)
                 {
-                    if (sets.TradeDirection == Long) sets.ScriptTP[i] = sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
-                    else sets.ScriptTP[i] = sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
+                    if (sets.ScriptTP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
+                    {
+                        if (sets.TradeDirection == Long) sets.ScriptTP[i] = sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
+                        else sets.ScriptTP[i] = sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
+                    }
                     ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
                 }
             }
@@ -2149,7 +2156,7 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             sets.ATRMultiplierTP = NormalizeDouble(sets.ATRMultiplierSL * TP_Multiplier, 2);
             m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
         }
-        if (!UseFixedTPDistance) m_EdtTP.Text(DoubleToString(tTakeProfitLevel, _Digits));
+        if (!TPDistanceInPoints) m_EdtTP.Text(DoubleToString(tTakeProfitLevel, _Digits));
         else
         {
             sets.TakeProfit = (int)MathRound(MathAbs(tTakeProfitLevel - tEntryLevel) / _Point);
@@ -2536,7 +2543,7 @@ void QCPositionSizeCalculator::OnClickBtnStopLoss()
     if (tStopLossLevel != sets.StopLossLevel)
     {
         tStopLossLevel = sets.StopLossLevel;
-        if (!UseFixedSLDistance) m_EdtSL.Text(DoubleToString(tStopLossLevel, _Digits));
+        if (!SLDistanceInPoints) m_EdtSL.Text(DoubleToString(tStopLossLevel, _Digits));
         else
         {
             sets.StopLoss = (int)MathRound(MathAbs(tStopLossLevel - tEntryLevel) / _Point);
@@ -2591,7 +2598,7 @@ void QCPositionSizeCalculator::OnClickBtnEntry()
 
         if (sets.TakeProfitLevel > 0)
         {
-            if (UseFixedTPDistance) sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
+            if (TPDistanceInPoints) sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
             else sets.TakeProfitLevel = sets.EntryLevel - old_tp_distance;
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
             for (int i = 1; i < ScriptTakePorfitsNumber; i++)
@@ -2637,7 +2644,7 @@ void QCPositionSizeCalculator::OnClickBtnEntry()
         if (sets.TakeProfitLevel > 0)
         {
 
-            if (UseFixedTPDistance) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfitLevel * _Point;
+            if (TPDistanceInPoints) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfitLevel * _Point;
             else sets.TakeProfitLevel = sets.EntryLevel + old_tp_distance;
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
             for (int i = 1; i < ScriptTakePorfitsNumber; i++)
@@ -2819,7 +2826,7 @@ void QCPositionSizeCalculator::OnEndEditEdtEntryLevel()
 
 void QCPositionSizeCalculator::OnEndEditEdtSL()
 {
-    if (!UseFixedSLDistance)
+    if (!SLDistanceInPoints)
     {
         // Check and adjust for TickSize granularity.
         if (TickSize > 0) sets.StopLossLevel = NormalizeDouble(MathRound(sets.StopLossLevel / TickSize) * TickSize, _Digits);
@@ -2851,7 +2858,7 @@ void QCPositionSizeCalculator::OnEndEditEdtSL()
         if (ShowATROptions) // Update ATR multiplier after the value was changed by the user.
         {
             double buf[1] = {0};
-            if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+            if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
             double atr = buf[0];
             if (atr != 0) sets.ATRMultiplierSL = MathAbs(sets.StopLossLevel - sets.EntryLevel) / atr;
             m_EdtATRMultiplierSL.Text(DoubleToString(sets.ATRMultiplierSL, 2));
@@ -2862,7 +2869,7 @@ void QCPositionSizeCalculator::OnEndEditEdtSL()
 
 void QCPositionSizeCalculator::OnEndEditEdtTP()
 {
-    if (!UseFixedTPDistance)
+    if (!TPDistanceInPoints)
     {
         sets.TakeProfitLevel = StringToDouble(m_EdtTP.Text());
         // Check and adjust for TickSize granularity.
@@ -2995,7 +3002,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
         if (ShowATROptions) // Update ATR multiplier after the line was moved by the user.
         {
             double buf[1] = {0};
-            if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+            if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
             double atr = buf[0];
             if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
             m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
@@ -3902,7 +3909,7 @@ void QCPositionSizeCalculator::UpdateFixedSL()
     if (ShowATROptions) // Update ATR multiplier after the line was moved by the user.
     {
         double buf[1] = {0};
-        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
         double atr = buf[0];
         if (atr != 0) sets.ATRMultiplierSL = MathAbs(sets.StopLossLevel - sets.EntryLevel) / atr;
         m_EdtATRMultiplierSL.Text(DoubleToString(sets.ATRMultiplierSL, 2));
@@ -3939,7 +3946,7 @@ void QCPositionSizeCalculator::UpdateFixedTP()
     if (ShowATROptions) // Update ATR multiplier after the line was moved by the user.
     {
         double buf[1] = {0};
-        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, 0, 1, buf);
+        if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
         double atr = buf[0];
         if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
         m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
@@ -3962,7 +3969,10 @@ void QCPositionSizeCalculator::UpdateAdditionalFixedTP(int i)
         sets.ScriptTP[i] = NormalizeDouble(MathRound(sets.ScriptTP[i] / TickSize) * TickSize, _Digits);
         ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
     }
-    AdditionalTPEdits[i - 1].Text(IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point)));
+    string tp_text = "0";
+    // If line's value was zero, then pips distance should be also zero.
+    if (sets.ScriptTP[i] != 0) tp_text = IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point));
+    AdditionalTPEdits[i - 1].Text(tp_text);
 }
 
 //+------------------------------------------------------------------+
@@ -3982,14 +3992,14 @@ void QCPositionSizeCalculator::UpdateScriptTPEdit(int i)
     sets.ScriptTP[i] = new_value;
     if (i > 0)
     {
-        if (!UseFixedTPDistance) AdditionalTPEdits[i - 1].Text(s); // TP as level.
+        if (!TPDistanceInPoints) AdditionalTPEdits[i - 1].Text(s); // TP as level.
         else AdditionalTPEdits[i - 1].Text(IntegerToString((int)MathRound(MathAbs(new_value - sets.EntryLevel) / _Point))); // TP as distance.
     }
 
     // If it was the first TP field on the Script tab, and the TP field on the Main tab was empty - fill it and show the line.
     if ((i == 0) && (sets.TakeProfitLevel == 0) && (new_value > 0))
     {
-        if (UseFixedTPDistance)
+        if (TPDistanceInPoints)
         {
             if (sets.TradeDirection == Long)
                 m_EdtTP.Text(IntegerToString((int)MathRound(MathAbs(new_value - sets.EntryLevel) / _Point)));
@@ -4017,7 +4027,7 @@ void QCPositionSizeCalculator::UpdateAdditionalTPEdit(int i)
     double new_value = StringToDouble(AdditionalTPEdits[i - 1].Text());
 
     // TP as level.
-    if (!UseFixedTPDistance)
+    if (!TPDistanceInPoints)
     {
         // Adjust for tick size granularity.
         if (TickSize > 0) new_value = NormalizeDouble(MathRound(new_value / TickSize) * TickSize, _Digits);
@@ -4039,11 +4049,11 @@ void QCPositionSizeCalculator::UpdateAdditionalTPEdit(int i)
         {
             if (sets.TradeDirection == Long)
             {
-                TP = NormalizeDouble(sets.EntryLevel - new_value * _Point, _Digits);
+                TP = NormalizeDouble(sets.EntryLevel + new_value * _Point, _Digits);
             }
             else
             {
-                TP = NormalizeDouble(sets.EntryLevel + new_value * _Point, _Digits);
+                TP = NormalizeDouble(sets.EntryLevel - new_value * _Point, _Digits);
             }
         }
         AdditionalTPEdits[i - 1].Text(DoubleToString(new_value, 0)); // Fixed granularity.
@@ -4246,6 +4256,8 @@ string OutputPipValue = "", OutputSwapsType = "Unknown", SwapsTripleDay = "?",
 int LinesSelectedStatus; // 0 - no change, 1 - flip to selected, 2 - flip to unselected.
 double ArrayPositionSize[]; // PS for each trade with multiple TPs.
 
+QCPositionSizeCalculator ExtDialog;
+
 //==================================================================================================================
 //+----------------------+
 //| Will be called once. |
@@ -4283,8 +4295,8 @@ void Initialization()
                 if (sets.StopPriceLevel == sets.EntryLevel) sets.StopPriceLevel -= _Point;
             }
         }
-        if ((UseFixedSLDistance) && (sets.StopLoss == 0)) sets.StopLoss = (int)MathRound(MathAbs((sets.EntryLevel - sets.StopLossLevel) / _Point));
-        if ((UseFixedTPDistance) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
+        if ((SLDistanceInPoints) && (sets.StopLoss == 0)) sets.StopLoss = (int)MathRound(MathAbs((sets.EntryLevel - sets.StopLossLevel) / _Point));
+        if ((TPDistanceInPoints) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
     }
     // Loaded template with TP line - delete the line.
     if ((sets.TakeProfit == 0) && (sets.TakeProfitLevel == 0) && (ObjectFind(0, ObjectPrefix + "TakeProfitLine") == 0))
@@ -4304,7 +4316,7 @@ void Initialization()
     ArrayResize(ArrayPositionSize, ScriptTakePorfitsNumber);
 
     // Using TP distance in pips but just switched from the TP given as a level on an already attached indicator.
-    if ((UseFixedTPDistance) && (sets.TakeProfit == 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.TakeProfitLevel - sets.EntryLevel) / _Point));
+    if ((TPDistanceInPoints) && (sets.TakeProfit == 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.TakeProfitLevel - sets.EntryLevel) / _Point));
     if (sets.EntryLevel - sets.StopLossLevel == 0)
     {
         Alert("Entry and Stop-Loss levels should be different and non-zero.");
@@ -4337,8 +4349,8 @@ void Initialization()
         if ((DefaultSL > 0) && (sets.StopLossLevel == 0)) sets.StopLossLevel = sets.EntryLevel + DefaultSL * _Point;
         if ((DefaultTP > 0) && (sets.TakeProfitLevel == 0)) sets.TakeProfitLevel = sets.EntryLevel - DefaultTP * _Point;
     }
-    if ((UseFixedSLDistance) && (sets.StopLoss <= 0)) sets.StopLoss = (int)MathRound(MathAbs((sets.EntryLevel - sets.StopLossLevel) / _Point));
-    if ((UseFixedTPDistance) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
+    if ((SLDistanceInPoints) && (sets.StopLoss <= 0)) sets.StopLoss = (int)MathRound(MathAbs((sets.EntryLevel - sets.StopLossLevel) / _Point));
+    if ((TPDistanceInPoints) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
 
     ExtDialog.DummyObjectSelect(); // To prevent buggy deselection of line objects after indicator parameters change.
     bool line_existed = false; // Will be used to preserve OBJPROP_SELECTED through timeframe changes and the like.
@@ -5426,8 +5438,7 @@ void CalculatePortfolioRisk()
                 }
                 if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PipsLoss * UnitCost / TickSize_local;
             }
-            else
-                // Infinite loss
+            else // Infinite loss
             {
                 PortfolioLossMoney = DBL_MAX;
             }

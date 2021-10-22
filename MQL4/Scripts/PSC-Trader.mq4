@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.13"
+#property version   "1.14"
 #property strict
 #include <stdlib.mqh>
 
@@ -407,6 +407,7 @@ void OnStart()
         if (position_size < MinLot)
         {
             Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+            ArrayPositionSize[j] = 0;
             continue;
         }
         else if (position_size > MaxLot)
@@ -435,12 +436,14 @@ void OnStart()
         ArrayPositionSize[j] = position_size;
     }
 
-    bool isOrderPlacementFailing = false;  // Track if any of the order-operations fail.
+    bool isOrderPlacementFailing = false; // Track if any of the order-operations fail.
+    bool AtLeastOneOrderExecuted = false; // Track if at least one order got executed. Required for cases when some of the multiple TP orders have volume < minimum volume and don't get executed.
 
     int LotStep_digits = CountDecimalPlaces(LotStep); // Required for proper volume normalization.
     // Going through a cycle to execute multiple TP trades.
     for (int j = 0; j < n; j++)
     {
+        if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
         double order_sl = sl;
         double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
         double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
@@ -464,6 +467,7 @@ void OnStart()
             order_tp = 0;
         }
 
+        if ((order_tp != 0) && (((order_tp <= el) && ((ot == OP_BUY) || (ot == OP_BUYLIMIT) || (ot == OP_BUYSTOP))) || ((order_tp >= el) && ((ot == OP_SELL) || (ot == OP_SELLLIMIT) || (ot == OP_SELLSTOP))))) order_tp = 0; // Do not apply TP if it is invald. SL will still be applied.
         int ticket = OrderSend(Symbol(), ot, position_size, el, MaxSlippage, order_sl, order_tp, Commentary, MagicNumber);
         if (ticket == -1)
         {
@@ -475,6 +479,7 @@ void OnStart()
         {
             if (n == 1) Print("Order executed. Ticket: ", ticket, ".");
             else Print("Order #", j, " executed. Ticket: ", ticket, ".");
+            AtLeastOneOrderExecuted = true;
         }
         if (!DoNotApplyTakeProfit) tp = ScriptTPValue[j];
         // Market execution mode - applying SL/TP.
@@ -488,6 +493,7 @@ void OnStart()
             }
             for (int i = 0; i < 10; i++)
             {
+                if ((tp != 0) && (((tp <= OrderOpenPrice()) && (ot == OP_BUY)) || ((tp >= OrderOpenPrice()) && (ot == OP_SELL)))) tp = 0; // Do not apply TP if it is invald. SL will still be applied.
                 bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
                 if (result)
                 {
@@ -501,7 +507,7 @@ void OnStart()
             }
         }
     }
-    if (n > 0) PlaySound(isOrderPlacementFailing ? "timeout.wav" : "ok.wav");
+    if (n > 0) PlaySound((isOrderPlacementFailing) || (!AtLeastOneOrderExecuted) ? "timeout.wav" : "ok.wav");
 }
 
 //+------------------------------------------------------------------+

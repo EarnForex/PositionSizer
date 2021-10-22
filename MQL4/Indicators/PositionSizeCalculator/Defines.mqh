@@ -25,7 +25,7 @@ enum ACCOUNT_BUTTON
 {
     Balance,
     Equity,
-    Balance_minus_Risk
+    Balance_minus_Risk // Balance - Risk
 };
 
 enum TABS
@@ -47,6 +47,12 @@ enum PROFIT_LOSS
 {
     Profit,
     Loss
+};
+
+enum CANDLE_NUMBER
+{
+    Current_Candle = 0, // Current candle
+    Previous_Candle = 1 // Previous candle
 };
 
 struct Settings

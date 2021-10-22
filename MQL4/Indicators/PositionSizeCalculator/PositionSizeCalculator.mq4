@@ -6,8 +6,8 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/"
-#property version   "2.40"
-string    Version = "2.40";
+#property version   "2.41"
+string    Version = "2.41";
 #property strict
 #property indicator_chart_window
 #property indicator_plots 0
@@ -22,12 +22,6 @@ string    Version = "2.40";
 
 #include "PositionSizeCalculator.mqh";
 
-// Default values for settings:
-double EntryLevel = 0;
-double StopLossLevel = 0;
-double TakeProfitLevel = 0;
-string PanelCaption = "";
-
 input group "Compactness"
 input bool ShowLineLabels = true; // ShowLineLabels: Show pip distance for TP/SL near lines?
 input bool ShowAdditionalSLLabel = false; // ShowAdditionalSLLabel: Show SL $/% label?
@@ -37,6 +31,7 @@ input bool PanelOnTopOfChart = true; // PanelOnTopOfChart: Draw chart as backgro
 input bool HideAccSize = false; // HideAccSize: Hide account size?
 input bool ShowPipValue = false; // ShowPipValue: Show pip value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
+input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
 input group "Fonts"
 input color sl_label_font_color = clrLime; // SL Label  Color
 input color tp_label_font_color = clrYellow; // TP Label Font Color
@@ -94,9 +89,10 @@ input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance
 input bool ShowSpread = false; // ShowSpread: If true, shows current spread in window caption.
 input double AdditionalFunds = 0; // AdditionalFunds: Added to account balance for risk calculation.
 input double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
-input bool UseFixedSLDistance = false; // UseFixedSLDistance: SL distance in points instead of a level.
-input bool UseFixedTPDistance = false; // UseFixedTPDistance: TP distance in points instead of a level.
+input bool SLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
+input bool TPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
 input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
+input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
 input int ScriptTakePorfitsNumber = 1; // ScriptTakePorfitsNumber: More than 1 target for script to split trades.
 input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
 input bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
@@ -115,10 +111,12 @@ uint LastRecalculationTime = 0;
 //+------------------------------------------------------------------+
 int OnInit()
 {
+    MathSrand(GetTickCount() + 293029); // Used by CreateInstanceId() in Dialog.mqh (standard library). Keep the second number unique across other panel indicators/EAs.
+
     string indicator_short_name = "Position Size Calculator" + IntegerToString(ChartID());
     Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
 
-// Prevent attachment of second panel if it is not a timeframe/parameters change.
+    // Prevent attachment of second panel if it is not a timeframe/parameters change.
     if (GlobalVariableGet("PSC-" + IntegerToString(ChartID()) + "-Flag") > 0)
     {
         GlobalVariableDel("PSC-" + IntegerToString(ChartID()) + "-Flag");
@@ -207,14 +205,14 @@ int OnInit()
 
     if (!ExtDialog.Create(0, PanelCaption, 0, DefaultPanelPositionX, DefaultPanelPositionY)) return INIT_FAILED;
 
-// Prevent problems with trading instruments containing more than one dot in their name.
-// Also, bypasses a bug in Dialog.mqh with indicator name detection.
+    // Prevent problems with trading instruments containing more than one dot in their name.
+    // Also, bypasses a bug in Dialog.mqh with indicator name detection.
     string symbol = Symbol();
     StringReplace(symbol, ".", "_dot_");
     string filename = indicator_short_name + "_" + symbol + "_Ini" + ExtDialog.IniFileExt();
     ExtDialog.IniFileNameSet(filename);
 
-// No ini file - move the panel according to the inputs.
+    // No ini file - move the panel according to the inputs.
     if (!FileIsExist(filename)) Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
 
     ExtDialog.IniFileLoad();
@@ -222,7 +220,7 @@ int OnInit()
 
     Initialization();
 
-// Brings panel on top of other objects without actual maximization of the panel.
+    // Brings panel on top of other objects without actual maximization of the panel.
     ExtDialog.HideShowMaximize();
 
     if (!Dont_Move_the_Panel_to_Default_Corner_X_Y)
@@ -253,6 +251,19 @@ int OnInit()
         ExtDialog.FixatePanelPosition(); // Remember the panel's new position for the INI file.
     }
 
+    if ((StartPanelMinimized) && (!ExtDialog.IsMinimized()) && (!Dont_Move_the_Panel_to_Default_Corner_X_Y)) // Minimize only if needs minimization. We check Dont_Move_the_Panel_to_Default_Corner_X_Y to make sure we didn't load an INI-file. An INI-file already contains a more preferred state for the panel.
+    {
+        // No access to the minmax button, no way to edit the chart height.
+        // Dummy variables for passing as references.
+        long lparam = 0;
+        double dparam = 0;
+        string sparam = "";
+        // Increasing the height of the panel beyond that of the chart will trigger its minimization.
+        ExtDialog.Height((int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS) + 1);
+        // Call the chart event processing function.
+        ExtDialog.ChartEvent(CHARTEVENT_CHART_CHANGE, lparam, dparam, sparam);
+    }
+    
     EventSetTimer(1);
 
     return INIT_SUCCEEDED;
@@ -322,14 +333,14 @@ void OnChartEvent(const int id,
                   const double &dparam,
                   const string &sparam)
 {
-// Remember the panel's location to have the same location for minimized and maximized states.
+    // Remember the panel's location to have the same location for minimized and maximized states.
     if ((id == CHARTEVENT_CUSTOM + ON_DRAG_END) && (lparam == -1))
     {
         ExtDialog.remember_top = ExtDialog.Top();
         ExtDialog.remember_left = ExtDialog.Left();
     }
 
-// Catch multiple TP fields.
+    // Catch multiple TP fields.
     if (ScriptTakePorfitsNumber > 1)
     {
         if (id == CHARTEVENT_CUSTOM + ON_END_EDIT)
@@ -355,19 +366,19 @@ void OnChartEvent(const int id,
         }
     }
 
-// Call Panel's event handler only if it is not a CHARTEVENT_CHART_CHANGE - workaround for minimization bug on chart switch.
+    // Call Panel's event handler only if it is not a CHARTEVENT_CHART_CHANGE - workaround for minimization bug on chart switch.
     if (id != CHARTEVENT_CHART_CHANGE) ExtDialog.OnEvent(id, lparam, dparam, sparam);
-
-// Recalculate on chart changes, clicks, and certain object dragging.
+    
+    // Recalculate on chart changes, clicks, and certain object dragging.
     if ((id == CHARTEVENT_CLICK) || (id == CHARTEVENT_CHART_CHANGE) ||
             ((id == CHARTEVENT_OBJECT_DRAG) && ((sparam == ObjectPrefix + "EntryLine") || (sparam == ObjectPrefix + "StopLossLine") || (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))))
     {
         // Moving lines when fixed SL/TP distance is enabled. Should set a new fixed SL/TP distance.
-        if ((id == CHARTEVENT_OBJECT_DRAG) && ((UseFixedSLDistance) || (UseFixedTPDistance) || (ShowATROptions)))
+        if ((id == CHARTEVENT_OBJECT_DRAG) && ((SLDistanceInPoints) || (TPDistanceInPoints) || (ShowATROptions)))
         {
             if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
             else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
-            else if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1)
+            else if ((ScriptTakePorfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
             {
                 int len = StringLen(ObjectPrefix + "TakeProfitLine");
                 int i = (int)StringToInteger(StringSubstr(sparam, len));

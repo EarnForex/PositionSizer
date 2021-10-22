@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2015-2021, EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/#Trading_script"
-#property version   "1.13"
+#property version   "1.14"
 #include <Trade/Trade.mqh>
 
 /*
@@ -324,7 +324,8 @@ void OnStart()
         Print("Found existing sell volume = ", DoubleToString(existing_volume_sell, ps_decimals));
     }
 
-    bool isOrderPlacementFailing = false;  // Track if any of the order-operations fail.
+    bool isOrderPlacementFailing = false; // Track if any of the order-operations fail.
+    bool AtLeastOneOrderExecuted = false; // Track if at least one order got executed. Required for cases when some of the multiple TP orders have volume < minimum volume and don't get executed.
 
     if ((entry_type == Pending) || (entry_type == StopLimit))
     {
@@ -389,6 +390,7 @@ void OnStart()
             if (position_size < MinLot)
             {
                 Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+                ArrayPositionSize[j] = 0;
                 continue;
             }
             else if (position_size > MaxLot)
@@ -420,12 +422,14 @@ void OnStart()
         // Going through a cycle to execute multiple TP trades.
         for (int j = 0; j < n; j++)
         {
+            if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
             tp = NormalizeDouble(ScriptTPValue[j], _Digits);
             double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
 
             if (DoNotApplyStopLoss) sl = 0;
             if (DoNotApplyTakeProfit) tp = 0;
 
+            if ((tp != 0) && (((tp <= el) && ((ot == ORDER_TYPE_BUY_STOP_LIMIT) || (ot == ORDER_TYPE_BUY_STOP) || (ot == ORDER_TYPE_BUY_LIMIT))) || ((tp >= el) && ((ot == ORDER_TYPE_SELL_STOP_LIMIT) || (ot == ORDER_TYPE_SELL_STOP) || (ot == ORDER_TYPE_SELL_LIMIT))))) tp = 0; // Do not apply TP if it is invald. SL will still be applied.
             if (!Trade.OrderOpen(Symbol(), ot, position_size, entry_type == StopLimit ? el : 0, entry_type == StopLimit ? sp : el, sl, tp, 0, 0, Commentary))
             {
                 Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
@@ -435,6 +439,7 @@ void OnStart()
             {
                 if (n == 1) Print("Order executed. Ticket: ", Trade.ResultOrder(), ".");
                 else Print("Order #", j, " executed. Ticket: ", Trade.ResultOrder(), ".");
+                AtLeastOneOrderExecuted = true;
             }
         }
     }
@@ -486,6 +491,7 @@ void OnStart()
             if (position_size < MinLot)
             {
                 Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+                ArrayPositionSize[j] = 0;
                 continue;
             }
             else if (position_size > MaxLot)
@@ -517,6 +523,7 @@ void OnStart()
         // Going through a cycle to execute multiple TP trades.
         for (int j = 0; j < n; j++)
         {
+            if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
             double order_sl = sl;
             double order_tp = NormalizeDouble(ScriptTPValue[j], _Digits);
             double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
@@ -539,6 +546,7 @@ void OnStart()
                 order_tp = 0;
             }
 
+            if ((order_tp != 0) && (((order_tp <= el) && (ot == ORDER_TYPE_BUY)) || ((order_tp >= el) && (ot == ORDER_TYPE_SELL)))) order_tp = 0; // Do not apply TP if it is invald. SL will still be applied.
             if (!Trade.PositionOpen(Symbol(), ot, position_size, el, order_sl, order_tp, Commentary))
             {
                 Print("Error sending order: ", Trade.ResultRetcodeDescription() + ".");
@@ -562,10 +570,12 @@ void OnStart()
 
                 ulong deal = result.deal;
                 Print("Deal ID: ", deal);
+                AtLeastOneOrderExecuted = true;
                 if (!DoNotApplyTakeProfit) tp = ScriptTPValue[j];
                 // Market execution mode - application of SL/TP.
                 if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (entry_type == Instant) && ((sl != 0) || (tp != 0)))
                 {
+                    if ((tp != 0) && (((tp <= el) && (ot == ORDER_TYPE_BUY)) || ((tp >= el) && (ot == ORDER_TYPE_SELL)))) tp = 0; // Do not apply TP if it is invald. SL will still be applied.
                     // Not all brokers return deal.
                     if (deal != 0)
                     {
@@ -624,7 +634,7 @@ void OnStart()
             }
         }
     }
-    if (n > 0) PlaySound(isOrderPlacementFailing ? "timeout.wav" : "ok.wav");
+    if (n > 0) PlaySound((isOrderPlacementFailing) || (!AtLeastOneOrderExecuted) ? "timeout.wav" : "ok.wav");
 
     delete Trade;
 }
