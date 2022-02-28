@@ -1,13 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                       PositionSizeCalculator.mq4 |
-//|                             Copyright © 2012-2021, EarnForex.com |
+//|                             Copyright © 2012-2022, EarnForex.com |
 //|                                     Based on panel by qubbit.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-indicators/Position-Size-Calculator/"
-#property version   "2.41"
-string    Version = "2.41";
+#property version   "2.42"
+string    Version = "2.42";
 #property strict
 #property indicator_chart_window
 #property indicator_plots 0
@@ -23,13 +23,13 @@ string    Version = "2.41";
 #include "PositionSizeCalculator.mqh";
 
 input group "Compactness"
-input bool ShowLineLabels = true; // ShowLineLabels: Show pip distance for TP/SL near lines?
+input bool ShowLineLabels = true; // ShowLineLabels: Show point distance for TP/SL near lines?
 input bool ShowAdditionalSLLabel = false; // ShowAdditionalSLLabel: Show SL $/% label?
 input bool ShowAdditionalTPLabel = false; // ShowAdditionalTPLabel: Show TP $/% + R/R label?
 input bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
 input bool PanelOnTopOfChart = true; // PanelOnTopOfChart: Draw chart as background?
 input bool HideAccSize = false; // HideAccSize: Hide account size?
-input bool ShowPipValue = false; // ShowPipValue: Show pip value?
+input bool ShowPointValue = false; // ShowPointValue: Show point value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
 input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
 input group "Fonts"
@@ -49,8 +49,8 @@ input uint stoploss_line_width = 1; // Stop-Loss Line Width
 input uint takeprofit_line_width = 1; // Take-Profit Line Width
 input group "Defaults"
 input TRADE_DIRECTION DefaultTradeDirection = Long; // TradeDirection: Default trade direction.
-input int DefaultSL = 0; // SL: Default stop-loss value, in broker's pips.
-input int DefaultTP = 0; // TP: Default take-profit value, in broker's pips.
+input int DefaultSL = 0; // SL: Default stop-loss value, in broker's points.
+input int DefaultTP = 0; // TP: Default take-profit value, in broker's points.
 input ENTRY_TYPE DefaultEntryType = Instant; // EntryType: Instant or Pending.
 input bool DefaultShowLines = true; // ShowLines: Show the lines by default?
 input bool DefaultLinesSelected = true; // LinesSelected: SL/TP (Entry in Pending) lines selected.
@@ -68,6 +68,7 @@ input bool DefaultIgnoreOtherSymbols = false; // IgnoreOtherSymbols: Ignore othe
 input int DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
 input int DefaultMagicNumber = 0; // MagicNumber: Default magic number for Script tab.
 input string DefaultCommentary = ""; // Commentary: Default order comment for Script tab.
+input bool DefaultScriptCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order commentary in Script tab.
 input bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Script tab.
 input int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Script tab.
 input int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Script tab.
@@ -93,7 +94,7 @@ input bool SLDistanceInPoints = false; // SLDistanceInPoints: SL distance in poi
 input bool TPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
 input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
 input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
-input int ScriptTakePorfitsNumber = 1; // ScriptTakePorfitsNumber: More than 1 target for script to split trades.
+input int ScriptTakeProfitsNumber = 1; // ScriptTakeProfitsNumber: More than 1 target for script to split trades.
 input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
 input bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
 input double QuickRisk1 = 0; // QuickRisk1: First quick risk button, in percentage points.
@@ -105,6 +106,9 @@ QCPositionSizeCalculator ExtDialog;
 // Global variables:
 bool Dont_Move_the_Panel_to_Default_Corner_X_Y;
 uint LastRecalculationTime = 0;
+bool StopLossLineIsBeingMoved = false;
+bool TakeProfitLineIsBeingMoved = false;
+bool NeedToToggleScaleOffOn = false;
 
 //+------------------------------------------------------------------+
 //| Custom indicator initialization function                         |
@@ -135,15 +139,16 @@ int OnInit()
     }
 
     IndicatorSetString(INDICATOR_SHORTNAME, indicator_short_name);
-    PanelCaption = "Position Size Calculator (ver. " + Version + ")";
+    if (!ShowSpread) PanelCaptionBase = "Position Size Calculator (ver. " + Version + ")";
+    else PanelCaptionBase = "PSC (ver. " + Version + ")"; // A shorter version for the Spread to fit.
 
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        ArrayResize(sets.ScriptTP, ScriptTakePorfitsNumber);
-        ArrayResize(sets.ScriptTPShare, ScriptTakePorfitsNumber);
+        ArrayResize(sets.ScriptTP, ScriptTakeProfitsNumber);
+        ArrayResize(sets.ScriptTPShare, ScriptTakeProfitsNumber);
         ArrayInitialize(sets.ScriptTP, 0);
-        ArrayInitialize(sets.ScriptTPShare, 100 / ScriptTakePorfitsNumber);
-        ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, ScriptTakePorfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
+        ArrayInitialize(sets.ScriptTPShare, 100 / ScriptTakeProfitsNumber);
+        ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, ScriptTakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
     }
 
     if (!ExtDialog.LoadSettingsFromDisk())
@@ -174,13 +179,14 @@ int OnInit()
         sets.CustomLeverage = DefaultCustomLeverage;
         sets.MagicNumber = DefaultMagicNumber;
         sets.ScriptCommentary = DefaultCommentary;
+        sets.ScriptCommentAutoSuffix = DefaultScriptCommentAutoSuffix;
         sets.DisableTradingWhenLinesAreHidden = DefaultDisableTradingWhenLinesAreHidden;
-        if (ScriptTakePorfitsNumber > 1)
+        if (ScriptTakeProfitsNumber > 1)
         {
-            for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 0; i < ScriptTakeProfitsNumber; i++)
             {
                 sets.ScriptTP[i] = TakeProfitLevel;
-                sets.ScriptTPShare[i] = 100 / ScriptTakePorfitsNumber;
+                sets.ScriptTPShare[i] = 100 / ScriptTakeProfitsNumber;
             }
         }
         sets.MaxSlippage = DefaultMaxSlippage;
@@ -222,6 +228,8 @@ int OnInit()
 
     // Brings panel on top of other objects without actual maximization of the panel.
     ExtDialog.HideShowMaximize();
+
+    NeedToToggleScaleOffOn = true;
 
     if (!Dont_Move_the_Panel_to_Default_Corner_X_Y)
     {
@@ -281,7 +289,7 @@ void OnDeinit(const int reason)
     ObjectDelete(0, ObjectPrefix + "TakeProfitLabel");
     ObjectDelete(0, ObjectPrefix + "TPAdditionalLabel");
     ObjectDelete(0, ObjectPrefix + "SLAdditionalLabel");
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         ObjectDelete(0, ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
         ObjectDelete(0, ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
@@ -321,6 +329,15 @@ int OnCalculate(const int rates_total,
                 const long &volume[],
                 const int &spread[])
 {
+    // Toggle price scale off and then on to return it to its original size.
+    // This can be useful when switching from symbol with a wide price scale (index, BTC, etc.) to one with a narrow scale (EUR/USD).
+    if (NeedToToggleScaleOffOn)
+    {
+        ChartSetInteger(ChartID(), CHART_SHOW_PRICE_SCALE, false);
+        ChartSetInteger(ChartID(), CHART_SHOW_PRICE_SCALE, true);
+        NeedToToggleScaleOffOn = false;
+    }
+
     ExtDialog.RefreshValues();
     return rates_total;
 }
@@ -333,6 +350,39 @@ void OnChartEvent(const int id,
                   const double &dparam,
                   const string &sparam)
 {
+    // Mouse move while left mouse button is down.
+    if ((id == CHARTEVENT_MOUSE_MOVE) && (((uint)sparam & 1) == 1))
+    {
+        if (SLDistanceInPoints)
+        {
+            double current_line_price = ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0);
+            if (current_line_price != tStopLossLevel) StopLossLineIsBeingMoved = true;
+            else StopLossLineIsBeingMoved = false;
+        }
+        if (TPDistanceInPoints)
+        {
+            TakeProfitLineIsBeingMoved = false;
+            double current_line_price = ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0);
+            if (current_line_price != tTakeProfitLevel) TakeProfitLineIsBeingMoved = true;
+            // Additional take-profits.
+            else if (ScriptTakeProfitsNumber > 1)
+            {
+                for (int i = 1; i < ScriptTakeProfitsNumber; i++)
+                {
+                    if (sets.ScriptTP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
+                    {
+                        current_line_price = ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0);
+                        if (current_line_price != sets.ScriptTP[i])
+                        {
+                            TakeProfitLineIsBeingMoved = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // Remember the panel's location to have the same location for minimized and maximized states.
     if ((id == CHARTEVENT_CUSTOM + ON_DRAG_END) && (lparam == -1))
     {
@@ -341,7 +391,7 @@ void OnChartEvent(const int id,
     }
 
     // Catch multiple TP fields.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         if (id == CHARTEVENT_CUSTOM + ON_END_EDIT)
         {
@@ -366,6 +416,14 @@ void OnChartEvent(const int id,
         }
     }
 
+    if (id == CHARTEVENT_KEYDOWN)
+    {
+        if (lparam == 9) // Tab key to shift from Long to Short and vice versa.
+        {
+            SwitchEntryDirection(); 
+        }
+    }
+
     // Call Panel's event handler only if it is not a CHARTEVENT_CHART_CHANGE - workaround for minimization bug on chart switch.
     if (id != CHARTEVENT_CHART_CHANGE) ExtDialog.OnEvent(id, lparam, dparam, sparam);
     
@@ -378,13 +436,16 @@ void OnChartEvent(const int id,
         {
             if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
             else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
-            else if ((ScriptTakePorfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
+            else if ((ScriptTakeProfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
             {
                 int len = StringLen(ObjectPrefix + "TakeProfitLine");
                 int i = (int)StringToInteger(StringSubstr(sparam, len));
                 ExtDialog.UpdateAdditionalFixedTP(i);
             }
         }
+
+        if (sparam == ObjectPrefix + "StopLossLine") StopLossLineIsBeingMoved = false; // In any case ending moving state for the stop-loss line.
+        if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) TakeProfitLineIsBeingMoved = false; // In any case ending moving state for the take-profit line.
 
         if (id != CHARTEVENT_CHART_CHANGE) ExtDialog.RefreshValues();
 

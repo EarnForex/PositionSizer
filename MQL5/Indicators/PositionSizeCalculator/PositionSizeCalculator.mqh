@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                       PositionSizeCalculator.mqh |
-//|                             Copyright © 2012-2021, EarnForex.com |
+//|                             Copyright © 2012-2022, EarnForex.com |
 //|                                     Based on panel by qubbit.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
@@ -10,9 +10,9 @@ class QCPositionSizeCalculator : public CAppDialog
 {
 private:
     CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabScript, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnMaxPS, m_BtnTPsInward, m_BtnTPsOutward, m_BtnQuickRisk1, m_BtnQuickRisk2;
-    CCheckBox        m_ChkCountPendings, m_ChkIgnoreOrders, m_ChkIgnoreOtherSymbols, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation;;
-    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtStopPrice, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPipValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtScriptCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtMaxPositionSize;
-    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPipValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblPotentialLots, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblScriptCommentary, m_LblScriptExplanation, m_LblScriptPips, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblScriptLots, m_LblMaxPositionSize, m_LblURL, m_LblScriptTP, m_LblScriptTPShare;
+    CCheckBox        m_ChkCountPendings, m_ChkIgnoreOrders, m_ChkIgnoreOtherSymbols, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkScriptCommentAutoSuffix;
+    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtStopPrice, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtScriptCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtMaxPositionSize;
+    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblPotentialLots, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblScriptCommentary, m_LblScriptExplanation, m_LblScriptPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblScriptLots, m_LblMaxPositionSize, m_LblURL, m_LblScriptTP, m_LblScriptTPShare;
 
     string           m_FileName, m_IniFileName;
     double           m_DPIScale;
@@ -134,6 +134,7 @@ private:
     void OnChangeChkDoNotApplyStopLoss();
     void OnChangeChkDoNotApplyTakeProfit();
     void OnChangeChkAskForConfirmation();
+    void OnChangeChkScriptCommentAutoSuffix();
     void OnClickBtnTabMain();
     void OnClickBtnTabRisk();
     void OnClickBtnTabMargin();
@@ -184,6 +185,7 @@ ON_EVENT(ON_CHANGE, m_ChkSubtractPendingOrders, OnChangeChkSubtractPendingOrders
 ON_EVENT(ON_CHANGE, m_ChkDoNotApplyStopLoss, OnChangeChkDoNotApplyStopLoss)
 ON_EVENT(ON_CHANGE, m_ChkDoNotApplyTakeProfit, OnChangeChkDoNotApplyTakeProfit)
 ON_EVENT(ON_CHANGE, m_ChkAskForConfirmation, OnChangeChkAskForConfirmation)
+ON_EVENT(ON_CHANGE, m_ChkScriptCommentAutoSuffix, OnChangeChkScriptCommentAutoSuffix)
 ON_EVENT(ON_CLICK, m_BtnTabMain, OnClickBtnTabMain)
 ON_EVENT(ON_CLICK, m_BtnTabRisk, OnClickBtnTabRisk)
 ON_EVENT(ON_CLICK, m_BtnTabMargin, OnClickBtnTabMargin)
@@ -420,15 +422,15 @@ bool QCPositionSizeCalculator::CreateObjects()
     if (!LabelCreate(m_LblTPWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblTPWarning", ""))                                               return false;
 
     // Multiple TP levels for the Main tab.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         // -1 because there is already one main TP level.
-        ArrayResize(AdditionalTPLabels, ScriptTakePorfitsNumber - 1);
-        ArrayResize(AdditionalTPEdits, ScriptTakePorfitsNumber - 1);
-        ArrayResize(AdditionalTPWarnings, ScriptTakePorfitsNumber - 1);
-        ArrayResize(AdditionalWarningTP, ScriptTakePorfitsNumber - 1); // String array.
-        ArrayResize(AdditionalOutputRR, ScriptTakePorfitsNumber - 1); // String array.
-        ArrayResize(AdditionalOutputReward, ScriptTakePorfitsNumber - 1); // Double array.
+        ArrayResize(AdditionalTPLabels, ScriptTakeProfitsNumber - 1);
+        ArrayResize(AdditionalTPEdits, ScriptTakeProfitsNumber - 1);
+        ArrayResize(AdditionalTPWarnings, ScriptTakeProfitsNumber - 1);
+        ArrayResize(AdditionalWarningTP, ScriptTakeProfitsNumber - 1); // String array.
+        ArrayResize(AdditionalOutputRR, ScriptTakeProfitsNumber - 1); // String array.
+        ArrayResize(AdditionalOutputReward, ScriptTakeProfitsNumber - 1); // Double array.
         string additional_tp_label_beginning = "Take-profit ";
         string additional_tp_label_end = ":";
         if (TPDistanceInPoints)
@@ -436,7 +438,7 @@ bool QCPositionSizeCalculator::CreateObjects()
             additional_tp_label_beginning = "TP ";
             additional_tp_label_end = ", points:";
         }
-        for (int i = 0; i < ScriptTakePorfitsNumber - 1; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber - 1; i++)
         {
             y += element_height + v_spacing;
             if (!LabelCreate(AdditionalTPLabels[i], first_column_start, y, first_column_start + normal_label_width, y + element_height, "AdditionalTPLabels" + IntegerToString(i + 2), additional_tp_label_beginning + IntegerToString(i + 2) + additional_tp_label_end))                                       return false;
@@ -566,14 +568,14 @@ bool QCPositionSizeCalculator::CreateObjects()
     if (ShowMaxPSButton) if (!ButtonCreate(m_BtnMaxPS, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnMaxPS", "Max PS"))                                                               return false;
     if (!EditCreate(m_EdtPosSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPosSize", ""))                                                     return false;
 
-    if (ShowPipValue)
+    if (ShowPointValue)
     {
         y += element_height + v_spacing;
 
-        if (!LabelCreate(m_LblPipValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPipValue", "Pip value:", "Point value actually"))                                return false;
-        if (!EditCreate(m_EdtPipValue, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPipValue", ""))                                                    return false;
-        m_EdtPipValue.ReadOnly(true);
-        m_EdtPipValue.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+        if (!LabelCreate(m_LblPointValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPointValue", "Point value:", ""))                                return false;
+        if (!EditCreate(m_EdtPointValue, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPointValue", ""))                                                    return false;
+        m_EdtPointValue.ReadOnly(true);
+        m_EdtPointValue.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     }
 
     y += element_height + v_spacing;
@@ -794,7 +796,8 @@ bool QCPositionSizeCalculator::CreateObjects()
     y += element_height + v_spacing;
 
     if (!LabelCreate(m_LblScriptCommentary, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblScriptCommentary", "Order commentary:"))                                        return false;
-    if (!EditCreate(m_EdtScriptCommentary, second_script_column_start, y, second_script_column_start + normal_edit_width * 2, y + element_height, "m_EdtScriptCommentary", ""))                                               return false;
+    if (!EditCreate(m_EdtScriptCommentary, second_script_column_start, y, second_script_column_start + normal_edit_width, y + element_height, "m_EdtScriptCommentary", ""))                                               return false;
+    if (!CheckBoxCreate(m_ChkScriptCommentAutoSuffix, third_script_column_start, y, third_script_column_start + narrow_label_width + h_spacing, y + element_height, "m_ChkScriptCommentAutoSuffix", "Auto-suffix"))                                               return false;
 
     y += element_height + v_spacing;
 
@@ -803,7 +806,7 @@ bool QCPositionSizeCalculator::CreateObjects()
     y += element_height + v_spacing;
 
     // Need multiple TP targets.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         if (!LabelCreate(m_LblScriptTP, multi_tp_column_start, y, multi_tp_column_start + multi_tp_label_width, y + element_height, "m_LblScriptTP", "TP"))                                        return false;
 
@@ -814,10 +817,10 @@ bool QCPositionSizeCalculator::CreateObjects()
 
         y += element_height + v_spacing;
 
-        ArrayResize(ScriptTPLabels, ScriptTakePorfitsNumber);
-        ArrayResize(ScriptTPEdits, ScriptTakePorfitsNumber);
-        ArrayResize(ScriptTPShareEdits, ScriptTakePorfitsNumber);
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        ArrayResize(ScriptTPLabels, ScriptTakeProfitsNumber);
+        ArrayResize(ScriptTPEdits, ScriptTakeProfitsNumber);
+        ArrayResize(ScriptTPShareEdits, ScriptTakeProfitsNumber);
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             if (!LabelCreate(ScriptTPLabels[i], first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblScriptTPLabel" + IntegerToString(i + 1), "Take-profit " + IntegerToString(i + 1)))                                        return false;
             if (!EditCreate(ScriptTPEdits[i], multi_tp_column_start, y, second_script_column_start + normal_edit_width, y + element_height, "m_EdtScriptTPEdit" + IntegerToString(i + 1), ""))                                              return false;
@@ -826,7 +829,7 @@ bool QCPositionSizeCalculator::CreateObjects()
         }
     }
 
-    if (!LabelCreate(m_LblScriptPips, second_script_column_start, y, second_script_column_start + normal_edit_width, y + element_height, "m_LblScriptPips", "Pips", "Points actually"))                                       return false;
+    if (!LabelCreate(m_LblScriptPoints, second_script_column_start, y, second_script_column_start + normal_edit_width, y + element_height, "m_LblScriptPoints", "Points", ""))                                       return false;
 
     y += element_height + v_spacing;
 
@@ -904,8 +907,8 @@ bool QCPositionSizeCalculator::InitObjects()
     if (!m_EdtEntryLevel.TextAlign(align))                                   return false;
     if (!m_EdtSL.TextAlign(align))                                           return false;
     if (!m_EdtTP.TextAlign(align))                                           return false;
-    if (ScriptTakePorfitsNumber > 1)
-        for (int i = 0; i < ScriptTakePorfitsNumber - 1; i++)
+    if (ScriptTakeProfitsNumber > 1)
+        for (int i = 0; i < ScriptTakeProfitsNumber - 1; i++)
             if (!AdditionalTPEdits[i].TextAlign(align))                        return false;
     if (!m_EdtStopPrice.TextAlign(align))                                    return false;
     if (!m_EdtCommissionSize.TextAlign(align))                               return false;
@@ -925,7 +928,7 @@ bool QCPositionSizeCalculator::InitObjects()
         if (!m_EdtATRMultiplierSL.TextAlign(align))                           return false;
         if (!m_EdtATRMultiplierTP.TextAlign(align))                           return false;
     }
-    if (ShowPipValue) if (!m_EdtPipValue.TextAlign(align))                   return false;
+    if (ShowPointValue) if (!m_EdtPointValue.TextAlign(align))                   return false;
     if (!m_EdtCurRiskM.TextAlign(align))                                     return false;
     if (!m_EdtCurRiskP.TextAlign(align))                                     return false;
     if (!m_EdtCurProfitM.TextAlign(align))                                   return false;
@@ -952,9 +955,9 @@ bool QCPositionSizeCalculator::InitObjects()
     if (!m_EdtSwapsYearlyShortPS.TextAlign(align))                           return false;
     if (!m_EdtMagicNumber.TextAlign(align))                                   return false;
     // Multiple TP targets.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             if (!ScriptTPEdits[i].TextAlign(align))                            return false;
             if (!ScriptTPShareEdits[i].TextAlign(align))                       return false;
@@ -1126,7 +1129,7 @@ bool QCPositionSizeCalculator::InitObjects()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         }
@@ -1137,7 +1140,7 @@ bool QCPositionSizeCalculator::InitObjects()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         }
@@ -1157,7 +1160,7 @@ void QCPositionSizeCalculator::MoveAndResize()
     switch(sets.SelectedTab)
     {
     case MainTab:
-        ref_point = m_BtnTakeProfit.Top() + col_height * (ScriptTakePorfitsNumber - 1);
+        ref_point = m_BtnTakeProfit.Top() + col_height * (ScriptTakeProfitsNumber - 1);
 
         if (sets.EntryType == StopLimit) // Stop Price label & edit should be moved to ref_point. Everything else to below them.
         {
@@ -1236,10 +1239,10 @@ void QCPositionSizeCalculator::MoveAndResize()
             m_EdtPosSize.Move(m_EdtPosSize.Left(), ref_point + 3 * col_height);
             ref_point = ref_point + 3 * col_height;
         }
-        if (ShowPipValue)
+        if (ShowPointValue)
         {
-            m_LblPipValue.Move(m_LblPipValue.Left(), ref_point + 1 * col_height);
-            m_EdtPipValue.Move(m_EdtPipValue.Left(), ref_point + 1 * col_height);
+            m_LblPointValue.Move(m_LblPointValue.Left(), ref_point + 1 * col_height);
+            m_EdtPointValue.Move(m_EdtPointValue.Left(), ref_point + 1 * col_height);
             ref_point = ref_point + 1 * col_height;
         }
         break;
@@ -1275,7 +1278,11 @@ void QCPositionSizeCalculator::MoveAndResize()
 bool QCPositionSizeCalculator::DisplayValues()
 {
     //=== Spread
-    if (ShowSpread)      if (!Caption(PanelCaption + " Spread: " + IntegerToString(SymbolInfoInteger(Symbol(), SYMBOL_SPREAD)))) return false;
+    if (ShowSpread)
+    {
+        if (!Caption(PanelCaption + " Spread: " + IntegerToString(SymbolInfoInteger(Symbol(), SYMBOL_SPREAD)))) return false;
+    }
+    else if (!Caption(PanelCaption)) return false;
 
     //=== Levels
     /* Entry Level    */ if (!m_EdtEntryLevel.Text(DoubleToString(sets.EntryLevel, _Digits)))                                  return false;
@@ -1295,7 +1302,7 @@ bool QCPositionSizeCalculator::DisplayValues()
         if (!m_EdtTP.Text(DoubleToString(sets.TakeProfitLevel, _Digits)))                              return false;
     }
     else if (!m_EdtTP.Text(IntegerToString(sets.TakeProfit)))                                           return false;
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         if (!TPDistanceInPoints)
         {
@@ -1306,14 +1313,14 @@ bool QCPositionSizeCalculator::DisplayValues()
         {
             // Points.
             string tp_text = "0";
-            // If line's value was zero, then pips distance should be also zero.
+            // If line's value was zero, then points distance should be also zero.
             if (sets.ScriptTP[i] != 0) tp_text = IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point));
             if (!AdditionalTPEdits[i - 1].Text(tp_text))                                                                         return false;
         }
     }
 
     /* TP Warning     */ if (!m_LblTPWarning.Text(WarningTP))                                                              return false;
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         AdditionalTPWarnings[i - 1].Text(AdditionalWarningTP[i - 1]);
     }
@@ -1415,10 +1422,10 @@ bool QCPositionSizeCalculator::DisplayValues()
         m_EdtPosSize.Color(m_EdtTP.Color());
         ObjectSetString(ChartID(), m_name + "m_EdtPosSize", OBJPROP_TOOLTIP, "In lots");
     }
-    /* Pip value      */ if (ShowPipValue)
+    /* Point value      */ if (ShowPointValue)
     {
-        if (StringLen(AccountCurrency) > 0) if (!m_LblPipValue.Text("Pip value, " + AccountCurrency + ":")) return false;
-        if (!m_EdtPipValue.Text(OutputPipValue))                                                        return false;
+        if (StringLen(AccountCurrency) > 0) if (!m_LblPointValue.Text("Point value, " + AccountCurrency + ":")) return false;
+        if (!m_EdtPointValue.Text(OutputPointValue))                                                        return false;
     }
 
     //=== Show/hide risk
@@ -1485,10 +1492,10 @@ bool QCPositionSizeCalculator::DisplayValues()
 
     //=== Script
     /* Multiple TP levels         */
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         sets.ScriptTP[0] = sets.TakeProfitLevel; // Always the main TP.
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             if (!ScriptTPEdits[i].Text(DoubleToString(sets.ScriptTP[i], _Digits)))               return false;
             if (!ScriptTPShareEdits[i].Text(IntegerToString(sets.ScriptTPShare[i])))             return false;
@@ -1578,7 +1585,7 @@ void QCPositionSizeCalculator::RefreshValues()
         {
             if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0, read_value)) sets.TakeProfitLevel = read_value; // Rewrite value only if line exists.
         }
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, read_value)) sets.ScriptTP[i] = read_value; // Rewrite value only if line exists.
         }
@@ -1590,9 +1597,9 @@ void QCPositionSizeCalculator::RefreshValues()
             ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
             sets.TakeProfitLevel = NormalizeDouble(MathRound(sets.TakeProfitLevel / TickSize) * TickSize, _Digits);
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
-            if (ScriptTakePorfitsNumber > 1)
+            if (ScriptTakeProfitsNumber > 1)
             {
-                for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+                for (int i = 0; i < ScriptTakeProfitsNumber; i++)
                 {
                     sets.ScriptTP[i] = NormalizeDouble(MathRound(sets.ScriptTP[i] / TickSize) * TickSize, _Digits);
                 }
@@ -1634,7 +1641,7 @@ void QCPositionSizeCalculator::RefreshValues()
         {
             if (sets.TradeDirection == Long) sets.StopLossLevel = sets.EntryLevel - sets.StopLoss * _Point;
             else sets.StopLossLevel = sets.EntryLevel + sets.StopLoss * _Point;
-            ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
+            if (!StopLossLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
         }
 
 
@@ -1645,19 +1652,19 @@ void QCPositionSizeCalculator::RefreshValues()
             {
                 if (sets.TradeDirection == Long) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfit * _Point;
                 else sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
-                ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
+                if (!TakeProfitLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
             }
             // Additional take-profits.
-            if (ScriptTakePorfitsNumber > 1)
+            if (ScriptTakeProfitsNumber > 1)
             {
-                for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+                for (int i = 1; i < ScriptTakeProfitsNumber; i++)
                 {
                     if (sets.ScriptTP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                     {
                         if (sets.TradeDirection == Long) sets.ScriptTP[i] = sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
                         else sets.ScriptTP[i] = sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point;
                     }
-                    ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
+                    if (!TakeProfitLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
                 }
             }
         }
@@ -1675,6 +1682,9 @@ void QCPositionSizeCalculator::RefreshValues()
         if (sets.TakeProfitLevel == 0) ProcessTPChange(true); // When TPLockedOnSL has been enabled via an input parameter.
         else ProcessTPChange(false);
     }
+
+    if (sets.TradeDirection == Short) PanelCaption = "\x25BC " + PanelCaptionBase;
+    else PanelCaption = "\x25B2 " + PanelCaptionBase;    
 
     RecalculatePositionSize();
     DisplayValues();
@@ -1717,9 +1727,9 @@ void QCPositionSizeCalculator::HideMain()
     m_BtnTakeProfit.Hide();
     m_EdtTP.Hide();
     m_LblTPWarning.Hide();
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = 0; i < ScriptTakePorfitsNumber - 1; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber - 1; i++)
         {
             AdditionalTPEdits[i].Hide();
             AdditionalTPLabels[i].Hide();
@@ -1771,10 +1781,10 @@ void QCPositionSizeCalculator::HideMain()
     m_LblPosSize.Hide();
     if (ShowMaxPSButton) m_BtnMaxPS.Hide();
     m_EdtPosSize.Hide();
-    if (ShowPipValue)
+    if (ShowPointValue)
     {
-        m_LblPipValue.Hide();
-        m_EdtPipValue.Hide();
+        m_LblPointValue.Hide();
+        m_EdtPointValue.Hide();
     }
 }
 
@@ -1798,9 +1808,9 @@ void QCPositionSizeCalculator::ShowMain()
         m_EdtStopPrice.Show();
         m_LblStopPriceWarning.Show();
     }
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = 0; i < ScriptTakePorfitsNumber - 1; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber - 1; i++)
         {
             AdditionalTPEdits[i].Show();
             AdditionalTPLabels[i].Show();
@@ -1852,10 +1862,10 @@ void QCPositionSizeCalculator::ShowMain()
     m_LblPosSize.Show();
     if (ShowMaxPSButton) m_BtnMaxPS.Show();
     m_EdtPosSize.Show();
-    if (ShowPipValue)
+    if (ShowPointValue)
     {
-        m_LblPipValue.Show();
-        m_EdtPipValue.Show();
+        m_LblPointValue.Show();
+        m_EdtPointValue.Show();
     }
 }
 
@@ -2017,22 +2027,23 @@ void QCPositionSizeCalculator::HideScript()
     m_EdtMagicNumber.Hide();
     m_LblScriptCommentary.Hide();
     m_EdtScriptCommentary.Hide();
+    m_ChkScriptCommentAutoSuffix.Hide();
     m_ChkDisableTradingWhenLinesAreHidden.Hide();
     // Multiple TP targets.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         m_LblScriptTP.Hide();
         m_BtnTPsInward.Hide();
         m_BtnTPsOutward.Hide();
         m_LblScriptTPShare.Hide();
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             ScriptTPLabels[i].Hide();
             ScriptTPEdits[i].Hide();
             ScriptTPShareEdits[i].Hide();
         }
     }
-    m_LblScriptPips.Hide();
+    m_LblScriptPoints.Hide();
     m_LblMaxSlippage.Hide();
     m_EdtMaxSlippage.Hide();
     m_LblMaxSpread.Hide();
@@ -2059,22 +2070,23 @@ void QCPositionSizeCalculator::ShowScript()
     m_EdtMagicNumber.Show();
     m_LblScriptCommentary.Show();
     m_EdtScriptCommentary.Show();
+    m_ChkScriptCommentAutoSuffix.Show();
     m_ChkDisableTradingWhenLinesAreHidden.Show();
     // Multiple TP targets.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         m_LblScriptTP.Show();
         m_BtnTPsInward.Show();
         m_BtnTPsOutward.Show();
         m_LblScriptTPShare.Show();
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             ScriptTPLabels[i].Show();
             ScriptTPEdits[i].Show();
             ScriptTPShareEdits[i].Show();
         }
     }
-    m_LblScriptPips.Show();
+    m_LblScriptPoints.Show();
     m_LblMaxSlippage.Show();
     m_EdtMaxSlippage.Show();
     m_LblMaxSpread.Show();
@@ -2125,9 +2137,9 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
     {
         // Calculate potential loss as SL + Commission * 2.
         // Calculate potential profit as TP - Commission * 2.
-        // TP Distance = Profit / Pip_value.
+        // TP Distance = Profit / Point_value.
         // Profit = Risk * N + Commission * 2.
-        // TP distance =  (Risk * N + Commission * 2) / Pip_value.
+        // TP distance =  (Risk * N + Commission * 2) / Point_value.
         if ((UnitCost_reward != 0) && (OutputPositionSize != 0) && (TickSize != 0))
             tp_distance = (RiskMoney * TP_Multiplier + OutputPositionSize * sets.CommissionPerLot * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
         if (tEntryLevel < tStopLossLevel) tp_distance = -tp_distance;
@@ -2138,14 +2150,14 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
 
     if (tTakeProfitLevel != sets.TakeProfitLevel)
     {
-        if ((ScriptTakePorfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
+        if ((ScriptTakeProfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
         {
-            for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 0; i < ScriptTakeProfitsNumber; i++)
             {
                 if (i == 0) sets.ScriptTP[i] = sets.TakeProfitLevel;
                 else
                 {
-                    ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakePorfitsNumber - i) / double(ScriptTakePorfitsNumber)));
+                    ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakeProfitsNumber - i) / double(ScriptTakeProfitsNumber)));
                     UpdateScriptTPEdit(i);
                 }
             }
@@ -2172,7 +2184,7 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
 
             // Create multiple TP lines.
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.ScriptTP[i]);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
@@ -2185,14 +2197,14 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         {
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
             // Move multiple TP lines.
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
             }
         }
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true);
@@ -2208,7 +2220,7 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             m_EdtReward2.Hide();
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -2240,7 +2252,7 @@ void QCPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
                 }
-                for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+                for (int i = 1; i < ScriptTakeProfitsNumber; i++)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_BACK, false);
@@ -2457,7 +2469,7 @@ void QCPositionSizeCalculator::OnClickBtnLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         if (sets.EntryType == StopLimit) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         }
@@ -2480,7 +2492,7 @@ void QCPositionSizeCalculator::OnClickBtnLines()
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
                 }
-                for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+                for (int i = 1; i < ScriptTakeProfitsNumber; i++)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
@@ -2497,7 +2509,7 @@ void QCPositionSizeCalculator::OnClickBtnLines()
         if (sets.WasSelectedStopLossLine) ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTED, true);
         if (sets.WasSelectedTakeProfitLine) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
         if (sets.WasSelectedStopPriceLine) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_SELECTED, true);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             if (sets.WasSelectedAdditionalTakeProfitLine[i - 1]) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true);
         }
@@ -2509,7 +2521,7 @@ void QCPositionSizeCalculator::OnClickBtnLines()
         sets.WasSelectedStopLossLine = ObjectGetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTED);
         sets.WasSelectedTakeProfitLine = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
         sets.WasSelectedStopPriceLine = ObjectGetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_SELECTED);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             sets.WasSelectedAdditionalTakeProfitLine[i - 1] = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED);
         }
@@ -2518,7 +2530,7 @@ void QCPositionSizeCalculator::OnClickBtnLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -2574,6 +2586,11 @@ void QCPositionSizeCalculator::OnClickBtnTakeProfit()
 
 void QCPositionSizeCalculator::OnClickBtnEntry()
 {
+    SwitchEntryDirection();
+}
+
+void SwitchEntryDirection()
+{
     // Switch trade type.
     if (sets.TradeDirection == Long)
     {
@@ -2601,7 +2618,7 @@ void QCPositionSizeCalculator::OnClickBtnEntry()
             if (TPDistanceInPoints) sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
             else sets.TakeProfitLevel = sets.EntryLevel - old_tp_distance;
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 if (sets.ScriptTP[i] == 0) continue;
                 old_tp_distance = sets.ScriptTP[i] - sets.EntryLevel;
@@ -2647,7 +2664,7 @@ void QCPositionSizeCalculator::OnClickBtnEntry()
             if (TPDistanceInPoints) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfitLevel * _Point;
             else sets.TakeProfitLevel = sets.EntryLevel + old_tp_distance;
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 if (sets.ScriptTP[i] == 0) continue;
                 old_tp_distance = sets.EntryLevel - sets.ScriptTP[i];
@@ -2667,7 +2684,7 @@ void QCPositionSizeCalculator::OnClickBtnEntry()
         }
     }
 
-    RefreshValues();
+    ExtDialog.RefreshValues();
     ChartRedraw();
 }
 
@@ -2769,9 +2786,9 @@ void QCPositionSizeCalculator::OnClickBtnMaxPS()
 void QCPositionSizeCalculator::OnClickBtnTPsInward()
 {
     if (sets.TakeProfitLevel == 0) ProcessTPChange(true); // True - for RefreshValues() call.
-    for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 0; i < ScriptTakeProfitsNumber; i++)
     {
-        ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakePorfitsNumber - i) / double(ScriptTakePorfitsNumber)));
+        ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakeProfitsNumber - i) / double(ScriptTakeProfitsNumber)));
         UpdateScriptTPEdit(i);
     }
 }
@@ -2780,7 +2797,7 @@ void QCPositionSizeCalculator::OnClickBtnTPsInward()
 void QCPositionSizeCalculator::OnClickBtnTPsOutward()
 {
     if (sets.TakeProfitLevel == 0) ProcessTPChange(true); // True - for RefreshValues() call.
-    for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 0; i < ScriptTakeProfitsNumber; i++)
     {
         ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * (i + 1)));
         UpdateScriptTPEdit(i);
@@ -2892,14 +2909,14 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
 
     if (tTakeProfitLevel != sets.TakeProfitLevel)
     {
-        if ((ScriptTakePorfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
+        if ((ScriptTakeProfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
         {
-            for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 0; i < ScriptTakeProfitsNumber; i++)
             {
                 if (i == 0) sets.ScriptTP[i] = sets.TakeProfitLevel;
                 else
                 {
-                    ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakePorfitsNumber - i) / double(ScriptTakePorfitsNumber)));
+                    ScriptTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(ScriptTakeProfitsNumber - i) / double(ScriptTakeProfitsNumber)));
                     UpdateScriptTPEdit(i);
                 }
             }
@@ -2913,7 +2930,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
             // Create multiple TP lines.
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
@@ -2926,7 +2943,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
         {
             ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
             // Move multiple TP lines.
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
             }
@@ -2934,7 +2951,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
 
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true);
@@ -2950,7 +2967,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
             m_EdtReward2.Hide();
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+            for (int i = 1; i < ScriptTakeProfitsNumber; i++)
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -2980,7 +2997,7 @@ void QCPositionSizeCalculator::OnEndEditEdtTP()
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
                 }
-                for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+                for (int i = 1; i < ScriptTakeProfitsNumber; i++)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_BACK, false);
@@ -3262,6 +3279,11 @@ void QCPositionSizeCalculator::OnChangeChkAskForConfirmation()
     sets.AskForConfirmation = m_ChkAskForConfirmation.Checked();
 }
 
+void QCPositionSizeCalculator::OnChangeChkScriptCommentAutoSuffix()
+{
+    sets.ScriptCommentAutoSuffix = m_ChkScriptCommentAutoSuffix.Checked();
+}
+
 //+-----------------------+
 //| Working with settings |
 //|+----------------------+
@@ -3326,9 +3348,9 @@ bool QCPositionSizeCalculator::SaveSettingsOnDisk()
     FileWrite(fh, "DisableTradingWhenLinesAreHidden");
     FileWrite(fh, IntegerToString(sets.DisableTradingWhenLinesAreHidden));
     // Multiple TPs in use.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = 0; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber; i++)
         {
             FileWrite(fh, "ScriptTP_" + IntegerToString(i));
             FileWrite(fh, DoubleToString(sets.ScriptTP[i], _Digits));
@@ -3373,9 +3395,9 @@ bool QCPositionSizeCalculator::SaveSettingsOnDisk()
     FileWrite(fh, "WasSelectedStopPriceLine");
     FileWrite(fh, IntegerToString(sets.WasSelectedStopPriceLine));
     // Multiple TPs in use.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = 0; i < ScriptTakePorfitsNumber - 1; i++)
+        for (int i = 0; i < ScriptTakeProfitsNumber - 1; i++)
         {
             FileWrite(fh, "WasSelectedAdditionalTakeProfitLine_" + IntegerToString(i));
             FileWrite(fh, IntegerToString(sets.WasSelectedAdditionalTakeProfitLine[i]));
@@ -3387,6 +3409,8 @@ bool QCPositionSizeCalculator::SaveSettingsOnDisk()
     FileWrite(fh, IntegerToString(sets.DoNotApplyTakeProfit));
     FileWrite(fh, "AskForConfirmation");
     FileWrite(fh, IntegerToString(sets.AskForConfirmation));
+    FileWrite(fh, "ScriptCommentAutoSuffix");
+    FileWrite(fh, IntegerToString(sets.ScriptCommentAutoSuffix));
     FileWrite(fh, "IsPanelMinimized");
     FileWrite(fh, IntegerToString(sets.IsPanelMinimized));
     FileWrite(fh, "TPLockedOnSL");
@@ -3440,6 +3464,8 @@ bool QCPositionSizeCalculator::SaveSettingsOnDisk()
         FileWrite(fh, IntegerToString(DefaultMagicNumber));
         FileWrite(fh, "Parameter_DefaultCommentary");
         FileWrite(fh, DefaultCommentary);
+        FileWrite(fh, "Parameter_DefaultAskForConfirmation");
+        FileWrite(fh, IntegerToString(DefaultScriptCommentAutoSuffix));
         FileWrite(fh, "Parameter_DefaultDisableTradingWhenLinesAreHidden");
         FileWrite(fh, IntegerToString(DefaultDisableTradingWhenLinesAreHidden));
         FileWrite(fh, "Parameter_DefaultMaxSlippage");
@@ -3471,8 +3497,8 @@ bool QCPositionSizeCalculator::SaveSettingsOnDisk()
         FileWrite(fh, "Parameter_DefaultTPLockedOnSL");
         FileWrite(fh, IntegerToString(DefaultTPLockedOnSL));
         // Not a part of sets, but needed for proper deletion of unnecessary additional TP lines.
-        FileWrite(fh, "Parameter_ScriptTakePorfitsNumber");
-        FileWrite(fh, IntegerToString(ScriptTakePorfitsNumber));
+        FileWrite(fh, "Parameter_ScriptTakeProfitsNumber");
+        FileWrite(fh, IntegerToString(ScriptTakeProfitsNumber));
     }
 
     FileClose(fh);
@@ -3549,19 +3575,21 @@ bool QCPositionSizeCalculator::LoadSettingsFromDisk()
             sets.MagicNumber = (int)StringToInteger(var_content);
         else if (var_name == "ScriptCommentary")
             sets.ScriptCommentary = var_content;
+        else if (var_name == "ScriptCommentAutoSuffix")
+            sets.ScriptCommentAutoSuffix = (bool)StringToInteger(var_content);
         else if (var_name == "DisableTradingWhenLinesAreHidden")
             sets.DisableTradingWhenLinesAreHidden = (bool)StringToInteger(var_content);
         // Multiple TPs.
-        else if ((ScriptTakePorfitsNumber > 1) && (StringSubstr(var_name, 0, 9) == "ScriptTP_"))
+        else if ((ScriptTakeProfitsNumber > 1) && (StringSubstr(var_name, 0, 9) == "ScriptTP_"))
         {
             int i = (int)StringToInteger(StringSubstr(var_name, 9)); // This TP's number.
-            if (i > ScriptTakePorfitsNumber - 1) continue; // Cannot accommodate so many.
+            if (i > ScriptTakeProfitsNumber - 1) continue; // Cannot accommodate so many.
             sets.ScriptTP[i] = StringToDouble(var_content);
         }
-        else if ((ScriptTakePorfitsNumber > 1) && (StringSubstr(var_name, 0, 14) == "ScriptTPShare_"))
+        else if ((ScriptTakeProfitsNumber > 1) && (StringSubstr(var_name, 0, 14) == "ScriptTPShare_"))
         {
             int i = (int)StringToInteger(StringSubstr(var_name, 14)); // This TP Share's number.
-            if (i > ScriptTakePorfitsNumber - 1) continue; // Cannot accommodate so many.
+            if (i > ScriptTakeProfitsNumber - 1) continue; // Cannot accommodate so many.
             sets.ScriptTPShare[i] = (int)StringToInteger(var_content);
         }
         else if (var_name == "MaxSlippage")
@@ -3601,10 +3629,10 @@ bool QCPositionSizeCalculator::LoadSettingsFromDisk()
         else if (var_name == "WasSelectedStopPriceLine")
             sets.WasSelectedStopPriceLine = (bool)StringToInteger(var_content);
         // Multiple TPs.
-        else if ((ScriptTakePorfitsNumber > 1) && (StringSubstr(var_name, 0, 36) == "WasSelectedAdditionalTakeProfitLine_"))
+        else if ((ScriptTakeProfitsNumber > 1) && (StringSubstr(var_name, 0, 36) == "WasSelectedAdditionalTakeProfitLine_"))
         {
             int i = (int)StringToInteger(StringSubstr(var_name, 36)); // This TP's number.
-            if (i > ScriptTakePorfitsNumber - 2) continue; // Cannot accommodate so many.
+            if (i > ScriptTakeProfitsNumber - 2) continue; // Cannot accommodate so many.
             sets.WasSelectedAdditionalTakeProfitLine[i] = StringToInteger(var_content);
         }
         else if (var_name == "DoNotApplyStopLoss")
@@ -3729,6 +3757,10 @@ bool QCPositionSizeCalculator::LoadSettingsFromDisk()
             {
                 if (var_content != DefaultCommentary) sets.ScriptCommentary = DefaultCommentary;
             }
+            else if (var_name == "Parameter_DefaultScriptCommentAutoSuffix")
+            {
+                if ((bool)StringToInteger(var_content) != DefaultScriptCommentAutoSuffix) sets.ScriptCommentAutoSuffix = DefaultScriptCommentAutoSuffix;
+            }
             else if (var_name == "Parameter_DefaultDisableTradingWhenLinesAreHidden")
             {
                 if ((bool)StringToInteger(var_content) != DefaultDisableTradingWhenLinesAreHidden) sets.DisableTradingWhenLinesAreHidden = DefaultDisableTradingWhenLinesAreHidden;
@@ -3791,12 +3823,12 @@ bool QCPositionSizeCalculator::LoadSettingsFromDisk()
                 if (StringToInteger(var_content) != DefaultTPLockedOnSL) sets.TPLockedOnSL = DefaultTPLockedOnSL;
             }
             // Not a part of sets, but needed for proper deletion of unnecessary additional TP lines.
-            else if (var_name == "Parameter_ScriptTakePorfitsNumber")
+            else if (var_name == "Parameter_ScriptTakeProfitsNumber")
             {
-                if (StringToInteger(var_content) > ScriptTakePorfitsNumber) // Only if new input parameter value is lower, which means fewer TP lines.
+                if (StringToInteger(var_content) > ScriptTakeProfitsNumber) // Only if new input parameter value is lower, which means fewer TP lines.
                 {
                     int old_STPN = (int)StringToInteger(var_content);
-                    for (int i = old_STPN - 1; i >= ScriptTakePorfitsNumber; i--)
+                    for (int i = old_STPN - 1; i >= ScriptTakeProfitsNumber; i--)
                         ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)); // Delete remaining additional TP lines.
                 }
             }
@@ -3889,7 +3921,7 @@ void QCPositionSizeCalculator::InitATR()
 }
 
 //+------------------------------------------------------------------+
-//| Update Fixed SL distance in pips if the line got moved.          |
+//| Update Fixed SL distance in points if the line got moved.        |
 //+------------------------------------------------------------------+
 void QCPositionSizeCalculator::UpdateFixedSL()
 {
@@ -3926,7 +3958,7 @@ void QCPositionSizeCalculator::UpdateFixedSL()
 }
 
 //+------------------------------------------------------------------+
-//| Update Fixed TP distance in pips if the line got moved.          |
+//| Update Fixed TP distance in points if the line got moved.        |
 //+------------------------------------------------------------------+
 void QCPositionSizeCalculator::UpdateFixedTP()
 {
@@ -3954,7 +3986,7 @@ void QCPositionSizeCalculator::UpdateFixedTP()
 }
 
 //+------------------------------------------------------------------+
-//| Update Additional Fixed TP distance in pips if the line got      |
+//| Update Additional Fixed TP distance in points if the line got    |
 //| moved. Used when multiple TPs are set.                           |
 //+------------------------------------------------------------------+
 void QCPositionSizeCalculator::UpdateAdditionalFixedTP(int i)
@@ -3970,7 +4002,7 @@ void QCPositionSizeCalculator::UpdateAdditionalFixedTP(int i)
         ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.ScriptTP[i]);
     }
     string tp_text = "0";
-    // If line's value was zero, then pips distance should be also zero.
+    // If line's value was zero, then points distance should be also zero.
     if (sets.ScriptTP[i] != 0) tp_text = IntegerToString((int)MathRound(MathAbs(sets.ScriptTP[i] - sets.EntryLevel) / _Point));
     AdditionalTPEdits[i - 1].Text(tp_text);
 }
@@ -4170,7 +4202,7 @@ void QCPositionSizeCalculator::CheckAndRestoreLines()
     }
 
     // Process multiple TP lines.
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
         {
@@ -4249,7 +4281,7 @@ double DisplayRisk, RiskMoney, PositionMargin, UsedMargin, FutureMargin, PreHedg
 string InputRR, OutputRR, MainOutputRR, PLM, CPR, PRM, CPRew, PPMR, PPR, PPMRew, PPRew, CPL, PPL, AdditionalOutputRR[];
 string InputReward;
 double OutputReward, AdditionalOutputReward[], MainOutputReward;
-string OutputPipValue = "", OutputSwapsType = "Unknown", SwapsTripleDay = "?",
+string OutputPointValue = "", OutputSwapsType = "Unknown", SwapsTripleDay = "?",
        OutputSwapsDailyLongLot = "?", OutputSwapsDailyShortLot = "?", OutputSwapsDailyLongPS = "?", OutputSwapsDailyShortPS = "?",
        OutputSwapsYearlyLongLot = "?", OutputSwapsYearlyShortLot = "?", OutputSwapsYearlyLongPS = "?", OutputSwapsYearlyShortPS = "?",
        OutputSwapsCurrencyDailyLot = "", OutputSwapsCurrencyDailyPS = "", OutputSwapsCurrencyYearlyLot = "", OutputSwapsCurrencyYearlyPS = "";
@@ -4304,7 +4336,7 @@ void Initialization()
         ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine");
         ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel");
         ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel");
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i));
             ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
@@ -4313,9 +4345,9 @@ void Initialization()
     }
 
     // Used to store volume for each TP level. Without additional levels, there is only main TP level.
-    ArrayResize(ArrayPositionSize, ScriptTakePorfitsNumber);
+    ArrayResize(ArrayPositionSize, ScriptTakeProfitsNumber);
 
-    // Using TP distance in pips but just switched from the TP given as a level on an already attached indicator.
+    // Using TP distance in points but just switched from the TP given as a level on an already attached indicator.
     if ((TPDistanceInPoints) && (sets.TakeProfit == 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.TakeProfitLevel - sets.EntryLevel) / _Point));
     if (sets.EntryLevel - sets.StopLossLevel == 0)
     {
@@ -4524,7 +4556,7 @@ void Initialization()
     }
 
     // Process multiple TP lines.
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
         {
@@ -4610,7 +4642,7 @@ void Initialization()
 //+------------------------------------------------------------------+
 void RecalculatePositionSize()
 {
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++) AdditionalWarningTP[i - 1] = "";
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++) AdditionalWarningTP[i - 1] = "";
 
     double Ask, Bid;
     // Update Entry to Ask/Bid if needed.
@@ -4711,7 +4743,7 @@ void RecalculatePositionSize()
         if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " (Too close!)";
     }
 
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         double add_tTakeProfitLevel;
         if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, add_tTakeProfitLevel)) return;
@@ -4781,7 +4813,7 @@ void RecalculatePositionSize()
                 {
                     label_text = FormatDouble(DoubleToString(Round(MainOutputReward / AccSize * 100, 2, RoundDown), 2)) + "% (" + FormatDouble(DoubleToString(MainOutputReward, AccountCurrencyDigits)) + " " + AccountCurrency + ") " + MainOutputRR + "R";
                     // When multiple TPs are used, append correct lot volume for each TP at the beginning of the additional TP label:
-                    if (ScriptTakePorfitsNumber > 1) label_text = FormatDouble(DoubleToString(ArrayPositionSize[0], LotStep_digits), LotStep_digits) + " Lots " + label_text;
+                    if (ScriptTakeProfitsNumber > 1) label_text = FormatDouble(DoubleToString(ArrayPositionSize[0], LotStep_digits), LotStep_digits) + " Lots " + label_text;
                 }
                 else
                 {
@@ -4793,7 +4825,7 @@ void RecalculatePositionSize()
                 else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             }
         }
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
             DrawLineLabel(ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), IntegerToString((int)MathRound((MathAbs(add_tTakeProfitLevel - tEntryLevel) / _Point))), add_tTakeProfitLevel, tp_label_font_color);
@@ -4947,9 +4979,9 @@ void CalculateRiskAndPositionSize()
     if (TickSize == 0) return;
     OutputRiskMoney = Round((StopLoss * UnitCost / TickSize + 2 * sets.CommissionPerLot) * OutputPositionSize, AccountCurrencyDigits);
 
-    if ((ShowPipValue) || ((UseCommissionToSetTPDistance) && (sets.CommissionPerLot != 0)))
+    if ((ShowPointValue) || ((UseCommissionToSetTPDistance) && (sets.CommissionPerLot != 0)))
     {
-        OutputPipValue = FormatDouble(DoubleToString(OutputPositionSize * UnitCost * (_Point / TickSize), AccountCurrencyDigits), AccountCurrencyDigits);
+        OutputPointValue = FormatDouble(DoubleToString(OutputPositionSize * UnitCost * (_Point / TickSize), AccountCurrencyDigits), AccountCurrencyDigits);
     }
 
     if (StopLoss == 0) return;
@@ -4958,9 +4990,9 @@ void CalculateRiskAndPositionSize()
     double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
     // Calculate volume for each partial trade.
     // The goal is to use normal rounded down values for additional TPs and then throw the remainder to the main TP.
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
-        for (int i = ScriptTakePorfitsNumber - 1; i >= 0; i--)
+        for (int i = ScriptTakeProfitsNumber - 1; i >= 0; i--)
         {
             double position_size = BrokerizePositionSize(OutputPositionSize * (double)sets.ScriptTPShare[i] / 100.0);
             // If this is one of the additional TPs, then count its PS towards total PS that will be open for additional TPs.
@@ -4996,7 +5028,7 @@ void CalculateRiskAndPositionSize()
         }
 
         double PS_Multiplier = 1; // Position size multiplier for multiple TPs. When single TP is used, it is equal 1.
-        if (ScriptTakePorfitsNumber > 1) PS_Multiplier = (double)sets.ScriptTPShare[0] / 100.0; // Use respective position size share.
+        if (ScriptTakeProfitsNumber > 1) PS_Multiplier = (double)sets.ScriptTPShare[0] / 100.0; // Use respective position size share.
 
         MainOutputReward = NormalizeDouble((MathAbs((tTakeProfitLevel - tEntryLevel) * UnitCost_reward / TickSize) - 2 * sets.CommissionPerLot) * ArrayPositionSize[0], AccountCurrencyDigits);
 
@@ -5022,7 +5054,7 @@ void CalculateRiskAndPositionSize()
     else MainOutputReward = 0;
 
     // Multiple TPs.
-    for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+    for (int i = 1; i < ScriptTakeProfitsNumber; i++)
     {
         double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
         if (add_tTakeProfitLevel > 0)
@@ -5062,20 +5094,20 @@ void CalculateRiskAndPositionSize()
     }
 
     double PS_Multiplier = 1; // Position size multiplier for multiple TPs. When single TP is used, it is equal 1.
-    if (ScriptTakePorfitsNumber > 1) PS_Multiplier = (double)sets.ScriptTPShare[0] / 100.0; // Use respective position size share.
+    if (ScriptTakeProfitsNumber > 1) PS_Multiplier = (double)sets.ScriptTPShare[0] / 100.0; // Use respective position size share.
     InputReward = DoubleToString(Round(RiskMoney * PS_Multiplier * MathAbs(tTakeProfitLevel - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
 
     // Panel's fields start the same as for the main TP.
     OutputReward = MainOutputReward;
     OutputRR = MainOutputRR;
     // In case of multiple TPs:
-    if (ScriptTakePorfitsNumber > 1)
+    if (ScriptTakeProfitsNumber > 1)
     {
         double TotalOutputRisk = 0;
         if (OutputPositionSize != 0) TotalOutputRisk = (OutputRiskMoney / OutputPositionSize * ArrayPositionSize[0]); // Main TP output risk money. If main TP share is zero, start with zero.
         double TotalInputRisk = (RiskMoney * (double)sets.ScriptTPShare[0] / 100.0); // Main TP input risk money.
         // Calculate cumulative weighted reward and R/R.
-        for (int i = 1; i < ScriptTakePorfitsNumber; i++)
+        for (int i = 1; i < ScriptTakeProfitsNumber; i++)
         {
             OutputReward += AdditionalOutputReward[i - 1];
             if ((AdditionalOutputRR[i - 1] == "Invalid TP") || (MainOutputRR == "Invalid TP")) OutputRR = "Invalid TP"; // At least one Invalid TP means that total RR is also invalid.
@@ -5136,8 +5168,8 @@ void CalculatePortfolioRisk()
         int total = OrdersTotal();
         for (int i = 0; i < total; i++)
         {
-            double PipsLoss = 0;
-            double PipsReward = 0;
+            double PointsLoss = 0;
+            double PointsReward = 0;
             // Select an order.
             if (!OrderSelect(OrderGetTicket(i))) continue;
 
@@ -5151,22 +5183,22 @@ void CalculatePortfolioRisk()
                 if (OrderGetDouble(ORDER_SL) == 0)
                 {
                     // Losing all the current value.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsLoss = OrderGetDouble(ORDER_PRICE_OPEN);
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsLoss = OrderGetDouble(ORDER_PRICE_OPEN);
                 }
                 else
                 {
                     // Stop-loss below open price.
-                    PipsLoss = OrderGetDouble(ORDER_PRICE_OPEN) - OrderGetDouble(ORDER_SL);
+                    PointsLoss = OrderGetDouble(ORDER_PRICE_OPEN) - OrderGetDouble(ORDER_SL);
                 }
                 // No take-profit.
                 if (OrderGetDouble(ORDER_TP) == 0)
                 {
                     // Potential reward is infinite.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsReward = DBL_MAX;
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsReward = DBL_MAX;
                 }
                 else
                 {
-                    PipsReward = OrderGetDouble(ORDER_TP) - OrderGetDouble(ORDER_PRICE_OPEN);
+                    PointsReward = OrderGetDouble(ORDER_TP) - OrderGetDouble(ORDER_PRICE_OPEN);
                 }
             }
             // Sell orders.
@@ -5176,28 +5208,28 @@ void CalculatePortfolioRisk()
                 if (OrderGetDouble(ORDER_SL) == 0)
                 {
                     // Potential loss is infinite.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsLoss = DBL_MAX;
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsLoss = DBL_MAX;
                 }
                 else
                 {
                     // Stop-loss above open price.
-                    PipsLoss = OrderGetDouble(ORDER_SL) - OrderGetDouble(ORDER_PRICE_OPEN);
+                    PointsLoss = OrderGetDouble(ORDER_SL) - OrderGetDouble(ORDER_PRICE_OPEN);
                 }
                 // No take-profit.
                 if (OrderGetDouble(ORDER_TP) == 0)
                 {
                     // Potential reward is current value.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsReward = OrderGetDouble(ORDER_PRICE_OPEN);
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsReward = OrderGetDouble(ORDER_PRICE_OPEN);
                 }
                 else
                 {
-                    PipsReward = OrderGetDouble(ORDER_PRICE_OPEN) - OrderGetDouble(ORDER_TP);
+                    PointsReward = OrderGetDouble(ORDER_PRICE_OPEN) - OrderGetDouble(ORDER_TP);
                 }
             }
 
             volume += OrderGetDouble(ORDER_VOLUME_CURRENT);
 
-            if ((PipsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
+            if ((PointsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
             {
                 string Symbol_order = OrderGetString(ORDER_SYMBOL);
                 ENUM_SYMBOL_CALC_MODE CalcMode_order = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_order, SYMBOL_TRADE_CALC_MODE);
@@ -5241,17 +5273,17 @@ void CalculatePortfolioRisk()
                         if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_ASK);
-                            future_rate = current_rate - PipsLoss;
+                            future_rate = current_rate - PointsLoss;
                         }
                         else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
-                            future_rate = current_rate + PipsLoss;
+                            future_rate = current_rate + PointsLoss;
                         }
-                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PipsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
+                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
                         else UnitCost *= (current_rate / future_rate);
                     }
-                    if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PipsLoss * UnitCost / TickSize_local;
+                    if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PointsLoss * UnitCost / TickSize_local;
                 }
             }
             else
@@ -5259,7 +5291,7 @@ void CalculatePortfolioRisk()
                 // Infinite loss.
                 PortfolioLossMoney = DBL_MAX;
             }
-            if ((PipsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
+            if ((PointsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
             {
                 string Symbol_order = OrderGetString(ORDER_SYMBOL);
                 ENUM_SYMBOL_CALC_MODE CalcMode_order = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_order, SYMBOL_TRADE_CALC_MODE);
@@ -5303,17 +5335,17 @@ void CalculatePortfolioRisk()
                         if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_ASK);
-                            future_rate = current_rate + PipsReward;
+                            future_rate = current_rate + PointsReward;
                         }
                         else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
-                            future_rate = current_rate - PipsReward;
+                            future_rate = current_rate - PointsReward;
                         }
-                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PipsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
+                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
                         else UnitCost *= (current_rate / future_rate);
                     }
-                    if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PipsReward * UnitCost / TickSize_local;
+                    if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PointsReward * UnitCost / TickSize_local;
                 }
             }
             else
@@ -5329,8 +5361,8 @@ void CalculatePortfolioRisk()
     for (int i = 0; i < total; i++)
     {
         if ((PortfolioLossMoney == DBL_MAX) && (PortfolioRewardMoney == DBL_MAX)) break;
-        double PipsLoss = 0;
-        double PipsReward = 0;
+        double PointsLoss = 0;
+        double PointsReward = 0;
         // Works with hedging and netting.
         if (PositionSelectByTicket(PositionGetTicket(i)))
         {
@@ -5344,22 +5376,22 @@ void CalculatePortfolioRisk()
                 if (PositionGetDouble(POSITION_SL) == 0)
                 {
                     // Losing all the current value.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsLoss = PositionGetDouble(POSITION_PRICE_OPEN);
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN);
                 }
                 else
                 {
                     // Stop-loss below open price.
-                    PipsLoss = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_SL);
+                    PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_SL);
                 }
                 // No take-profit.
                 if (PositionGetDouble(POSITION_TP) == 0)
                 {
                     // Potential reward is infinite.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsReward = DBL_MAX;
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsReward = DBL_MAX;
                 }
                 else
                 {
-                    PipsReward = PositionGetDouble(POSITION_TP) - PositionGetDouble(POSITION_PRICE_OPEN);
+                    PointsReward = PositionGetDouble(POSITION_TP) - PositionGetDouble(POSITION_PRICE_OPEN);
                 }
             }
             // Sell positions.
@@ -5369,28 +5401,28 @@ void CalculatePortfolioRisk()
                 if (PositionGetDouble(POSITION_SL) == 0)
                 {
                     // Potential loss is infinite.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsLoss = DBL_MAX;
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsLoss = DBL_MAX;
                 }
                 else
                 {
                     // Stop-loss above open price.
-                    PipsLoss = PositionGetDouble(POSITION_SL) - PositionGetDouble(POSITION_PRICE_OPEN);
+                    PointsLoss = PositionGetDouble(POSITION_SL) - PositionGetDouble(POSITION_PRICE_OPEN);
                 }
                 // No take-profit.
                 if (PositionGetDouble(POSITION_TP) == 0)
                 {
                     // Potential reward is current value.
-                    if (!sets.IgnoreOrdersWithoutStopLoss) PipsReward = PositionGetDouble(POSITION_PRICE_OPEN);
+                    if (!sets.IgnoreOrdersWithoutStopLoss) PointsReward = PositionGetDouble(POSITION_PRICE_OPEN);
                 }
                 else
                 {
-                    PipsReward = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_TP);
+                    PointsReward = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_TP);
                 }
             }
 
             volume += PositionGetDouble(POSITION_VOLUME);
 
-            if ((PipsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
+            if ((PointsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
             {
                 string Symbol_position = PositionGetString(POSITION_SYMBOL);
                 ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
@@ -5426,24 +5458,24 @@ void CalculatePortfolioRisk()
                     if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
                     {
                         current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
-                        future_rate = current_rate - PipsLoss;
+                        future_rate = current_rate - PointsLoss;
                     }
                     else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
                     {
                         current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
-                        future_rate = current_rate + PipsLoss;
+                        future_rate = current_rate + PointsLoss;
                     }
-                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PipsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
+                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
                     else UnitCost *= (current_rate / future_rate);
                 }
-                if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PipsLoss * UnitCost / TickSize_local;
+                if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PointsLoss * UnitCost / TickSize_local - PositionGetDouble(POSITION_SWAP);
             }
             else // Infinite loss
             {
                 PortfolioLossMoney = DBL_MAX;
             }
 
-            if ((PipsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
+            if ((PointsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
             {
                 string Symbol_position = PositionGetString(POSITION_SYMBOL);
                 ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
@@ -5479,17 +5511,17 @@ void CalculatePortfolioRisk()
                     if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
                     {
                         current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
-                        future_rate = current_rate + PipsReward;
+                        future_rate = current_rate + PointsReward;
                     }
                     else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
                     {
                         current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
-                        future_rate = current_rate - PipsReward;
+                        future_rate = current_rate - PointsReward;
                     }
-                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PipsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
+                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
                     else UnitCost *= (current_rate / future_rate);
                 }
-                if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += PositionGetDouble(POSITION_VOLUME) * PipsReward * UnitCost / TickSize_local;
+                if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += PositionGetDouble(POSITION_VOLUME) * PointsReward * UnitCost / TickSize_local + PositionGetDouble(POSITION_SWAP);
             }
             else
             {
@@ -6088,11 +6120,11 @@ void GetSwapData()
         }
 
         // Percentage per 360 days.
-        if (swap_long > 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - pip value based profit calcution.
-        else if (swap_long < 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - pip value based loss calcution.
+        if (swap_long > 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calcution.
+        else if (swap_long < 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calcution.
         else swap_long_1_lot = 0;
-        if (swap_short > 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - pip value based profit calcution.
-        else if (swap_short < 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - pip value based loss calcution.
+        if (swap_short > 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calcution.
+        else if (swap_short < 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calcution.
         else swap_short_1_lot = 0;
         // Stupid fix for strange cases when swap is given not in percentage points but in coefficient (?).
         if (MathAbs(swap_long) < 0.1)

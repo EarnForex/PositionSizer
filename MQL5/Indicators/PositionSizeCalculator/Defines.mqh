@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                      Defines.mqh |
-//|                             Copyright © 2012-2021, EarnForex.com |
+//|                             Copyright © 2012-2022, EarnForex.com |
 //|                                     Based on panel by qubbit.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
@@ -110,6 +110,7 @@ struct Settings
     bool DoNotApplyStopLoss;
     bool DoNotApplyTakeProfit;
     bool AskForConfirmation;
+    bool ScriptCommentAutoSuffix;
     bool IsPanelMinimized;
     bool TPLockedOnSL;
 } sets;
