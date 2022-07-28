@@ -437,7 +437,7 @@ void DoBreakEven()
             }
             else if (OrderType() == OP_SELL)
             {
-                double BE = NormalizeDouble(OrderOpenPrice() - sets.TrailingStopPoints * _Point, _Digits);
+                double BE = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
                 if ((Ask <= BE) && ((OrderOpenPrice() < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to breakeven if the current stop-loss is higher (or zero).
                 {
                     // Write Open price to the SL field.

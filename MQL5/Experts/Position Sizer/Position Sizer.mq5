@@ -5,8 +5,8 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
-#property version   "3.00"
-string    Version = "3.00";
+#property version   "3.01"
+string    Version = "3.01";
 
 #property description "Calculates risk-based position size for your account."
 #property description "Allows trade execution based the calculation results.\r\n"
@@ -122,12 +122,16 @@ bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
 uint LastRecalculationTime = 0;
 bool StopLossLineIsBeingMoved = false;
 bool TakeProfitLineIsBeingMoved = false;
-uchar MainKey = 0;
-bool CtrlRequired = false;
-bool ShiftRequired = false;
+uchar MainKey;
+bool CtrlRequired;
+bool ShiftRequired;
 
 int OnInit()
 {
+    CtrlRequired = false;
+    ShiftRequired = false;
+    MainKey = 0;
+
     ExtDialog = new CPositionSizeCalculator;
     
     MathSrand(GetTickCount() + 293029); // Used by CreateInstanceId() in Dialog.mqh (standard library). Keep the second number unique across other panel indicators/EAs.
@@ -323,9 +327,14 @@ int OnInit()
                 if (keys[i] == "SHIFT") ShiftRequired = true;
                 else if (keys[i] == "CTRL") CtrlRequired = true;
             }
+            StringToUpper(keys[n - 1]);
             MainKey = (uchar)StringGetCharacter(keys[n - 1], 0);
         }
-        else MainKey = (uchar)StringGetCharacter(keys[0], 0); // Just a single key.
+        else
+        {
+            StringToUpper(keys[0]);
+            MainKey = (uchar)StringGetCharacter(keys[0], 0); // Just a single key.
+        }
     }
     
     if (!EventSetTimer(1)) Print("Error setting timer: ", GetLastError());
