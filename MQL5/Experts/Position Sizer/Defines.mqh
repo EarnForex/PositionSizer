@@ -18,7 +18,7 @@ enum ENTRY_TYPE
 {
     Instant,
     Pending,
-    StopLimit
+    StopLimit // Stop Limit
 };
 
 enum ACCOUNT_BUTTON

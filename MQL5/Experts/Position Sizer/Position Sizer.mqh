@@ -16,6 +16,7 @@ private:
     string           m_FileName;
     double           m_DPIScale;
     bool             NoPanelMaximization; // A crutch variable to prevent panel maximization when Maximize() is called at the indicator's initialization.
+    bool             PosSizeEditing; // Prevent updating position size field while user is editing.
     int              ATR_handle;
     int              PanelWidth;
 
@@ -61,6 +62,7 @@ public:
     virtual void     CheckAndRestoreLines();
     virtual void     DummyObjectSelect(string dummy_name);
     virtual bool     IsMinimized() {return m_minimized;}
+    virtual void     IniFileLoad() {CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
 
     // Remember the panel's location to have the same location for minimized and maximized states.
     int       remember_top, remember_left;
@@ -106,6 +108,7 @@ private:
     void OnEndEditEdtAccount();
     void OnEndEditEdtRiskPIn();
     void OnEndEditEdtRiskMIn();
+    void OnStartEdtPosSize();
     void OnEndEditEdtPosSize();
     void OnEndEditATRPeriod();
     void OnEndEditATRMultiplierSL();
@@ -164,6 +167,7 @@ ON_EVENT(ON_END_EDIT, m_EdtCommissionSize, OnEndEditEdtCommissionSize)
 ON_EVENT(ON_END_EDIT, m_EdtAccount, OnEndEditEdtAccount)
 ON_EVENT(ON_END_EDIT, m_EdtRiskPIn, OnEndEditEdtRiskPIn)
 ON_EVENT(ON_END_EDIT, m_EdtRiskMIn, OnEndEditEdtRiskMIn)
+ON_EVENT(ON_START_EDIT, m_EdtPosSize, OnStartEdtPosSize)
 ON_EVENT(ON_END_EDIT, m_EdtPosSize, OnEndEditEdtPosSize)
 ON_EVENT(ON_END_EDIT, m_EdtATRPeriod, OnEndEditATRPeriod)
 ON_EVENT(ON_END_EDIT, m_EdtATRMultiplierSL, OnEndEditATRMultiplierSL)
@@ -1459,7 +1463,7 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Risk/Reward 2  */ if (!m_EdtRR2.Text(OutputRR))                                                                         return false;
     if (OutputRR == "Invalid TP") m_EdtRR2.Color(clrRed);
     else m_EdtRR2.Color(m_EdtTP.Color());
-    /* Position size  */ if (!m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits)))                         return false;
+    /* Position size  */ if (!PosSizeEditing) if (!m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits)))                         return false;
     if (OutputPositionSize > OutputMaxPositionSize)
     {
         m_EdtPosSize.Color(clrRed); // Calculated position size is greater than maximum position size by margin.
@@ -2287,12 +2291,15 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         {
             if (!m_minimized)
             {
-                m_LblRR.Show();
-                if (InputRR != "") m_EdtRR1.Show();
-                m_EdtRR2.Show();
-                m_LblReward.Show();
-                m_EdtReward1.Show();
-                m_EdtReward2.Show();
+                if (sets.SelectedTab == MainTab)
+                {
+                    m_LblRR.Show();
+                    if (InputRR != "") m_EdtRR1.Show();
+                    m_EdtRR2.Show();
+                    m_LblReward.Show();
+                    m_EdtReward1.Show();
+                    m_EdtReward2.Show();
+                }
             }
             if (sets.ShowLines)
             {
@@ -3168,10 +3175,14 @@ void CPositionSizeCalculator::OnEndEditEdtRiskMIn()
     }
 }
 
+void CPositionSizeCalculator::OnStartEdtPosSize()
+{
+    PosSizeEditing = true;
+}
+
 void CPositionSizeCalculator::OnEndEditEdtPosSize()
 {
     sets.RiskFromPositionSize = true;
-
     double d_val = StringToDouble(m_EdtPosSize.Text());
     if (d_val >= 0)
     {
@@ -3180,10 +3191,17 @@ void CPositionSizeCalculator::OnEndEditEdtPosSize()
             OutputPositionSize = d_val;
             sets.PositionSize = OutputPositionSize;
             CalculateRiskAndPositionSize();
+            PosSizeEditing = false;
             DisplayValues();
         }
+        else sets.RiskFromPositionSize = false;
     }
-    else m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits));
+    else
+    {
+        m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits));
+        PosSizeEditing = false;
+    }
+    
 }
 
 void CPositionSizeCalculator::OnEndEditATRPeriod()
@@ -3588,7 +3606,7 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk()
         FileWrite(fh, IntegerToString(DefaultMagicNumber));
         FileWrite(fh, "Parameter_DefaultCommentary");
         FileWrite(fh, DefaultCommentary);
-        FileWrite(fh, "Parameter_DefaultAskForConfirmation");
+        FileWrite(fh, "Parameter_DefaultCommentAutoSuffix");
         FileWrite(fh, IntegerToString(DefaultCommentAutoSuffix));
         FileWrite(fh, "Parameter_DefaultDisableTradingWhenLinesAreHidden");
         FileWrite(fh, IntegerToString(DefaultDisableTradingWhenLinesAreHidden));
@@ -3980,9 +3998,9 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultMaxNumberOfTrades")
             {
-                if (StringToInteger(var_content) != DefaultBreakEven) sets.MaxNumberOfTrades = DefaultMaxNumberOfTrades;
+                if (StringToInteger(var_content) != DefaultMaxNumberOfTrades) sets.MaxNumberOfTrades = DefaultMaxNumberOfTrades;
             }
-            else if (var_name == "Parameter_DefaultDefaultAllSymbols")
+            else if (var_name == "Parameter_DefaultAllSymbols")
             {
                 if ((bool)StringToInteger(var_content) != DefaultAllSymbols) sets.AllSymbols = DefaultAllSymbols;
             }

@@ -58,6 +58,7 @@ public:
     virtual void     CheckAndRestoreLines();
     virtual void     Minimize();
     virtual bool     IsMinimized() {return m_minimized;}
+    virtual void     IniFileLoad() {CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
 
     // Remember the panel's location to have the same location for minimized and maximized states.
     int              remember_top, remember_left;
@@ -2091,12 +2092,15 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         {
             if (!m_minimized)
             {
-                m_LblRR.Show();
-                if (InputRR != "") m_EdtRR1.Show();
-                m_EdtRR2.Show();
-                m_LblReward.Show();
-                m_EdtReward1.Show();
-                m_EdtReward2.Show();
+                if (sets.SelectedTab == MainTab)
+                {
+                    m_LblRR.Show();
+                    if (InputRR != "") m_EdtRR1.Show();
+                    m_EdtRR2.Show();
+                    m_LblReward.Show();
+                    m_EdtReward1.Show();
+                    m_EdtReward2.Show();
+                }
             }
             if (sets.ShowLines)
             {
@@ -3648,9 +3652,9 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultMaxNumberOfTrades")
             {
-                if (StringToInteger(var_content) != DefaultBreakEven) sets.MaxNumberOfTrades = DefaultMaxNumberOfTrades;
+                if (StringToInteger(var_content) != DefaultMaxNumberOfTrades) sets.MaxNumberOfTrades = DefaultMaxNumberOfTrades;
             }
-            else if (var_name == "Parameter_DefaultDefaultAllSymbols")
+            else if (var_name == "Parameter_DefaultAllSymbols")
             {
                 if ((bool)StringToInteger(var_content) != DefaultAllSymbols) sets.AllSymbols = DefaultAllSymbols;
             }

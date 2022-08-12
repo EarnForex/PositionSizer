@@ -5,8 +5,8 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
-#property version   "3.01"
-string    Version = "3.01";
+#property version   "3.02"
+string    Version = "3.02";
 
 #property description "Calculates risk-based position size for your account."
 #property description "Allows trade execution based the calculation results.\r\n"
@@ -34,10 +34,10 @@ input bool HideAccSize = false; // HideAccSize: Hide account size?
 input bool ShowPointValue = false; // ShowPointValue: Show point value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
 input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
+input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
 input group "Fonts"
-input color sl_label_font_color = clrLime; // SL Label  Color
-input color tp_label_font_color = clrYellow; // TP Label Font Color
-input color sp_label_font_color = clrPurple; // Stop Price Label  Color
+input color sl_label_font_color = clrLime; // SL Label Color
+input color tp_label_font_color = clrYellow; // TP Label Color
 input uint font_size = 13; // Labels Font Size
 input string font_face = "Courier"; // Labels Font Face
 input group "Lines"
@@ -64,6 +64,8 @@ input int DefaultATRPeriod = 14; // ATRPeriod: Default ATR period.
 input double DefaultATRMultiplierSL = 0; // ATRMultiplierSL: Default ATR multiplier for SL.
 input double DefaultATRMultiplierTP = 0; // ATRMultiplierTP: Default ATR multiplier for TP.
 input ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Default timeframe for ATR.
+input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
+input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
 input double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
 input ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
 input double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
@@ -92,10 +94,8 @@ input ENUM_BASE_CORNER DefaultPanelPositionCorner = CORNER_LEFT_UPPER; // PanelP
 input bool DefaultTPLockedOnSL = false; // TPLockedOnSL: Lock TP to (multiplied) SL distance.
 input int DefaultTrailingStop = 0; // TrailingStop: For the Trading tab.
 input int DefaultBreakEven = 0; // BreakEven: For the Trading tab.
-input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
-input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
 input int DefaultMaxNumberOfTrades = 0; // MaxNumberOfTrades: For the Trading tab. 0 - no limit.
-input int DefaultAllSymbols = true; // AllSymbols: For Trading tab, true - count trades in all symbols.
+input bool DefaultAllSymbols = true; // AllSymbols: For Trading tab, true - count trades in all symbols.
 input group "Miscellaneous"
 input double TP_Multiplier = 1; // TP Multiplier for SL value, appears in Take-profit button.
 input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
@@ -104,7 +104,6 @@ input double AdditionalFunds = 0; // AdditionalFunds: Added to account balance f
 input double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
 input bool SLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
 input bool TPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
-input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
 input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
 input int TakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
 input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
@@ -128,6 +127,7 @@ bool ShiftRequired;
 
 int OnInit()
 {
+    TickSize = -1;
     CtrlRequired = false;
     ShiftRequired = false;
     MainKey = 0;
@@ -161,11 +161,11 @@ int OnInit()
             if (prev_symbol != Symbol()) // Symbol changed.
             {
                 // Reset everything.
-                TickSize = -1;
                 OutputPointValue = ""; OutputSwapsType = "Unknown"; SwapsTripleDay = "?";
                 OutputSwapsDailyLongLot = "?"; OutputSwapsDailyShortLot = "?"; OutputSwapsDailyLongPS = "?"; OutputSwapsDailyShortPS = "?";
                 OutputSwapsYearlyLongLot = "?"; OutputSwapsYearlyShortLot = "?"; OutputSwapsYearlyLongPS = "?"; OutputSwapsYearlyShortPS = "?";
                 OutputSwapsCurrencyDailyLot = ""; OutputSwapsCurrencyDailyPS = ""; OutputSwapsCurrencyYearlyLot = ""; OutputSwapsCurrencyYearlyPS = "";
+                SwapConversionSymbol = ""; MarginConversionPair = NULL; ProfitConversionPair = NULL;
 
                 // If you don't want to store panel values for the current symbol, check the Global Variable and delete the old settings file if symbol changed.
                 if (SymbolChangeReset)
