@@ -4469,9 +4469,8 @@ double tEntryLevel, tStopLossLevel, tTakeProfitLevel, tStopPriceLevel;
 // -1 because it is checked in the initialization function.
 double TickSize = -1, ContractSize, AccStopoutLevel, TickValue, InitialMargin = 0, MaintenanceMargin = 0, MarginHedging = 0, MinLot, MaxLot, LotStep, UnitCost_reward;
 double PreCustomLeverage = -1; // For remembering the leverage that was before we applied CustomLeverage.
-string AccountCurrency, MarginCurrency, ProfitCurrency, BaseCurrency, SwapConversionSymbol = "";
-string MarginConversionPair = NULL, ProfitConversionPair = NULL;
-bool MarginConversionMode, ProfitConversionMode;
+string AccountCurrency, MarginCurrency, ProfitCurrency, BaseCurrency;
+string CurrencyPairsList[];
 
 long AccStopoutMode;
 int LotStep_digits, AccountCurrencyDigits = 2;
@@ -5459,19 +5458,11 @@ void CalculatePortfolioRisk()
                     string symbol_profit_currency = SymbolInfoString(Symbol_order, SYMBOL_CURRENCY_PROFIT);
                     if (symbol_profit_currency != AccountCurrency)
                     {
-                        double CCC;
                         ENUM_ORDER_TYPE order_type = (ENUM_ORDER_TYPE)OrderGetInteger(ORDER_TYPE);
                         ENUM_POSITION_TYPE dir = POSITION_TYPE_BUY;
                         if ((order_type == ORDER_TYPE_BUY_LIMIT) || (order_type == ORDER_TYPE_BUY_STOP) || (order_type == ORDER_TYPE_BUY_STOP_LIMIT)) dir = POSITION_TYPE_BUY;
                         else if ((order_type == ORDER_TYPE_SELL_LIMIT) || (order_type == ORDER_TYPE_SELL_STOP) || (order_type == ORDER_TYPE_SELL_STOP_LIMIT)) dir = POSITION_TYPE_SELL;
-                        if (symbol_profit_currency == ProfitCurrency) CCC = CalculateAdjustment(Loss, symbol_profit_currency, ProfitConversionPair, ProfitConversionMode); // Same as global symbol - reference pair has already been found probably.
-                        else
-                        {
-                            // Dummy variables as we haven't found the pair yet.
-                            bool mode;
-                            string pair = NULL;
-                            CCC = CalculateAdjustment(Loss, symbol_profit_currency, pair, mode); // Should find the reference pair and calculated CCC.
-                        }
+                        double CCC = CalculateAdjustment(Loss, symbol_profit_currency, AccountCurrency);
                         // Adjust the unit cost.
                         UnitCost *= CCC;
                     }
@@ -5521,19 +5512,11 @@ void CalculatePortfolioRisk()
                     string symbol_profit_currency = SymbolInfoString(Symbol_order, SYMBOL_CURRENCY_PROFIT);
                     if (symbol_profit_currency != AccountCurrency)
                     {
-                        double CCC;
                         ENUM_ORDER_TYPE order_type = (ENUM_ORDER_TYPE)OrderGetInteger(ORDER_TYPE);
                         ENUM_POSITION_TYPE dir = POSITION_TYPE_BUY;
                         if ((order_type == ORDER_TYPE_BUY_LIMIT) || (order_type == ORDER_TYPE_BUY_STOP) || (order_type == ORDER_TYPE_BUY_STOP_LIMIT)) dir = POSITION_TYPE_BUY;
                         else if ((order_type == ORDER_TYPE_SELL_LIMIT) || (order_type == ORDER_TYPE_SELL_STOP) || (order_type == ORDER_TYPE_SELL_STOP_LIMIT)) dir = POSITION_TYPE_SELL;
-                        if (symbol_profit_currency == ProfitCurrency) CCC = CalculateAdjustment(Profit, symbol_profit_currency, ProfitConversionPair, ProfitConversionMode); // Same as global symbol - reference pair has already been found probably.
-                        else
-                        {
-                            // Dummy variables as we haven't found the pair yet.
-                            bool mode;
-                            string pair = NULL;
-                            CCC = CalculateAdjustment(Profit, symbol_profit_currency, pair, mode); // Should find the reference pair and calculated CCC.
-                        }
+                        double CCC = CalculateAdjustment(Profit, symbol_profit_currency, AccountCurrency);
                         // Adjust the unit cost.
                         UnitCost *= CCC;
                     }
@@ -5652,16 +5635,8 @@ void CalculatePortfolioRisk()
                     string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
                     if (symbol_profit_currency != AccountCurrency)
                     {
-                        double CCC;
                         ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
-                        if (symbol_profit_currency == ProfitCurrency) CCC = CalculateAdjustment(Loss, symbol_profit_currency, ProfitConversionPair, ProfitConversionMode); // Same as global symbol - reference pair has already been found probably.
-                        else
-                        {
-                            // Dummy variables as we haven't found the pair yet.
-                            bool mode;
-                            string pair = NULL;
-                            CCC = CalculateAdjustment(Loss, symbol_profit_currency, pair, mode); // Should find the reference pair and calculated CCC.
-                        }
+                        double CCC = CalculateAdjustment(Loss, symbol_profit_currency, AccountCurrency);
                         // Adjust the unit cost.
                         UnitCost *= CCC;
                     }
@@ -5705,16 +5680,8 @@ void CalculatePortfolioRisk()
                     string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
                     if (symbol_profit_currency != AccountCurrency)
                     {
-                        double CCC;
                         ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
-                        if (symbol_profit_currency == ProfitCurrency) CCC = CalculateAdjustment(Profit, symbol_profit_currency, ProfitConversionPair, ProfitConversionMode); // Same as global symbol - reference pair has already been found probably.
-                        else
-                        {
-                            // Dummy variables as we haven't found the pair yet.
-                            bool mode;
-                            string pair = NULL;
-                            CCC = CalculateAdjustment(Profit, symbol_profit_currency, pair, mode); // Should find the reference pair and calculated CCC.
-                        }
+                        double CCC = CalculateAdjustment(Profit, symbol_profit_currency, AccountCurrency);
                         // Adjust the unit cost.
                         UnitCost *= CCC;
                     }
@@ -5829,7 +5796,7 @@ void CalculateMargin()
     PositionMargin = (OutputPositionSize * ContractSize * PriceCorrectionCoefficient / Leverage) * maintenance_margin_rate;
 
     // Otherwise, no need to adjust margin.
-    if (AccountCurrency != ProfitCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, ProfitCurrency, ProfitConversionPair, ProfitConversionMode);
+    if (AccountCurrency != ProfitCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency);
     PositionMargin *= CurrencyCorrectionCoefficient;
 
     // Maximum position size allowed by current margin.
@@ -5877,9 +5844,9 @@ void CalculateMargin()
             if (AccountCurrency != MarginCurrency)
             {
                 MqlTick tick;
-                SymbolInfoTick(MarginConversionPair, tick);
+                SymbolInfoTick(Symbol(), tick);
                 // This yields inaccurate margin of existing position, but it is the best we can get so far.
-                CurrencyCorrectionCoefficient_existing = GetCurrencyCorrectionCoefficient(Loss, MarginConversionMode, tick);
+                CurrencyCorrectionCoefficient_existing = (tick.bid != 0) ?  (1 / tick.bid) : -1;
             }
             ExistingPositionMargin *= CurrencyCorrectionCoefficient_existing;
 
@@ -6054,67 +6021,96 @@ void CalculateMargin()
 //| Calculates necessary adjustments for cases when GivenCurrency != AccountCurrency. |
 //| Used in two cases: profit adjustment and margin adjustment.                       |
 //+-----------------------------------------------------------------------------------+
-double CalculateAdjustment(PROFIT_LOSS calc_mode, const string GivenCurrency, string &ReferencePair, bool &ReferencePairMode)
+double CalculateAdjustment(PROFIT_LOSS calc_mode, const string CCY1, const string CCY2)
 {
-    if (ReferencePair == NULL) FindReferencePair(GivenCurrency, ReferencePair, ReferencePairMode);
-    if (ReferencePair == NULL)
+    MqlTick tick;
+    string ReferencePair = NULL;
+
+    if (CCY1 != CCY2)
     {
-        // If ReferncePair wasn't found directly, an attempt should be made for an indirect calculation - using a combination of PRC/ACC (ACC/PRC) data and the current symbol's data.
-        // This is useful for margin calculation only.
-        if (ReferencePair == NULL) FindReferencePair(ProfitCurrency, ReferencePair, ReferencePairMode);
+        // Try direct quote.
+        ReferencePair = GetSymbolByCurrencies(CCY1, CCY2);
         if (ReferencePair != NULL)
         {
-            // ReferencePair is a pair to convert account currency to symbol's profit currency.
-            MqlTick tick;
             SymbolInfoTick(ReferencePair, tick);
-            double ccc_indirect = GetCurrencyCorrectionCoefficient(Loss, ReferencePairMode, tick); // Loss because we need to convert our account currency first into reference currency and then into CFD base.
-            SymbolInfoTick(Symbol(), tick);
-            double ccc = GetCurrencyCorrectionCoefficient(Loss, true, tick); // Loss because we convert reference currency into CFD base. ref_mode = true because XXX is always the first symbol in XXXUSD-like CFD symbols.
-            ReferencePair = NULL; // Reset to recalculate everything again next time.
-            return(ccc_indirect * ccc); // Double conversion.
+            if ((tick.ask == 0) || (tick.bid == 0)) return (-1); // Data is not yet ready.
+            if (calc_mode == Profit)
+            {
+                // Using Sell price for direct quote.
+                return (tick.bid);
+            }
+            else
+            {
+                // Using Buy price for direct quote.
+                return (tick.ask);
+            }
         }
-        else // Everything has failed.
+
+        // Try reverse quote.
+        ReferencePair = GetSymbolByCurrencies(CCY2, CCY1);
+        if (ReferencePair != NULL)
         {
-            Print("Error! Cannot detect proper currency pair for adjustment calculation: ", GivenCurrency, ", ", AccountCurrency, ".");
-
-            ReferencePair = Symbol();
-            return(1);
+            SymbolInfoTick(ReferencePair, tick);
+            if ((tick.ask == 0) || (tick.bid == 0)) return (-1); // Data is not yet ready.
+            if (calc_mode == Profit)
+            {
+                // Using Buy price for reverse quote.
+                return (1 / tick.ask);
+            }
+            else
+            {
+                // Using Sell price for reverse quote.
+                return (1 / tick.bid);
+            }
         }
-    }
-    MqlTick tick;
-    SymbolInfoTick(ReferencePair, tick);
-    return(GetCurrencyCorrectionCoefficient(calc_mode, ReferencePairMode, tick));
-}
 
-//+---------------------------------------------------------------------------------+
-//| Finds a reference currency pair and mode of adjustment based on two currencies. |
-//+---------------------------------------------------------------------------------+
-void FindReferencePair(const string GivenCurrency, string &ReferencePair, bool &ReferencePairMode)
-{
-    ReferencePair = GetSymbolByCurrencies(GivenCurrency, AccountCurrency);
-    ReferencePairMode = true;
-    // Failed.
-    if (ReferencePair == NULL)
-    {
-        // Reversing currencies.
-        ReferencePair = GetSymbolByCurrencies(AccountCurrency, GivenCurrency);
-        ReferencePairMode = false;
+        // Get the cross rate through US dollar.
+        return CalculateAdjustment(calc_mode, CCY1, "USD") * CalculateAdjustment(calc_mode, "USD", CCY2);
     }
+    return (1.0);
 }
-
 //+---------------------------------------------------------------------------+
 //| Returns a currency pair with specified base currency and profit currency. |
 //+---------------------------------------------------------------------------+
 string GetSymbolByCurrencies(string base_currency, string profit_currency)
 {
-    // Cycle through all symbols.
-    for (int s = 0; s < SymbolsTotal(false); s++)
+    bool is_custom = false;
+    if (SymbolExist(base_currency + profit_currency, is_custom))
+    {
+        string symbol = base_currency + profit_currency;
+
+        // Select if necessary.
+        if (!(bool)SymbolInfoInteger(symbol, SYMBOL_SELECT)) SymbolSelect(symbol, true);
+
+        return (symbol);
+    }
+
+    int CacheSize = ArraySize(CurrencyPairsList);
+
+    // Cache all currency pairs to speed up further search.
+    if (!CacheSize)
+    {
+        // Cycle through all symbols.
+        for (int s = 0; s < SymbolsTotal(false); s++)
+        {
+            // Get symbol name by number.
+            string symbolname = SymbolName(s, false);
+
+            // Skip non-Forex pairs.
+            if ((SymbolInfoInteger(symbolname, SYMBOL_TRADE_CALC_MODE) != SYMBOL_CALC_MODE_FOREX) && (SymbolInfoInteger(symbolname, SYMBOL_TRADE_CALC_MODE) != SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)) continue;
+
+            // Add symbol to the cache.
+            ArrayResize(CurrencyPairsList, CacheSize + 1, 128);
+
+            CurrencyPairsList[CacheSize++] = symbolname;
+        }
+    }
+
+    // Cycle through all currency pairs.
+    for (int s = 0; s < CacheSize; s++)
     {
         // Get symbol name by number.
-        string symbolname = SymbolName(s, false);
-
-        // Skip non-Forex pairs.
-        if ((SymbolInfoInteger(symbolname, SYMBOL_TRADE_CALC_MODE) != SYMBOL_CALC_MODE_FOREX) && (SymbolInfoInteger(symbolname, SYMBOL_TRADE_CALC_MODE) != SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)) continue;
+        string symbolname = CurrencyPairsList[s];
 
         // Get its base currency.
         string b_cur = SymbolInfoString(symbolname, SYMBOL_CURRENCY_BASE);
@@ -6132,47 +6128,6 @@ string GetSymbolByCurrencies(string base_currency, string profit_currency)
         }
     }
     return(NULL);
-}
-
-//+------------------------------------------------------------------+
-//| Get profit correction coefficient based on profit currency,      |
-//| calculation mode (profit or loss), reference pair mode (reverse  |
-//| or direct), and current prices.                                  |
-//+------------------------------------------------------------------+
-double GetCurrencyCorrectionCoefficient(PROFIT_LOSS calc_mode, bool ReferencePairMode, MqlTick &tick)
-{
-    if ((tick.ask == 0) || (tick.bid == 0)) return(-1); // Data is not yet ready.
-    if (calc_mode == Loss)
-    {
-        // Reverse quote.
-        if (ReferencePairMode)
-        {
-            // Using Buy price for reverse quote.
-            return(tick.ask);
-        }
-        // Direct quote.
-        else
-        {
-            // Using Sell price for direct quote.
-            return(1 / tick.bid);
-        }
-    }
-    else if (calc_mode == Profit)
-    {
-        // Reverse quote.
-        if (ReferencePairMode)
-        {
-            // Using Sell price for reverse quote.
-            return(tick.bid);
-        }
-        // Direct quote.
-        else
-        {
-            // Using Buy price for direct quote.
-            return(1 / tick.ask);
-        }
-    }
-    return(-1);
 }
 
 //+------------------------------------------------------------------+
@@ -6251,54 +6206,9 @@ void GetSwapData()
             // Go through Market Watch trying to find the currency pair with both base_currency and account_currency in it.
             else
             {
-                if (SwapConversionSymbol == "") // Hasn't been found yet.
-                {
-                    // Number of symbols in Market Watch (even if they are not visible there).
-                    int symbols_total = SymbolsTotal(false);
-                    for (int i = 0; i < symbols_total; i++)
-                    {
-                        string symbol = SymbolName(i, false);
-                        if (SymbolInfoInteger(symbol, SYMBOL_TRADE_CALC_MODE) != SYMBOL_CALC_MODE_FOREX) continue;
-                        string base_currency_s = SymbolInfoString(symbol, SYMBOL_CURRENCY_BASE);
-                        string profit_currency_s = SymbolInfoString(symbol, SYMBOL_CURRENCY_PROFIT);
-                        // Found BAS/ACC currency pair.
-                        if (((base_currency_s == base_or_margin_currency) && (profit_currency_s == AccountCurrency))
-                                // Found ACC/BAS currency pair.
-                                || ((base_currency_s == AccountCurrency) && (profit_currency_s == base_or_margin_currency)))
-                        {
-                            SwapConversionSymbol = symbol;
-                            break;
-                        }
-                    }
-                }
-                if (SwapConversionSymbol != "") // Already found.
-                {
-                    string base_currency_s = SymbolInfoString(SwapConversionSymbol, SYMBOL_CURRENCY_BASE);
-                    string profit_currency_s = SymbolInfoString(SwapConversionSymbol, SYMBOL_CURRENCY_PROFIT);
-                    SymbolSelect(SwapConversionSymbol, true);
-                    // It is a BAS/ACC currency pair.
-                    if ((base_currency_s == base_or_margin_currency) && (profit_currency_s == AccountCurrency))
-                    {
-                        double bid = SymbolInfoDouble(SwapConversionSymbol, SYMBOL_BID);
-                        // Symbol not yet synced.
-                        if (!bid) break;
-                        // Symbol is synchronized and can be used for swap calculation.
-                        swap_long_1_lot = swap_long * bid;
-                        swap_short_1_lot = swap_short * bid;
-                        break;
-                    }
-                    // It is an ACC/BAS currency pair.
-                    else if ((base_currency_s == AccountCurrency) && (profit_currency_s == base_or_margin_currency))
-                    {
-                        double ask = SymbolInfoDouble(SwapConversionSymbol, SYMBOL_ASK);
-                        // Symbol not yet synced.
-                        if (!ask) break;
-                        // Symbol is synchronized and can be used for swap calculation.
-                        swap_long_1_lot = swap_long / ask;
-                        swap_short_1_lot = swap_short / ask;
-                        break;
-                    }
-                }
+                double CCC = CalculateAdjustment(Profit, base_or_margin_currency, AccountCurrency);
+                swap_long_1_lot = swap_long * CCC;
+                swap_short_1_lot = swap_short * CCC;
             }
         }
     }
@@ -6323,8 +6233,8 @@ void GetSwapData()
             symbol_cost_1_lot_profit = symbol_cost_1_lot_loss;
             if (ProfitCurrency != AccountCurrency)
             {
-                double CCC_loss = CalculateAdjustment(Loss, ProfitCurrency, ProfitConversionPair, ProfitConversionMode);
-                double CCC_profit = CalculateAdjustment(Profit, ProfitCurrency, ProfitConversionPair, ProfitConversionMode);
+                double CCC_loss = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency);
+                double CCC_profit = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency);
                 // Adjust the unit cost.
                 symbol_cost_1_lot_profit = symbol_cost_1_lot_loss * CCC_profit;
                 symbol_cost_1_lot_loss = symbol_cost_1_lot_loss * CCC_loss;
@@ -6509,10 +6419,10 @@ void CalculateUnitCost(double &UnitCost_loss, double &UnitCost_profit)
         // If profit currency is different from account currency.
         if (ProfitCurrency != AccountCurrency)
         {
-            double CCC = CalculateAdjustment(Loss, ProfitCurrency, ProfitConversionPair, ProfitConversionMode);
+            double CCC = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency);
             // Adjust the unit cost.
             UnitCost_loss *= CCC;
-            CCC = CalculateAdjustment(Profit, ProfitCurrency, ProfitConversionPair, ProfitConversionMode);
+            CCC = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency);
             UnitCost_profit *= CCC;
         }
     }
