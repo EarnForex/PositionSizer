@@ -5766,9 +5766,6 @@ void CalculateMargin()
     double PriceCorrectionCoefficient = 1;
     double Leverage = 1;
 
-    // If Initial Margin of the symbol is given, a simple formula is used.
-    if (InitialMargin > 0) ContractSize = MaintenanceMargin;
-
     if ((CalcMode == SYMBOL_CALC_MODE_FOREX) || (CalcMode == SYMBOL_CALC_MODE_CFDLEVERAGE))
     {
         Leverage = (double)AccountInfoInteger(ACCOUNT_LEVERAGE);
@@ -5782,8 +5779,11 @@ void CalculateMargin()
         Leverage = CustomLeverage;
     }
 
-    if ((CalcMode == SYMBOL_CALC_MODE_CFD) || (CalcMode == SYMBOL_CALC_MODE_CFDINDEX) ||
-            (CalcMode == SYMBOL_CALC_MODE_EXCH_STOCKS) || (CalcMode == SYMBOL_CALC_MODE_CFDLEVERAGE) || (CalcMode == SYMBOL_CALC_MODE_FOREX))
+    // If Initial Margin of the symbol is given, a simple formula is used.
+    if (InitialMargin > 0) ContractSize = MaintenanceMargin;
+
+    else if ((CalcMode == SYMBOL_CALC_MODE_CFD) || (CalcMode == SYMBOL_CALC_MODE_CFDINDEX) ||
+            (CalcMode == SYMBOL_CALC_MODE_EXCH_STOCKS) || (CalcMode == SYMBOL_CALC_MODE_CFDLEVERAGE))
     {
         MqlTick tick;
         SymbolInfoTick(Symbol(), tick);
@@ -5796,7 +5796,7 @@ void CalculateMargin()
     PositionMargin = (OutputPositionSize * ContractSize * PriceCorrectionCoefficient / Leverage) * maintenance_margin_rate;
 
     // Otherwise, no need to adjust margin.
-    if (AccountCurrency != ProfitCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency);
+    if (AccountCurrency != MarginCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, MarginCurrency, AccountCurrency);
     PositionMargin *= CurrencyCorrectionCoefficient;
 
     // Maximum position size allowed by current margin.
