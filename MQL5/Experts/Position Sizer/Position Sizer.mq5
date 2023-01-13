@@ -165,7 +165,6 @@ int OnInit()
                 OutputSwapsDailyLongLot = "?"; OutputSwapsDailyShortLot = "?"; OutputSwapsDailyLongPS = "?"; OutputSwapsDailyShortPS = "?";
                 OutputSwapsYearlyLongLot = "?"; OutputSwapsYearlyShortLot = "?"; OutputSwapsYearlyLongPS = "?"; OutputSwapsYearlyShortPS = "?";
                 OutputSwapsCurrencyDailyLot = ""; OutputSwapsCurrencyDailyPS = ""; OutputSwapsCurrencyYearlyLot = ""; OutputSwapsCurrencyYearlyPS = "";
-                SwapConversionSymbol = ""; MarginConversionPair = NULL; ProfitConversionPair = NULL;
 
                 // If you don't want to store panel values for the current symbol, check the Global Variable and delete the old settings file if symbol changed.
                 if (SymbolChangeReset)
