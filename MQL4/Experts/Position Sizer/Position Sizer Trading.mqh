@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                       Position Sizer Trading.mqh |
-//|                                  Copyright © 2022, EarnForex.com |
+//|                                  Copyright © 2023, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <stdlib.mqh>
@@ -10,7 +10,7 @@
 //+------------------------------------------------------------------+
 void Trade()
 {
-    string Commentary = "PS EA";
+    string Commentary = "";
 
     if (!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED))
     {
@@ -32,10 +32,10 @@ void Trade()
 
     double TP[], TPShare[]; // Mimics sets.TP[] and sets.TPShare[], but always includes the main TP too.
 
-    ArrayResize(TP, TakeProfitsNumber);
-    ArrayResize(TPShare, TakeProfitsNumber);
+    ArrayResize(TP, sets.TakeProfitsNumber);
+    ArrayResize(TPShare, sets.TakeProfitsNumber);
 
-    if (TakeProfitsNumber > 1)
+    if (sets.TakeProfitsNumber > 1)
     {
         Print("Multiple TP volume share sum = ", TotalVolumeShare, ".");
         if ((TotalVolumeShare < 99) || (TotalVolumeShare > 100))
@@ -43,7 +43,7 @@ void Trade()
             Alert("Incorrect volume sum for multiple TPs - not taking any trades.");
             return;
         }
-        for (int i = 0; i < TakeProfitsNumber; i++)
+        for (int i = 0; i < sets.TakeProfitsNumber; i++)
         {
             TP[i] = sets.TP[i];
             TPShare[i] = sets.TPShare[i];
@@ -107,7 +107,7 @@ void Trade()
             if (!OrderSelect(i, SELECT_BY_POS)) continue;
             if ((sets.MagicNumber != 0) && (OrderMagicNumber() != sets.MagicNumber)) continue;
             if ((!sets.AllSymbols) && (OrderSymbol() != Symbol())) continue;
-            if ((OrderType() == OP_BUY) || (OrderType() == OP_SELL)) cnt++;
+            cnt++;
         }
         if (cnt >= sets.MaxNumberOfTrades)
         {
@@ -115,9 +115,32 @@ void Trade()
             return;
         }
     }
-
+    
+    if (sets.MaxTotalRisk > 0)
+    {
+        CalculatePortfolioRisk(true);
+        double risk;
+        if (PortfolioLossMoney != DBL_MAX)
+        {
+            risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+            if (risk > sets.MaxTotalRisk)
+            {
+                Alert("Not taking a trade - total potential risk (", DoubleToString(risk, 2), ") >= maximum risk (", DoubleToString(sets.MaxTotalRisk, 2), ").");
+                return;
+            }
+        }
+        else
+        {
+            Alert("Not taking a trade - infinite total potential risk.");
+            return;
+        }
+    }
+    
     ENUM_SYMBOL_TRADE_EXECUTION Execution_Mode = (ENUM_SYMBOL_TRADE_EXECUTION)SymbolInfoInteger(Symbol(), SYMBOL_TRADE_EXEMODE);
-    Print("Execution mode: ", EnumToString(Execution_Mode));
+    string warning_suffix = "";
+    if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (IgnoreMarketExecutionMode) && (sets.EntryType == Instant)) warning_suffix = ", but IgnoreMarketExecutionMode = true. Switch to false if trades aren't executing.";
+    Print("Execution mode: ", EnumToString(Execution_Mode), warning_suffix);
+    
 
     ENUM_ORDER_TYPE ot;
     if (sets.EntryType == Pending)
@@ -168,10 +191,19 @@ void Trade()
 
     if (sets.MaxPositionSize > 0)
     {
-        if (PositionSize > sets.MaxPositionSize)
+        int total = OrdersTotal();
+        double volume = 0;
+        for (int i = 0; i < total; i++)
         {
-            Print("Position size (", DoubleToString(sets.PositionSize, LotStep_digits), ") > maximum position size (", DoubleToString(sets.MaxPositionSize, LotStep_digits), "). Setting position size to ", DoubleToString(sets.MaxPositionSize, LotStep_digits), ".");
-            PositionSize = sets.MaxPositionSize;
+            if (!OrderSelect(i, SELECT_BY_POS)) continue;
+            if ((sets.MagicNumber != 0) && (OrderMagicNumber() != sets.MagicNumber)) continue;
+            if ((!sets.AllSymbols) && (OrderSymbol() != Symbol())) continue;
+            volume += OrderLots();
+        }
+        if (volume + PositionSize > sets.MaxPositionSize)
+        {
+            Alert("Not taking a trade - current total volume (", DoubleToString(volume, LotStep_digits), ") + new position volume (", DoubleToString(PositionSize, LotStep_digits), ") >= maximum total volume (", sets.MaxPositionSize, ").");
+            return;
         }
     }
 
@@ -208,7 +240,7 @@ void Trade()
 
         message = "Order: " + order_type_text + "\n";
         message += "Size: " + DoubleToString(PositionSize, LotStep_digits);
-        if (TakeProfitsNumber > 1) message += " (multiple)";
+        if (sets.TakeProfitsNumber > 1) message += " (multiple)";
         message += "\n";
         message += EnumToString(sets.AccountButton);
         message += ": " + FormatDouble(DoubleToString(AccSize, 2)) + " " + account_currency + "\n";
@@ -217,7 +249,7 @@ void Trade()
         message += "Entry: " + DoubleToString(sets.EntryLevel, _Digits) + "\n";
         if (!sets.DoNotApplyStopLoss) message += "Stop-loss: " + DoubleToString(sets.StopLossLevel, _Digits) + "\n";
         if ((sets.TakeProfitLevel > 0) && (!sets.DoNotApplyTakeProfit)) message += "Take-profit: " + DoubleToString(sets.TakeProfitLevel, _Digits);
-        if (TakeProfitsNumber > 1) message += " (multiple)";
+        if (sets.TakeProfitsNumber > 1) message += " (multiple)";
         message += "\n";
 
         int ret = MessageBox(message, caption, MB_OKCANCEL | MB_ICONWARNING);
@@ -228,51 +260,34 @@ void Trade()
         }
     }
 
-    double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
-
-    // Cycle to calculate volume for each partial trade.
-    // The goal is to use normal rounded down values for additional TPs and then throw the remainder to the main TP.
-    for (int j = TakeProfitsNumber - 1; j >= 0; j--)
+    // Use ArrayPositionSize that has already been calculated in CalculateRiskAndPositionSize().
+    // Check if they are OK.
+    for (int j = sets.TakeProfitsNumber - 1; j >= 0; j--)
     {
-        double position_size = PositionSize * TPShare[j] / 100.0;
-
-        if (position_size < MinLot)
+        if (ArrayPositionSize[j] < MinLot)
         {
-            Print("Position size ", position_size, " < broker's minimum position size. Not executing the trade.");
+            Print("Position size ", ArrayPositionSize[j], " < broker's minimum position size. Not executing the trade.");
             ArrayPositionSize[j] = 0;
             continue;
         }
-        else if (position_size > MaxLot)
+        else if ((ArrayPositionSize[j] > MaxLot) && (!SurpassBrokerMaxPositionSize))
         {
-            Print("Position size ", position_size, " > broker's maximum position size. Reducing it.");
-            position_size = MaxLot;
+            Print("Position size ", ArrayPositionSize[j], " > broker's maximum position size. Reducing it.");
+            ArrayPositionSize[j] = MaxLot;
         }
-        double steps = 0;
-        if (LotStep != 0) steps = position_size / LotStep;
-        if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
-        if (MathFloor(steps) < steps)
-        {
-            position_size = MathFloor(steps) * LotStep;
-            Print("Adjusting position size to the broker's Lot Step parameter.");
-        }
-
-        // If this is one of the additional TPs, then count its PS towards total PS that will be open for additional TPs.
-        if (j > 0)
-        {
-            AccumulatedPositionSize += position_size;
-        }
-        else // For the main TP, use the remaining part of the total PS.
-        {
-            position_size = PositionSize - AccumulatedPositionSize;
-        }
-        ArrayPositionSize[j] = position_size;
     }
 
     bool isOrderPlacementFailing = false; // Track if any of the order-operations fail.
     bool AtLeastOneOrderExecuted = false; // Track if at least one order got executed. Required for cases when some of the multiple TP orders have volume < minimum volume and don't get executed.
 
+    // Will be used if MarketModeApplySLTPAfterAllTradesExecuted == true. 
+    int array_of_tickets[];
+    double array_of_sl[], array_of_tp[];
+    ENUM_ORDER_TYPE array_of_ot[];
+    int array_cnt = 0;
+    
     // Going through a cycle to execute multiple TP trades.
-    for (int j = 0; j < TakeProfitsNumber; j++)
+    for (int j = 0; j < sets.TakeProfitsNumber; j++)
     {
         if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
         double order_sl = sets.StopLossLevel;
@@ -282,7 +297,7 @@ void Trade()
         double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
 
         // Market execution mode - preparation.
-        if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (sets.EntryType == Instant))
+        if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (sets.EntryType == Instant) && (!IgnoreMarketExecutionMode))
         {
             // No SL/TP allowed on instant orders.
             order_sl = 0;
@@ -300,46 +315,97 @@ void Trade()
         }
 
         if ((order_tp != 0) && (((order_tp <= sets.EntryLevel) && ((ot == OP_BUY) || (ot == OP_BUYLIMIT) || (ot == OP_BUYSTOP))) || ((order_tp >= sets.EntryLevel) && ((ot == OP_SELL) || (ot == OP_SELLLIMIT) || (ot == OP_SELLSTOP))))) order_tp = 0; // Do not apply TP if it is invald. SL will still be applied.
-        int ticket = OrderSend(Symbol(), ot, position_size, sets.EntryLevel, sets.MaxSlippage, order_sl, order_tp, Commentary, sets.MagicNumber);
-        if (ticket == -1)
+
+        // Cycle for splitting up trade/subtrade into more subtrades starts here.
+        while (position_size > 0)
         {
-            int error = GetLastError();
-            Print("Execution failed. Error: ", IntegerToString(error), " - ", ErrorDescription(error), ".");
-            isOrderPlacementFailing = true;
-        }
-        else
-        {
-            if (TakeProfitsNumber == 1) Print("Order executed. Ticket: ", ticket, ".");
-            else Print("Order #", j, " executed. Ticket: ", ticket, ".");
-            AtLeastOneOrderExecuted = true;
-        }
-        if (!sets.DoNotApplyTakeProfit) tp = TP[j];
-        // Market execution mode - applying SL/TP.
-        if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (sets.EntryType == Instant) && (ticket != -1) && ((sl != 0) || (tp != 0)))
-        {
-            if (!OrderSelect(ticket, SELECT_BY_TICKET))
+            double sub_position_size;
+            if (position_size > MaxLot)
             {
-                Print("Failed to find the order to apply SL/TP.");
-                isOrderPlacementFailing = true;
-                break;
+                sub_position_size = MaxLot;
+                position_size = NormalizeDouble(position_size - MaxLot, LotStep_digits);
             }
-            for (int i = 0; i < 10; i++)
+            else
             {
-                if ((tp != 0) && (((tp <= OrderOpenPrice()) && (ot == OP_BUY)) || ((tp >= OrderOpenPrice()) && (ot == OP_SELL)))) tp = 0; // Do not apply TP if it is invald. SL will still be applied.
-                bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
-                if (result)
+                sub_position_size = position_size;
+                position_size = 0; // End the cycle;
+            }
+            int ticket = OrderSend(Symbol(), ot, sub_position_size, sets.EntryLevel, sets.MaxSlippage, order_sl, order_tp, Commentary, sets.MagicNumber);
+            if (ticket == -1)
+            {
+                int error = GetLastError();
+                Print("Execution failed. Error: ", IntegerToString(error), " - ", ErrorDescription(error), ".");
+                isOrderPlacementFailing = true;
+            }
+            else
+            {
+                if (sets.TakeProfitsNumber == 1) Print("Order executed. Ticket: ", ticket, ".");
+                else Print("Order #", j, " executed. Ticket: ", ticket, ".");
+                AtLeastOneOrderExecuted = true;
+            }
+            if (!sets.DoNotApplyTakeProfit) tp = TP[j];
+            // Market execution mode - applying SL/TP.
+            if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (sets.EntryType == Instant) && (!IgnoreMarketExecutionMode) && (ticket != -1) && ((sl != 0) || (tp != 0)))
+            {
+                if (MarketModeApplySLTPAfterAllTradesExecuted) // Finish opening all trades, then apply all SLs and TPs.
                 {
-                    break;
+                    array_cnt++;
+                    ArrayResize(array_of_tickets, array_cnt);
+                    ArrayResize(array_of_sl, array_cnt);
+                    ArrayResize(array_of_tp, array_cnt);
+                    ArrayResize(array_of_ot, array_cnt);
+                    array_of_tickets[array_cnt - 1] = ticket;
+                    array_of_sl[array_cnt - 1] = sl;
+                    array_of_tp[array_cnt - 1] = tp;
+                    array_of_ot[array_cnt - 1] = ot;
                 }
                 else
                 {
-                    Print("Error modifying the order: ", GetLastError());
-                    isOrderPlacementFailing = true;
+                    if (!ApplySLTPToOrder(ticket, sl, tp, ot))
+                    {
+                        isOrderPlacementFailing = true;
+                        break;
+                    }
                 }
             }
+        } // Cycle for splitting up trade/subtrade into more subtrades ends here.
+    }
+    
+    // Run position adjustment if necessary.
+    for (int j = 0; j < array_cnt; j++)
+    {
+        if (!ApplySLTPToOrder(array_of_tickets[j], array_of_sl[j], array_of_tp[j], array_of_ot[j]))
+        {
+            isOrderPlacementFailing = true;
         }
     }
-    PlaySound((isOrderPlacementFailing) || (!AtLeastOneOrderExecuted) ? "timeout.wav" : "ok.wav");
+    
+    if (!DisableTradingSounds) PlaySound((isOrderPlacementFailing) || (!AtLeastOneOrderExecuted) ? "timeout.wav" : "ok.wav");
+}
+
+// Applies SL/TP to a single order (used in the Market execution mode).
+// Returns false in case of a failure, true - in case of a success.
+bool ApplySLTPToOrder(int ticket, double sl, double tp, ENUM_ORDER_TYPE ot)
+{
+    if (!OrderSelect(ticket, SELECT_BY_TICKET))
+    {
+        Print("Failed to find the order to apply SL/TP.");
+        return false;
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        if ((tp != 0) && (((tp <= OrderOpenPrice()) && (ot == OP_BUY)) || ((tp >= OrderOpenPrice()) && (ot == OP_SELL)))) tp = 0; // Do not apply TP if it is invald. SL will still be applied.
+        bool result = OrderModify(ticket, OrderOpenPrice(), sl, tp, OrderExpiration());
+        if (result)
+        {
+            return true;
+        }
+        else
+        {
+            Print("Error modifying the order: ", GetLastError());
+        }
+    }
+    return false;
 }
 
 // Calculate volume of open positions and/or pending orders.

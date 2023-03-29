@@ -1,12 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                                      Defines.mqh |
-//|                                  Copyright © 2022, EarnForex.com |
+//|                                  Copyright © 2023, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <Controls\Button.mqh>
 #include <Controls\Dialog.mqh>
 #include <Controls\CheckBox.mqh>
 #include <Controls\Label.mqh>
+#include <Arrays\List.mqh>
 
 #define CONTROLS_EDIT_COLOR_ENABLE  C'255,255,255'
 #define CONTROLS_EDIT_COLOR_DISABLE C'221,221,211'
@@ -54,15 +55,44 @@ enum CANDLE_NUMBER
     Previous_Candle = 1 // Previous candle
 };
 
+enum VOLUME_SHARE_MODE
+{
+    Equal,      // Equal shares
+    Decreasing, // Decreasing shares
+    Increasing  // Increasing shares
+};
+
+enum SHOW_SPREAD
+{
+    No,
+    Points,
+    Ratio   // Spread / SL ratio
+};
+
+enum SYMBOL_CHART_CHANGE_REACTION
+{
+    SYMBOL_CHART_CHANGE_EACH_OWN,   // Each symbol - own settings
+    SYMBOL_CHART_CHANGE_HARD_RESET, // Reset to defaults on symbol change
+    SYMBOL_CHART_CHANGE_KEEP_PANEL  // Keep panel as is
+};
+
+enum COMMISSION_TYPE
+{
+    COMMISSION_CURRENCY, // Currency units
+    COMMISSION_PERCENT,  // Percentage
+};
+
 struct Settings
 {
     ENTRY_TYPE       EntryType;
     double           EntryLevel;
     double           StopLossLevel;
     double           TakeProfitLevel;
+    int              TakeProfitsNumber;
     double           Risk;
     double           MoneyRisk;
     double           CommissionPerLot;
+    COMMISSION_TYPE  CommissionType;
     bool             UseMoneyInsteadOfPercentage;
     bool             RiskFromPositionSize;
     double           PositionSize; // Used only when RiskFromPositionSize == true.
@@ -70,12 +100,13 @@ struct Settings
     double           CustomBalance;
     bool             DeleteLines;
     bool             CountPendingOrders;
-    bool             IgnoreOrdersWithoutStopLoss;
+    bool             IgnoreOrdersWithoutSL;
+    bool             IgnoreOrdersWithoutTP;
     bool             IgnoreOtherSymbols;
     bool             HideAccSize;
     bool             ShowLines;
     TABS             SelectedTab;
-    int              CustomLeverage;
+    double           CustomLeverage;
     int              MagicNumber;
     string           Commentary;
     bool             DisableTradingWhenLinesAreHidden;
@@ -102,6 +133,7 @@ struct Settings
     int              BreakEvenPoints;
     int              MaxNumberOfTrades;
     bool             AllSymbols;
+    double           MaxTotalRisk;
     // For ATR:
     int              ATRPeriod;
     double           ATRMultiplierSL;
@@ -117,5 +149,26 @@ struct Settings
     // Panel states:
     bool             IsPanelMinimized;
     bool             TPLockedOnSL;
+    VOLUME_SHARE_MODE ShareVolumeMode;
+    bool             TemplateChanged;
 } sets;
+
+// An object class for a list of panel objects with their names for fields located on a given tab of the panel. There will be one list per tab.
+class CStringForList : public CObject
+{
+    public:
+        string      Name;
+        CWnd*       Obj;
+        bool        Hidden; // Used only in the Trading tab to avoid deleting the extra TPs but keep them hidden after removal.
+        CStringForList() {Hidden = false;}
+};
+
+class CPanelList : public CList
+{
+    public:
+        void DeleteListElementByName(const string name);
+        void MoveListElementByName(const string name, const int index);
+        void CreateListElementByName(CObject &obj, const string name);
+        void SetHiddenByName(const string name, const bool hidden);
+};
 //+------------------------------------------------------------------+

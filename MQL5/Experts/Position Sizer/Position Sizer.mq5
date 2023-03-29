@@ -1,12 +1,12 @@
 //+------------------------------------------------------------------+
 //|                                               Position Sizer.mq5 |
-//|                                  Copyright © 2022, EarnForex.com |
+//|                                  Copyright © 2023, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
-#property version   "3.02"
-string    Version = "3.02";
+#property version   "3.03"
+string    Version = "3.03";
 
 #property description "Calculates risk-based position size for your account."
 #property description "Allows trade execution based the calculation results.\r\n"
@@ -29,7 +29,6 @@ input bool ShowLineLabels = true; // ShowLineLabels: Show point distance for TP/
 input bool ShowAdditionalSLLabel = false; // ShowAdditionalSLLabel: Show SL $/% label?
 input bool ShowAdditionalTPLabel = false; // ShowAdditionalTPLabel: Show TP $/% + R/R label?
 input bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
-input bool PanelOnTopOfChart = true; // PanelOnTopOfChart: Draw chart as background?
 input bool HideAccSize = false; // HideAccSize: Hide account size?
 input bool ShowPointValue = false; // ShowPointValue: Show point value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
@@ -38,6 +37,7 @@ input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be 
 input group "Fonts"
 input color sl_label_font_color = clrLime; // SL Label Color
 input color tp_label_font_color = clrYellow; // TP Label Color
+input color sp_label_font_color = clrPurple; // Stop Price Label Color
 input uint font_size = 13; // Labels Font Size
 input string font_face = "Courier"; // Labels Font Face
 input group "Lines"
@@ -55,8 +55,9 @@ input uint takeprofit_line_width = 1; // Take-Profit Line Width
 input uint stopprice_line_width = 1; // Stop Price Line Width
 input group "Defaults"
 input TRADE_DIRECTION DefaultTradeDirection = Long; // TradeDirection: Default trade direction.
-input int DefaultSL = 0; // SL: Default stop-loss value, in broker's points.
-input int DefaultTP = 0; // TP: Default take-profit value, in broker's points.
+input int DefaultSL = 0; // SL: Default stop-loss value, in points.
+input int DefaultTP = 0; // TP: Default take-profit value, in points.
+input int DefaultTakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
 input ENTRY_TYPE DefaultEntryType = Instant; // EntryType: Instant, Pending, or StopLimit.
 input bool DefaultShowLines = true; // ShowLines: Show the lines by default?
 input bool DefaultLinesSelected = true; // LinesSelected: SL/TP (Entry in Pending) lines selected.
@@ -67,13 +68,16 @@ input ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Def
 input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
 input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
 input double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
+input COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommossionType: Default commission type.
 input ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
 input double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
 input double DefaultMoneyRisk = 0; // MoneyRisk: If > 0, money risk tolerance in currency.
+input double DefaultPositionSize = 0; // PositionSize: If > 0, position size in lots.
 input bool DefaultCountPendingOrders = false; // CountPendingOrders: Count pending orders for portfolio risk.
-input bool DefaultIgnoreOrdersWithoutStopLoss = false; // IgnoreOrdersWithoutStopLoss: Ignore orders w/o SL in portfolio risk.
+input bool DefaultIgnoreOrdersWithoutSL = false; // IgnoreOrdersWithoutSL: Ignore orders w/o SL in portfolio risk.
+input bool DefaultIgnoreOrdersWithoutTP = false; // IgnoreOrdersWithoutTP: Ignore orders w/o TP in portfolio risk.
 input bool DefaultIgnoreOtherSymbols = false; // IgnoreOtherSymbols: Ignore other symbols' orders in portfolio risk.
-input int DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
+double DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
 input int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
 input string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
 input bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order commentary in Trading tab.
@@ -95,24 +99,35 @@ input bool DefaultTPLockedOnSL = false; // TPLockedOnSL: Lock TP to (multiplied)
 input int DefaultTrailingStop = 0; // TrailingStop: For the Trading tab.
 input int DefaultBreakEven = 0; // BreakEven: For the Trading tab.
 input int DefaultMaxNumberOfTrades = 0; // MaxNumberOfTrades: For the Trading tab. 0 - no limit.
+input double DefaultMaxTotalRisk = 0; // MaxTotalRisk: For the Trading tab. 0 - no limit.
 input bool DefaultAllSymbols = true; // AllSymbols: For Trading tab, true - count trades in all symbols.
+input group "Keyboard shortcuts"
+input string ____ = "Case-insensitive hotkey. Supports Ctrl, Shift.";
+input string TradeHotKey = "Shift+T"; // TradeHotKey: Execute a trade.
+input string SwitchOrderTypeHotKey = "O"; // SwitchOrderTypeHotKey: Switch order type.
+input string SwitchEntryDirectionHotKey = "TAB"; // SwitchEntryDirectionHotKey: Switch entry direction.
+input string SwitchHideShowLinesHotKey = "H"; // SwitchHideShowLinesHotKey: Switch Hide/Show lines.
 input group "Miscellaneous"
 input double TP_Multiplier = 1; // TP Multiplier for SL value, appears in Take-profit button.
 input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
-input bool ShowSpread = false; // ShowSpread: If true, shows current spread in window caption.
+input SHOW_SPREAD ShowSpread = No; // ShowSpread: Show current spread in points or as an SL ratio.
 input double AdditionalFunds = 0; // AdditionalFunds: Added to account balance for risk calculation.
 input double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
 input bool SLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
 input bool TPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
 input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
-input int TakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
 input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
+input bool SurpassBrokerMaxPositionSize = false; // Surpass Broker Max Position Size with multiple trades.
 input bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
 input double QuickRisk1 = 0; // QuickRisk1: First quick risk button, in percentage points.
 input double QuickRisk2 = 0; // QuickRisk2: Second quick risk button, in percentage points.
 input string ObjectPrefix = "PS_"; // ObjectPrefix: To prevent confusion with other indicators/EAs.
-input string TradeHotKey = "Shift+T"; // TradeHotKey: Case-insensitive hotkey. Supports Ctrl, Shift.
-input bool SymbolChangeReset = false; // SymbolChangeReset: reset panel if you change symbol then return.
+input SYMBOL_CHART_CHANGE_REACTION SymbolChange = SYMBOL_CHART_CHANGE_EACH_OWN; // SymbolChange: What to do with the panel on chart symbol change?
+input bool DisableStopLimit = false; // DisableStopLimit: If true, Stop Limit will be skipped.
+input string TradeSymbol = ""; // TradeSymbol: If non-empty, this symbol will be traded.
+input bool DisableTradingSounds = false; // DisableTradingSounds: If true, no sound for trading actions.
+input bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If true, ignore Market execution.
+input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode - Apply SL/TP After All Trades Executed
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -121,78 +136,68 @@ bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
 uint LastRecalculationTime = 0;
 bool StopLossLineIsBeingMoved = false;
 bool TakeProfitLineIsBeingMoved = false;
-uchar MainKey;
-bool CtrlRequired;
-bool ShiftRequired;
+uchar MainKey_TradeHotKey = 0, MainKey_SwitchOrderTypeHotKey = 0, MainKey_SwitchEntryDirectionHotKey = 0, MainKey_SwitchHideShowLinesHotKey = 0;
+bool CtrlRequired_TradeHotKey = false, CtrlRequired_SwitchOrderTypeHotKey = false, CtrlRequired_SwitchEntryDirectionHotKey = false, CtrlRequired_SwitchHideShowLinesHotKey = false;
+bool ShiftRequired_TradeHotKey = false, ShiftRequired_SwitchOrderTypeHotKey = false, ShiftRequired_SwitchEntryDirectionHotKey = false, ShiftRequired_SwitchHideShowLinesHotKey = false;
+bool AdditionalTPLineMoved = false;
+int DeinitializationReason = -1;
+string OldSymbol = "";
+int OldTakeProfitsNumber = -1;
+string SymbolForTrading;
 
 int OnInit()
 {
     TickSize = -1;
-    CtrlRequired = false;
-    ShiftRequired = false;
-    MainKey = 0;
 
-    ExtDialog = new CPositionSizeCalculator;
-    
+    if (DeinitializationReason != REASON_CHARTCHANGE) ExtDialog = new CPositionSizeCalculator; // Create the panel only if it is not a symbol/timeframe change.
+    else OldTakeProfitsNumber = sets.TakeProfitsNumber; // Will be used to resize the panel if needed when switching symbols in some modes.
+
     MathSrand(GetTickCount() + 293029); // Used by CreateInstanceId() in Dialog.mqh (standard library). Keep the second number unique across other panel indicators/EAs.
     
     Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
     
     PanelCaptionBase = "Position Sizer (ver. " + Version + ")";
 
-    if (TakeProfitsNumber > 1)
+    // Symbol changed.
+    if ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol))
     {
-        ArrayResize(sets.TP, TakeProfitsNumber);
-        ArrayResize(sets.TPShare, TakeProfitsNumber);
-        ArrayInitialize(sets.TP, 0);
-        ArrayInitialize(sets.TPShare, 100 / TakeProfitsNumber);
-        ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
-    }
-
-    // Check for symbol change.
-    int total = GlobalVariablesTotal();
-    for (int i = 0; i < total; i++)
-    {
-        string name = GlobalVariableName(i);
-        // Found the right global variable.
-        if (StringSubstr(name, 0, 15) == "PS_ChartChange_")
+        ObjectsDeleteAll(0, ObjectPrefix); // All lines should be deleted, so that they could be recreated at new sets. values.
+        if (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN)
         {
-            string prev_symbol = StringSubstr(name, 15);
-            if (prev_symbol != Symbol()) // Symbol changed.
-            {
-                // Reset everything.
-                OutputPointValue = ""; OutputSwapsType = "Unknown"; SwapsTripleDay = "?";
-                OutputSwapsDailyLongLot = "?"; OutputSwapsDailyShortLot = "?"; OutputSwapsDailyLongPS = "?"; OutputSwapsDailyShortPS = "?";
-                OutputSwapsYearlyLongLot = "?"; OutputSwapsYearlyShortLot = "?"; OutputSwapsYearlyLongPS = "?"; OutputSwapsYearlyShortPS = "?";
-                OutputSwapsCurrencyDailyLot = ""; OutputSwapsCurrencyDailyPS = ""; OutputSwapsCurrencyYearlyLot = ""; OutputSwapsCurrencyYearlyPS = "";
+            ExtDialog.SaveSettingsOnDisk(OldSymbol); // Save old symbol's settings.
+        }
+        ExtDialog.UpdateFileName(); // Update the filename.
 
-                // If you don't want to store panel values for the current symbol, check the Global Variable and delete the old settings file if symbol changed.
-                if (SymbolChangeReset)
-                {
-                    string file_name = "PS_" + prev_symbol + IntegerToString(ChartID());
-                    StringReplace(file_name, ".", "_dot_");
-                    file_name += ".txt";
-                    if (!FileDelete(file_name))
-                    {
-                        Print("Failed to delete old settings file: " + file_name + ". Error: " + IntegerToString(GetLastError()));
-                    }
-                    else
-                    {
-                        Print("Deleted old settings file successfully.");
-                    }
-                }
-            }
-            GlobalVariableDel(name);
-            break; // Only one possible.
+        // Reset everything.
+        OutputPointValue = ""; OutputSwapsType = "Unknown"; SwapsTripleDay = "?";
+        OutputSwapsDailyLongLot = "?"; OutputSwapsDailyShortLot = "?"; OutputSwapsDailyLongPS = "?"; OutputSwapsDailyShortPS = "?";
+        OutputSwapsYearlyLongLot = "?"; OutputSwapsYearlyShortLot = "?"; OutputSwapsYearlyLongPS = "?"; OutputSwapsYearlyShortPS = "?";
+        OutputSwapsCurrencyDailyLot = ""; OutputSwapsCurrencyDailyPS = ""; OutputSwapsCurrencyYearlyLot = ""; OutputSwapsCurrencyYearlyPS = "";
+
+        if (SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET)
+        {
+            // Lines are treated as a part of the panel.
+            if (DefaultLinesSelected) LinesSelectedStatus = 1; // Flip lines to selected.
+            else LinesSelectedStatus = 2; // Flip lines to unselected.
         }
     }
 
-    if (!ExtDialog.LoadSettingsFromDisk())
+    // Normal attempt to load settings fails (attempted in not chart change case and in chart case with 'each pair own settings' case
+    if ((((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))) && (!ExtDialog.LoadSettingsFromDisk())) 
+    // OR chart change with hard_reset configured and with symbol change.
+      || ((DeinitializationReason == REASON_CHARTCHANGE) && (SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET) && (OldSymbol != _Symbol)))
     {
         sets.TradeDirection = DefaultTradeDirection;
         sets.EntryLevel = EntryLevel;
         sets.StopLossLevel = StopLossLevel;
         sets.TakeProfitLevel = TakeProfitLevel; // Optional
+        sets.TakeProfitsNumber = DefaultTakeProfitsNumber;
+        if (sets.TakeProfitsNumber < 1) sets.TakeProfitsNumber = 1; // At least one TP.
+        ArrayResize(sets.TP, sets.TakeProfitsNumber);
+        ArrayResize(sets.TPShare, sets.TakeProfitsNumber);
+        ArrayInitialize(sets.TP, 0);
+        ArrayInitialize(sets.TPShare, 100 / sets.TakeProfitsNumber);
+        ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
         sets.StopPriceLevel = StopPriceLevel; // Optional
         sets.ATRPeriod = DefaultATRPeriod;
         sets.ATRMultiplierSL = DefaultATRMultiplierSL;
@@ -203,12 +208,21 @@ int OnInit()
         sets.MoneyRisk = DefaultMoneyRisk; // Risk tolerance in account currency
         if (DefaultMoneyRisk > 0) sets.UseMoneyInsteadOfPercentage = true;
         else sets.UseMoneyInsteadOfPercentage = false;
-        sets.CommissionPerLot = DefaultCommission; // Commission charged per lot (one side) in account currency.
+        if (DefaultPositionSize > 0)
+        {
+            sets.RiskFromPositionSize = true;
+            sets.PositionSize = DefaultPositionSize;
+            OutputPositionSize = DefaultPositionSize;
+        }
+        else sets.RiskFromPositionSize = false;
+        sets.CommissionPerLot = DefaultCommission; // Commission charged per lot (one side) in account currency or %.
+        sets.CommissionType = DefaultCommissionType;
         sets.CustomBalance = CustomBalance;
         sets.RiskFromPositionSize = false;
         sets.AccountButton = DefaultAccountButton;
         sets.CountPendingOrders = DefaultCountPendingOrders; // If true, portfolio risk calculation will also involve pending orders.
-        sets.IgnoreOrdersWithoutStopLoss = DefaultIgnoreOrdersWithoutStopLoss; // If true, portfolio risk calculation will skip orders without stop-loss.
+        sets.IgnoreOrdersWithoutSL = DefaultIgnoreOrdersWithoutSL; // If true, portfolio risk calculation will skip orders without stop-loss.
+        sets.IgnoreOrdersWithoutTP = DefaultIgnoreOrdersWithoutTP; // If true, portfolio risk calculation will skip orders without take-profit.
         sets.IgnoreOtherSymbols = DefaultIgnoreOtherSymbols; // If true, portfolio risk calculation will skip orders in other symbols.
         sets.HideAccSize = HideAccSize; // If true, account size line will not be shown.
         sets.ShowLines = DefaultShowLines;
@@ -218,12 +232,12 @@ int OnInit()
         sets.Commentary = DefaultCommentary;
         sets.CommentAutoSuffix = DefaultCommentAutoSuffix;
         sets.DisableTradingWhenLinesAreHidden = DefaultDisableTradingWhenLinesAreHidden;
-        if (TakeProfitsNumber > 1)
+        if (sets.TakeProfitsNumber > 1)
         {
-            for (int i = 0; i < TakeProfitsNumber; i++)
+            for (int i = 0; i < sets.TakeProfitsNumber; i++)
             {
                 sets.TP[i] = TakeProfitLevel;
-                sets.TPShare[i] = 100 / TakeProfitsNumber;
+                sets.TPShare[i] = 100 / sets.TakeProfitsNumber;
             }
         }
         sets.MaxSlippage = DefaultMaxSlippage;
@@ -246,28 +260,84 @@ int OnInit()
         sets.TrailingStopPoints = DefaultTrailingStop;
         sets.BreakEvenPoints = DefaultBreakEven;
         sets.MaxNumberOfTrades = DefaultMaxNumberOfTrades;
-        if ((int)sets.ATRTimeframe == 0) sets.ATRTimeframe = (ENUM_TIMEFRAMES)_Period;
+        sets.MaxTotalRisk = DefaultMaxTotalRisk;
         sets.AllSymbols = DefaultAllSymbols;
         // Because it is the first load:
         Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
+        sets.ShareVolumeMode = Equal;
     }
+    if (sets.TakeProfitsNumber < 1) sets.TakeProfitsNumber = 1; // At least one TP.
 
-    if (!ExtDialog.Create(0, Symbol() + " Position Sizer (ver. " + Version + ")", 0, 20, 20)) return INIT_FAILED;
-
-    // No ini file - move the panel according to the inputs.
-    if (!FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt()))
+    if (DeinitializationReason != REASON_CHARTCHANGE)
     {
-        Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
+        if (!ExtDialog.Create(0, "Position Sizer (ver. " + Version + ")", 0, DefaultPanelPositionX, DefaultPanelPositionY)) return INIT_FAILED;
+        ExtDialog.Run();
+
+        // No ini file - move the panel according to the inputs.
+        if (!FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt()))
+        {
+            Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
+        }
+        ExtDialog.IniFileLoad();
+
+        // If a hotkey is given, break up the string to check for hotkey presses in OnChartEvent().
+        if (TradeHotKey != "") DissectHotKeyCombination(TradeHotKey, ShiftRequired_TradeHotKey, CtrlRequired_TradeHotKey, MainKey_TradeHotKey);
+        if (SwitchEntryDirectionHotKey != "") DissectHotKeyCombination(SwitchEntryDirectionHotKey, ShiftRequired_SwitchEntryDirectionHotKey, CtrlRequired_SwitchEntryDirectionHotKey, MainKey_SwitchEntryDirectionHotKey);
+        if (SwitchOrderTypeHotKey != "") DissectHotKeyCombination(SwitchOrderTypeHotKey, ShiftRequired_SwitchOrderTypeHotKey, CtrlRequired_SwitchOrderTypeHotKey, MainKey_SwitchOrderTypeHotKey);
+        if (SwitchHideShowLinesHotKey != "") DissectHotKeyCombination(SwitchHideShowLinesHotKey, ShiftRequired_SwitchHideShowLinesHotKey, CtrlRequired_SwitchHideShowLinesHotKey, MainKey_SwitchHideShowLinesHotKey);
     }
+    else if (OldSymbol != _Symbol)
+    {
+        if (SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET) // Reset Entry, SL, and all TPs if it was a symbol change and a hard reset is required.
+        {
+            sets.EntryLevel = 0;
+            sets.StopLossLevel = 0;
+            sets.StopLoss = 0;
+            sets.TakeProfitLevel = 0;
+            sets.TakeProfit = 0;
+            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            {
+                sets.TP[i] = 0;
+            }
+            sets.StopPriceLevel = 0;
+            Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
+        }
+        else if (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN) // Load the INI file if it was a symbol change and a each symbol has its own settings.
+        {
+            ExtDialog.IniFileLoad();
+        }
+    }    
 
-    ExtDialog.Run();
-    ExtDialog.IniFileLoad();
-    
-    Initialization();
-
+    // Avoid re-initialization on timeframe change and on symbol change with the 'keep panel' setting.
+    if ((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && ((SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET) || (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))))
+    {
+        Initialization();
+        if (DeinitializationReason == REASON_CHARTCHANGE) // Do not run if it is not the symbol change because 'CPositionSizeCalculator::Create()' takes care of that in other cases.
+        {
+            // Remove extra empty space on the panel when going from a panel with more TPs to a panel with fewer TPs.
+            if (sets.TakeProfitsNumber < OldTakeProfitsNumber)
+            {
+                int NewTakeProfitsNumber = sets.TakeProfitsNumber;
+                sets.TakeProfitsNumber = OldTakeProfitsNumber; // Used and decremented inside OnClickBtnTakeProfitsNumberRemove().
+                while (sets.TakeProfitsNumber > NewTakeProfitsNumber)
+                {
+                    ExtDialog.OnClickBtnTakeProfitsNumberRemove();
+                }
+            }
+            else
+            {
+                // Create necessary panel elements if newly loaded symbol has more TPs.
+                int NewTakeProfitsNumber = sets.TakeProfitsNumber;
+                sets.TakeProfitsNumber = OldTakeProfitsNumber; // It will be increased inside OnClickBtnTakeProfitsNumberAdd().
+                while (sets.TakeProfitsNumber < NewTakeProfitsNumber)
+                {
+                    ExtDialog.OnClickBtnTakeProfitsNumberAdd();
+                }
+            }
+        }
+    }
     // Brings panel on top of other objects without actual maximization of the panel.
     ExtDialog.HideShowMaximize();
-
     if (!Dont_Move_the_Panel_to_Default_Corner_X_Y)
     {
         int new_x = DefaultPanelPositionX, new_y = DefaultPanelPositionY;
@@ -310,86 +380,59 @@ int OnInit()
         ExtDialog.ChartEvent(CHARTEVENT_CHART_CHANGE, lparam, dparam, sparam);
     }
 
-    if (TradeHotKey != "") // Hotkey for trading is given. Break up the string to check for hotkey presses in OnChartEvent().
-    {
-        ushort separator;
-        if (StringFind(TradeHotKey, "+") > -1) separator = StringGetCharacter("+", 0);
-        else if (StringFind(TradeHotKey, "-") > -1) separator = StringGetCharacter("-", 0);
-        else separator = 0;
-        string keys[];
-        int n = StringSplit(TradeHotKey, separator, keys);
-        if (n > 1) // A key with a modifier.
-        {
-            for (int i = 0; i < n - 1; i++)
-            {
-                StringToUpper(keys[i]);
-                if (keys[i] == "SHIFT") ShiftRequired = true;
-                else if (keys[i] == "CTRL") CtrlRequired = true;
-            }
-            StringToUpper(keys[n - 1]);
-            MainKey = (uchar)StringGetCharacter(keys[n - 1], 0);
-        }
-        else
-        {
-            StringToUpper(keys[0]);
-            MainKey = (uchar)StringGetCharacter(keys[0], 0); // Just a single key.
-        }
-    }
-    
     if (!EventSetTimer(1)) Print("Error setting timer: ", GetLastError());
 
     if (ShowATROptions) ExtDialog.InitATR();
+
+    if (TradeSymbol != "") SymbolForTrading = TradeSymbol;
+    else SymbolForTrading = _Symbol;
 
     return INIT_SUCCEEDED;
 }
 
 void OnDeinit(const int reason)
 {
-    ObjectDelete(0, ObjectPrefix + "StopLossLabel");
-    ObjectDelete(0, ObjectPrefix + "TakeProfitLabel");
-    ObjectDelete(0, ObjectPrefix + "StopPriceLabel");
-    ObjectDelete(0, ObjectPrefix + "TPAdditionalLabel");
-    ObjectDelete(0, ObjectPrefix + "SLAdditionalLabel");
-    for (int i = 1; i < TakeProfitsNumber; i++)
+    DeinitializationReason = reason; // Remember reason to avoid recreating the panel in the OnInit() if it is not deleted here.
+    
+    EventKillTimer();
+
+    if (reason == REASON_TEMPLATE) sets.TemplateChanged = true; // Will be used to select lines according to the DefaultLinesSelected input parameter.
+
+    if ((reason == REASON_CLOSE) || (reason == REASON_REMOVE) || (reason == REASON_CHARTCLOSE) || (reason == REASON_PROGRAM))
     {
-        ObjectDelete(0, ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
-        ObjectDelete(0, ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
-    }
-    if (reason == REASON_CLOSE) ObjectsDeleteAll(0, ObjectPrefix); // Delete all lines if platform was closed.
-    if ((reason == REASON_REMOVE) || (reason == REASON_CHARTCLOSE) || (reason == REASON_PROGRAM))
-    {
-        ObjectsDeleteAll(0, ObjectPrefix);
-        if (reason != REASON_CHARTCLOSE) // Preserve the files for chart close reason because it is the reason used on profile change.
+        ObjectsDeleteAll(0, ObjectPrefix); // Delete all lines if platform was closed.
+        if ((reason == REASON_REMOVE) || (reason == REASON_PROGRAM))
         {
             ExtDialog.DeleteSettingsFile();
             if (!FileDelete(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) Print("Failed to delete the PS panel's .ini file: ", GetLastError());
         }
-        else
-        {
-            ExtDialog.SaveSettingsOnDisk();
-            ExtDialog.IniFileSave();
-        }
     }
+    
     // It is deinitialization due to input parameters change - save current parameters values (that are also changed via panel) to global variables.
-    else 
+    if (reason == REASON_PARAMETERS) GlobalVariableSet("PS-" + IntegerToString(ChartID()) + "-Parameters", 1);
+
+    if ((reason != REASON_CHARTCHANGE) && (reason != REASON_REMOVE) && (reason != REASON_PROGRAM))
     {
-        if (reason == REASON_PARAMETERS) GlobalVariableSet("PS-" + IntegerToString(ChartID()) + "-Parameters", 1);
         ExtDialog.SaveSettingsOnDisk();
         ExtDialog.IniFileSave();
-    }
-    
-    
+    } 
+
     if (reason == REASON_CHARTCHANGE)
     {
-        GlobalVariableSet("PS_ChartChange_" + Symbol(), 0);
+        OldSymbol = _Symbol;
     }
-
-    ExtDialog.Destroy();
-    delete ExtDialog;
+    else
+    {
+        ObjectDelete(0, ObjectPrefix + "StopLossLabel");
+        ObjectsDeleteAll(0, ObjectPrefix + "TakeProfitLabel", -1, OBJ_LABEL);
+        ObjectDelete(0, ObjectPrefix + "StopPriceLabel");
+        ObjectsDeleteAll(0, ObjectPrefix + "TPAdditionalLabel", -1, OBJ_LABEL);
+        ObjectDelete(0, ObjectPrefix + "SLAdditionalLabel");
+        ExtDialog.Destroy();
+        delete ExtDialog;
+    }
     
     ChartRedraw();
-
-    EventKillTimer();
 }
 
 void OnTick()
@@ -408,21 +451,21 @@ void OnChartEvent(const int id,
     // Mouse move while left mouse button is down.
     if ((id == CHARTEVENT_MOUSE_MOVE) && (((uint)sparam & 1) == 1))
     {
-        if (SLDistanceInPoints)
+        if ((SLDistanceInPoints) || ((ShowATROptions) && (sets.ATRMultiplierSL > 0)))
         {
             double current_line_price = ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0);
             if (current_line_price != tStopLossLevel) StopLossLineIsBeingMoved = true;
             else StopLossLineIsBeingMoved = false;
         }
-        if (TPDistanceInPoints)
+        if ((TPDistanceInPoints) || ((ShowATROptions) && (sets.ATRMultiplierTP > 0)))
         {
             TakeProfitLineIsBeingMoved = false;
             double current_line_price = ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0);
             if (current_line_price != tTakeProfitLevel) TakeProfitLineIsBeingMoved = true;
             // Additional take-profits.
-            else if (TakeProfitsNumber > 1)
+            else
             {
-                for (int i = 1; i < TakeProfitsNumber; i++)
+                for (int i = 1; i < sets.TakeProfitsNumber; i++) // Will fire only if sets.TakeProfitsNumber > 1.
                 {
                     if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                     {
@@ -446,9 +489,10 @@ void OnChartEvent(const int id,
     }
 
     // Catch multiple TP fields.
-    if (TakeProfitsNumber > 1)
+    if (sets.TakeProfitsNumber > 1)
     {
-        if (id == CHARTEVENT_CUSTOM + ON_END_EDIT)
+        if (id == CHARTEVENT_OBJECT_ENDEDIT)
+        //if (id == CHARTEVENT_CUSTOM + ON_END_EDIT)
         {
             // Additional take-profit field #N on Main tab.
             if (StringSubstr(sparam, 0, StringLen(ExtDialog.Name() + "AdditionalTPEdits")) == ExtDialog.Name() + "AdditionalTPEdits")
@@ -469,18 +513,75 @@ void OnChartEvent(const int id,
                 ExtDialog.UpdateTradingTPShareEdit(i);
             }
         }
+        else if (id == CHARTEVENT_CUSTOM + ON_CLICK)
+        {
+            // Additional take-profit increase button #N on Main tab.
+            if (StringSubstr(sparam, 0, StringLen(ExtDialog.Name() + "AdditionalTPButtonsIncrease")) == ExtDialog.Name() + "AdditionalTPButtonsIncrease")
+            {
+                int i = (int)StringToInteger(StringSubstr(sparam, StringLen(ExtDialog.Name() + "AdditionalTPButtonsIncrease"))) - 1;
+                ExtDialog.ProcessAdditionalTPButtonsIncrease(i);
+            }
+            // Additional take-profit decrease button #N on Main tab.
+            else if (StringSubstr(sparam, 0, StringLen(ExtDialog.Name() + "AdditionalTPButtonsDecrease")) == ExtDialog.Name() + "AdditionalTPButtonsDecrease")
+            {
+                int i = (int)StringToInteger(StringSubstr(sparam, StringLen(ExtDialog.Name() + "AdditionalTPButtonsDecrease"))) - 1;
+                ExtDialog.ProcessAdditionalTPButtonsDecrease(i);
+            }
+            // Because there is a bug that keeps a control's Id() = -1 if it is created after the panel is initialized. So, it cannot be processed with the panel's event processor.
+            else if (sparam == ExtDialog.Name() + "m_BtnTakeProfitsNumberRemove")
+            {
+                ExtDialog.OnClickBtnTakeProfitsNumberRemove();
+            }
+            else if (sparam == ExtDialog.Name() + "m_BtnTPsInward")
+            {
+                ExtDialog.OnClickBtnTPsInward();
+            }
+            else if (sparam == ExtDialog.Name() + "m_BtnTPsOutward")
+            {
+                ExtDialog.OnClickBtnTPsOutward();
+            }
+            else if (sparam == ExtDialog.Name() + "m_BtnTradingTPShare")
+            {
+                ExtDialog.OnClickBtnTradingTPShare();
+            }
+        }
     }
 
     if (id == CHARTEVENT_KEYDOWN)
     {
-        if (lparam == 9) // Tab key to shift from Long to Short and vice versa.
+        // Trade direction:
+        if ((MainKey_SwitchEntryDirectionHotKey != 0) && (lparam == MainKey_SwitchEntryDirectionHotKey))
         {
-            SwitchEntryDirection(); 
+            if (((!ShiftRequired_SwitchEntryDirectionHotKey) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
+            &&  ((!CtrlRequired_SwitchEntryDirectionHotKey)  || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
+            {
+                SwitchEntryDirection();
+            }
         }
-        if ((MainKey != 0) && (lparam == MainKey))
+        // Order type:
+        else if ((MainKey_SwitchOrderTypeHotKey != 0) && (lparam == MainKey_SwitchOrderTypeHotKey))
         {
-            if (((!ShiftRequired) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
-            && ((!CtrlRequired) || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
+            if (((!ShiftRequired_SwitchOrderTypeHotKey) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
+            &&  ((!CtrlRequired_SwitchOrderTypeHotKey)  || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
+            {
+                ExtDialog.OnClickBtnOrderType();
+                ChartRedraw();
+            }
+        }
+        // Hide/Show lines:
+        else if ((MainKey_SwitchHideShowLinesHotKey != 0) && (lparam == MainKey_SwitchHideShowLinesHotKey))
+        {
+            if (((!ShiftRequired_SwitchHideShowLinesHotKey) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
+            &&  ((!CtrlRequired_SwitchHideShowLinesHotKey)  || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
+            {
+                ExtDialog.OnClickBtnLines();
+            }
+        }  
+        // Trade:
+        else if ((MainKey_TradeHotKey != 0) && (lparam == MainKey_TradeHotKey))
+        {
+            if (((!ShiftRequired_TradeHotKey) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
+            &&  ((!CtrlRequired_TradeHotKey)  || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
             {
                 Trade(); 
             }
@@ -498,16 +599,26 @@ void OnChartEvent(const int id,
     if ((id == CHARTEVENT_CLICK) || (id == CHARTEVENT_CHART_CHANGE) ||
             ((id == CHARTEVENT_OBJECT_DRAG) && ((sparam == ObjectPrefix + "EntryLine") || (sparam == ObjectPrefix + "StopLossLine") || (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) || (sparam == ObjectPrefix + "StopPriceLine"))))
     {
-        // Moving lines when fixed SL/TP distance is enabled. Should set a new fixed SL/TP distance.
-        if ((id == CHARTEVENT_OBJECT_DRAG) && ((SLDistanceInPoints) || (TPDistanceInPoints) || (ShowATROptions)))
+        if (id == CHARTEVENT_OBJECT_DRAG) 
         {
-            if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
-            else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
-            else if ((TakeProfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
+            // Moving lines when fixed SL/TP distance is enabled. Should set a new fixed SL/TP distance.
+            if ((SLDistanceInPoints) || (TPDistanceInPoints) || (ShowATROptions))
+            {
+                if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
+                else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
+                else if ((sets.TakeProfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
+                {
+                    int len = StringLen(ObjectPrefix + "TakeProfitLine");
+                    int i = (int)StringToInteger(StringSubstr(sparam, len));
+                    ExtDialog.UpdateAdditionalFixedTP(i);
+                }
+            }
+            // Update required for additional TP fields on the Trading panel.
+            if ((!TPDistanceInPoints) && (sets.TakeProfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
             {
                 int len = StringLen(ObjectPrefix + "TakeProfitLine");
                 int i = (int)StringToInteger(StringSubstr(sparam, len));
-                ExtDialog.UpdateAdditionalFixedTP(i);
+                AdditionalTPLineMoved = true; // Will refresh the .Text of the Trading panel's respective TP Edit in DisplayValues().
             }
         }
 
