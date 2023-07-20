@@ -9,11 +9,19 @@
 #include <Controls\Label.mqh>
 #include <Arrays\List.mqh>
 
-#define CONTROLS_EDIT_COLOR_ENABLE  C'255,255,255'
-#define CONTROLS_EDIT_COLOR_DISABLE C'221,221,211'
+color CONTROLS_EDIT_COLOR_ENABLE  = C'255,255,255';
+color CONTROLS_EDIT_COLOR_DISABLE = C'221,221,211';
 
-#define CONTROLS_BUTTON_COLOR_ENABLE  C'200,200,200'
-#define CONTROLS_BUTTON_COLOR_DISABLE C'224,224,224'
+color CONTROLS_BUTTON_COLOR_ENABLE  = C'200,200,200';
+color CONTROLS_BUTTON_COLOR_DISABLE = C'224,224,224';
+
+color DARKMODE_BG_DARK_COLOR = 0x444444;
+color DARKMODE_CONTROL_BRODER_COLOR = 0x888888;
+color DARKMODE_MAIN_AREA_BORDER_COLOR = 0x333333;
+color DARKMODE_MAIN_AREA_BG_COLOR = 0x666666;
+color DARKMODE_EDIT_BG_COLOR = 0xAAAAAA;
+color DARKMODE_BUTTON_BG_COLOR = 0xA19999;
+color DARKMODE_TEXT_COLOR = 0x000000;;
 
 enum ENTRY_TYPE
 {
@@ -82,6 +90,13 @@ enum COMMISSION_TYPE
     COMMISSION_PERCENT,  // Percentage
 };
 
+enum CALCULATE_RISK_FOR_TRADING_TAB
+{
+    CALCULATE_RISK_FOR_TRADING_TAB_NO, // Normal calculation
+    CALCULATE_RISK_FOR_TRADING_TAB_TOTAL, // For Trading tab - total
+    CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL // For Trading tab - per symbol
+};
+
 struct Settings
 {
     ENTRY_TYPE       EntryType;
@@ -116,7 +131,6 @@ struct Settings
     int              MaxSpread;
     int              MaxEntrySLDistance;
     int              MinEntrySLDistance;
-    double           MaxPositionSize;
     // For SL/TP distance modes:
     int              StopLoss;
     int              TakeProfit;
@@ -131,9 +145,12 @@ struct Settings
     bool             CommentAutoSuffix;
     int              TrailingStopPoints;
     int              BreakEvenPoints;
-    int              MaxNumberOfTrades;
-    bool             AllSymbols;
-    double           MaxTotalRisk;
+    int              MaxNumberOfTradesTotal;
+    int              MaxNumberOfTradesPerSymbol;
+    double           MaxPositionSizeTotal;
+    double           MaxPositionSizePerSymbol;
+    double           MaxRiskTotal;
+    double           MaxRiskPerSymbol;
     // For ATR:
     int              ATRPeriod;
     double           ATRMultiplierSL;

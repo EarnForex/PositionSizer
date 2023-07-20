@@ -98,40 +98,64 @@ void Trade()
         }
     }
 
-    if (sets.MaxNumberOfTrades > 0)
+    if ((sets.MaxNumberOfTradesTotal > 0) || (sets.MaxNumberOfTradesPerSymbol > 0))
     {
         int total = OrdersTotal();
-        int cnt = 0;
+        int cnt = 0, persymbol_cnt = 0;
         for (int i = 0; i < total; i++)
         {
             if (!OrderSelect(i, SELECT_BY_POS)) continue;
             if ((sets.MagicNumber != 0) && (OrderMagicNumber() != sets.MagicNumber)) continue;
-            if ((!sets.AllSymbols) && (OrderSymbol() != Symbol())) continue;
+            if (OrderSymbol() == Symbol()) persymbol_cnt++;
             cnt++;
         }
-        if (cnt >= sets.MaxNumberOfTrades)
+        if ((cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesTotal) && (sets.MaxNumberOfTradesTotal > 0))
         {
-            Alert("Not taking a trade - current # of traes (", cnt, ") >= maximum number of trades (", sets.MaxNumberOfTrades, ").");
+            Alert("Not taking a trade - current total # of trades (", cnt, ") + number of trades in execution (", sets.TakeProfitsNumber, ") > maximum total number of trades allowed (", sets.MaxNumberOfTradesTotal, ").");
+            return;
+        }
+        if ((persymbol_cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesPerSymbol) && (sets.MaxNumberOfTradesPerSymbol > 0))
+        {
+            Alert("Not taking a trade - current # of trades per symbol (", persymbol_cnt, ") + number of trades in execution (", sets.TakeProfitsNumber, ") > maximum number of trades per symbol allowed (", sets.MaxNumberOfTradesPerSymbol, ").");
             return;
         }
     }
     
-    if (sets.MaxTotalRisk > 0)
+    if (sets.MaxRiskTotal > 0)
     {
-        CalculatePortfolioRisk(true);
+        CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL);
         double risk;
         if (PortfolioLossMoney != DBL_MAX)
         {
             risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
-            if (risk > sets.MaxTotalRisk)
+            if (risk > sets.MaxRiskTotal)
             {
-                Alert("Not taking a trade - total potential risk (", DoubleToString(risk, 2), ") >= maximum risk (", DoubleToString(sets.MaxTotalRisk, 2), ").");
+                Alert("Not taking a trade - total potential risk (", DoubleToString(risk, 2), ") >= maximum total risk allowed (", DoubleToString(sets.MaxRiskTotal, 2), ").");
                 return;
             }
         }
         else
         {
             Alert("Not taking a trade - infinite total potential risk.");
+            return;
+        }
+    }
+    if (sets.MaxRiskPerSymbol > 0)
+    {
+        CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL);
+        double risk;
+        if (PortfolioLossMoney != DBL_MAX)
+        {
+            risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+            if (risk > sets.MaxRiskPerSymbol)
+            {
+                Alert("Not taking a trade - potential risk per symbol (", DoubleToString(risk, 2), ") >= maximum risk per symbol allowed (", DoubleToString(sets.MaxRiskPerSymbol, 2), ").");
+                return;
+            }
+        }
+        else
+        {
+            Alert("Not taking a trade - infinite potential risk per symbol.");
             return;
         }
     }
@@ -189,20 +213,25 @@ void Trade()
         }
     }
 
-    if (sets.MaxPositionSize > 0)
+    if ((sets.MaxPositionSizeTotal > 0) && (sets.MaxPositionSizePerSymbol > 0))
     {
         int total = OrdersTotal();
-        double volume = 0;
+        double volume = 0, volume_persymbol = 0;
         for (int i = 0; i < total; i++)
         {
             if (!OrderSelect(i, SELECT_BY_POS)) continue;
             if ((sets.MagicNumber != 0) && (OrderMagicNumber() != sets.MagicNumber)) continue;
-            if ((!sets.AllSymbols) && (OrderSymbol() != Symbol())) continue;
+            if (OrderSymbol() == Symbol()) volume_persymbol += OrderLots();
             volume += OrderLots();
         }
-        if (volume + PositionSize > sets.MaxPositionSize)
+        if ((volume + PositionSize > sets.MaxPositionSizeTotal) && (sets.MaxPositionSizeTotal > 0))
         {
-            Alert("Not taking a trade - current total volume (", DoubleToString(volume, LotStep_digits), ") + new position volume (", DoubleToString(PositionSize, LotStep_digits), ") >= maximum total volume (", sets.MaxPositionSize, ").");
+            Alert("Not taking a trade - current total volume (", DoubleToString(volume, LotStep_digits), ") + new position volume (", DoubleToString(PositionSize, LotStep_digits), ") >= maximum total volume allowed (", DoubleToString(sets.MaxPositionSizeTotal, LotStep_digits), ").");
+            return;
+        }
+        if ((volume_persymbol + PositionSize > sets.MaxPositionSizePerSymbol) && (sets.MaxPositionSizePerSymbol > 0))
+        {
+            Alert("Not taking a trade - current volume per symbol (", DoubleToString(volume_persymbol, LotStep_digits), ") + new position volume (", DoubleToString(PositionSize, LotStep_digits), ") >= maximum volume per symbol allowed (", DoubleToString(sets.MaxPositionSizePerSymbol, LotStep_digits), ").");
             return;
         }
     }
@@ -480,7 +509,38 @@ void DoTrailingStop()
 // Sets SL to breakeven based on the Magic number and symbol.
 void DoBreakEven()
 {
-    if ((!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) || (!TerminalInfoInteger(TERMINAL_CONNECTED)) || (!MQLInfoInteger(MQL_TRADE_ALLOWED))) return;
+    if (!TerminalInfoInteger(TERMINAL_CONNECTED)) return;
+    
+    // Delete old BE lines if necessary.
+    if (be_line_color != clrNONE)
+    {
+        int obj_total = ObjectsTotal(ChartID(), -1, OBJ_HLINE);
+        for (int i = obj_total - 1; i >= 0; i--)
+        {
+            string obj_name = ObjectName(ChartID(), i, -1, OBJ_HLINE);
+            if (StringFind(obj_name, ObjectPrefix + "BE") == -1) continue; // Skip all other horizontal lines.
+            int ticket = (int)StringToInteger(StringSubstr(obj_name, StringLen(ObjectPrefix + "BE")));
+            if (!OrderSelect(ticket, SELECT_BY_TICKET)) // No longer exists.
+            {
+                ObjectDelete(ChartID(), obj_name); // Delete the line.
+                if (ShowLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
+            }
+            else // Check if already triggered. Order selected.
+            {
+                double be_price = NormalizeDouble(StringToDouble(ObjectGetString(ChartID(), obj_name, OBJPROP_TOOLTIP)), _Digits);
+                if (((OrderType() == OP_BUY) && (OrderStopLoss() >= be_price)) // Already triggered.
+                 || ((OrderType() == OP_SELL) && (OrderStopLoss() <= be_price) && (OrderStopLoss() != 0)))
+                {
+                    ObjectDelete(ChartID(), obj_name); // Delete the line.
+                    if (ShowLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
+                }
+            }
+        }
+    }
+    
+    if (sets.BreakEvenPoints <= 0) return;
+    
+    if ((!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) || (!MQLInfoInteger(MQL_TRADE_ALLOWED))) return;
 
     for (int i = 0; i < OrdersTotal(); i++)
     {
@@ -489,13 +549,30 @@ void DoBreakEven()
         else
         {
             if ((OrderSymbol() != Symbol()) || (OrderMagicNumber() != sets.MagicNumber)) continue;
+
+            // Based on the commission if UseCommissionToSetTPDistance is set to true.
+            double extra_be_distance = 0;
+            if ((UseCommissionToSetTPDistance) && (sets.CommissionPerLot != 0))
+            {
+                // Calculate real commission in currency units.
+                double commission = CalculateCommission();
+
+                // Extra BE Distance = Commission Size / Point_value.
+                // Commission Size = Commission * 2.
+                // Extra BE Distance = Commission * 2 / Point_value.
+                if ((UnitCost_reward != 0) && (TickSize != 0))
+                    extra_be_distance = commission * 2 / (UnitCost_reward / TickSize);
+            }
+
             if (OrderType() == OP_BUY)
             {
-                double BE = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenPoints * _Point, _Digits);
-                if ((Bid >= BE) && (OrderOpenPrice() > OrderStopLoss())) // Only move to breakeven if the current stop-loss is lower.
+                double BE_threshold = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenPoints * _Point, _Digits);
+                double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
+                if ((be_line_color != clrNONE) && (BE_price > OrderStopLoss())) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
+                if ((Bid >= BE_threshold) && (Bid >= BE_price) && (BE_price > OrderStopLoss())) // Only move to BE if the price reached the necessary threshold, the price is above the calculated BE price, and the current stop-loss is lower.
                 {
                     // Write Open price to the SL field.
-                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), OrderOpenPrice(), OrderTakeProfit(), OrderExpiration()))
+                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
                         Print("OrderModify Buy BE failed " + ErrorDescription(GetLastError()) + ".");
                     else
                         Print("Breakeven was applied to position - " + Symbol() + " BUY-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(OrderStopLoss(), _Digits) + ".");
@@ -503,17 +580,54 @@ void DoBreakEven()
             }
             else if (OrderType() == OP_SELL)
             {
-                double BE = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
-                if ((Ask <= BE) && ((OrderOpenPrice() < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to breakeven if the current stop-loss is higher (or zero).
+                double BE_threshold = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
+                double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
+                if ((be_line_color != clrNONE) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) DrawBELine(OrderTicket(), BE_threshold, BE_price);
+                if ((Ask <= BE_threshold) && (Ask <= BE_price) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to BE if the price reached the necessary threshold, the price below the calculated BE price, and the current stop-loss is higher (or zero).
                 {
                     // Write Open price to the SL field.
-                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), OrderOpenPrice(), OrderTakeProfit(), OrderExpiration()))
+                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
                         Print("OrderModify Sell BE failed " + ErrorDescription(GetLastError()) + ".");
                     else
                         Print("Breakeven was applied to position - " + Symbol() + " SELL-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(OrderStopLoss(), _Digits) + ".");
                 }
             }
         }
+    }
+}
+
+void DrawBELine(int ticket, double be_threshold, double be_price)
+{
+    string obj_name = ObjectPrefix + "BE" + IntegerToString(ticket); // Line.
+    ObjectCreate(ChartID(), obj_name, OBJ_HLINE, 0, TimeCurrent(), be_threshold);
+    ObjectSetDouble(ChartID(), obj_name, OBJPROP_PRICE, be_threshold);
+    ObjectSetInteger(ChartID(), obj_name, OBJPROP_STYLE, be_line_style);
+    ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, be_line_color);
+    ObjectSetInteger(ChartID(), obj_name, OBJPROP_WIDTH, be_line_width);
+    ObjectSetInteger(ChartID(), obj_name, OBJPROP_SELECTABLE, false);
+    ObjectSetInteger(ChartID(), obj_name, OBJPROP_BACK, true);
+    ObjectSetString(ChartID(), obj_name, OBJPROP_TOOLTIP, DoubleToString(be_price, _Digits)); // Store BE price in the tooltip.
+
+    if (sets.ShowLines) ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+    else ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+
+    if (ShowLineLabels)
+    {
+        obj_name = ObjectPrefix + "BEL" + IntegerToString(ticket); // Label.
+        ObjectCreate(ChartID(), obj_name, OBJ_LABEL, 0, 0, 0);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, clrNONE);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_HIDDEN, false);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_BACK, DrawTextAsBackground);
+        ObjectSetString(ChartID(), obj_name, OBJPROP_TOOLTIP, "");
+        string text = "BE for ";
+        if (OrderType() == OP_BUY) text += "Buy";
+        else if (OrderType() == OP_SELL) text += "Sell";
+        text += " #" + IntegerToString(ticket);
+        DrawLineLabel(obj_name, text, be_threshold, be_line_color, false, -6);
     }
 }
 //+------------------------------------------------------------------+
