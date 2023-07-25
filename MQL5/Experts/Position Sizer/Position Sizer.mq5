@@ -6,12 +6,13 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.04"
-string    Version = "3.04";
+#property version   "3.05"
+string    Version = "3.05";
 
 #include "Translations\English.mqh"
 //#include "Translations\Ukrainian.mqh"
 //#include "Translations\Russian.mqh"
+//#include "Translations\Portuguese.mqh" // Contributed by Matheus Sevaroli.
 
 #property description "Calculates risk-based position size for your account."
 #property description "Allows trade execution based the calculation results.\r\n"
@@ -146,6 +147,7 @@ input bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If tr
 input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode - Apply SL/TP After All Trades Executed
 input bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
 input string SettingsFile = ""; // SettingsFile: Load custom panel settings from \Files\ folder.
+input bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -222,6 +224,7 @@ int OnInit()
         }
     }
 
+    bool is_InitControlsValues_required = false;
     // Normal attempt to load settings fails (attempted in not chart change case and in chart case with 'each pair own settings' case
     if ((((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))) && (!ExtDialog.LoadSettingsFromDisk())) 
     // OR chart change with hard_reset configured and with symbol change.
@@ -311,6 +314,7 @@ int OnInit()
         // Because it is the first load:
         Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
         sets.ShareVolumeMode = Decreasing;
+        if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
     }
     if (sets.TakeProfitsNumber < 1) sets.TakeProfitsNumber = 1; // At least one TP.
 
@@ -482,6 +486,9 @@ int OnInit()
             }
         }
     }
+
+    // If symbol change with a reset was enacted.
+    if (is_InitControlsValues_required) ExtDialog.InitControlsValues();
 
     return INIT_SUCCEEDED;
 }

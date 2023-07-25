@@ -6,8 +6,8 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.04"
-string    Version = "3.04";
+#property version   "3.05"
+string    Version = "3.05";
 #property strict
 
 #property description "Calculates risk-based position size for your account."
@@ -134,6 +134,7 @@ input bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If tr
 input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode - Apply SL/TP After All Trades Executed
 input bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
 input string SettingsFile = ""; // SettingsFile: Load custom panel settings from \Files\ folder.
+input bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -214,6 +215,7 @@ int OnInit()
             else LinesSelectedStatus = 2; // Flip lines to unselected.
         }
     }
+    bool is_InitControlsValues_required = false;
     // Normal attempt to load settings fails (attempted in not chart change case and in chart case with 'each pair own settings' case
     if ((((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))) && (!ExtDialog.LoadSettingsFromDisk())) 
     // OR chart change with hard_reset configured and with symbol change.
@@ -300,6 +302,7 @@ int OnInit()
         if ((sets.MaxRiskTotal < sets.MaxRiskPerSymbol) && (sets.MaxRiskTotal != 0)) sets.MaxRiskTotal = sets.MaxRiskPerSymbol;
         sets.ShareVolumeMode = Decreasing;
         sets.TemplateChanged = false;
+        if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
     }
     if (sets.TakeProfitsNumber < 1) sets.TakeProfitsNumber = 1; // At least one TP.
     if (DeinitializationReason != REASON_CHARTCHANGE)
@@ -463,6 +466,9 @@ int OnInit()
             }
         }
     }
+    
+    // If symbol change with a reset was enacted.
+    if (is_InitControlsValues_required) ExtDialog.InitControlsValues();
 
     return INIT_SUCCEEDED;
 }

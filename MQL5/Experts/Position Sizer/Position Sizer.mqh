@@ -86,6 +86,7 @@ public:
     virtual void     UpdateAdditionalTradingPanelTP(int i);
             void     ShowTPRelatedEdits();
             void     SetFileName(string file_name) {m_FileName = file_name;}
+            void     InitControlsValues();
             // Remember the panel's location to have the same location for minimized and maximized states.
             int      remember_top, remember_left;
 
@@ -1148,10 +1149,6 @@ bool CPositionSizeCalculator::InitObjects()
     if (sets.TPLockedOnSL) m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_ENABLE);
     else m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_BG);
 
-    //+-------------+
-    //| Init values.|
-    //+-------------+
-
     HideRisk();
     HideMargin();
     HideMain();
@@ -1164,36 +1161,55 @@ bool CPositionSizeCalculator::InitObjects()
     else if (sets.SelectedTab == SwapsTab) ShowSwaps();
     else if (sets.SelectedTab == TradingTab) ShowTrading();
 
+    InitControlsValues(); // Init values inside controls.
+
+    MoveAndResize();
+
+    DisplayValues();
+
+    if (sets.TakeProfitsNumber > 1)
+    {
+        for (int i = 0; i < sets.TakeProfitsNumber; i++)
+        {
+            TradingTPShareEdits[i].Text(IntegerToString(sets.TPShare[i])); // Display the values on the panel because they aren't refreshed in DisplayValues();
+            TradingTPEdits[i].Text(DoubleToString(sets.TP[i], _Digits));
+        }
+    }
+    return true;
+}
+
+void CPositionSizeCalculator::InitControlsValues()
+{
     if ((TP_Multiplier < 0.999) || (TP_Multiplier > 1.001))
     {
         if (!TPDistanceInPoints)
         {
-            if (!m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":")) return false;
+            m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
         }
-        else if (!m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":")) return false;
+        else m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
     }
 
     if (sets.EntryType == Pending)
     {
-        if (!m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_PENDING))                                  return false;
+        m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_PENDING);
     }
     else if (sets.EntryType == Instant)
     {
-        if (!m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_INSTANT))                                  return false;
+        m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_INSTANT);
         m_EdtEntryLevel.ReadOnly(true);
         m_EdtEntryLevel.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     }
     else if (sets.EntryType == StopLimit)
     {
-        if (!m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_STOPLIMIT))                               return false;
+        m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_STOPLIMIT);
     }
 
     // Hide Stop Limit fields.
     if (sets.EntryType != StopLimit)
     {
-        if (!m_LblStopPrice.Hide())                                           return false;
-        if (!m_EdtStopPrice.Hide())                                           return false;
-        if (!m_LblStopPriceWarning.Hide())                                    return false;
+        m_LblStopPrice.Hide();
+        m_EdtStopPrice.Hide();
+        m_LblStopPriceWarning.Hide();
     }
 
     double acc_val;
@@ -1204,7 +1220,7 @@ bool CPositionSizeCalculator::InitObjects()
         {
         default:
         case Balance:
-            if (!m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_BALANCE))                                 return false;
+            m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_BALANCE);
             // Custom balance.
             if (CustomBalance > 0) acc_val = CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
@@ -1213,14 +1229,14 @@ bool CPositionSizeCalculator::InitObjects()
             m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_ENABLE);
             break;
         case Equity:
-            if (!m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_EQUITY))                          return false;
+            m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_EQUITY);
             acc_val = AccountInfoDouble(ACCOUNT_EQUITY);
             // Account balance uneditable.
             m_EdtAccount.ReadOnly(true);
             m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
             break;
         case Balance_minus_Risk:
-            if (!m_BtnAccount.Text(TRANSLATION_BUTTON_BALANCE_MINUS_CPR))                               return false;
+            m_BtnAccount.Text(TRANSLATION_BUTTON_BALANCE_MINUS_CPR);
             // Custom balance.
             if (CustomBalance > 0) acc_val = CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
@@ -1231,7 +1247,7 @@ bool CPositionSizeCalculator::InitObjects()
         }
         // Applying additional funds (e.g. bank balance or total net worth, etc.).
         if (CustomBalance <= 0) acc_val += AdditionalFunds;
-        if (!m_EdtAccount.Text(DoubleToString(acc_val, 2)))                           return false;
+        m_EdtAccount.Text(DoubleToString(acc_val, 2));
         // Star to show that it is not original account balance.
         if ((AdditionalFunds >= 0.01) || (AdditionalFunds <= -0.01) || ((CustomBalance > 0) && (sets.AccountButton != Equity))) m_LblAdditionalFundsAsterisk.Show();
         else m_LblAdditionalFundsAsterisk.Hide();
@@ -1253,94 +1269,80 @@ bool CPositionSizeCalculator::InitObjects()
         int digits = 2;
         if (QuickRisk1 >= 100) digits = 0;
         else if (QuickRisk1 >= 10) digits = 1;
-        if (!m_BtnQuickRisk1.Text(DoubleToString(QuickRisk1, digits))) return false;
+        m_BtnQuickRisk1.Text(DoubleToString(QuickRisk1, digits));
     }
     if (QuickRisk2 > 0)
     {
         int digits = 2;
         if (QuickRisk2 >= 100) digits = 0;
         else if (QuickRisk2 >= 10) digits = 1;
-        if (!m_BtnQuickRisk2.Text(DoubleToString(QuickRisk2, digits))) return false;
+        m_BtnQuickRisk2.Text(DoubleToString(QuickRisk2, digits));
     }
 
-    if (!m_EdtRiskPIn.Text(DoubleToString(sets.Risk, 2)))                          return false;
-    if (!m_EdtRiskMIn.Text(DoubleToString(sets.MoneyRisk, AccountCurrencyDigits))) return false;
+    m_EdtRiskPIn.Text(DoubleToString(sets.Risk, 2));
+    m_EdtRiskMIn.Text(DoubleToString(sets.MoneyRisk, AccountCurrencyDigits));
 
     if (ShowATROptions)
     {
-        if (!m_EdtATRPeriod.Text(IntegerToString(sets.ATRPeriod)))               return false;
-        if (!m_EdtATRMultiplierSL.Text(DoubleToString(sets.ATRMultiplierSL, 2))) return false;
-        if (!m_ChkSpreadAdjustmentSL.Checked(sets.SpreadAdjustmentSL))                return false;
-        if (!m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2))) return false;
-        if (!m_ChkSpreadAdjustmentTP.Checked(sets.SpreadAdjustmentTP))                return false;
+        m_EdtATRPeriod.Text(IntegerToString(sets.ATRPeriod));
+        m_EdtATRMultiplierSL.Text(DoubleToString(sets.ATRMultiplierSL, 2));
+        m_ChkSpreadAdjustmentSL.Checked(sets.SpreadAdjustmentSL);
+        m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
+        m_ChkSpreadAdjustmentTP.Checked(sets.SpreadAdjustmentTP);
         if (sets.ATRTimeframe != PERIOD_CURRENT) m_BtnATRTimeframe.Text(EnumToString(sets.ATRTimeframe));
         else m_BtnATRTimeframe.Text(TRANSLATION_BUTTON_ATR_PERIOD_CURRENT);
     }
 
-    if (!m_ChkCountPendings.Checked(sets.CountPendingOrders))                return false;
-    if (!m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL))     return false;
-    if (!m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP))     return false;
-    if (!m_ChkIgnoreOtherSymbols.Checked(sets.IgnoreOtherSymbols))           return false;
+    m_ChkCountPendings.Checked(sets.CountPendingOrders);
+    m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL);
+    m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP);
+    m_ChkIgnoreOtherSymbols.Checked(sets.IgnoreOtherSymbols);
 
     // Show/hide RiskReward
     if (sets.TakeProfitLevel == 0)
     {
-        if (!m_LblRR.Hide())                                                  return false;
-        if (!m_EdtRR1.Hide())                                                 return false;
-        if (!m_EdtRR2.Hide())                                                 return false;
-        if (!m_LblReward.Hide())                                              return false;
-        if (!m_EdtReward1.Hide())                                             return false;
-        if (!m_EdtReward2.Hide())                                             return false;
+        m_LblRR.Hide();
+        m_EdtRR1.Hide();
+        m_EdtRR2.Hide();
+        m_LblReward.Hide();
+        m_EdtReward1.Hide();
+        m_EdtReward2.Hide();
     }
 
     CustomLeverage = sets.CustomLeverage;
     CustomLeverageDecimals = CountDecimalPlaces(CustomLeverage);
 
     // Trading
-    if (!m_EdtTrailingStopPoints.Text(IntegerToString(sets.TrailingStopPoints)))                                return false;
-    if (!m_EdtBreakEvenPoints.Text(IntegerToString(sets.BreakEvenPoints)))                                    return false;
-    if (!m_EdtMagicNumber.Text(IntegerToString(sets.MagicNumber)))                                return false;
-    if (!m_EdtCommentary.Text(sets.Commentary))                                       return false;
-    if (!m_ChkCommentAutoSuffix.Checked(sets.CommentAutoSuffix))                             return false;
+    m_EdtTrailingStopPoints.Text(IntegerToString(sets.TrailingStopPoints));
+    m_EdtBreakEvenPoints.Text(IntegerToString(sets.BreakEvenPoints));
+    m_EdtMagicNumber.Text(IntegerToString(sets.MagicNumber));
+    m_EdtCommentary.Text(sets.Commentary);
+    m_ChkCommentAutoSuffix.Checked(sets.CommentAutoSuffix);
     if (ShowMaxParametersOnTrading)
     {
-        if (!m_EdtMaxNumberOfTradesTotal.Text(IntegerToString(sets.MaxNumberOfTradesTotal)))                                return false;
-        if (!m_EdtMaxNumberOfTradesPerSymbol.Text(IntegerToString(sets.MaxNumberOfTradesPerSymbol)))                                return false;
-        if (!m_EdtMaxPositionSizeTotal.Text(DoubleToString(sets.MaxPositionSizeTotal, 2)))                                return false;
-        if (!m_EdtMaxPositionSizePerSymbol.Text(DoubleToString(sets.MaxPositionSizeTotal, 2)))                                return false;
-        if (!m_EdtMaxRiskTotal.Text(DoubleToString(sets.MaxRiskTotal, 2)))                                return false;
-        if (!m_EdtMaxRiskPerSymbol.Text(DoubleToString(sets.MaxRiskPerSymbol, 2)))                                return false;
+        m_EdtMaxNumberOfTradesTotal.Text(IntegerToString(sets.MaxNumberOfTradesTotal));
+        m_EdtMaxNumberOfTradesPerSymbol.Text(IntegerToString(sets.MaxNumberOfTradesPerSymbol));
+        m_EdtMaxPositionSizeTotal.Text(DoubleToString(sets.MaxPositionSizeTotal, 2));
+        m_EdtMaxPositionSizePerSymbol.Text(DoubleToString(sets.MaxPositionSizeTotal, 2));
+        m_EdtMaxRiskTotal.Text(DoubleToString(sets.MaxRiskTotal, 2));
+        m_EdtMaxRiskPerSymbol.Text(DoubleToString(sets.MaxRiskPerSymbol, 2));
     }
-    if (!m_ChkDisableTradingWhenLinesAreHidden.Checked(sets.DisableTradingWhenLinesAreHidden)) return false;
+    m_ChkDisableTradingWhenLinesAreHidden.Checked(sets.DisableTradingWhenLinesAreHidden);
     if (ShowFusesOnTrading)
     {
-        if (!m_EdtMaxSlippage.Text(IntegerToString(sets.MaxSlippage)))                                return false;
-        if (!m_EdtMaxSpread.Text(IntegerToString(sets.MaxSpread)))                                    return false;
-        if (!m_EdtMaxEntrySLDistance.Text(IntegerToString(sets.MaxEntrySLDistance)))               return false;
-        if (!m_EdtMinEntrySLDistance.Text(IntegerToString(sets.MinEntrySLDistance)))               return false;
+        m_EdtMaxSlippage.Text(IntegerToString(sets.MaxSlippage));
+        m_EdtMaxSpread.Text(IntegerToString(sets.MaxSpread));
+        m_EdtMaxEntrySLDistance.Text(IntegerToString(sets.MaxEntrySLDistance));
+        m_EdtMinEntrySLDistance.Text(IntegerToString(sets.MinEntrySLDistance));
     }
     if (ShowCheckboxesOnTrading)
     {
-        if (!m_ChkSubtractPositions.Checked(sets.SubtractPositions))                               return false;
-        if (!m_ChkSubtractPendingOrders.Checked(sets.SubtractPendingOrders))                       return false;
-        if (!m_ChkDoNotApplyStopLoss.Checked(sets.DoNotApplyStopLoss))                             return false;
-        if (!m_ChkDoNotApplyTakeProfit.Checked(sets.DoNotApplyTakeProfit))                         return false;
+        m_ChkSubtractPositions.Checked(sets.SubtractPositions);
+        m_ChkSubtractPendingOrders.Checked(sets.SubtractPendingOrders);
+        m_ChkDoNotApplyStopLoss.Checked(sets.DoNotApplyStopLoss);
+        m_ChkDoNotApplyTakeProfit.Checked(sets.DoNotApplyTakeProfit);
     }
-    if (!m_ChkAskForConfirmation.Checked(sets.AskForConfirmation))                             return false;
-
-    MoveAndResize();
-
-    DisplayValues();
-
-    if (sets.TakeProfitsNumber > 1)
-    {
-        for (int i = 0; i < sets.TakeProfitsNumber; i++)
-        {
-            TradingTPShareEdits[i].Text(IntegerToString(sets.TPShare[i])); // Display the values on the panel because they aren't refreshed in DisplayValues();
-            TradingTPEdits[i].Text(DoubleToString(sets.TP[i], _Digits));
-        }
-    }
-    return true;
+    m_ChkAskForConfirmation.Checked(sets.AskForConfirmation);
 }
 
 // Moves elements on the panel depending on the choice of showing TP-related stuff, risk, and margin.
@@ -1748,11 +1750,7 @@ bool CPositionSizeCalculator::DisplayValues()
             AdditionalTPLineMoved = false;
         }
     }
-    if (ShowMaxParametersOnTrading)
-    {
-    /* Maximum Position Size      */ if (!m_EdtMaxPositionSizeTotal.Text(DoubleToString(sets.MaxPositionSizeTotal, LotStep_digits)))    return false;
-                                     if (!m_EdtMaxPositionSizePerSymbol.Text(DoubleToString(sets.MaxPositionSizePerSymbol, LotStep_digits)))    return false;
-    }
+
     return true;
 }
 
@@ -1839,97 +1837,94 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
         }
     }
 
-    if (sets.ShowLines)
+    double read_value;
+    if ((sets.ATRMultiplierSL == 0) || (!ShowATROptions))
     {
-        double read_value;
-        if ((sets.ATRMultiplierSL == 0) || (!ShowATROptions))
-        {
-            if (ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_value)) sets.StopLossLevel = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
-        }
-        if ((sets.ATRMultiplierTP == 0) || (!ShowATROptions))
-        {
-            if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0, read_value)) sets.TakeProfitLevel = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
-        }
-        for (int i = 1; i < sets.TakeProfitsNumber; i++)
-        {
-            if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, read_value)) sets.TP[i] = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
-        }
+        if (ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_value)) sets.StopLossLevel = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
+    }
+    if ((sets.ATRMultiplierTP == 0) || (!ShowATROptions))
+    {
+        if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0, read_value)) sets.TakeProfitLevel = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
+    }
+    for (int i = 1; i < sets.TakeProfitsNumber; i++)
+    {
+        if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, read_value)) sets.TP[i] = NormalizeDouble(read_value, _Digits); // Rewrite value only if line exists.
+    }
 
+    // Check and adjust for TickSize granularity.
+    if (TickSize > 0)
+    {
+        sets.StopLossLevel = NormalizeDouble(MathRound(sets.StopLossLevel / TickSize) * TickSize, _Digits);
+        if ((!StopLossLineIsBeingMoved) || (sets.ATRMultiplierSL == 0) || (!ShowATROptions)) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
+        sets.TakeProfitLevel = NormalizeDouble(MathRound(sets.TakeProfitLevel / TickSize) * TickSize, _Digits);
+        if ((!TakeProfitLineIsBeingMoved[0]) || (sets.ATRMultiplierTP == 0) || (!ShowATROptions)) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
+        if (sets.TakeProfitsNumber > 1)
+        {
+            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            {
+                sets.TP[i] = NormalizeDouble(MathRound(sets.TP[i] / TickSize) * TickSize, _Digits);
+            }
+        }
+    }
+
+    if (sets.EntryType == Instant)
+    {
+        if (!SLDistanceInPoints)
+        {
+            if (sets.StopLossLevel < SymbolInfoDouble(Symbol(), SYMBOL_ASK)) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+        }
+        else
+        {
+            if (sets.TradeDirection == Long) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+        }
+    }
+    else // Pending or Stop Limit.
+    {
+        if (ObjectGetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, 0, read_value)) sets.EntryLevel = read_value; // Rewrite value only if line exists.
+        if ((sets.EntryLevel == StopLimit) && (ObjectGetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, 0, read_value))) sets.StopPriceLevel = read_value;
         // Check and adjust for TickSize granularity.
         if (TickSize > 0)
         {
-            sets.StopLossLevel = NormalizeDouble(MathRound(sets.StopLossLevel / TickSize) * TickSize, _Digits);
-            if ((!StopLossLineIsBeingMoved) || (sets.ATRMultiplierSL == 0) || (!ShowATROptions)) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
-            sets.TakeProfitLevel = NormalizeDouble(MathRound(sets.TakeProfitLevel / TickSize) * TickSize, _Digits);
-            if ((!TakeProfitLineIsBeingMoved[0]) || (sets.ATRMultiplierTP == 0) || (!ShowATROptions)) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
-            if (sets.TakeProfitsNumber > 1)
+            sets.EntryLevel = NormalizeDouble(MathRound(sets.EntryLevel / TickSize) * TickSize, _Digits);
+            ObjectSetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, sets.EntryLevel);
+            if (sets.EntryLevel == StopLimit)
             {
-                for (int i = 0; i < sets.TakeProfitsNumber; i++)
-                {
-                    sets.TP[i] = NormalizeDouble(MathRound(sets.TP[i] / TickSize) * TickSize, _Digits);
-                }
+                sets.StopPriceLevel = NormalizeDouble(MathRound(sets.StopPriceLevel / TickSize) * TickSize, _Digits);
+                ObjectSetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, sets.StopPriceLevel);
             }
         }
+    }
 
-        if (sets.EntryType == Instant)
-        {
-            if (!SLDistanceInPoints)
-            {
-                if (sets.StopLossLevel < SymbolInfoDouble(Symbol(), SYMBOL_ASK)) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-                else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
-            }
-            else
-            {
-                if (sets.TradeDirection == Long) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-                else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
-            }
-        }
-        else // Pending or Stop Limit.
-        {
-            if (ObjectGetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, 0, read_value)) sets.EntryLevel = read_value; // Rewrite value only if line exists.
-            if ((sets.EntryLevel == StopLimit) && (ObjectGetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, 0, read_value))) sets.StopPriceLevel = read_value;
-            // Check and adjust for TickSize granularity.
-            if (TickSize > 0)
-            {
-                sets.EntryLevel = NormalizeDouble(MathRound(sets.EntryLevel / TickSize) * TickSize, _Digits);
-                ObjectSetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, sets.EntryLevel);
-                if (sets.EntryLevel == StopLimit)
-                {
-                    sets.StopPriceLevel = NormalizeDouble(MathRound(sets.StopPriceLevel / TickSize) * TickSize, _Digits);
-                    ObjectSetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, sets.StopPriceLevel);
-                }
-            }
-        }
+    // Set line based on the entered SL distance.
+    if (SLDistanceInPoints)
+    {
+        if (sets.TradeDirection == Long) sets.StopLossLevel = sets.EntryLevel - sets.StopLoss * _Point;
+        else sets.StopLossLevel = sets.EntryLevel + sets.StopLoss * _Point;
+        if (!StopLossLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
+    }
 
-        // Set line based on the entered SL distance.
-        if (SLDistanceInPoints)
+    // Set line based on the entered TP distance.
+    if (TPDistanceInPoints)
+    {
+        if (sets.TakeProfit > 0)
         {
-            if (sets.TradeDirection == Long) sets.StopLossLevel = sets.EntryLevel - sets.StopLoss * _Point;
-            else sets.StopLossLevel = sets.EntryLevel + sets.StopLoss * _Point;
-            if (!StopLossLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
+            if (sets.TradeDirection == Long) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfit * _Point;
+            else sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
+            if (!TakeProfitLineIsBeingMoved[0]) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
         }
-
-        // Set line based on the entered TP distance.
-        if (TPDistanceInPoints)
+        // Additional take-profits.
+        if (sets.TakeProfitsNumber > 1)
         {
-            if (sets.TakeProfit > 0)
+            for (int i = 1; i < sets.TakeProfitsNumber; i++)
             {
-                if (sets.TradeDirection == Long) sets.TakeProfitLevel = sets.EntryLevel + sets.TakeProfit * _Point;
-                else sets.TakeProfitLevel = sets.EntryLevel - sets.TakeProfit * _Point;
-                if (!TakeProfitLineIsBeingMoved[0]) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, sets.TakeProfitLevel);
-            }
-            // Additional take-profits.
-            if (sets.TakeProfitsNumber > 1)
-            {
-                for (int i = 1; i < sets.TakeProfitsNumber; i++)
+                if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                 {
-                    if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
-                    {
-                        if (sets.TradeDirection == Long) sets.TP[i] = NormalizeDouble(sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
-                        else sets.TP[i] = NormalizeDouble(sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
-                    }
-                    if (!TakeProfitLineIsBeingMoved[i]) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.TP[i]);
+                    if (sets.TradeDirection == Long) sets.TP[i] = NormalizeDouble(sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
+                    else sets.TP[i] = NormalizeDouble(sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
                 }
+                if (!TakeProfitLineIsBeingMoved[i]) ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.TP[i]);
             }
         }
     }
@@ -2195,15 +2190,18 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
 
     if (tTakeProfitLevel != sets.TakeProfitLevel)
     {
-        if ((sets.TakeProfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
+        if ((PrefillAdditionalTPsBasedOnMain) && (sets.TakeProfitsNumber > 1))
         {
-            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            if ((tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
             {
-                if (i == 0) sets.TP[i] = sets.TakeProfitLevel;
-                else
+                for (int i = 0; i < sets.TakeProfitsNumber; i++)
                 {
-                    TradingTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(sets.TakeProfitsNumber - i) / double(sets.TakeProfitsNumber)));
-                    UpdateTradingTPEdit(i);
+                    if (i == 0) sets.TP[i] = sets.TakeProfitLevel;
+                    else
+                    {
+                        TradingTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(sets.TakeProfitsNumber - i) / double(sets.TakeProfitsNumber)));
+                        UpdateTradingTPEdit(i);
+                    }
                 }
             }
         }
@@ -3610,7 +3608,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
 
     if (MaxTakeProfitsNumber < sets.TakeProfitsNumber) MaxTakeProfitsNumber = sets.TakeProfitsNumber;
 
-    if (sets.TakeProfitLevel != 0) // If added a new TP when the first TP was already set, set some value to the new one too.
+    if ((PrefillAdditionalTPsBasedOnMain) && (sets.TakeProfitLevel != 0)) // If added a new TP when the first TP was already set, set some value to the new one too.
     {
         if (!TPDistanceInPoints) sets.TP[sets.TakeProfitsNumber - 1] = NormalizeDouble(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * sets.TakeProfitsNumber, _Digits);
         else
@@ -3839,15 +3837,18 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
 
     if (tTakeProfitLevel != sets.TakeProfitLevel)
     {
-        if ((sets.TakeProfitsNumber > 1) && (tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
+        if ((PrefillAdditionalTPsBasedOnMain) && (sets.TakeProfitsNumber > 1))
         {
-            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            if ((tTakeProfitLevel == 0) && (sets.TakeProfitLevel != 0)) // Was zero, became non-zero.
             {
-                if (i == 0) sets.TP[i] = sets.TakeProfitLevel;
-                else
+                for (int i = 0; i < sets.TakeProfitsNumber; i++)
                 {
-                    TradingTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(sets.TakeProfitsNumber - i) / double(sets.TakeProfitsNumber)));
-                    UpdateTradingTPEdit(i);
+                    if (i == 0) sets.TP[i] = sets.TakeProfitLevel;
+                    else
+                    {
+                        TradingTPEdits[i].Text(DoubleToString(sets.EntryLevel + (sets.TakeProfitLevel - sets.EntryLevel) * double(sets.TakeProfitsNumber - i) / double(sets.TakeProfitsNumber)));
+                        UpdateTradingTPEdit(i);
+                    }
                 }
             }
         }
@@ -6335,30 +6336,7 @@ void CalculateRiskAndPositionSize()
     if (StopLoss == 0) return;
 
     // Calculate adjusted position size shares for use here and in RecalculatePositionSize().
-    double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
-    // Calculate volume for each partial trade.
-    // The goal is to use normal rounded down values for all TPs and then gradually distribute the remainder.
-    if (sets.TakeProfitsNumber > 1)
-    {
-        // Divide everything equally, but rounding down. There will be a remainder.
-        for (int i = sets.TakeProfitsNumber - 1; i >= 0; i--)
-        {
-            double position_size = BrokerizePositionSize(OutputPositionSize * (double)sets.TPShare[i] / 100.0);
-            AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + position_size, LotStep_digits);
-            ArrayPositionSize[i] = position_size;
-        }
-        // Distribute remaining position size if/while there is a remainder to distribute.
-        while (OutputPositionSize - AccumulatedPositionSize > 0) 
-        {
-            for (int i = 0; i < sets.TakeProfitsNumber; i++)
-            {
-                ArrayPositionSize[i] = NormalizeDouble(ArrayPositionSize[i] + LotStep, LotStep_digits);
-                AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + LotStep, LotStep_digits);
-                if (AccumulatedPositionSize >= OutputPositionSize) break;
-            }            
-        }
-    }
-    else ArrayPositionSize[0] = OutputPositionSize;
+    PositionSizeToArray(OutputPositionSize); // Fills ArrayPositionSize[].
 
     if (tTakeProfitLevel > 0)
     {
@@ -6407,6 +6385,7 @@ void CalculateRiskAndPositionSize()
     // Multiple TPs.
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
+        AdditionalOutputReward[i - 1] = 0;
         double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
         if (add_tTakeProfitLevel > 0)
         {
@@ -6464,7 +6443,7 @@ void CalculateRiskAndPositionSize()
             if ((AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) || (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP)) OutputRR = TRANSLATION_LABEL_WARNING_INVALID_TP; // At least one Invalid TP means that total RR is also invalid.
             if ((OutputPositionSize > 0) && (ArrayPositionSize[i] > 0)) TotalOutputRisk += (OutputRiskMoney / OutputPositionSize * ArrayPositionSize[i]);
             TotalInputRisk += (RiskMoney * (double)sets.TPShare[i] / 100.0);
-            InputReward = DoubleToString(StringToDouble(InputReward) +  Round(RiskMoney * (double)sets.TPShare[i] / 100.0 * MathAbs(sets.TP[i] - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
+            if (sets.TP[i] > 0) InputReward = DoubleToString(StringToDouble(InputReward) + Round(RiskMoney * (double)sets.TPShare[i] / 100.0 * MathAbs(sets.TP[i] - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
         }
         if (OutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP)
         {
@@ -7747,5 +7726,34 @@ string WeekdayToString(int weekday)
         case 6: return TRANSLATION_EDIT_WEEKDAY_SATURDAY;
     }
     return TRANSLATION_MESSAGE_ERROR;
+}
+
+// Calculate adjusted position size shares for use in Position Sizer.mqh and Position Sizer Trading.mhq.
+void PositionSizeToArray(double ps)
+{
+    if (sets.TakeProfitsNumber > 1)
+    {
+        // Calculate volume for each partial trade.
+        // The goal is to use normal rounded down values for all TPs and then gradually distribute the remainder.
+        double AccumulatedPositionSize = 0; // Total PS used by additional TPs.
+        // Divide everything equally, but rounding down. There will be a remainder.
+        for (int i = sets.TakeProfitsNumber - 1; i >= 0; i--)
+        {
+            double position_size = BrokerizePositionSize(ps * (double)sets.TPShare[i] / 100.0);
+            AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + position_size, LotStep_digits);
+            ArrayPositionSize[i] = position_size;
+        }
+        // Distribute remaining position size if/while there is a remainder to distribute.
+        while (ps - AccumulatedPositionSize > 0) 
+        {
+            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            {
+                ArrayPositionSize[i] = NormalizeDouble(ArrayPositionSize[i] + LotStep, LotStep_digits);
+                AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + LotStep, LotStep_digits);
+                if (AccumulatedPositionSize >= ps) break;
+            }            
+        }
+    }
+    else ArrayPositionSize[0] = ps;
 }
 //+------------------------------------------------------------------+

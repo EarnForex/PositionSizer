@@ -206,14 +206,18 @@ void Trade()
         if ((ot == OP_BUY) || (ot == OP_BUYLIMIT) || (ot == OP_BUYSTOP)) PositionSize -= existing_volume_buy;
         else PositionSize -= existing_volume_sell;
         Print("Adjusted position size = ", DoubleToString(PositionSize, LotStep_digits));
-        if (PositionSize < 0)
+        if (PositionSize <= 0)
         {
-            Alert("Adjusted position size is less than zero. Not executing any trade.");
+            Alert("Adjusted position size is less or equal to zero. Not executing any trade.");
             return;
+        }
+        if (PositionSize != OutputPositionSize) // If changed, recalculate the array of position sizes.
+        {
+            PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
         }
     }
 
-    if ((sets.MaxPositionSizeTotal > 0) && (sets.MaxPositionSizePerSymbol > 0))
+    if ((sets.MaxPositionSizeTotal > 0) || (sets.MaxPositionSizePerSymbol > 0))
     {
         int total = OrdersTotal();
         double volume = 0, volume_persymbol = 0;

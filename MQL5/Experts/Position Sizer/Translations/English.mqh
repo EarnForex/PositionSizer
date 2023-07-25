@@ -248,7 +248,7 @@
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_BUY_VOLUME "Found existing buy volume"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_SELL_VOLUME "Found existing sell volume"
 #define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE "Adjusted position size"
-#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Adjusted position size is less than zero. Not executing any trade."
+#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Adjusted position size is less or equal zero. Not executing any trade."
 #define TRANSLATION_MESSAGE_NTAT_TOTAL_VOLUME "current total volume"
 #define TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME "new position volume"
 #define TRANSLATION_MESSAGE_NTAT_MAXIMUM_TOTAL_VOLUME "maximum total volume allowed"

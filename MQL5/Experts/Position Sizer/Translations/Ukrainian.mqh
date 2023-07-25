@@ -245,7 +245,7 @@
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_BUY_VOLUME "Знайдений поточний об'єм на купівлю"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_SELL_VOLUME "Знайдений поточний об'єм на продаж"
 #define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE "Виправлений розмір позиції"
-#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Виправлений розмір позиції менший за нуль. Угода не буде виконана."
+#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Виправлений розмір позиції менше або дорівнює нулю. Угода не буде виконана."
 #define TRANSLATION_MESSAGE_NTAT_TOTAL_VOLUME "поточний загальний об'єм"
 #define TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME "об'єм нової позиції"
 #define TRANSLATION_MESSAGE_NTAT_MAXIMUM_TOTAL_VOLUME "максимально припустимий загальний об'єм"
