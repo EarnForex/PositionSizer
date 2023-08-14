@@ -10,7 +10,7 @@
 string    Version = "3.06";
 
 #include "Translations\English.mqh"
-#include "Translations\Arabic.mqh"
+//#include "Translations\Arabic.mqh"
 //#include "Translations\Chinese.mqh"
 //#include "Translations\Portuguese.mqh" // Contributed by Matheus Sevaroli.
 //#include "Translations\Russian.mqh"
