@@ -1656,16 +1656,31 @@ void CPositionSizeCalculator::RefreshValues()
 
     if (sets.EntryType == Instant)
     {
-        if (!SLDistanceInPoints)
+        if ((Ask > 0) && (Bid > 0))
         {
-            if (sets.StopLossLevel < SymbolInfoDouble(Symbol(), SYMBOL_ASK)) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+            if (sets.ShowLines)
+            {
+                double read_tStopLossLevel;
+                if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return; // Line was deleted, waiting for automatic restoration.
+                tStopLossLevel = Round(read_tStopLossLevel, _Digits);
+            }
+            else
+                tStopLossLevel = sets.StopLossLevel;
+
+            // Long entry
+            if (tStopLossLevel < Bid) tEntryLevel = Ask;
+            // Short entry
+            else if (tStopLossLevel > Ask) tEntryLevel = Bid;
+            // Undefined entry
+            else
+            {
+                // Move tEntryLevel to the nearest line.
+                if ((tEntryLevel - Bid) < (tEntryLevel - Ask)) tEntryLevel = Bid;
+                else tEntryLevel = Ask;
+            }
+            ObjectSetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE, 0, tEntryLevel);
         }
-        else
-        {
-            if (sets.TradeDirection == Long) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
-        }
+        sets.EntryLevel = tEntryLevel;
     }
     else // Pending
     {
@@ -2904,6 +2919,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
     {
         ArrayResize(sets.TP, sets.TakeProfitsNumber);
         ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+        ArrayInitialize(TakeProfitLineIsBeingMoved, false);
         ArrayResize(sets.TPShare, sets.TakeProfitsNumber);
         if (sets.ShareVolumeMode == Decreasing) // Do the previous method because sets.ShareVolumeMode gets switched over once you click the button.
         {
@@ -3351,9 +3367,15 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
 {
     if (!SLDistanceInPoints)
     {
+        double new_value = StringToDouble(m_EdtSL.Text());
+        if (new_value == 0) // Not allowed.
+        {
+            m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)); // Change back.
+            return;
+        }
+        sets.StopLossLevel = new_value;
         // Check and adjust for TickSize granularity.
         if (TickSize > 0) sets.StopLossLevel = NormalizeDouble(MathRound(sets.StopLossLevel / TickSize) * TickSize, _Digits);
-        sets.StopLossLevel = StringToDouble(m_EdtSL.Text());
     }
     else
     {
@@ -3392,9 +3414,9 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
 {
     if (!TPDistanceInPoints)
     {
+        sets.TakeProfitLevel = StringToDouble(m_EdtTP.Text());
         // Check and adjust for TickSize granularity.
         if (TickSize > 0) sets.TakeProfitLevel = NormalizeDouble(MathRound(sets.TakeProfitLevel / TickSize) * TickSize, _Digits);
-        sets.TakeProfitLevel = StringToDouble(m_EdtTP.Text());
     }
     else
     {
@@ -4205,6 +4227,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                 ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
             }
             ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+            ArrayInitialize(TakeProfitLineIsBeingMoved, false);
         }
         else if (var_name == "Risk")
             sets.Risk = StringToDouble(var_content);
@@ -4591,6 +4614,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                         ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
                     }
                     ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+                    ArrayInitialize(TakeProfitLineIsBeingMoved, false);
                 }
             }
         }
@@ -5051,7 +5075,7 @@ void Initialization()
     {
         if (sets.TradeDirection == Long)
         {
-            sets.EntryLevel = High[0];
+            sets.EntryLevel = Ask;
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel - DefaultSL * _Point;
             else sets.StopLossLevel = Low[0];
             if (DefaultTP > 0) sets.TakeProfitLevel = sets.EntryLevel + DefaultTP * _Point;
@@ -5059,7 +5083,7 @@ void Initialization()
         }
         else
         {
-            sets.EntryLevel = Low[0];
+            sets.EntryLevel = Bid;
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel + DefaultSL * _Point;
             else sets.StopLossLevel = High[0];
             if (DefaultTP > 0) sets.TakeProfitLevel = sets.EntryLevel - DefaultTP * _Point;
@@ -5375,40 +5399,11 @@ void Initialization()
 //+------------------------------------------------------------------+
 void RecalculatePositionSize()
 {
-    // Update Entry to Ask/Bid if needed.
     RefreshRates();
     WarningEntry = "";
     WarningSL    = "";
     WarningTP    = "";
     for (int i = 1; i < sets.TakeProfitsNumber; i++) AdditionalWarningTP[i - 1] = "";
-
-    if (sets.EntryType == Instant)
-    {
-        if ((Ask > 0) && (Bid > 0))
-        {
-            if (sets.ShowLines)
-            {
-                double read_tStopLossLevel;
-                if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return; // Line was deleted, waiting for automatic restoration.
-                tStopLossLevel = Round(read_tStopLossLevel, _Digits);
-            }
-            else
-                tStopLossLevel = sets.StopLossLevel;
-
-            // Long entry
-            if (tStopLossLevel < Bid) tEntryLevel = Ask;
-            // Short entry
-            else if (tStopLossLevel > Ask) tEntryLevel = Bid;
-            // Undefined entry
-            else
-            {
-                // Move tEntryLevel to the nearest line.
-                if ((tEntryLevel - Bid) < (tEntryLevel - Ask)) tEntryLevel = Bid;
-                else tEntryLevel = Ask;
-            }
-            ObjectSetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE, 0, tEntryLevel);
-        }
-    }
 
     // If could not find account currency, probably not connected.
     if ((AccountCurrency() == "") || (!TerminalInfoInteger(TERMINAL_CONNECTED))) return;

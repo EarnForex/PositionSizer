@@ -6,13 +6,16 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.05"
-string    Version = "3.05";
+#property version   "3.06"
+string    Version = "3.06";
 
 #include "Translations\English.mqh"
-//#include "Translations\Ukrainian.mqh"
-//#include "Translations\Russian.mqh"
+#include "Translations\Arabic.mqh"
+//#include "Translations\Chinese.mqh"
 //#include "Translations\Portuguese.mqh" // Contributed by Matheus Sevaroli.
+//#include "Translations\Russian.mqh"
+//#include "Translations\Spanish.mqh"
+//#include "Translations\Ukrainian.mqh"
 
 #property description "Calculates risk-based position size for your account."
 #property description "Allows trade execution based the calculation results.\r\n"
@@ -124,6 +127,7 @@ input string SwitchEntryDirectionHotKey = "TAB"; // SwitchEntryDirectionHotKey: 
 input string SwitchHideShowLinesHotKey = "H"; // SwitchHideShowLinesHotKey: Switch Hide/Show lines.
 input string SetStopLossHotKey = "S"; // SetStopLossHotKey: Set SL to where mouse pointer is.
 input string SetTakeProfitHotKey = "P"; // SetTakeProfitHotKey: Set TP to where mouse pointer is.
+input string SetEntryHotKey = "E"; // SetEntryHotKey: Set Entry to where mouse pointer is.
 input group "Miscellaneous"
 input double TP_Multiplier = 1; // TP Multiplier for SL value, appears in Take-profit button.
 input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
@@ -156,9 +160,9 @@ bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
 uint LastRecalculationTime = 0;
 bool StopLossLineIsBeingMoved = false;
 bool TakeProfitLineIsBeingMoved[]; // Separate for each TP.
-uchar MainKey_TradeHotKey = 0, MainKey_SwitchOrderTypeHotKey = 0, MainKey_SwitchEntryDirectionHotKey = 0, MainKey_SwitchHideShowLinesHotKey = 0, MainKey_SetStopLossHotKey = 0, MainKey_SetTakeProfitHotKey = 0;
-bool CtrlRequired_TradeHotKey = false, CtrlRequired_SwitchOrderTypeHotKey = false, CtrlRequired_SwitchEntryDirectionHotKey = false, CtrlRequired_SwitchHideShowLinesHotKey = false, CtrlRequired_SetStopLossHotKey = false, CtrlRequired_SetTakeProfitHotKey = false;
-bool ShiftRequired_TradeHotKey = false, ShiftRequired_SwitchOrderTypeHotKey = false, ShiftRequired_SwitchEntryDirectionHotKey = false, ShiftRequired_SwitchHideShowLinesHotKey = false, ShiftRequired_SetStopLossHotKey = false, ShiftRequired_SetTakeProfitHotKey = false;
+uchar MainKey_TradeHotKey = 0, MainKey_SwitchOrderTypeHotKey = 0, MainKey_SwitchEntryDirectionHotKey = 0, MainKey_SwitchHideShowLinesHotKey = 0, MainKey_SetStopLossHotKey = 0, MainKey_SetTakeProfitHotKey = 0, MainKey_SetEntryHotKey = 0;
+bool CtrlRequired_TradeHotKey = false, CtrlRequired_SwitchOrderTypeHotKey = false, CtrlRequired_SwitchEntryDirectionHotKey = false, CtrlRequired_SwitchHideShowLinesHotKey = false, CtrlRequired_SetStopLossHotKey = false, CtrlRequired_SetTakeProfitHotKey = false, CtrlRequired_SetEntryHotKey = false;;
+bool ShiftRequired_TradeHotKey = false, ShiftRequired_SwitchOrderTypeHotKey = false, ShiftRequired_SwitchEntryDirectionHotKey = false, ShiftRequired_SwitchHideShowLinesHotKey = false, ShiftRequired_SetStopLossHotKey = false, ShiftRequired_SetTakeProfitHotKey = false, ShiftRequired_SetEntryHotKey = false;
 bool AdditionalTPLineMoved = false;
 int DeinitializationReason = -1;
 string OldSymbol = "";
@@ -337,6 +341,7 @@ int OnInit()
         if (SwitchHideShowLinesHotKey != "") DissectHotKeyCombination(SwitchHideShowLinesHotKey, ShiftRequired_SwitchHideShowLinesHotKey, CtrlRequired_SwitchHideShowLinesHotKey, MainKey_SwitchHideShowLinesHotKey);
         if (SetStopLossHotKey != "") DissectHotKeyCombination(SetStopLossHotKey, ShiftRequired_SetStopLossHotKey, CtrlRequired_SetStopLossHotKey, MainKey_SetStopLossHotKey);
         if (SetTakeProfitHotKey != "") DissectHotKeyCombination(SetTakeProfitHotKey, ShiftRequired_SetTakeProfitHotKey, CtrlRequired_SetTakeProfitHotKey, MainKey_SetTakeProfitHotKey);
+        if (SetEntryHotKey != "") DissectHotKeyCombination(SetEntryHotKey, ShiftRequired_SetEntryHotKey, CtrlRequired_SetEntryHotKey, MainKey_SetEntryHotKey);
     }
     else if (OldSymbol != _Symbol)
     {
@@ -354,11 +359,11 @@ int OnInit()
             sets.StopPriceLevel = 0;
             Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
         }
-        else if (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN) // Load the INI file if it was a symbol change and a each symbol has its own settings.
+/*        else if (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN) // Load the INI file if it was a symbol change and a each symbol has its own settings.
         {
             ExtDialog.IniFileLoad();
         }
-    }    
+  */  }    
 
     // Avoid re-initialization on timeframe change and on symbol change with the 'keep panel' setting.
     if ((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && ((SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET) || (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))))
@@ -388,6 +393,13 @@ int OnInit()
             }
         }
     }
+
+    // Moved this down to let the additional TP controls get created before actually trying to hide them.
+    if ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN)) // Load the INI file if it was a symbol change and a each symbol has its own settings.
+    {
+        ExtDialog.IniFileLoad();
+    }
+    
     // Brings panel on top of other objects without actual maximization of the panel.
     ExtDialog.HideShowMaximize();
     if (!Dont_Move_the_Panel_to_Default_Corner_X_Y)
@@ -717,9 +729,10 @@ void OnChartEvent(const int id,
                 double price;
                 datetime time; // Dummy.
                 ChartXYToTimePrice(ChartID(), Mouse_Last_X, Mouse_Last_Y, subwindow, time, price);
-                // If valid, move line SL there.
+                // If valid, move the SL line there.
                 if ((subwindow == 0) && (price > 0))
                 {
+                    if (TickSize > 0) price = NormalizeDouble(MathRound(price / TickSize) * TickSize, _Digits);
                     ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, price);
                     if ((SLDistanceInPoints) || (ShowATROptions)) ExtDialog.UpdateFixedSL();
                     ExtDialog.RefreshValues();
@@ -737,9 +750,10 @@ void OnChartEvent(const int id,
                 double price;
                 datetime time; // Dummy.
                 ChartXYToTimePrice(ChartID(), Mouse_Last_X, Mouse_Last_Y, subwindow, time, price);
-                // If valid, move line SL there.
+                // If valid, move the TP line there.
                 if ((subwindow == 0) && (price > 0))
                 {
+                    if (TickSize > 0) price = NormalizeDouble(MathRound(price / TickSize) * TickSize, _Digits);
                     ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, price);
                     if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     if ((TPDistanceInPoints) || (ShowATROptions)) ExtDialog.UpdateFixedTP();
@@ -747,6 +761,30 @@ void OnChartEvent(const int id,
                     ExtDialog.RefreshValues();
                     ExtDialog.HideShowMaximize();
                     ExtDialog.MoveAndResize();
+                }
+            }
+        }
+        // Set entry:
+        else if ((MainKey_SetEntryHotKey != 0) && (lparam == MainKey_SetEntryHotKey))
+        {
+            if (((!ShiftRequired_SetEntryHotKey) || (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0)) // Shift
+            &&  ((!CtrlRequired_SetEntryHotKey)  || (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))) // Control
+            {
+                // Capture point price location.
+                int subwindow;
+                double price;
+                datetime time; // Dummy.
+                ChartXYToTimePrice(ChartID(), Mouse_Last_X, Mouse_Last_Y, subwindow, time, price);
+                // If valid, move the Entry line there and switch from Instant to Pending if necessary.
+                if ((subwindow == 0) && (price > 0))
+                {
+                    if (TickSize > 0) price = NormalizeDouble(MathRound(price / TickSize) * TickSize, _Digits);
+                    ObjectSetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, price);
+                    if (sets.EntryType == Instant)
+                    {
+                        ExtDialog.OnClickBtnOrderType(); // Includes RefreshValues().
+                    }
+                    else ExtDialog.RefreshValues();
                 }
             }
         }

@@ -595,7 +595,7 @@ bool CPositionSizeCalculator::CreateObjects()
         }
         else
         {
-            if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentSL, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentSL", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_SL))                                                              return false;
+            if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentSL, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_ChkSpreadAdjustmentSL", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_SL))                                                              return false;
         }
 
         y += element_height + v_spacing;
@@ -613,7 +613,7 @@ bool CPositionSizeCalculator::CreateObjects()
         }
         else
         {
-            if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentTP, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentTP", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_TP))                                                              return false;
+            if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentTP, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_ChkSpreadAdjustmentTP", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_TP))                                                              return false;
 
             y += element_height + v_spacing;
 
@@ -1869,15 +1869,24 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
 
     if (sets.EntryType == Instant)
     {
-        if (!SLDistanceInPoints)
+        double read_tStopLossLevel;
+        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return; // Line was deleted, waiting for automatic restoration.
+        tStopLossLevel = Round(read_tStopLossLevel, _Digits);
+        if ((SymbolInfoDouble(_Symbol, SYMBOL_ASK) > 0) && (SymbolInfoDouble(_Symbol, SYMBOL_BID) > 0))
         {
-            if (sets.StopLossLevel < SymbolInfoDouble(Symbol(), SYMBOL_ASK)) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
-        }
-        else
-        {
-            if (sets.TradeDirection == Long) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
-            else sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+            // Long entry
+            if (tStopLossLevel < SymbolInfoDouble(_Symbol, SYMBOL_BID)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+            // Short entry
+            else if (tStopLossLevel > SymbolInfoDouble(_Symbol, SYMBOL_ASK)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+            // Undefined entry
+            else
+            {
+                // Move tEntryLevel to the nearest line.
+                if ((tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_BID)) < (tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_ASK))) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+                else tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+            }
+            ObjectSetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE, tEntryLevel);
+            sets.EntryLevel = tEntryLevel;
         }
     }
     else // Pending or Stop Limit.
@@ -1905,7 +1914,7 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
         if (!StopLossLineIsBeingMoved) ObjectSetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, sets.StopLossLevel);
     }
 
-    // Set line based on the entered TP distance.
+    // Set lines based on the entered TP distance.
     if (TPDistanceInPoints)
     {
         if (sets.TakeProfit > 0)
@@ -1921,6 +1930,7 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
             {
                 if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                 {
+
                     if (sets.TradeDirection == Long) sets.TP[i] = NormalizeDouble(sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
                     else sets.TP[i] = NormalizeDouble(sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
                 }
@@ -2224,6 +2234,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_HIDDEN, false);
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
 
             // Create multiple TP lines.
@@ -2233,6 +2244,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_HIDDEN, false);
                 ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
             }
         }
@@ -3320,6 +3332,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
     {
         ArrayResize(sets.TP, sets.TakeProfitsNumber);
         ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+        ArrayInitialize(TakeProfitLineIsBeingMoved, false);
         sets.TP[sets.TakeProfitsNumber - 1] = 0; // Initialize
         ArrayResize(sets.TPShare, sets.TakeProfitsNumber);
         if (sets.ShareVolumeMode == Decreasing) // Do the previous method because sets.ShareVolumeMode gets switched over once you click the button.
@@ -3773,9 +3786,15 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
 {
     if (!SLDistanceInPoints)
     {
+        double new_value = StringToDouble(m_EdtSL.Text());
+        if (new_value == 0) // Not allowed.
+        {
+            m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)); // Change back.
+            return;
+        }
+        sets.StopLossLevel = new_value;
         // Check and adjust for TickSize granularity.
         if (TickSize > 0) sets.StopLossLevel = NormalizeDouble(MathRound(sets.StopLossLevel / TickSize) * TickSize, _Digits);
-        sets.StopLossLevel = StringToDouble(m_EdtSL.Text());
     }
     else
     {
@@ -3859,6 +3878,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_HIDDEN, false);
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
             // Create multiple TP lines.
             for (int i = 1; i < sets.TakeProfitsNumber; i++)
@@ -3867,6 +3887,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_HIDDEN, false);
                 ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             }
         }
@@ -4672,6 +4693,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                 ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
             }
             ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+            ArrayInitialize(TakeProfitLineIsBeingMoved, false);
         }
         else if (var_name == "StopPriceLevel")
             sets.StopPriceLevel = StringToDouble(var_content);
@@ -5062,6 +5084,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                         ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
                     }
                     ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
+                    ArrayInitialize(TakeProfitLineIsBeingMoved, false);
                 }
             }
         }
@@ -5434,6 +5457,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_HIDDEN, false);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
         ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
@@ -5451,6 +5475,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
@@ -5572,7 +5597,7 @@ void Initialization()
     {
         if (sets.TradeDirection == Long)
         {
-            if (sets.EntryLevel == 0) sets.EntryLevel = iHigh(Symbol(), Period(), 0);
+            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel - DefaultSL * _Point;
             else sets.StopLossLevel = iLow(Symbol(), Period(), 0);
             if (sets.StopLossLevel == 0) sets.StopLossLevel = sets.EntryLevel - _Point;
@@ -5586,7 +5611,7 @@ void Initialization()
         }
         else
         {
-            if (sets.EntryLevel == 0) sets.EntryLevel = iLow(Symbol(), Period(), 0);
+            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel + DefaultSL * _Point;
             else sets.StopLossLevel = iHigh(Symbol(), Period(), 0);
             if (sets.StopLossLevel == 0) sets.StopLossLevel = sets.EntryLevel + _Point;
@@ -5873,6 +5898,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_HIDDEN, false);
         ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
         if (!line_existed)
         {
@@ -5971,28 +5997,6 @@ void RecalculatePositionSize()
     for (int i = 1; i < sets.TakeProfitsNumber; i++) AdditionalWarningTP[i - 1] = "";
 
     double Ask, Bid;
-    // Update Entry to Ask/Bid if needed.
-    if (sets.EntryType == Instant)
-    {
-        double read_tStopLossLevel;
-        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return; // Line was deleted, waiting for automatic restoration.
-        tStopLossLevel = Round(read_tStopLossLevel, _Digits);
-        if ((SymbolInfoDouble(_Symbol, SYMBOL_ASK) > 0) && (SymbolInfoDouble(_Symbol, SYMBOL_BID) > 0))
-        {
-            // Long entry
-            if (tStopLossLevel < SymbolInfoDouble(_Symbol, SYMBOL_BID)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-            // Short entry
-            else if (tStopLossLevel > SymbolInfoDouble(_Symbol, SYMBOL_ASK)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-            // Undefined entry
-            else
-            {
-                // Move tEntryLevel to the nearest line.
-                if ((tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_BID)) < (tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_ASK))) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-                else tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-            }
-            ObjectSetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE, tEntryLevel);
-        }
-    }
 
     // If could not find account currency, probably not connected. Also check for symbol availability.
     if ((AccountInfoString(ACCOUNT_CURRENCY) == "") || (!TerminalInfoInteger(TERMINAL_CONNECTED) || (!SymbolInfoInteger(Symbol(), SYMBOL_SELECT)))) return;
@@ -6070,14 +6074,15 @@ void RecalculatePositionSize()
         if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
+    double add_tTakeProfitLevel[];
+    ArrayResize(add_tTakeProfitLevel, sets.TakeProfitsNumber - 1);
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
-        double add_tTakeProfitLevel;
-        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, add_tTakeProfitLevel)) return;
-        add_tTakeProfitLevel = Round(add_tTakeProfitLevel, _Digits);
-        if (add_tTakeProfitLevel > 0)
+        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, add_tTakeProfitLevel[i - 1])) return;
+        add_tTakeProfitLevel[i - 1] = Round(add_tTakeProfitLevel[i - 1], _Digits);
+        if (add_tTakeProfitLevel[i - 1] > 0)
         {
-            if (MathAbs(add_tTakeProfitLevel - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+            if (MathAbs(add_tTakeProfitLevel[i - 1] - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
         }
     }
 
@@ -6105,6 +6110,8 @@ void RecalculatePositionSize()
     sets.StopLossLevel = tStopLossLevel;
     sets.TakeProfitLevel = tTakeProfitLevel;
     sets.StopPriceLevel = tStopPriceLevel;
+    for (int i = 1; i < sets.TakeProfitsNumber; i++) sets.TP[i] = add_tTakeProfitLevel[i - 1];
+//!!!!    
 
     if (StopLoss != 0) CalculateRiskAndPositionSize();
 
@@ -6164,8 +6171,8 @@ void RecalculatePositionSize()
         }
         for (int i = 1; i < sets.TakeProfitsNumber; i++)
         {
-            double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
-            DrawLineLabel(ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), IntegerToString((int)MathRound((MathAbs(add_tTakeProfitLevel - tEntryLevel) / _Point))), add_tTakeProfitLevel, tp_label_font_color);
+            //double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
+            DrawLineLabel(ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), IntegerToString((int)MathRound((MathAbs(add_tTakeProfitLevel[i - 1] - tEntryLevel) / _Point))), add_tTakeProfitLevel[i - 1], tp_label_font_color);
             if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
 
@@ -6184,7 +6191,7 @@ void RecalculatePositionSize()
                     label_text = AdditionalWarningTP[i - 1];
                     if (AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += AdditionalOutputRR[i - 1];
                 }
-                DrawLineLabel(ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), label_text, add_tTakeProfitLevel, tp_label_font_color, true);
+                DrawLineLabel(ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), label_text, add_tTakeProfitLevel[i - 1], tp_label_font_color, true);
                 if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                 else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             }

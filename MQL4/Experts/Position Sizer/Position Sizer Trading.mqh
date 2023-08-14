@@ -575,11 +575,12 @@ void DoBreakEven()
                 if ((be_line_color != clrNONE) && (BE_price > OrderStopLoss())) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
                 if ((Bid >= BE_threshold) && (Bid >= BE_price) && (BE_price > OrderStopLoss())) // Only move to BE if the price reached the necessary threshold, the price is above the calculated BE price, and the current stop-loss is lower.
                 {
+                    double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
                     // Write Open price to the SL field.
                     if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
                         Print("OrderModify Buy BE failed " + ErrorDescription(GetLastError()) + ".");
                     else
-                        Print("Breakeven was applied to position - " + Symbol() + " BUY-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(OrderStopLoss(), _Digits) + ".");
+                        Print("Breakeven was applied to position - " + Symbol() + " BUY-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(prev_sl, _Digits) + ".");
                 }
             }
             else if (OrderType() == OP_SELL)
@@ -589,11 +590,12 @@ void DoBreakEven()
                 if ((be_line_color != clrNONE) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) DrawBELine(OrderTicket(), BE_threshold, BE_price);
                 if ((Ask <= BE_threshold) && (Ask <= BE_price) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to BE if the price reached the necessary threshold, the price below the calculated BE price, and the current stop-loss is higher (or zero).
                 {
+                    double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
                     // Write Open price to the SL field.
                     if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
                         Print("OrderModify Sell BE failed " + ErrorDescription(GetLastError()) + ".");
                     else
-                        Print("Breakeven was applied to position - " + Symbol() + " SELL-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(OrderStopLoss(), _Digits) + ".");
+                        Print("Breakeven was applied to position - " + Symbol() + " SELL-order #" + IntegerToString(OrderTicket()) + " Lotsize = " + DoubleToString(OrderLots(), LotStep_digits) + ", OpenPrice = " + DoubleToString(OrderOpenPrice(), _Digits) + ", Stop-Loss was moved from " + DoubleToString(prev_sl, _Digits) + ".");
                 }
             }
         }
