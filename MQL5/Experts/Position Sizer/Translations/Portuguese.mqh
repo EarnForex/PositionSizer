@@ -111,6 +111,8 @@
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Negociações que estão atualmente abertas"
 #define TRANSLATION_LABEL_POTENTIAL_PORTFOLIO "Carteira Potencial"
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Incluindo a ordem que está sendo calculada"
+#define TRANSLATION_LABEL_CRRR_TOOLTIP "Razão de risco-recompensa da carteira atual"
+#define TRANSLATION_LABEL_PRRR_TOOLTIP "Razão de risco-recompensa da carteira potencial"
 
 
 // Guia Margem
@@ -180,12 +182,18 @@
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT "O EA não aplicará Take Profit à ordem que abrir."
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Pedir confirmação"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "O EA pedirá confirmação antes de abrir uma ordem."
+#define TRANSLATION_LABEL_EXPIRY "Expiração"
+#define TRANSLATION_TOOLTIP_EXPIRY "Tempo de expiração em minutos para a próxima ordem pendente criada. Mínimo = 2."
+#define TRANSLATION_LABEL_MINUTES "min."
+#define TRANSLATION_TOOLTIP_MINUTES "Minutos"
+
 // Objetos do Gráfico
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LINE "Preço de Stop (para ordens Stop Limit)"
 #define TRANSLATION_TOOLTIP_SL_LABEL "Distância SL, pontos"
 #define TRANSLATION_TOOLTIP_TP_LABEL "Distância TP, pontos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distância de Entrada, pontos"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Distância de Preço de Stop, pontos"
+#define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamanho da Posição, lotes"
 
 // Avisos
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Muito próximo!)"
@@ -297,3 +305,4 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "Não é possível converter"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "para"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "Os cálculos podem estar incorretos para"
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "A duração mínima de expiração é de 2 minutos."
