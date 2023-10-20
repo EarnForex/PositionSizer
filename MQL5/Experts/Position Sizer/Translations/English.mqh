@@ -111,7 +111,8 @@
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Trades that are currently open"
 #define TRANSLATION_LABEL_POTENTIAL_PORTFOLIO "Potential portfolio"
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Including the position being calculated"
-
+#define TRANSLATION_LABEL_CRRR_TOOLTIP "Risk-to-reward ratio of the current portfolio"
+#define TRANSLATION_LABEL_PRRR_TOOLTIP "Risk-to-reward ratio of the potential portfolio"
 
 // Margin tab
 #define TRANSLATION_LABEL_POSITION_MARGIN "Position margin"
@@ -181,7 +182,10 @@
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT "The EA won't apply take-profit to the trade it opens."
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Ask for confirmation"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "The EA will ask for confirmation before opening a trade."
-
+#define TRANSLATION_LABEL_EXPIRY "Expiry"
+#define TRANSLATION_TOOLTIP_EXPIRY "Expiration time in minutes for the next created pending order. Minimum = 2."
+#define TRANSLATION_LABEL_MINUTES "min."
+#define TRANSLATION_TOOLTIP_MINUTES "Minutes"
 
 // Chart objects
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LINE "Stop Price (for Stop Limit orders)"
@@ -189,6 +193,7 @@
 #define TRANSLATION_TOOLTIP_TP_LABEL "TP Distance, points"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Entry Distance, points"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Stop Price Distance, points"
+#define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Position Size, lots"
 
 
 // Warnings
@@ -196,6 +201,7 @@
 #define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Wrong value!)"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "Invalid TP"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Greater than maximum position size by margin!"
+
 
 // Messages
 #define TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE "Stop-loss should be positive."
@@ -301,3 +307,4 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "Cannot convert"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "to"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "Calculations might be wrong for"
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "Minimum expiry duration is 2 minutes."

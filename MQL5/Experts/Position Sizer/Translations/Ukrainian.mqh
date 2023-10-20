@@ -107,6 +107,8 @@
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Угоди, що зараз є відкритими"
 #define TRANSLATION_LABEL_POTENTIAL_PORTFOLIO "Потенц. портфол."
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Включно з позицією у розрахунку"
+#define TRANSLATION_LABEL_CRRR_TOOLTIP "Співвідношення ризику та прибутку для поточного портфоліо"
+#define TRANSLATION_LABEL_PRRR_TOOLTIP "Співвідношення ризику та прибутку для потенційного портфоліо"
 
 
 // Margin tab
@@ -177,6 +179,10 @@
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT "Експерт відкриє угоду без тейк-профіту."
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Запитувати підтвердження"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "Експерт буде запитувати підтвердження перед відкриттям угоди."
+#define TRANSLATION_LABEL_EXPIRY "Термін"
+#define TRANSLATION_TOOLTIP_EXPIRY "Термін дії у хвилинах для наступного створеного відкладеного ордеру. Мінімум = 2."
+#define TRANSLATION_LABEL_MINUTES "хв."
+#define TRANSLATION_TOOLTIP_MINUTES "Хвилини"
 
 
 // Chart objects
@@ -185,6 +191,7 @@
 #define TRANSLATION_TOOLTIP_TP_LABEL "Відстань до ТП, пункти"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Відстань до Входу, пункти"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Відстань до стоп-ціни, пункти"
+#define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Розмір позиції, лоти"
 
 
 // Warnings
@@ -298,3 +305,4 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "Не можна перевести"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "у"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "Розрахунок може бути хибним для"
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "Мінімальний термін дії відкладеного ордеру - 2 хвилини."

@@ -107,6 +107,8 @@
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Сделки, которые сейчас открыты"
 #define TRANSLATION_LABEL_POTENTIAL_PORTFOLIO "Потенц. портфол."
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Включая позицию в расчете"
+#define TRANSLATION_LABEL_CRRR_TOOLTIP "Соотношение риска и прибыли текущего портфолио"
+#define TRANSLATION_LABEL_PRRR_TOOLTIP "Соотношение риска и прибыли потенциального портфолио"
 
 
 // Margin tab
@@ -177,6 +179,10 @@
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT "Советник откроет сделку без тейк-профита."
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Спрашивать подтверждение"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "Советник будет спрашивать подтверждение перед открытием сделки."
+#define TRANSLATION_LABEL_EXPIRY "Срок"
+#define TRANSLATION_TOOLTIP_EXPIRY "Срок истечения в минутах для следующего созданного отложенного ордера. Минимум = 2."
+#define TRANSLATION_LABEL_MINUTES "мин."
+#define TRANSLATION_TOOLTIP_MINUTES "Минуты"
 
 
 // Chart objects
@@ -185,6 +191,7 @@
 #define TRANSLATION_TOOLTIP_TP_LABEL "Расстояние до ТП, пункты"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Расстояние до Входа, пункты"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Расстояние до стоп-цены, пункты"
+#define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Размер позиции, лоты"
 
 // Warnings
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Близко!)"
@@ -296,3 +303,4 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "Не получается перевести"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "в"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "Расчет может быть неверен для"
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "Минимальный срок действия отложенного ордера - 2 минуты."

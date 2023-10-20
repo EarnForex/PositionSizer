@@ -240,6 +240,12 @@ void Trade()
         }
     }
 
+    datetime expiry = 0;
+    if ((sets.EntryType == Pending) && (sets.ExpiryMinutes > 0))
+    {
+        expiry = TimeCurrent() + sets.ExpiryMinutes * 60;
+    }
+
     if (sets.AskForConfirmation)
     {
         // Evoke confirmation modal window.
@@ -281,9 +287,13 @@ void Trade()
         if (PositionMargin != 0) message += "Margin: " + FormatDouble(DoubleToString(PositionMargin, 2)) + " " + account_currency + "\n";
         message += "Entry: " + DoubleToString(sets.EntryLevel, _Digits) + "\n";
         if (!sets.DoNotApplyStopLoss) message += "Stop-loss: " + DoubleToString(sets.StopLossLevel, _Digits) + "\n";
-        if ((sets.TakeProfitLevel > 0) && (!sets.DoNotApplyTakeProfit)) message += "Take-profit: " + DoubleToString(sets.TakeProfitLevel, _Digits);
-        if (sets.TakeProfitsNumber > 1) message += " (multiple)";
-        message += "\n";
+        if ((sets.TakeProfitLevel > 0) && (!sets.DoNotApplyTakeProfit))
+        {
+            message += "Take-profit: " + DoubleToString(sets.TakeProfitLevel, _Digits);
+            if (sets.TakeProfitsNumber > 1) message += " (multiple)";
+            message += "\n";
+        }
+        if (expiry > 0) message += "Expiry: " + TimeToString(expiry, TIME_DATE|TIME_MINUTES|TIME_SECONDS);
 
         int ret = MessageBox(message, caption, MB_OKCANCEL | MB_ICONWARNING);
         if (ret == IDCANCEL)
@@ -363,7 +373,7 @@ void Trade()
                 sub_position_size = position_size;
                 position_size = 0; // End the cycle;
             }
-            int ticket = OrderSend(Symbol(), ot, sub_position_size, sets.EntryLevel, sets.MaxSlippage, order_sl, order_tp, Commentary, sets.MagicNumber);
+            int ticket = OrderSend(Symbol(), ot, sub_position_size, sets.EntryLevel, sets.MaxSlippage, order_sl, order_tp, Commentary, sets.MagicNumber, expiry);
             if (ticket == -1)
             {
                 int error = GetLastError();

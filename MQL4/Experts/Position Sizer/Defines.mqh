@@ -23,6 +23,8 @@ color DARKMODE_EDIT_BG_COLOR = 0xAAAAAA;
 color DARKMODE_BUTTON_BG_COLOR = 0xA19999;
 color DARKMODE_TEXT_COLOR = 0x000000;;
 
+color CONTROLS_BUTTON_COLOR_TP_UNLOCKED, CONTROLS_BUTTON_COLOR_TP_LOCKED;
+
 enum ENTRY_TYPE
 {
     Instant,
@@ -132,6 +134,8 @@ struct Settings
     int              MaxEntrySLDistance;
     int              MinEntrySLDistance;
     // For SL/TP distance modes:
+    bool             SLDistanceInPoints;
+    bool             TPDistanceInPoints;
     int              StopLoss;
     int              TakeProfit;
     // Only for SL distance mode:
@@ -151,6 +155,7 @@ struct Settings
     double           MaxPositionSizePerSymbol;
     double           MaxRiskTotal;
     double           MaxRiskPerSymbol;
+    int              ExpiryMinutes;
     // For ATR:
     int              ATRPeriod;
     double           ATRMultiplierSL;
