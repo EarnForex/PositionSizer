@@ -96,15 +96,13 @@
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar órdenes sin stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar órdenes sin take-profit"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_IN_OTHER_SYMBOLS "Ignorar órdenes en otros símbolos" 
-
 #define TRANSLATION_LABEL_LOTS "Lots"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Cartera actual"
-
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Operaciones abiertas actualmente"
-
 #define TRANSLATION_LABEL_POTENTIAL_PORTFOLIO "Potencial cartera"
-
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Incluyendo la posición que se está calculando"
+#define TRANSLATION_LABEL_CRRR_TOOLTIP "Relación riesgo-recompensa de la cartera actual"
+#define TRANSLATION_LABEL_PRRR_TOOLTIP "Relación riesgo-recompensa de la cartera potencial"
 
 #define TRANSLATION_LABEL_POSITION_MARGIN "Margen posición"
 #define TRANSLATION_LABEL_FUTURE_USED_MARGIN "Margen futuro usado"
@@ -163,37 +161,36 @@
 #define TRANSLATION_CHECKBOX_DISABLE_TRADING_LINES_HIDDEN "Desactivar trading con las líneas ocultas"
 #define TRANSLATION_TOOLTIP_FILL_INWARD "Poner los TP extra de forma equidistante entre entrada y TP principal."
 #define TRANSLATION_TOOLTIP_FILL_OUTWARD "Poner TP extra más allá del TP principal usando la misma distancia."
-
 #define TRANSLATION_LABEL_SHARE "Cuota" 
-
 #define TRANSLATION_TOOLTIP_SHARE "Rellenar automáticamente las cuotas de volumen"
-
 #define TRANSLATION_LABEL_POINTS "Puntos"
 #define TRANSLATION_LABEL_MAX_SLIPPAGE "Deslizamiento máx"
 #define TRANSLATION_LABEL_MAX_SPREAD "Spread máx"
-
 #define TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE "Máx dist. Entrada/SL"
 #define TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE "Mín dist. Entrada/SL"
 #define TRANSLATION_CHECKBOX_SUBTRACT_OPEN_POSITIONS_VOLUME "Quitar vol. operaciones abiertas"
 #define TRANSLATION_CHECKBOX_SUBTRACT_PENDING_ORDERS_VOLUME "Quitar vol. órdenes pendientes"
-
 #define TRANSLATION_CHECKBOX_DO_NOT_APPLY_STOPLOSS "No aplicar stop-loss"
 #define TRANSLATION_CHECKBOX_DO_NOT_APPLY_TAKEPROFIT "No aplicar take-profit"
-
 #define TRANSLATION_TOOLTIP_SUBTRACT_OPEN_POSITIONS_VOLUME "El EA restará el volumen de las operaciones abiertas actualmente del tamaño de la posición calculada antes de abrir una operación."
 #define TRANSLATION_TOOLTIP_SUBTRACT_PENDING_ORDERS_VOLUME "El EA restará el volumen de las órdenes pendientes del tamaño de la posición calculada antes de abrir una operación."
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_STOPLOSS "El EA no aplicará stop-loss a la operación que abra."
 #define TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT "El EA no aplicará take-profit a la operación que abra."
-
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Pedir confirmación"
-
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "El EA le pedirá confirmación antes de abrir una operación."
+#define TRANSLATION_LABEL_EXPIRY "Expiración"
+#define TRANSLATION_TOOLTIP_EXPIRY "Tiempo de expiración en minutos para la siguiente orden pendiente creada. Mínimo = 2."
+#define TRANSLATION_LABEL_MINUTES "min."
+#define TRANSLATION_TOOLTIP_MINUTES "Minutos"
+
 
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LINE "Precio stop (para órdenes Stop Limit)" 
 #define TRANSLATION_TOOLTIP_SL_LABEL "Distancia SL, puntos"
 #define TRANSLATION_TOOLTIP_TP_LABEL "Distancia TP, puntos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distancia Entrada, puntos"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Distancia precio stop, puntos"
+#define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamaño de posición, lotes"
+
 
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(¡Muy cerca!)"
 #define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Valor incorrecto)"
@@ -304,3 +301,4 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "No se puede convertir" 
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "a" 
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "El cálculo puede ser erróneo para" 
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "La duración mínima de expiración es de 2 minutos."
