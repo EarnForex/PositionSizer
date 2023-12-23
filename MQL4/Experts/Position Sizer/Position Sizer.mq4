@@ -6,8 +6,8 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.063"
-string    Version = "3.063";
+#property version   "3.07"
+string    Version = "3.07";
 #property strict
 
 #property description "Calculates risk-based position size for your account."
