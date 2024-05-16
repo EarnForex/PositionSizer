@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                       Position Sizer Trading.mqh |
-//|                                  Copyright © 2023, EarnForex.com |
+//|                                  Copyright © 2024, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <stdlib.mqh>
@@ -18,7 +18,7 @@ void Trade()
         return;
     }
 
-    if (WarningSL != "") // Too close or wrong value.
+    if ((WarningSL != "") && (!sets.DoNotApplyStopLoss)) // Too close or wrong value.
     {
         Alert("Stop-loss problem: " + WarningSL);
         return;
@@ -164,7 +164,6 @@ void Trade()
     string warning_suffix = "";
     if ((Execution_Mode == SYMBOL_TRADE_EXECUTION_MARKET) && (IgnoreMarketExecutionMode) && (sets.EntryType == Instant)) warning_suffix = ", but IgnoreMarketExecutionMode = true. Switch to false if trades aren't executing.";
     Print("Execution mode: ", EnumToString(Execution_Mode), warning_suffix);
-    
 
     ENUM_ORDER_TYPE ot;
     if (sets.EntryType == Pending)
@@ -301,6 +300,15 @@ void Trade()
             Print("Trade canceled.");
             return;
         }
+    }
+
+    if (sets.DoNotApplyStopLoss)
+    {
+        Print("'Do not apply stop-loss' checkbox is ticked.");
+    }
+    if (sets.DoNotApplyTakeProfit)
+    {
+        Print("'Do not apply take-profit' checkbox is ticked.");
     }
 
     // Use ArrayPositionSize that has already been calculated in CalculateRiskAndPositionSize().

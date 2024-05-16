@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                      Defines.mqh |
-//|                                  Copyright © 2023, EarnForex.com |
+//|                                  Copyright © 2024, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <Controls\Button.mqh>
@@ -24,6 +24,10 @@ color DARKMODE_BUTTON_BG_COLOR = 0xA19999;
 color DARKMODE_TEXT_COLOR = 0x000000;;
 
 color CONTROLS_BUTTON_COLOR_TP_UNLOCKED, CONTROLS_BUTTON_COLOR_TP_LOCKED;
+
+#define MULTIPLIER_VALUE_CONTROL 10
+#define MULTIPLIER_VALUE_SHIFT 100
+#define MULTIPLIER_VALUE_CONTROL_SHIFT 1000
 
 enum ENTRY_TYPE
 {
@@ -97,6 +101,20 @@ enum CALCULATE_RISK_FOR_TRADING_TAB
     CALCULATE_RISK_FOR_TRADING_TAB_NO, // Normal calculation
     CALCULATE_RISK_FOR_TRADING_TAB_TOTAL, // For Trading tab - total
     CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL // For Trading tab - per symbol
+};
+
+enum ADDITIONAL_TP_SCHEME
+{
+    ADDITIONAL_TP_SCHEME_INWARD,  // The "<<" button has been clicked.
+    ADDITIONAL_TP_SCHEME_OUTWARD  // The ">>" button has been clicked.
+};
+
+enum ADDITIONAL_TRADE_BUTTONS
+{
+    ADDITIONAL_TRADE_BUTTONS_NONE, // None
+    ADDITIONAL_TRADE_BUTTONS_LINE, // Above the Entry line
+    ADDITIONAL_TRADE_BUTTONS_MAIN, // Main tab
+    ADDITIONAL_TRADE_BUTTONS_BOTH  // Both 
 };
 
 struct Settings
@@ -173,6 +191,7 @@ struct Settings
     bool             TPLockedOnSL;
     VOLUME_SHARE_MODE ShareVolumeMode;
     bool             TemplateChanged;
+    ADDITIONAL_TP_SCHEME LastAdditionalTPScheme;
 } sets;
 
 // An object class for a list of panel objects with their names for fields located on a given tab of the panel. There will be one list per tab.

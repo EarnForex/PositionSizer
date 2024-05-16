@@ -1,13 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                               Position Sizer.mq5 |
-//|                                  Copyright © 2023, EarnForex.com |
+//|                                  Copyright © 2024, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.07"
-string    Version = "3.07";
+#property version   "3.08"
+string    Version = "3.08";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
@@ -47,6 +47,8 @@ input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be 
 input bool ShowMaxParametersOnTrading = true; // Show max parameters on Trading tab?
 input bool ShowFusesOnTrading = true; // Show trading "fuses" on Trading tab?
 input bool ShowCheckboxesOnTrading = true; // Show checkboxes on Trading tab?
+input bool HideEntryLineOnInstant = false; // Hide Entry line for Instant orders?
+input ADDITIONAL_TRADE_BUTTONS AdditionalTradeButtons = ADDITIONAL_TRADE_BUTTONS_NONE; // Additional Trade buttons:
 input group "Fonts"
 input color sl_label_font_color = clrGreen; // SL Label Color
 input color tp_label_font_color = clrGoldenrod; // TP Label Color
@@ -157,6 +159,7 @@ input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode - A
 input bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
 input string SettingsFile = ""; // SettingsFile: Load custom panel settings from \Files\ folder.
 input bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
+input bool AskBeforeClosing = false; // Ask for confirmation before closing the panel?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -331,6 +334,7 @@ int OnInit()
         sets.ShareVolumeMode = Decreasing;
         sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
         sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
+        sets.LastAdditionalTPScheme = ADDITIONAL_TP_SCHEME_OUTWARD;
         if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
     }
     if (sets.TakeProfitsNumber < 1) // Read an old settings file with absent or bogus TakeProfitNumber parameter
@@ -358,15 +362,25 @@ int OnInit()
 
         // If a hotkey is given, break up the string to check for hotkey presses in OnChartEvent().
         if (TradeHotKey != "") DissectHotKeyCombination(TradeHotKey, ShiftRequired_TradeHotKey, CtrlRequired_TradeHotKey, MainKey_TradeHotKey);
+        else MainKey_TradeHotKey = 0;
         if (SwitchEntryDirectionHotKey != "") DissectHotKeyCombination(SwitchEntryDirectionHotKey, ShiftRequired_SwitchEntryDirectionHotKey, CtrlRequired_SwitchEntryDirectionHotKey, MainKey_SwitchEntryDirectionHotKey);
+        else MainKey_SwitchEntryDirectionHotKey = 0;
         if (SwitchOrderTypeHotKey != "") DissectHotKeyCombination(SwitchOrderTypeHotKey, ShiftRequired_SwitchOrderTypeHotKey, CtrlRequired_SwitchOrderTypeHotKey, MainKey_SwitchOrderTypeHotKey);
+        else MainKey_SwitchOrderTypeHotKey = 0;
         if (SwitchHideShowLinesHotKey != "") DissectHotKeyCombination(SwitchHideShowLinesHotKey, ShiftRequired_SwitchHideShowLinesHotKey, CtrlRequired_SwitchHideShowLinesHotKey, MainKey_SwitchHideShowLinesHotKey);
+        else MainKey_SwitchHideShowLinesHotKey = 0;
         if (SetStopLossHotKey != "") DissectHotKeyCombination(SetStopLossHotKey, ShiftRequired_SetStopLossHotKey, CtrlRequired_SetStopLossHotKey, MainKey_SetStopLossHotKey);
+        else MainKey_SetStopLossHotKey = 0;
         if (SetTakeProfitHotKey != "") DissectHotKeyCombination(SetTakeProfitHotKey, ShiftRequired_SetTakeProfitHotKey, CtrlRequired_SetTakeProfitHotKey, MainKey_SetTakeProfitHotKey);
+        else MainKey_SetTakeProfitHotKey = 0;
         if (SetEntryHotKey != "") DissectHotKeyCombination(SetEntryHotKey, ShiftRequired_SetEntryHotKey, CtrlRequired_SetEntryHotKey, MainKey_SetEntryHotKey);
-        if (MinimizeMaximizeHotkey != "") DissectHotKeyCombination(MinimizeMaximizeHotkey, ShiftRequired_MinimizeMaximizeHotkey, CtrlRequired_MinimizeMaximizeHotkey, MainKey_MinimizeMaximizeHotkey);
+        else MainKey_SetEntryHotKey = 0;
         if (SwitchSLPointsLevelHotKey != "") DissectHotKeyCombination(SwitchSLPointsLevelHotKey, ShiftRequired_SwitchSLPointsLevelHotKey, CtrlRequired_SwitchSLPointsLevelHotKey, MainKey_SwitchSLPointsLevelHotKey);
+        else MainKey_SwitchSLPointsLevelHotKey = 0;
         if (SwitchTPPointsLevelHotKey != "") DissectHotKeyCombination(SwitchTPPointsLevelHotKey, ShiftRequired_SwitchTPPointsLevelHotKey, CtrlRequired_SwitchTPPointsLevelHotKey, MainKey_SwitchTPPointsLevelHotKey);
+        else MainKey_SwitchTPPointsLevelHotKey = 0;
+        if (MinimizeMaximizeHotkey != "") DissectHotKeyCombination(MinimizeMaximizeHotkey, ShiftRequired_MinimizeMaximizeHotkey, CtrlRequired_MinimizeMaximizeHotkey, MainKey_MinimizeMaximizeHotkey);
+        else MainKey_MinimizeMaximizeHotkey = 0;
     }
     else if (OldSymbol != _Symbol)
     {
@@ -571,6 +585,7 @@ void OnDeinit(const int reason)
         ObjectDelete(0, ObjectPrefix + "StopPriceLabel");
         ObjectsDeleteAll(0, ObjectPrefix + "TPAdditionalLabel", -1, OBJ_LABEL);
         ObjectDelete(0, ObjectPrefix + "SLAdditionalLabel");
+        ObjectDelete(0, ObjectPrefix + "EntryAdditionalLabel");
         ExtDialog.Destroy();
         delete ExtDialog;
     }
@@ -633,6 +648,13 @@ void OnChartEvent(const int id,
                 }
             }
         }
+    }
+
+    // This cannot be done using the panel's event handler because the outside trade button isn't added to its list of controls.
+    if ((id == CHARTEVENT_OBJECT_CLICK) && (sparam == ExtDialog.Name() + "m_OutsideTradeButton"))
+    {
+        ExtDialog.m_OutsideTradeButton.Pressed(false);
+        Trade();
     }
 
     if (id == CHARTEVENT_CLICK) // Avoid "sticking" of xxxLineIsBeingMoved variables.
@@ -846,7 +868,7 @@ void OnChartEvent(const int id,
                     {
                         if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                         {
-                            ExtDialog.AdditionalTPEdits[i - 1].Text(DoubleToString(MathRound((sets.TP[i] - sets.EntryLevel) / _Point), 0));
+                            ExtDialog.AdditionalTPEdits[i - 1].Text(DoubleToString(MathAbs(MathRound((sets.TP[i] - sets.EntryLevel) / _Point)), 0));
                         }
                     }
                 }

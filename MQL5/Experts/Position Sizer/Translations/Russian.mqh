@@ -192,6 +192,8 @@
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Расстояние до Входа, пункты"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Расстояние до стоп-цены, пункты"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Размер позиции, лоты"
+#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Кликните, чтобы создать ордер/позицию."
+
 
 // Warnings
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Близко!)"
@@ -304,3 +306,6 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "в"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "Расчет может быть неверен для"
 #define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "Минимальный срок действия отложенного ордера - 2 минуты."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "Отмечен чекбокс 'Не примен. стоп-лосс'."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "Отмечен чекбокс 'Не примен. тейк-профит'."
+#define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Ошибка при создании внешней кнопки."
