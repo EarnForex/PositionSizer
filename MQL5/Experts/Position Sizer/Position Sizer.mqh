@@ -258,7 +258,7 @@ if (ShowATROptions) ON_EVENT(ON_CLICK, m_BtnATRTimeframe, OnClickBtnATRTimeframe
 ON_EVENT(ON_CLICK, m_BtnTrade, OnClickBtnTrade)
 if (QuickRisk1 > 0) ON_EVENT(ON_CLICK, m_BtnQuickRisk1, OnClickBtnQuickRisk1)
 if (QuickRisk2 > 0) ON_EVENT(ON_CLICK, m_BtnQuickRisk2, OnClickBtnQuickRisk2)
-ON_EVENT(ON_CLICK, m_BtnMainTrade, OnClickBtnTrade)
+if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_MAIN) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH)) ON_EVENT(ON_CLICK, m_BtnMainTrade, OnClickBtnTrade)
 EVENT_MAP_END(CAppDialog)
 
 //+-------------------+
@@ -5397,13 +5397,18 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
 
 bool CPositionSizeCalculator::DeleteSettingsFile()
 {
-    if (!FileIsExist(m_FileName))
+    string fn_with_path = "PS_" + m_FileName;
+    if (!FileIsExist(fn_with_path)) // Try old location.
+    {
+        fn_with_path = "PS_Settings\\" + m_FileName; // Change to new location.
+    }
+    if (!FileIsExist(fn_with_path))
     {
         Print(TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_DELETE);
         return false;
     }
     Print(TRANSLATION_MESSAGE_TRYING_TO_DELETE_FILE);
-    if (!FileDelete(m_FileName))
+    if (!FileDelete(fn_with_path))
     {
         Print(TRANSLATION_MESSAGE_FAILED_TO_DELETE_FILE + ": " + m_FileName + ". " + TRANSLATION_MESSAGE_ERROR + ": " + IntegerToString(GetLastError()));
         return false;
@@ -5975,7 +5980,7 @@ void Initialization()
     if (sets.EntryLevel - sets.StopLossLevel == 0)
     {
         Print(TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO);
-        return;
+//        return;
     }
 
     if (sets.EntryType == Instant)

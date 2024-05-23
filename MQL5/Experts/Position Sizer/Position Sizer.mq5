@@ -6,8 +6,8 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.08"
-string    Version = "3.08";
+#property version   "3.09"
+string    Version = "3.09";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
@@ -398,11 +398,7 @@ int OnInit()
             sets.StopPriceLevel = 0;
             Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
         }
-/*        else if (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN) // Load the INI file if it was a symbol change and a each symbol has its own settings.
-        {
-            ExtDialog.IniFileLoad();
-        }
-  */  }    
+    }    
 
     // Avoid re-initialization on timeframe change and on symbol change with the 'keep panel' setting.
     if ((DeinitializationReason != REASON_CHARTCHANGE) || ((DeinitializationReason == REASON_CHARTCHANGE) && (OldSymbol != _Symbol) && ((SymbolChange == SYMBOL_CHART_CHANGE_HARD_RESET) || (SymbolChange == SYMBOL_CHART_CHANGE_EACH_OWN))))
