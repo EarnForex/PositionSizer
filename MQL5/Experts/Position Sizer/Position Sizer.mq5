@@ -180,6 +180,9 @@ int Mouse_Last_X = 0, Mouse_Last_Y = 0; // For SL/TP hotkeys.
 
 int OnInit()
 {
+
+    ResetLastError();
+        
     if (DarkMode)
     {
         CONTROLS_EDIT_COLOR_ENABLE  = DARKMODE_EDIT_BG_COLOR;
@@ -539,12 +542,28 @@ int OnInit()
 
     // If symbol change with a reset was enacted.
     if (is_InitControlsValues_required) ExtDialog.InitControlsValues();
+    
+    if(_LastError != 0)
+      {
+
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+
+        return INIT_FAILED;
+
+      }
 
     return INIT_SUCCEEDED;
 }
 
 void OnDeinit(const int reason)
 {
+
+    ResetLastError();
+
     DeinitializationReason = reason; // Remember reason to avoid recreating the panel in the OnInit() if it is not deleted here.
     
     EventKillTimer();
@@ -589,13 +608,38 @@ void OnDeinit(const int reason)
     ObjectsDeleteAll(0, ObjectPrefix + "BE"); // Delete all BE lines and labels.
     
     ChartRedraw();
+    
+    if(_LastError != 0)
+      {
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+        ExpertRemove();
+      }
+      
 }
 
 void OnTick()
 {
+
+    ResetLastError();
+    
     ExtDialog.RefreshValues();
 
     if (sets.TrailingStopPoints > 0) DoTrailingStop();
+    
+    if(_LastError != 0)
+      {
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+        ExpertRemove();
+      }
+      
 }
 
 void OnChartEvent(const int id,
@@ -603,6 +647,9 @@ void OnChartEvent(const int id,
                   const double &dparam,
                   const string &sparam)
 {
+
+    ResetLastError();
+    
     if (id == CHARTEVENT_MOUSE_MOVE)
     {
         Mouse_Last_X = (int)lparam;
@@ -908,7 +955,19 @@ void OnChartEvent(const int id,
         }
 
         if (sparam == ObjectPrefix + "StopLossLine") StopLossLineIsBeingMoved = false; // In any case ending moving state for the stop-loss line.
-        if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) ArrayInitialize(TakeProfitLineIsBeingMoved, false); // In any case ending moving state for the take-profit line.
+        
+        if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) 
+        {
+            ArrayInitialize(TakeProfitLineIsBeingMoved, false); // In any case ending moving state for the take-profit line.  
+        }
+        else{
+            
+            if(_LastError == ERR_STRING_SMALL_LEN)
+            {
+                ResetLastError();
+            }
+
+        }
 
         if (id != CHARTEVENT_CHART_CHANGE) ExtDialog.RefreshValues();
 
@@ -928,6 +987,17 @@ void OnChartEvent(const int id,
         prev_chart_on_top = ChartGetInteger(ChartID(), CHART_BRING_TO_TOP);
         ChartRedraw();
     }
+    
+    if(_LastError != 0)
+      {
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+       ExpertRemove();
+      }
+      
 }
 
 //+------------------------------------------------------------------+
@@ -935,8 +1005,22 @@ void OnChartEvent(const int id,
 //+------------------------------------------------------------------+
 void OnTrade()
 {
+
+    ResetLastError();
+    
     ExtDialog.RefreshValues();
     ChartRedraw();
+    
+    if(_LastError != 0)
+      {
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+        ExpertRemove();
+      }
+      
 }
 
 //+------------------------------------------------------------------+
@@ -944,9 +1028,26 @@ void OnTrade()
 //+------------------------------------------------------------------+
 void OnTimer()
 {
+
+    ResetLastError();
+    
     ExtDialog.CheckAndRestoreLines(); // Check if any lines should be restored.
     if (GetTickCount() - LastRecalculationTime < 1000) return; // Do not recalculate on timer if less than 1 second passed.
     ExtDialog.RefreshValues();
     ChartRedraw();
+    
+    if(_LastError != 0)
+      {
+
+        Print(
+            "\nError: ", _LastError,
+            "\nFunction: ", __FUNCTION__,
+            "\nLine: ", __LINE__
+        );
+
+        ExpertRemove();
+
+      }
+      
 }
 //+------------------------------------------------------------------+
