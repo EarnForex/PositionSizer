@@ -2358,6 +2358,12 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         DummyObjectSelect();
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
@@ -4074,6 +4080,12 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
         tTakeProfitLevel = sets.TakeProfitLevel;
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
@@ -4202,6 +4214,12 @@ void CPositionSizeCalculator::OnEndEditEdtStopPrice()
         tStopPriceLevel = sets.StopPriceLevel;
         if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_STYLE, stopprice_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_COLOR, stopprice_line_color);
@@ -4785,115 +4803,134 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     // When the EA is reloaded due to its input parameters change, these should be compared to the new values.
     // If the value is changed, it should be updated in the panel too.
     // Is the EA reloading due to the input parameters change?
-    if (GlobalVariableGet("PS-" + IntegerToString(ChartID()) + "-Parameters") > 0)
+
+    double _double_var=0;
+    if(GlobalVariableGet( 
+        "PS-" + IntegerToString(ChartID()) + "-Parameters",
+        _double_var 
+    ))
     {
-        FileWrite(fh, "Parameter_DefaultTradeDirection");
-        FileWrite(fh, IntegerToString(DefaultTradeDirection));
-        FileWrite(fh, "Parameter_DefaultSL");
-        FileWrite(fh, IntegerToString(DefaultSL));
-        FileWrite(fh, "Parameter_DefaultTP");
-        FileWrite(fh, IntegerToString(DefaultTP));
-        FileWrite(fh, "Parameter_DefaultShowLines");
-        FileWrite(fh, IntegerToString(DefaultShowLines));
-        FileWrite(fh, "Parameter_DefaultLinesSelected");
-        FileWrite(fh, IntegerToString(DefaultLinesSelected));
-        FileWrite(fh, "Parameter_DefaultATRPeriod");
-        FileWrite(fh, IntegerToString(DefaultATRPeriod));
-        FileWrite(fh, "Parameter_DefaultATRMultiplierSL");
-        FileWrite(fh, DoubleToString(DefaultATRMultiplierSL, 2));
-        FileWrite(fh, "Parameter_DefaultATRMultiplierTP");
-        FileWrite(fh, DoubleToString(DefaultATRMultiplierTP, 2));
-        FileWrite(fh, "Parameter_DefaultATRTimeframe");
-        FileWrite(fh, IntegerToString(DefaultATRTimeframe));
-        FileWrite(fh, "Parameter_DefaultEntryType");
-        FileWrite(fh, IntegerToString(DefaultEntryType));
-        FileWrite(fh, "Parameter_DefaultCommission");
-        FileWrite(fh, DoubleToString(DefaultCommission, CommissionDecimals));
-        FileWrite(fh, "Parameter_DefaultCommissionType");
-        FileWrite(fh, IntegerToString(DefaultCommissionType));
-        FileWrite(fh, "Parameter_DefaultAccountButton");
-        FileWrite(fh, IntegerToString(DefaultAccountButton));
-        FileWrite(fh, "Parameter_CustomBalance");
-        FileWrite(fh, DoubleToString(CustomBalance));
-        FileWrite(fh, "Parameter_DefaultRisk");
-        FileWrite(fh, DoubleToString(DefaultRisk, 2));
-        FileWrite(fh, "Parameter_DefaultMoneyRisk");
-        FileWrite(fh, DoubleToString(DefaultMoneyRisk, AccountCurrencyDigits));
-        FileWrite(fh, "Parameter_DefaultPositionSize");
-        FileWrite(fh, DoubleToString(DefaultPositionSize, LotStep_digits));
-        FileWrite(fh, "Parameter_DefaultCountPendingOrders");
-        FileWrite(fh, IntegerToString(DefaultCountPendingOrders));
-        FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutSL");
-        FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutSL));
-        FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutTP");
-        FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutTP));
-        FileWrite(fh, "Parameter_DefaultIgnoreOtherSymbols");
-        FileWrite(fh, IntegerToString(DefaultIgnoreOtherSymbols));
-        FileWrite(fh, "Parameter_DefaultCustomLeverage");
-        FileWrite(fh, DoubleToString(DefaultCustomLeverage));
-        FileWrite(fh, "Parameter_DefaultMagicNumber");
-        FileWrite(fh, IntegerToString(DefaultMagicNumber));
-        FileWrite(fh, "Parameter_DefaultCommentary");
-        FileWrite(fh, DefaultCommentary);
-        FileWrite(fh, "Parameter_DefaultCommentAutoSuffix");
-        FileWrite(fh, IntegerToString(DefaultCommentAutoSuffix));
-        FileWrite(fh, "Parameter_DefaultDisableTradingWhenLinesAreHidden");
-        FileWrite(fh, IntegerToString(DefaultDisableTradingWhenLinesAreHidden));
-        FileWrite(fh, "Parameter_DefaultMaxSlippage");
-        FileWrite(fh, IntegerToString(DefaultMaxSlippage));
-        FileWrite(fh, "Parameter_DefaultMaxSpread");
-        FileWrite(fh, IntegerToString(DefaultMaxSpread));
-        FileWrite(fh, "Parameter_DefaultMaxEntrySLDistance");
-        FileWrite(fh, IntegerToString(DefaultMaxEntrySLDistance));
-        FileWrite(fh, "Parameter_DefaultMinEntrySLDistance");
-        FileWrite(fh, IntegerToString(DefaultMinEntrySLDistance));
-        FileWrite(fh, "Parameter_DefaultMaxPositionSizeTotal");
-        FileWrite(fh, DoubleToString(DefaultMaxPositionSizeTotal, LotStep_digits));
-        FileWrite(fh, "Parameter_DefaultMaxPositionSizePerSymbol");
-        FileWrite(fh, DoubleToString(DefaultMaxPositionSizePerSymbol, LotStep_digits));
-        FileWrite(fh, "Parameter_DefaultSubtractOPV");
-        FileWrite(fh, IntegerToString(DefaultSubtractOPV));
-        FileWrite(fh, "Parameter_DefaultSubtractPOV");
-        FileWrite(fh, IntegerToString(DefaultSubtractPOV));
-        FileWrite(fh, "Parameter_DefaultDoNotApplyStopLoss");
-        FileWrite(fh, IntegerToString(DefaultDoNotApplyStopLoss));
-        FileWrite(fh, "Parameter_DefaultDoNotApplyTakeProfit");
-        FileWrite(fh, IntegerToString(DefaultDoNotApplyTakeProfit));
-        FileWrite(fh, "Parameter_DefaultAskForConfirmation");
-        FileWrite(fh, IntegerToString(DefaultAskForConfirmation));
-        FileWrite(fh, "Parameter_DefaultPanelPositionCorner");
-        FileWrite(fh, IntegerToString(DefaultPanelPositionCorner));
-        FileWrite(fh, "Parameter_DefaultPanelPositionX");
-        FileWrite(fh, IntegerToString(DefaultPanelPositionX));
-        FileWrite(fh, "Parameter_DefaultPanelPositionY");
-        FileWrite(fh, IntegerToString(DefaultPanelPositionY));
-        FileWrite(fh, "Parameter_DefaultTPLockedOnSL");
-        FileWrite(fh, IntegerToString(DefaultTPLockedOnSL));
-        FileWrite(fh, "Parameter_DefaultTrailingStop");
-        FileWrite(fh, IntegerToString(DefaultTrailingStop));
-        FileWrite(fh, "Parameter_DefaultBreakEven");
-        FileWrite(fh, IntegerToString(DefaultBreakEven));
-        FileWrite(fh, "Parameter_DefaultExpiryMinutes");
-        FileWrite(fh, IntegerToString(DefaultExpiryMinutes));
-        FileWrite(fh, "Parameter_DefaultSpreadAdjustmentSL");
-        FileWrite(fh, IntegerToString(DefaultSpreadAdjustmentSL));
-        FileWrite(fh, "Parameter_DefaultSpreadAdjustmentTP");
-        FileWrite(fh, IntegerToString(DefaultSpreadAdjustmentTP));
-        FileWrite(fh, "Parameter_DefaultMaxNumberOfTradesTotal");
-        FileWrite(fh, IntegerToString(DefaultMaxNumberOfTradesTotal));
-        FileWrite(fh, "Parameter_DefaultMaxNumberOfTradesPerSymbol");
-        FileWrite(fh, IntegerToString(DefaultMaxNumberOfTradesPerSymbol));
-        FileWrite(fh, "Parameter_DefaultMaxRiskTotal");
-        FileWrite(fh, DoubleToString(DefaultMaxRiskTotal));
-        FileWrite(fh, "Parameter_DefaultMaxRiskPerSymbol");
-        FileWrite(fh, DoubleToString(DefaultMaxRiskPerSymbol));
-        // Not a part of sets, but needed for proper deletion of unnecessary additional TP lines.
-        FileWrite(fh, "Parameter_DefaultTakeProfitsNumber");
-        FileWrite(fh, IntegerToString(DefaultTakeProfitsNumber));
-        FileWrite(fh, "Parameter_DefaultSLDistanceInPoints");
-        FileWrite(fh, IntegerToString(DefaultSLDistanceInPoints));
-        FileWrite(fh, "Parameter_DefaultTPDistanceInPoints");
-        FileWrite(fh, IntegerToString(DefaultTPDistanceInPoints));
+
+        if (_double_var > 0)
+        {
+            FileWrite(fh, "Parameter_DefaultTradeDirection");
+            FileWrite(fh, IntegerToString(DefaultTradeDirection));
+            FileWrite(fh, "Parameter_DefaultSL");
+            FileWrite(fh, IntegerToString(DefaultSL));
+            FileWrite(fh, "Parameter_DefaultTP");
+            FileWrite(fh, IntegerToString(DefaultTP));
+            FileWrite(fh, "Parameter_DefaultShowLines");
+            FileWrite(fh, IntegerToString(DefaultShowLines));
+            FileWrite(fh, "Parameter_DefaultLinesSelected");
+            FileWrite(fh, IntegerToString(DefaultLinesSelected));
+            FileWrite(fh, "Parameter_DefaultATRPeriod");
+            FileWrite(fh, IntegerToString(DefaultATRPeriod));
+            FileWrite(fh, "Parameter_DefaultATRMultiplierSL");
+            FileWrite(fh, DoubleToString(DefaultATRMultiplierSL, 2));
+            FileWrite(fh, "Parameter_DefaultATRMultiplierTP");
+            FileWrite(fh, DoubleToString(DefaultATRMultiplierTP, 2));
+            FileWrite(fh, "Parameter_DefaultATRTimeframe");
+            FileWrite(fh, IntegerToString(DefaultATRTimeframe));
+            FileWrite(fh, "Parameter_DefaultEntryType");
+            FileWrite(fh, IntegerToString(DefaultEntryType));
+            FileWrite(fh, "Parameter_DefaultCommission");
+            FileWrite(fh, DoubleToString(DefaultCommission, CommissionDecimals));
+            FileWrite(fh, "Parameter_DefaultCommissionType");
+            FileWrite(fh, IntegerToString(DefaultCommissionType));
+            FileWrite(fh, "Parameter_DefaultAccountButton");
+            FileWrite(fh, IntegerToString(DefaultAccountButton));
+            FileWrite(fh, "Parameter_CustomBalance");
+            FileWrite(fh, DoubleToString(CustomBalance));
+            FileWrite(fh, "Parameter_DefaultRisk");
+            FileWrite(fh, DoubleToString(DefaultRisk, 2));
+            FileWrite(fh, "Parameter_DefaultMoneyRisk");
+            FileWrite(fh, DoubleToString(DefaultMoneyRisk, AccountCurrencyDigits));
+            FileWrite(fh, "Parameter_DefaultPositionSize");
+            FileWrite(fh, DoubleToString(DefaultPositionSize, LotStep_digits));
+            FileWrite(fh, "Parameter_DefaultCountPendingOrders");
+            FileWrite(fh, IntegerToString(DefaultCountPendingOrders));
+            FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutSL");
+            FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutSL));
+            FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutTP");
+            FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutTP));
+            FileWrite(fh, "Parameter_DefaultIgnoreOtherSymbols");
+            FileWrite(fh, IntegerToString(DefaultIgnoreOtherSymbols));
+            FileWrite(fh, "Parameter_DefaultCustomLeverage");
+            FileWrite(fh, DoubleToString(DefaultCustomLeverage));
+            FileWrite(fh, "Parameter_DefaultMagicNumber");
+            FileWrite(fh, IntegerToString(DefaultMagicNumber));
+            FileWrite(fh, "Parameter_DefaultCommentary");
+            FileWrite(fh, DefaultCommentary);
+            FileWrite(fh, "Parameter_DefaultCommentAutoSuffix");
+            FileWrite(fh, IntegerToString(DefaultCommentAutoSuffix));
+            FileWrite(fh, "Parameter_DefaultDisableTradingWhenLinesAreHidden");
+            FileWrite(fh, IntegerToString(DefaultDisableTradingWhenLinesAreHidden));
+            FileWrite(fh, "Parameter_DefaultMaxSlippage");
+            FileWrite(fh, IntegerToString(DefaultMaxSlippage));
+            FileWrite(fh, "Parameter_DefaultMaxSpread");
+            FileWrite(fh, IntegerToString(DefaultMaxSpread));
+            FileWrite(fh, "Parameter_DefaultMaxEntrySLDistance");
+            FileWrite(fh, IntegerToString(DefaultMaxEntrySLDistance));
+            FileWrite(fh, "Parameter_DefaultMinEntrySLDistance");
+            FileWrite(fh, IntegerToString(DefaultMinEntrySLDistance));
+            FileWrite(fh, "Parameter_DefaultMaxPositionSizeTotal");
+            FileWrite(fh, DoubleToString(DefaultMaxPositionSizeTotal, LotStep_digits));
+            FileWrite(fh, "Parameter_DefaultMaxPositionSizePerSymbol");
+            FileWrite(fh, DoubleToString(DefaultMaxPositionSizePerSymbol, LotStep_digits));
+            FileWrite(fh, "Parameter_DefaultSubtractOPV");
+            FileWrite(fh, IntegerToString(DefaultSubtractOPV));
+            FileWrite(fh, "Parameter_DefaultSubtractPOV");
+            FileWrite(fh, IntegerToString(DefaultSubtractPOV));
+            FileWrite(fh, "Parameter_DefaultDoNotApplyStopLoss");
+            FileWrite(fh, IntegerToString(DefaultDoNotApplyStopLoss));
+            FileWrite(fh, "Parameter_DefaultDoNotApplyTakeProfit");
+            FileWrite(fh, IntegerToString(DefaultDoNotApplyTakeProfit));
+            FileWrite(fh, "Parameter_DefaultAskForConfirmation");
+            FileWrite(fh, IntegerToString(DefaultAskForConfirmation));
+            FileWrite(fh, "Parameter_DefaultPanelPositionCorner");
+            FileWrite(fh, IntegerToString(DefaultPanelPositionCorner));
+            FileWrite(fh, "Parameter_DefaultPanelPositionX");
+            FileWrite(fh, IntegerToString(DefaultPanelPositionX));
+            FileWrite(fh, "Parameter_DefaultPanelPositionY");
+            FileWrite(fh, IntegerToString(DefaultPanelPositionY));
+            FileWrite(fh, "Parameter_DefaultTPLockedOnSL");
+            FileWrite(fh, IntegerToString(DefaultTPLockedOnSL));
+            FileWrite(fh, "Parameter_DefaultTrailingStop");
+            FileWrite(fh, IntegerToString(DefaultTrailingStop));
+            FileWrite(fh, "Parameter_DefaultBreakEven");
+            FileWrite(fh, IntegerToString(DefaultBreakEven));
+            FileWrite(fh, "Parameter_DefaultExpiryMinutes");
+            FileWrite(fh, IntegerToString(DefaultExpiryMinutes));
+            FileWrite(fh, "Parameter_DefaultSpreadAdjustmentSL");
+            FileWrite(fh, IntegerToString(DefaultSpreadAdjustmentSL));
+            FileWrite(fh, "Parameter_DefaultSpreadAdjustmentTP");
+            FileWrite(fh, IntegerToString(DefaultSpreadAdjustmentTP));
+            FileWrite(fh, "Parameter_DefaultMaxNumberOfTradesTotal");
+            FileWrite(fh, IntegerToString(DefaultMaxNumberOfTradesTotal));
+            FileWrite(fh, "Parameter_DefaultMaxNumberOfTradesPerSymbol");
+            FileWrite(fh, IntegerToString(DefaultMaxNumberOfTradesPerSymbol));
+            FileWrite(fh, "Parameter_DefaultMaxRiskTotal");
+            FileWrite(fh, DoubleToString(DefaultMaxRiskTotal));
+            FileWrite(fh, "Parameter_DefaultMaxRiskPerSymbol");
+            FileWrite(fh, DoubleToString(DefaultMaxRiskPerSymbol));
+            // Not a part of sets, but needed for proper deletion of unnecessary additional TP lines.
+            FileWrite(fh, "Parameter_DefaultTakeProfitsNumber");
+            FileWrite(fh, IntegerToString(DefaultTakeProfitsNumber));
+            FileWrite(fh, "Parameter_DefaultSLDistanceInPoints");
+            FileWrite(fh, IntegerToString(DefaultSLDistanceInPoints));
+            FileWrite(fh, "Parameter_DefaultTPDistanceInPoints");
+            FileWrite(fh, IntegerToString(DefaultTPDistanceInPoints));
+        }
+
+    }
+    else
+    {
+
+        if(_LastError == ERR_GLOBALVARIABLE_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
     }
 
     FileClose(fh);
@@ -4919,8 +4956,20 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
     }
     else // No new format file, try to load old format.
     {
+            
+        if(_LastError == ERR_FILE_NOT_EXIST)
+        {
+            ResetLastError();
+        }
+
         if (!FileIsExist("PS_" + m_FileName))
         {
+                
+            if(_LastError == ERR_FILE_NOT_EXIST)
+            {
+                ResetLastError();
+            }
+
             Print(TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_LOAD);
             return false;
         }
@@ -5400,10 +5449,23 @@ bool CPositionSizeCalculator::DeleteSettingsFile()
     string fn_with_path = "PS_" + m_FileName;
     if (!FileIsExist(fn_with_path)) // Try old location.
     {
+            
+        if(_LastError == ERR_FILE_NOT_EXIST)
+        {
+            ResetLastError();
+        }
+
         fn_with_path = "PS_Settings\\" + m_FileName; // Change to new location.
+     
     }
     if (!FileIsExist(fn_with_path))
     {
+            
+        if(_LastError == ERR_FILE_NOT_EXIST)
+        {
+            ResetLastError();
+        }
+
         Print(TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_DELETE);
         return false;
     }
@@ -5737,6 +5799,12 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
 
     if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") == -1)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(0, ObjectPrefix + "EntryLine", OBJ_HLINE, 0, TimeCurrent(), sets.EntryLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_STYLE, entry_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_COLOR, entry_line_color);
@@ -5758,6 +5826,12 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
 
     if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") == -1)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(0, ObjectPrefix + "StopLossLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopLossLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_STYLE, stoploss_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_COLOR, stoploss_line_color);
@@ -5771,6 +5845,12 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
 
     if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
         if ((sets.ShowLines) && ((sets.TakeProfitLevel > 0) || ((sets.ATRMultiplierTP > 0) && (ShowATROptions)))) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -5789,6 +5869,12 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.TP[i]);
             if ((sets.ShowLines) && (sets.TP[i] > 0)) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -5807,6 +5893,12 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(0, ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_STYLE, stopprice_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_COLOR, stopprice_line_color);
@@ -5959,17 +6051,27 @@ void Initialization()
         if ((sets.TPDistanceInPoints) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
     }
     // Loaded template with TP line - delete the line.
-    if ((sets.TakeProfit == 0) && (sets.TakeProfitLevel == 0) && (ObjectFind(0, ObjectPrefix + "TakeProfitLine") == 0))
+    if ((sets.TakeProfit == 0) && (sets.TakeProfitLevel == 0))
     {
-        ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine");
-        ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel");
-        ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel");
-        for (int i = 1; i < sets.TakeProfitsNumber; i++)
+            
+        if (ObjectFind(0, ObjectPrefix + "TakeProfitLine") == 0)
         {
-            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i));
-            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
-            ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
+            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine");
+            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel");
+            ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel");
+            for (int i = 1; i < sets.TakeProfitsNumber; i++)
+            {
+                ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i));
+                ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
+                ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
+            }
         }
+        
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+        
     }
 
     // Used to store volume for each TP level. Without additional levels, there is only main TP level.
@@ -6016,6 +6118,12 @@ void Initialization()
     bool line_existed = false; // Will be used to preserve OBJPROP_SELECTED through timeframe changes and the like.
     if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") == -1)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "EntryLine", OBJ_HLINE, 0, TimeCurrent(), sets.EntryLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_HIDDEN, false);
     }
@@ -6050,6 +6158,12 @@ void Initialization()
     line_existed = false;
     if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") == -1)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "StopLossLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopLossLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_HIDDEN, false) ;
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTABLE, true);
@@ -6085,9 +6199,21 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_SL_LABEL);
-        if ((ShowAdditionalSLLabel) && (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1))
+        if (ShowAdditionalSLLabel)
         {
-            ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+
+            if (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1)
+            {
+                        
+                if(_LastError == ERR_OBJECT_NOT_FOUND)
+                {
+                    ResetLastError();
+                }
+
+                ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+
+            }
+
             if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
             ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_COLOR, clrNONE);
@@ -6107,8 +6233,19 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL);
-        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH) && (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1))
+        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH))
         {
+
+            if (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1)
+            {
+                        
+                if(_LastError == ERR_OBJECT_NOT_FOUND)
+                {
+                    ResetLastError();
+                }
+
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
             if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -6123,6 +6260,12 @@ void Initialization()
 
     if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
     {
+                
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         line_existed = false;
         ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6177,6 +6320,12 @@ void Initialization()
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
         {
+                    
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6232,6 +6381,12 @@ void Initialization()
     {
         if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
         {
+                    
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             line_existed = false;
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.TP[i]);
             if (sets.TP[i] > 0) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6379,6 +6534,9 @@ void RecalculatePositionSize()
         if ((tStopLossLevel < Ask) && (tStopLossLevel > Bid)) WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
         else if (tStopLossLevel < Ask) AskBid = Ask;
         else if (tStopLossLevel > Bid) AskBid = Bid;
+        
+        if ((tEntryLevel == Ask) && (tStopLossLevel <= Bid) && ((Bid - tStopLossLevel) < StopLevel)) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+        if ((tEntryLevel == Bid) && (tStopLossLevel >= Ask) && ((tStopLossLevel - Ask) < StopLevel)) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;   
     }
     else if (sets.EntryType == Pending)
     {
@@ -6389,6 +6547,8 @@ void RecalculatePositionSize()
             if (MathAbs(AskBid - tEntryLevel) < StopLevel) WarningEntry = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
         }
         else WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
+
+        if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
     else if (sets.EntryType == StopLimit)
     {
@@ -6414,9 +6574,10 @@ void RecalculatePositionSize()
 
         }
         else WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
+
+        if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
-    if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     if (tTakeProfitLevel > 0)
     {
         if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
