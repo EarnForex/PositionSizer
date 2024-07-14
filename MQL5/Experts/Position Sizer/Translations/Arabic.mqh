@@ -199,6 +199,7 @@
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "مسافة الدخول، نقاط"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "مسافة سعر الإيقاف، نقاط"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "حجم المركز، لوت"
+#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "انقر لفتح أمر/مركز."
 
 
 // Warnings
@@ -313,3 +314,6 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "إلى" 
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "الحسابات قد تكون خاطئة لـ" 
 #define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "الحد الأدنى لفترة انتهاء الصلاحية هو دقيقتين."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "تم تحديد مربع الاختيار ’عدم تطبيق إيقاف الخسارة‘. "
+#define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "تم تحديد مربع الاختيار ’عدم تطبيق أخذ الربح‘."
+#define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "فشل في إنشاء زر خارجي."

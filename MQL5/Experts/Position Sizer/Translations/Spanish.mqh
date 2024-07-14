@@ -190,6 +190,7 @@
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distancia Entrada, puntos"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Distancia precio stop, puntos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamaño de posición, lotes"
+#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Haga clic para abrir una orden/posición."
 
 
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(¡Muy cerca!)"
@@ -302,3 +303,6 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "a" 
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "El cálculo puede ser erróneo para" 
 #define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "La duración mínima de expiración es de 2 minutos."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "No aplicar casilla stop-loss está marcada."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "No aplicar casilla take-profit' está marcada."
+#define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Error al crear un botón externo."
