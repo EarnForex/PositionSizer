@@ -6379,6 +6379,9 @@ void RecalculatePositionSize()
         if ((tStopLossLevel < Ask) && (tStopLossLevel > Bid)) WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
         else if (tStopLossLevel < Ask) AskBid = Ask;
         else if (tStopLossLevel > Bid) AskBid = Bid;
+        
+        if ((tEntryLevel == Ask) && (tStopLossLevel <= Bid) && ((Bid - tStopLossLevel) < StopLevel)) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+        if ((tEntryLevel == Bid) && (tStopLossLevel >= Ask) && ((tStopLossLevel - Ask) < StopLevel)) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;   
     }
     else if (sets.EntryType == Pending)
     {
@@ -6389,6 +6392,8 @@ void RecalculatePositionSize()
             if (MathAbs(AskBid - tEntryLevel) < StopLevel) WarningEntry = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
         }
         else WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
+
+        if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
     else if (sets.EntryType == StopLimit)
     {
@@ -6414,9 +6419,10 @@ void RecalculatePositionSize()
 
         }
         else WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
+
+        if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
-    if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     if (tTakeProfitLevel > 0)
     {
         if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
