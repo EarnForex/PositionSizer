@@ -190,6 +190,7 @@
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distancia Entrada, puntos"
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Distancia precio stop, puntos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamaño de posición, lotes"
+#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Haga clic para abrir una orden/posición."
 
 
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(¡Muy cerca!)"
@@ -218,7 +219,8 @@
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "No se puede recuperar el tamaño del tick para "
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "Parece que el instrumento ya no está disponible. Es posible que el cálculo no sea exacto"
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "Símbolo mal configurado en el servidor de trading - coste unitario cero"
-#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED "Trading automático desactivado. Habilite Trading automático"
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_1 "Trading automático desactivado desde las opciones del MetaTrader! Habilite Trading automático."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_2 "Trading automático desactivado desde la configuracion de Position Sizer! Habilite Trading automático."
 #define TRANSLATION_MESSAGE_STOPLOSS_PROBLEM "Problema en stop-loss"
 #define TRANSLATION_MESSAGE_WRONG_POSITION_SIZE_VALUE "¡Valor de tamaño de posición incorrecto!"
 #define TRANSLATION_MESSAGE_MULTIPLE_TP_VOLUME_SHARE_SUM "Suma de múltiples cuotas de volumen" 
@@ -302,3 +304,6 @@
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_TO "a" 
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT_CALCULATION "El cálculo puede ser erróneo para" 
 #define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "La duración mínima de expiración es de 2 minutos."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "No aplicar casilla stop-loss está marcada."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "No aplicar casilla take-profit' está marcada."
+#define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Error al crear un botón externo."
