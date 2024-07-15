@@ -2356,8 +2356,14 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             m_EdtTP.Text(IntegerToString(sets.TakeProfit));
         }
         DummyObjectSelect();
-        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") < 0)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
@@ -4072,8 +4078,14 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
             }
         }
         tTakeProfitLevel = sets.TakeProfitLevel;
-        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") < 0)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
@@ -4200,8 +4212,14 @@ void CPositionSizeCalculator::OnEndEditEdtStopPrice()
     if (tStopPriceLevel != sets.StopPriceLevel)
     {
         tStopPriceLevel = sets.StopPriceLevel;
-        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") < 0)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_STYLE, stopprice_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_COLOR, stopprice_line_color);
@@ -5735,8 +5753,14 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
     bool RestoredSomething = false;
     DummyObjectSelect("DummyObject2"); // Different name to not interfere with an already created dummy.
 
-    if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") < 0)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(0, ObjectPrefix + "EntryLine", OBJ_HLINE, 0, TimeCurrent(), sets.EntryLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_STYLE, entry_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_COLOR, entry_line_color);
@@ -5756,8 +5780,14 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         RestoredSomething = true;
     }
 
-    if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") < 0)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(0, ObjectPrefix + "StopLossLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopLossLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_STYLE, stoploss_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_COLOR, stoploss_line_color);
@@ -5769,8 +5799,14 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         RestoredSomething = true;
     }
 
-    if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") < 0)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
         if ((sets.ShowLines) && ((sets.TakeProfitLevel > 0) || ((sets.ATRMultiplierTP > 0) && (ShowATROptions)))) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -5787,8 +5823,14 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
     // Process multiple TP lines.
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
-        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) < 0)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.TP[i]);
             if ((sets.ShowLines) && (sets.TP[i] > 0)) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -5805,8 +5847,14 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
 
     if (!DisableStopLimit)
     {
-        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") < 0)
         {
+
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(0, ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_STYLE, stopprice_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_COLOR, stopprice_line_color);
@@ -5959,17 +6007,32 @@ void Initialization()
         if ((sets.TPDistanceInPoints) && (sets.TakeProfit <= 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.EntryLevel - sets.TakeProfitLevel) / _Point));
     }
     // Loaded template with TP line - delete the line.
-    if ((sets.TakeProfit == 0) && (sets.TakeProfitLevel == 0) && (ObjectFind(0, ObjectPrefix + "TakeProfitLine") == 0))
+    if ((sets.TakeProfit == 0) && (sets.TakeProfitLevel == 0))
     {
-        ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine");
-        ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel");
-        ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel");
-        for (int i = 1; i < sets.TakeProfitsNumber; i++)
+
+        if (ObjectFind(0, ObjectPrefix + "TakeProfitLine") == 0)
         {
-            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i));
-            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
-            ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
+            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine");
+            ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel");
+            ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel");
+            for (int i = 1; i < sets.TakeProfitsNumber; i++)
+            {
+                ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i));
+                ObjectDelete(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i));
+                ObjectDelete(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i));
+            }
         }
+        else
+        {
+            if (ObjectFind(0, ObjectPrefix + "TakeProfitLine") < 0)
+            {       
+                if(_LastError == ERR_OBJECT_NOT_FOUND)
+                {
+                    ResetLastError();
+                }
+            }
+        }
+               
     }
 
     // Used to store volume for each TP level. Without additional levels, there is only main TP level.
@@ -6014,8 +6077,14 @@ void Initialization()
 
     ExtDialog.DummyObjectSelect(); // To prevent buggy deselection of line objects after indicator parameters change.
     bool line_existed = false; // Will be used to preserve OBJPROP_SELECTED through timeframe changes and the like.
-    if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "EntryLine") < 0)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "EntryLine", OBJ_HLINE, 0, TimeCurrent(), sets.EntryLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_HIDDEN, false);
     }
@@ -6048,8 +6117,14 @@ void Initialization()
     }
 
     line_existed = false;
-    if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "StopLossLine") < 0)
     {
+
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         ObjectCreate(ChartID(), ObjectPrefix + "StopLossLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopLossLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_HIDDEN, false) ;
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTABLE, true);
@@ -6085,17 +6160,29 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_SL_LABEL);
-        if ((ShowAdditionalSLLabel) && (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1))
+        if (ShowAdditionalSLLabel)
         {
-            ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_COLOR, clrNONE);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_SELECTABLE, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_HIDDEN, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_RISK + ", % ($)");
+
+            if (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") < 0)
+            {
+                        
+                if(_LastError == ERR_OBJECT_NOT_FOUND)
+                {
+                    ResetLastError();
+                }
+
+                ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+                if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+                else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_COLOR, clrNONE);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_SELECTABLE, false);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_HIDDEN, false);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+                ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_RISK + ", % ($)");
+
+            }
+
         }
 
         ObjectCreate(ChartID(), ObjectPrefix + "EntryLabel", OBJ_LABEL, 0, 0, 0);
@@ -6107,22 +6194,38 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL);
-        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH) && (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1))
+        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH))
         {
-            ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_COLOR, clrNONE);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_SELECTABLE, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_HIDDEN, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL);
-        }
+
+            if (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") < 0)
+            {
+                        
+                if(_LastError == ERR_OBJECT_NOT_FOUND)
+                {
+                    ResetLastError();
+                }
+                
+                ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+                if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+                else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_COLOR, clrNONE);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_SELECTABLE, false);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_HIDDEN, false);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+                ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL);
+            }
+    }
     }
 
-    if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
+    if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") < 0)
     {
+                
+        if(_LastError == ERR_OBJECT_NOT_FOUND)
+        {
+            ResetLastError();
+        }
+
         line_existed = false;
         ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine", OBJ_HLINE, 0, TimeCurrent(), sets.TakeProfitLevel);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6175,8 +6278,14 @@ void Initialization()
 
     if (!DisableStopLimit)
     {
-        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "StopPriceLine") < 0)
         {
+                    
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             ObjectCreate(ChartID(), ObjectPrefix + "StopPriceLine", OBJ_HLINE, 0, TimeCurrent(), sets.StopPriceLevel);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6230,8 +6339,14 @@ void Initialization()
     // Process multiple TP lines.
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
-        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) == -1)
+        if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i)) < 0)
         {
+                    
+            if(_LastError == ERR_OBJECT_NOT_FOUND)
+            {
+                ResetLastError();
+            }
+
             line_existed = false;
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJ_HLINE, 0, TimeCurrent(), sets.TP[i]);
             if (sets.TP[i] > 0) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
