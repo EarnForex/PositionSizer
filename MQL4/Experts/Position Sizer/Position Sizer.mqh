@@ -4,6 +4,7 @@
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include "Defines.mqh"
+#include <ChartObjects\ChartObjectsTxtControls.mqh>
 
 // Default values for settings:
 double EntryLevel = 0;
@@ -15,10 +16,10 @@ string PanelCaptionBase = "";
 class CPositionSizeCalculator : public CAppDialog
 {
 private:
-    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade;
-    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkCountPendings, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkIgnoreOtherSymbols, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix;
-    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtMaxPositionSize, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol;
-    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol;
+    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIgnoreSymbols;
+    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkCountPendings, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix;
+    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage;
+    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIgnoreSymbols;
     string           m_FileName;
     double           m_DPIScale;
     bool             NoPanelMaximization; // A crutch variable to prevent panel maximization when Maximize() is called at the indicator's initialization.
@@ -30,12 +31,15 @@ private:
     CLabel           AdditionalTPLabels[], AdditionalTPWarnings[];
     CButton          AdditionalTPButtonsIncrease[], AdditionalTPButtonsDecrease[];
     // Store ordered and named panel objects arranged by tabs.
-    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList;
+    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList, *PersistentList; // PersisntentList is used for Strategy Tester event tracking only.
     
     // Some of the panel measurement parameters are used by more than one method:
     int              first_column_start, normal_label_width, normal_edit_width, second_column_start, element_height, third_column_start, narrow_label_width, v_spacing, multi_tp_column_start,
                      multi_tp_label_width, multi_tp_button_start, leverage_edit_width, third_trading_column_start, second_trading_column_start;
-                     
+  CChartObjectButton OutsideCloseButtons[]; // Used to store order close buttons for visual backtesting. CChartObjectButton because, unlike CButton, it supports OBJPROP_CORNER changes.
+  CChartObjectButton OutsideCloseButtonsSwitchButton; // Switches chart corner for close buttons output.
+    ENUM_BASE_CORNER OutsideCloseButtonsCorner;
+
 public:
                      CPositionSizeCalculator(void);
                     ~CPositionSizeCalculator(void);
@@ -69,7 +73,7 @@ public:
     virtual void     CheckAndRestoreLines();
     virtual void     Minimize();
     virtual bool     IsMinimized() {return m_minimized;}
-    virtual void     IniFileLoad() {CAppDialog::IniFileLoad();ExtDialog.InitObjects();} // Need to init objects after ini file load.
+    virtual void     IniFileLoad() {if (FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
     virtual void     EmulateMinMaxClick();
             void     OnClickBtnTakeProfitsNumberAdd();
             void     OnClickBtnTakeProfitsNumberRemove();
@@ -86,9 +90,19 @@ public:
             void     SetFileName(string file_name) {m_FileName = file_name;}
             void     InitControlsValues();
             void     SetTPButtonBackGroundColor(color);
-    CEdit            AdditionalTPEdits[];
-    CButton          m_OutsideTradeButton;
+            CEdit    AdditionalTPEdits[];
+          CButton    m_OutsideTradeButton;
             void     MoveOutsideTradeButton();
+            long     FindControlId(string); // For Strategy Tester support.
+            long     FindControlIdInList(string, CPanelList*);
+            void     CreateOutsideCloseButton(int);
+            void     ProcessOutsideCloseButtonClick(int);
+            void     RemoveOutsideCloseButton(int);
+            bool     CloseOrder(int);
+            void     UpdateStrategyTesterTrades();
+            void     CreateOutsideCloseButtonsSwitch();
+            void     ProcessOutsideCloseButtonsSwitchClick();
+            long     MinMaxButtonId; // Stores dynamically generated id of the minmax button control.
 
     // Remember the panel's location to have the same location for minimized and maximized states.
     int              remember_top, remember_left;
@@ -145,7 +159,7 @@ private:
     void OnChangeChkCountPendings();
     void OnChangeChkIgnoreOrdersWithoutSL();
     void OnChangeChkIgnoreOrdersWithoutTP();
-    void OnChangeChkIgnoreOtherSymbols();
+    void OnClickBtnIgnoreSymbols();
     void OnEndEditEdtCustomLeverage();
     void OnEndEditEdtMagicNumber();
     void OnEndEditEdtCommentary();
@@ -154,6 +168,7 @@ private:
     void OnEndEditEdtMaxSpread();
     void OnEndEditEdtMaxEntrySLDistance();
     void OnEndEditEdtMinEntrySLDistance();
+    void OnEndEditEdtMaxRiskPercentage();
     void OnEndEditEdtMaxPositionSizeTotal();
     void OnEndEditEdtMaxPositionSizePerSymbol();
     void OnEndEditEdtTrailingStopPoints();
@@ -213,23 +228,30 @@ ON_EVENT(ON_CHANGE, m_ChkSpreadAdjustmentTP, OnChangeChkSpreadAdjustmentTP)
 ON_EVENT(ON_CHANGE, m_ChkCountPendings, OnChangeChkCountPendings)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutSL, OnChangeChkIgnoreOrdersWithoutSL)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutTP, OnChangeChkIgnoreOrdersWithoutTP)
-ON_EVENT(ON_CHANGE, m_ChkIgnoreOtherSymbols, OnChangeChkIgnoreOtherSymbols)
+ON_EVENT(ON_CLICK, m_BtnIgnoreSymbols, OnClickBtnIgnoreSymbols)
 ON_EVENT(ON_END_EDIT, m_EdtCustomLeverage, OnEndEditEdtCustomLeverage)
 ON_EVENT(ON_END_EDIT, m_EdtMagicNumber, OnEndEditEdtMagicNumber)
 ON_EVENT(ON_END_EDIT, m_EdtCommentary, OnEndEditEdtCommentary)
 ON_EVENT(ON_CHANGE, m_ChkDisableTradingWhenLinesAreHidden, OnChangeChkDisableTradingWhenLinesAreHidden)
+ON_EVENT(ON_END_EDIT, m_EdtTrailingStopPoints, OnEndEditEdtTrailingStopPoints)
+ON_EVENT(ON_END_EDIT, m_EdtBreakEvenPoints, OnEndEditEdtBreakEvenPoints)
+if (ShowFusesOnTrading)
+{
 ON_EVENT(ON_END_EDIT, m_EdtMaxSlippage, OnEndEditEdtMaxSlippage)
 ON_EVENT(ON_END_EDIT, m_EdtMaxSpread, OnEndEditEdtMaxSpread)
 ON_EVENT(ON_END_EDIT, m_EdtMaxEntrySLDistance, OnEndEditEdtMaxEntrySLDistance)
 ON_EVENT(ON_END_EDIT, m_EdtMinEntrySLDistance, OnEndEditEdtMinEntrySLDistance)
+ON_EVENT(ON_END_EDIT, m_EdtMaxRiskPercentage, OnEndEditEdtMaxRiskPercentage)
+}
+if (ShowMaxParametersOnTrading)
+{
 ON_EVENT(ON_END_EDIT, m_EdtMaxPositionSizeTotal, OnEndEditEdtMaxPositionSizeTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxPositionSizePerSymbol, OnEndEditEdtMaxPositionSizePerSymbol)
-ON_EVENT(ON_END_EDIT, m_EdtTrailingStopPoints, OnEndEditEdtTrailingStopPoints)
-ON_EVENT(ON_END_EDIT, m_EdtBreakEvenPoints, OnEndEditEdtBreakEvenPoints)
 ON_EVENT(ON_END_EDIT, m_EdtMaxNumberOfTradesTotal, OnEndEditEdtMaxNumberOfTradesTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxNumberOfTradesPerSymbol, OnEndEditEdtMaxNumberOfTradesPerSymbol)
 ON_EVENT(ON_END_EDIT, m_EdtMaxRiskTotal, OnEndEditEdtMaxRiskTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxRiskPerSymbol, OnEndEditEdtMaxRiskPerSymbol)
+}
 ON_EVENT(ON_END_EDIT, m_EdtExpiry, OnEndEditEdtExpiry)
 ON_EVENT(ON_CHANGE, m_ChkSubtractPositions, OnChangeChkSubtractPositions)
 ON_EVENT(ON_CHANGE, m_ChkSubtractPendingOrders, OnChangeChkSubtractPendingOrders)
@@ -271,6 +293,7 @@ CPositionSizeCalculator::~CPositionSizeCalculator(void)
     delete MarginTabList;
     delete SwapsTabList;
     delete TradingTabList;
+    delete PersistentList;
 }
 
 // Updates filename used for settings storage.
@@ -289,6 +312,8 @@ void CPositionSizeCalculator::InitVariables()
     remember_left = -1;
     remember_top = -1;
     MaxTakeProfitsNumber = 1;
+    OutsideCloseButtonsCorner = CORNER_RIGHT_LOWER;
+    MinMaxButtonId = -1;
 }
 
 //+--------+
@@ -307,7 +332,6 @@ bool CPositionSizeCalculator::ButtonCreate(CList *list, CButton &Btn, int X1, in
         obj.Obj = GetPointer(Btn);
         list.Add(obj);
     }
-
     return true;
 }
 
@@ -414,6 +438,7 @@ bool CPositionSizeCalculator::CreateObjects()
     int atr_period_label_width = (int)MathRound(72 * m_DPIScale);
     int atr_period_edit_width = (int)MathRound(36 * m_DPIScale);
     int quick_risk_button_width = (int)MathRound(32 * m_DPIScale);
+    int ignore_symbols_button_width = (int)MathRound(95 * m_DPIScale);
 
     first_column_start = (int)MathRound(10 * m_DPIScale);
     second_column_start = first_column_start + (int)MathRound(123 * m_DPIScale);
@@ -439,15 +464,16 @@ bool CPositionSizeCalculator::CreateObjects()
 
 // Tabs
 
-    if (!ButtonCreate(NULL, m_BtnTabMain, tab_button_start, y, tab_button_start + tab_button_width, y + element_height, "m_BtnTabMain", "Main"))                                                                                                                    return false;
+    PersistentList = new CPanelList;
+    if (!ButtonCreate(PersistentList, m_BtnTabMain, tab_button_start, y, tab_button_start + tab_button_width, y + element_height, "m_BtnTabMain", TRANSLATION_TAB_BUTTON_MAIN))                                                                                                                    return false;
     MainTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabRisk, tab_button_start + tab_button_width + tab_button_spacing, y, tab_button_start + tab_button_width * 2 + tab_button_spacing, y + element_height, "m_BtnTabRisk", "Risk"))                                                                                                                   return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabRisk, tab_button_start + tab_button_width + tab_button_spacing, y, tab_button_start + tab_button_width * 2 + tab_button_spacing, y + element_height, "m_BtnTabRisk", TRANSLATION_TAB_BUTTON_RISK))                                                                                                                   return false;
     RiskTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabMargin, tab_button_start + tab_button_width * 2 + tab_button_spacing * 2, y, tab_button_start + tab_button_width * 3 + tab_button_spacing * 2, y + element_height, "m_BtnTabMargin", "Margin"))                                                                                                             return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabMargin, tab_button_start + tab_button_width * 2 + tab_button_spacing * 2, y, tab_button_start + tab_button_width * 3 + tab_button_spacing * 2, y + element_height, "m_BtnTabMargin", TRANSLATION_TAB_BUTTON_MARGIN))                                                                                                             return false;
     MarginTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabSwaps, tab_button_start + tab_button_width * 3 + tab_button_spacing * 3, y, tab_button_start + tab_button_width * 4 + tab_button_spacing * 3, y + element_height, "m_BtnTabSwaps", "Swaps"))                                                                                                                return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabSwaps, tab_button_start + tab_button_width * 3 + tab_button_spacing * 3, y, tab_button_start + tab_button_width * 4 + tab_button_spacing * 3, y + element_height, "m_BtnTabSwaps", TRANSLATION_TAB_BUTTON_SWAPS))                                                                                                                return false;
     SwapsTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabTrading, tab_button_start + tab_button_width * 4 + tab_button_spacing * 4, y, tab_button_start + tab_button_width * 5 + tab_button_spacing * 4, y + element_height, "m_BtnTabTrading", "Trading"))                                                                                                             return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabTrading, tab_button_start + tab_button_width * 4 + tab_button_spacing * 4, y, tab_button_start + tab_button_width * 5 + tab_button_spacing * 4, y + element_height, "m_BtnTabTrading", TRANSLATION_TAB_BUTTON_TRADING))                                                                                                             return false;
     TradingTabList = new CPanelList;
 
 // Main
@@ -456,23 +482,23 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_MAIN) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH))
     {
-        if (!ButtonCreate(MainTabList, m_BtnMainTrade, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_BtnMainTrade", "Trade"))                                        return false;
+        if (!ButtonCreate(MainTabList, m_BtnMainTrade, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_BtnMainTrade", TRANSLATION_BUTTON_TRADE))                                        return false;
     }
     else 
     {
-        if (!LabelCreate(MainTabList, m_LblEntryLevel, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblEntryLevel", "Entry:"))                                        return false;
+        if (!LabelCreate(MainTabList, m_LblEntryLevel, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblEntryLevel", TRANSLATION_LABEL_ENTRY + ":"))                                        return false;
     }
     // Button to quickly switch between Long/Short trade planning.
-    if (!ButtonCreate(MainTabList, m_BtnEntry, first_column_start + narrowest_label_width + v_spacing, y, second_column_start - v_spacing, y + element_height, "m_BtnEntry", EnumToString(sets.TradeDirection), "Switch between Long and Short"))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnEntry, first_column_start + narrowest_label_width + v_spacing, y, second_column_start - v_spacing, y + element_height, "m_BtnEntry", EnumToString(sets.TradeDirection), TRANSLATION_TOOLTIP_BUTTON_LONG_SHORT))                    return false;
     if (!EditCreate(MainTabList, m_EdtEntryLevel, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtEntryLevel", ""))                                                 return false;
-    if (!ButtonCreate(MainTabList, m_BtnEntryIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnEntryIncrease", "+", "Increase Entry by 1 point"))                    return false;
-    if (!ButtonCreate(MainTabList, m_BtnEntryDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnEntryDecrease", "-", "Decrease Entry by 1 point"))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnEntryIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnEntryIncrease", "+", TRANSLATION_TOOLTIP_ENTRY_INCREASE))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnEntryDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnEntryDecrease", "-", TRANSLATION_TOOLTIP_ENTRY_DECREASE))                    return false;
     if (!LabelCreate(MainTabList, m_LblEntryWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblEntryWarning", ""))                                         return false;
 
     y += element_height + v_spacing;
 
-    string stoploss_label_text = "Stop-loss:         ";
-    if (sets.SLDistanceInPoints) stoploss_label_text = "SL, points:        ";
+    string stoploss_label_text = TRANSLATION_LABEL_STOPLOSS + ":";
+    if (sets.SLDistanceInPoints) stoploss_label_text = TRANSLATION_BUTTON_SL + ":";
 
     if (DefaultSL > 0) // Use button to quickly set SL.
     {
@@ -481,19 +507,19 @@ bool CPositionSizeCalculator::CreateObjects()
     else if (!LabelCreate(MainTabList, m_LblSL, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblSL", stoploss_label_text))                                               return false;
 
     if (!EditCreate(MainTabList, m_EdtSL, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtSL", ""))                                                                 return false;
-    if (!ButtonCreate(MainTabList, m_BtnStopLossIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnStopLossIncrease", "+", "Increase Stop-loss by 1 point"))                    return false;
-    if (!ButtonCreate(MainTabList, m_BtnStopLossDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnStopLossDecrease", "-", "Decrease Stop-loss by 1 point"))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnStopLossIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnStopLossIncrease", "+", TRANSLATION_TOOLTIP_STOPLOSS_INCREASE))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnStopLossDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnStopLossDecrease", "-", TRANSLATION_TOOLTIP_STOPLOSS_DECREASE))                    return false;
     if (!LabelCreate(MainTabList, m_LblSLWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblSLWarning", ""))                                               return false;
 
     y += element_height + v_spacing;
 
-    string takeprofit_label_text = "Take-profit:       ";
-    if (sets.TPDistanceInPoints) takeprofit_label_text = "TP, points:        ";
-    if (!ButtonCreate(MainTabList, m_BtnTakeProfitsNumberAdd, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, "m_BtnTakeProfitsNumberAdd", "+", "Add a take-profit level"))                    return false;
-    if (!ButtonCreate(MainTabList, m_BtnTakeProfit, first_column_start + v_spacing * 4, y, first_column_start + v_spacing * 3 + normal_label_width, y + element_height, "m_BtnTakeProfit", takeprofit_label_text, "Set TP based on SL or enable locked TP mode"))                    return false;
+    string takeprofit_label_text = TRANSLATION_LABEL_TAKEPROFIT + ":";
+    if (sets.TPDistanceInPoints) takeprofit_label_text = TRANSLATION_BUTTON_TP + ":";
+    if (!ButtonCreate(MainTabList, m_BtnTakeProfitsNumberAdd, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, "m_BtnTakeProfitsNumberAdd", "+", TRANSLATION_TOOLTIP_TAKEPROFIT_ADD))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnTakeProfit, first_column_start + v_spacing * 4, y, first_column_start + v_spacing * 3 + normal_label_width, y + element_height, "m_BtnTakeProfit", takeprofit_label_text, TRANSLATION_TOOLTIP_BUTTON_TP))                    return false;
     if (!EditCreate(MainTabList, m_EdtTP, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtTP", ""))                                                                 return false;
-    if (!ButtonCreate(MainTabList, m_BtnTakeProfitIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnTakeProfitIncrease", "+", "Increase Take-profit by 1 point"))                    return false;
-    if (!ButtonCreate(MainTabList, m_BtnTakeProfitDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnTakeProfitDecrease", "-", "Decrease Take-profit by 1 point"))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnTakeProfitIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnTakeProfitIncrease", "+", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE))                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnTakeProfitDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnTakeProfitDecrease", "-", TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE))                    return false;
     if (!LabelCreate(MainTabList, m_LblTPWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblTPWarning", ""))                                               return false;
 
     // Multiple TP levels for the Main tab.
@@ -508,12 +534,12 @@ bool CPositionSizeCalculator::CreateObjects()
         ArrayResize(AdditionalWarningTP, sets.TakeProfitsNumber - 1); // String array.
         ArrayResize(AdditionalOutputRR, sets.TakeProfitsNumber - 1); // String array.
         ArrayResize(AdditionalOutputReward, sets.TakeProfitsNumber - 1); // Double array.
-        string additional_tp_label_beginning = "Take-profit ";
+        string additional_tp_label_beginning = TRANSLATION_LABEL_TAKEPROFIT + " ";
         string additional_tp_label_end = ":";
         if (sets.TPDistanceInPoints)
         {
-            additional_tp_label_beginning = "TP ";
-            additional_tp_label_end = ", points:";
+            additional_tp_label_beginning = TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " ";
+            additional_tp_label_end = ", " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS + ":";
         }
         for (int i = 0; i < sets.TakeProfitsNumber - 1; i++)
         {
@@ -521,12 +547,12 @@ bool CPositionSizeCalculator::CreateObjects()
             if (i == sets.TakeProfitsNumber - 2) // The last iteration.
             {
                 // Because only one Remove button is needed.
-                if (!ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, "m_BtnTakeProfitsNumberRemove", "x", "Remove Take-profit"))                    return false;
+                if (!ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, "m_BtnTakeProfitsNumberRemove", "x", TRANSLATION_TOOLTIP_TAKEPROFIT_REMOVE))                    return false;
             }
             if (!LabelCreate(MainTabList, AdditionalTPLabels[i], first_column_start + v_spacing * 4, y, first_column_start + normal_label_width, y + element_height, "m_LblAdditionalTPLabels" + IntegerToString(i + 2), additional_tp_label_beginning + IntegerToString(i + 2) + additional_tp_label_end))                                       return false;
             if (!EditCreate(MainTabList, AdditionalTPEdits[i], second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtAdditionalTPEdits" + IntegerToString(i + 2), ""))                                               return false;
-            if (!ButtonCreate(MainTabList, AdditionalTPButtonsIncrease[i], second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnAdditionalTPButtonsIncrease" + IntegerToString(i + 2), "+", "Increase Take-profit #" + IntegerToString(i + 2) + " by 1 point"))                    return false;
-            if (!ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnAdditionalTPButtonsDecrease" + IntegerToString(i + 2), "-", "Decrease Take-profit #" + IntegerToString(i + 2) + " by 1 point"))                    return false;
+            if (!ButtonCreate(MainTabList, AdditionalTPButtonsIncrease[i], second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnAdditionalTPButtonsIncrease" + IntegerToString(i + 2), "+", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT))                    return false;
+            if (!ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnAdditionalTPButtonsDecrease" + IntegerToString(i + 2), "-", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT))                    return false;
             if (!LabelCreate(MainTabList, AdditionalTPWarnings[i], third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblAdditionalTPWarnings" + IntegerToString(i + 2), " "))                                                 return false;
         }
     }
@@ -535,67 +561,67 @@ bool CPositionSizeCalculator::CreateObjects()
     {
         y += element_height + v_spacing;
 
-        if (!LabelCreate(MainTabList, m_LblATRPeriod, first_column_start, y, first_column_start + atr_period_label_width, y + element_height, "m_LblATRPeriod", "ATR period:"))                                                 return false;
+        if (!LabelCreate(MainTabList, m_LblATRPeriod, first_column_start, y, first_column_start + atr_period_label_width, y + element_height, "m_LblATRPeriod", TRANSLATION_LABEL_ATR_PERIOD))                                                 return false;
         if (!EditCreate(MainTabList, m_EdtATRPeriod, first_column_start + atr_period_label_width, y, first_column_start + atr_period_label_width + atr_period_edit_width, y + element_height, "m_EdtATRPeriod", ""))                                                                return false;
 
-        if (!LabelCreate(MainTabList, m_LblATRMultiplierSL, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblATRMultiplierSL", "SL multiplier:"))                                                 return false;
+        if (!LabelCreate(MainTabList, m_LblATRMultiplierSL, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblATRMultiplierSL", TRANSLATION_LABEL_ATR_SL_MULTIPLIER + ":"))                                                 return false;
 
         if (!EditCreate(MainTabList, m_EdtATRMultiplierSL, third_column_start, y, third_column_start + normal_edit_width / 2, y + element_height, "m_EdtATRMultiplierSL", ""))                                                              return false;
         
-        if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentSL, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentSL", "SA", "Apply spread adjustment to stop-loss"))                                                              return false;
+        if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentSL, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentSL", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_SL))                                                              return false;
 
         y += element_height + v_spacing;
 
-        if (!LabelCreate(MainTabList, m_LblATRValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblATRValue", "ATR = "))                                                return false;
+        if (!LabelCreate(MainTabList, m_LblATRValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblATRValue", TRANSLATION_LABEL_ATR_VALUE + " = "))                                                return false;
 
-        if (!LabelCreate(MainTabList, m_LblATRMultiplierTP, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblATRMultiplierTP", "TP multiplier:"))                                                 return false;
+        if (!LabelCreate(MainTabList, m_LblATRMultiplierTP, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblATRMultiplierTP", TRANSLATION_LABEL_ATR_TP_MULTIPLIER + ":"))                                                 return false;
 
         if (!EditCreate(MainTabList, m_EdtATRMultiplierTP, third_column_start, y, third_column_start + normal_edit_width / 2, y + element_height, "m_EdtATRMultiplierTP", ""))                                                              return false;
 
-        if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentTP, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentTP", "SA", "Apply spread adjustment to take-profit"))                                                              return false;
+        if (!CheckBoxCreate(MainTabList, m_ChkSpreadAdjustmentTP, third_column_start + normal_edit_width / 2 + v_spacing, y, third_column_start + normal_edit_width + v_spacing, y + element_height, "m_ChkSpreadAdjustmentTP", TRANSLATION_CHECKBOX_ATR_SA, TRANSLATION_TOOLTIP_ATR_SA_TP))                                                              return false;
 
         y += element_height + v_spacing;
 
-        if (!LabelCreate(MainTabList, m_LblATRTimeframe, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblATRTimeframe", "ATR timeframe:"))                                                return false;
+        if (!LabelCreate(MainTabList, m_LblATRTimeframe, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblATRTimeframe", TRANSLATION_LABEL_ATR_TIMEFRAME + ":"))                                                return false;
 
         if (!ButtonCreate(MainTabList, m_BtnATRTimeframe, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnATRTimeframe", EnumToString((ENUM_TIMEFRAMES)_Period)))                                                                return false;
     }
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblOrderType, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblOrderType", "Order type:"))                                    return false;
-    if (!ButtonCreate(MainTabList, m_BtnOrderType, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnOrderType", "Instant", "Switch between Instant and Pending"))                                            return false;
+    if (!LabelCreate(MainTabList, m_LblOrderType, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblOrderType", TRANSLATION_LABEL_ORDER_TYPE + ":"))                                    return false;
+    if (!ButtonCreate(MainTabList, m_BtnOrderType, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnOrderType", TRANSLATION_BUTTON_ORDER_TYPE_INSTANT, TRANSLATION_TOOLTIP_ORDER_TYPE))                                            return false;
 
-    if (!ButtonCreate(MainTabList, m_BtnLines, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_BtnLines", "Hide lines"))                                     return false;
+    if (!ButtonCreate(MainTabList, m_BtnLines, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_BtnLines", TRANSLATION_BUTTON_HIDE_LINES))                                     return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblCommissionSize, first_column_start, y, second_column_start + risk_perc_edit_width, y + element_height, "m_LblCommissionSize", "Commission (one-way) per lot:", "In account currency or %, per 1 standard lot"))         return false;
-    if (!ButtonCreate(MainTabList, m_BtnCommissionType, second_column_start + risk_perc_edit_width, y, third_column_start - v_spacing, y + element_height, "m_BtnCommissionType", "???", "Click to switch"))         return false;
+    if (!LabelCreate(MainTabList, m_LblCommissionSize, first_column_start, y, second_column_start + risk_perc_edit_width, y + element_height, "m_LblCommissionSize", TRANSLATION_LABEL_COMMISSION + ":", TRANSLATION_TOOLTIP_COMMISSION))         return false;
+    if (!ButtonCreate(MainTabList, m_BtnCommissionType, second_column_start + risk_perc_edit_width, y, third_column_start - v_spacing, y + element_height, "m_BtnCommissionType", "???", TRANSLATION_TOOLTIP_COMMISSION_TYPE))         return false;
     if (!EditCreate(MainTabList, m_EdtCommissionSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtCommissionSize", ""))                                       return false;
 
     y += element_height + v_spacing;
 
     if (!HideAccSize)
     {
-        if (!ButtonCreate(MainTabList, m_BtnAccount, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_BtnAccount", "Account balance", "Switch between balance, equity, and balance minus current portfolio risk"))                                       return false;
+        if (!ButtonCreate(MainTabList, m_BtnAccount, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_BtnAccount", TRANSLATION_BUTTON_ACCOUNT_BALANCE, TRANSLATION_TOOLTIP_ACCOUNT_SIZE))                                       return false;
         if (!EditCreate(MainTabList, m_EdtAccount, second_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtAccount", ""))                                                    return false;
 
         string tooltip = "";
-        if (CustomBalance > 0) tooltip = "Custom balance set";
-        else if (AdditionalFunds > 0) tooltip = "+" + DoubleToString(AdditionalFunds, 2) + " additional funds";
-        else if (AdditionalFunds < 0) tooltip = DoubleToString(-AdditionalFunds, 2) + " funds subtracted";
+        if (CustomBalance > 0) tooltip = TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_CUSTOM;
+        else if (AdditionalFunds > 0) tooltip = "+" + DoubleToString(AdditionalFunds, 2) + " " + TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_ADD;
+        else if (AdditionalFunds < 0) tooltip = DoubleToString(-AdditionalFunds, 2) + " " + TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_SUB;
         if (!LabelCreate(MainTabList, m_LblAdditionalFundsAsterisk, third_column_start + normal_edit_width + v_spacing, y, third_column_start + normal_edit_width + v_spacing * 2, y + element_height, "m_LblAdditionalFundsAsterisk", "*", tooltip))       return false;
 
         y += element_height + v_spacing;
     }
 
-    if (!LabelCreate(MainTabList, m_LblInput, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblInput", "Input", "Fields in this column are calculated based on inputs"))                                                 return false;
-    if (!LabelCreate(MainTabList, m_LblResult, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_LblResult", "Result", "Fields in this column take into account broker's limitations"))                                            return false;
+    if (!LabelCreate(MainTabList, m_LblInput, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblInput", TRANSLATION_LABEL_INPUT, TRANSLATION_TOOLTIP_INPUTS))                                                 return false;
+    if (!LabelCreate(MainTabList, m_LblResult, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_LblResult", TRANSLATION_LABEL_RESULT, TRANSLATION_TOOLTIP_RESULT))                                            return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblRisk, first_column_start, y, first_column_start + tab_button_width - v_spacing, y + element_height, "m_LblRisk", "Risk, %:"))                                                   return false;
+    if (!LabelCreate(MainTabList, m_LblRisk, first_column_start, y, first_column_start + tab_button_width - v_spacing, y + element_height, "m_LblRisk", TRANSLATION_LABEL_RISK + ", %:"))                                                   return false;
 
 
     if (QuickRisk1 > 0) if (!ButtonCreate(MainTabList, m_BtnQuickRisk1, first_column_start + tab_button_width, y, first_column_start + tab_button_width + quick_risk_button_width, y + element_height, "m_BtnQuickRisk1", "", "%"))                                                    return false;
@@ -608,7 +634,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblRiskM, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblRiskM", "Risk, money:"))                                           return false;
+    if (!LabelCreate(MainTabList, m_LblRiskM, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblRiskM", TRANSLATION_LABEL_RISK + ", " + TRANSLATION_LABEL_MONEY + ":"))                                           return false;
     if (!EditCreate(MainTabList, m_EdtRiskMIn, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtRiskMIn", ""))                                                       return false;
     if (!EditCreate(MainTabList, m_EdtRiskMRes, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtRiskMRes", ""))                                                   return false;
     m_EdtRiskMRes.ReadOnly(true);
@@ -616,7 +642,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblReward, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblReward", "Reward, money:"))                                           return false;
+    if (!LabelCreate(MainTabList, m_LblReward, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblReward", TRANSLATION_LABEL_REWARD + ", " + TRANSLATION_LABEL_MONEY + ":"))                                           return false;
     if (!EditCreate(MainTabList, m_EdtReward1, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtReward1", ""))                                                       return false;
     m_EdtReward1.ReadOnly(true);
     m_EdtReward1.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -626,7 +652,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblRR, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblRR", "Reward/risk:"))                                                 return false;
+    if (!LabelCreate(MainTabList, m_LblRR, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblRR", TRANSLATION_LABEL_REWARD_RISK + ":"))                                                 return false;
     if (!EditCreate(MainTabList, m_EdtRR1, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtRR1", ""))                                                               return false;
     if (!EditCreate(MainTabList, m_EdtRR2, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtRR2", ""))                                                                 return false;
     m_EdtRR1.ReadOnly(true);
@@ -636,15 +662,15 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MainTabList, m_LblPosSize, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPosSize", "Position size:"))                                 return false;
-    if (ShowMaxPSButton) if (!ButtonCreate(MainTabList, m_BtnMaxPS, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnMaxPS", "Max PS"))                                                               return false;
-    if (!EditCreate(MainTabList, m_EdtPosSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPosSize", "", "In lots"))                                                      return false;
+    if (!LabelCreate(MainTabList, m_LblPosSize, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPosSize", TRANSLATION_LABEL_POSITION_SIZE + ":"))                                 return false;
+    if (ShowMaxPSButton) if (!ButtonCreate(MainTabList, m_BtnMaxPS, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnMaxPS", TRANSLATION_BUTTON_MAX_PS))                                                               return false;
+    if (!EditCreate(MainTabList, m_EdtPosSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPosSize", "", TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN))                                                      return false;
 
     if (ShowPointValue)
     {
         y += element_height + v_spacing;
 
-        if (!LabelCreate(MainTabList, m_LblPointValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPointValue", "Point value:", ""))                                return false;
+        if (!LabelCreate(MainTabList, m_LblPointValue, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPointValue", TRANSLATION_LABEL_POINT_VALUE + ":", ""))                                return false;
         if (!EditCreate(MainTabList, m_EdtPointValue, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPointValue", ""))                                                    return false;
         m_EdtPointValue.ReadOnly(true);
         m_EdtPointValue.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -662,29 +688,30 @@ bool CPositionSizeCalculator::CreateObjects()
     // Reset
     y = row_start + element_height + 3 * v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkCountPendings, first_column_start, y, panel_end, y + element_height, "m_ChkCountPendings", "Count pending orders"))          return false;
+    if (!CheckBoxCreate(RiskTabList, m_ChkCountPendings, first_column_start, y, panel_end, y + element_height, "m_ChkCountPendings", TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS))          return false;
 
     y += element_height + v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOrdersWithoutSL, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOrdersWithoutSL", "Ignore orders without stop-loss")) return false;
+    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOrdersWithoutSL, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOrdersWithoutSL", TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL)) return false;
 
     y += element_height + v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOrdersWithoutTP, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOrdersWithoutTP", "Ignore orders without take-profit")) return false;
+    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOrdersWithoutTP, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOrdersWithoutTP", TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP)) return false;
 
     y += element_height + v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOtherSymbols, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOtherSymbols", "Ignore orders in other symbols")) return false;
+    if (!LabelCreate(RiskTabList, m_LblIgnoreSymbols, first_column_start, y, first_column_start + ignore_symbols_button_width, y + element_height, "m_LblIgnoreSymbols", TRANSLATION_LABEL_IGNORE_TRADES_IN))                                    return false;
+    if (!ButtonCreate(RiskTabList, m_BtnIgnoreSymbols, first_column_start + ignore_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIgnoreSymbols", TRANSLATION_BUTTON_SYMBOLS_NO, TRANSLATION_BUTTON_SYMBOLS_TOOLTIP))                                            return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblCurrentRiskMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblCurrentRiskMoney", "Risk $"))                                               return false;
-    if (!LabelCreate(RiskTabList, m_LblCurrentRiskPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentRiskPerc", "Risk %"))                                                    return false;
-    if (!LabelCreate(RiskTabList, m_LblCurrentLots, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentLots", "Lots"))                                                    return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentRiskMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblCurrentRiskMoney", TRANSLATION_LABEL_RISK + " $"))                                               return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentRiskPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentRiskPerc", TRANSLATION_LABEL_RISK + " %"))                                                    return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentLots, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentLots", TRANSLATION_LABEL_LOTS))                                                    return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblCurrentPortfolio, first_column_start, y, second_risk_column_start, y + element_height, "m_LblCurrentPortfolio", "Current portfolio:", "Trades that are currently open"))                            return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentPortfolio, first_column_start, y, second_risk_column_start, y + element_height, "m_LblCurrentPortfolio", TRANSLATION_LABEL_CURRENT_PORTFOLIO + ":", TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO))                            return false;
     if (!EditCreate(RiskTabList, m_EdtCurRiskM, second_risk_column_start, y, second_risk_column_start + normal_edit_width, y + element_height, "m_EdtCurRiskM", ""))                                                   return false;
     m_EdtCurRiskM.ReadOnly(true);
     m_EdtCurRiskM.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -697,9 +724,9 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblCurrentProfitMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblCurrentProfitMoney", "Reward $"))                                                     return false;
-    if (!LabelCreate(RiskTabList, m_LblCurrentProfitPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentProfitPerc", "Reward %"))                                                  return false;
-    if (!LabelCreate(RiskTabList, m_LblCurrentRRR, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentRRR", "RRR", "Risk-to-reward ratio of the current portfolio"))                                                  return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentProfitMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblCurrentProfitMoney", TRANSLATION_LABEL_REWARD + " $"))                                                     return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentProfitPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentProfitPerc", TRANSLATION_LABEL_REWARD + " %"))                                                  return false;
+    if (!LabelCreate(RiskTabList, m_LblCurrentRRR, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblCurrentRRR", "RRR", TRANSLATION_LABEL_CRRR_TOOLTIP))                                                  return false;
 
     y += element_height + v_spacing;
 
@@ -715,13 +742,13 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblPotentialRiskMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblPotentialRiskMoney", "Risk $"))                                               return false;
-    if (!LabelCreate(RiskTabList, m_LblPotentialRiskPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialRiskPerc", "Risk %"))                                                    return false;
-    if (!LabelCreate(RiskTabList, m_LblPotentialLots, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialLots", "Lots"))                                                    return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialRiskMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblPotentialRiskMoney", TRANSLATION_LABEL_RISK + " $"))                                               return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialRiskPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialRiskPerc", TRANSLATION_LABEL_RISK + " %"))                                                    return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialLots, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialLots", TRANSLATION_LABEL_LOTS))                                                    return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblPotentialPortfolio, first_column_start, y, second_risk_column_start, y + element_height, "m_LblPotentialPortfolio", "Potential portfolio:", "Including the position being calculated"))                         return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialPortfolio, first_column_start, y, second_risk_column_start, y + element_height, "m_LblPotentialPortfolio", TRANSLATION_LABEL_POTENTIAL_PORTFOLIO + ":", TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO))                         return false;
     if (!EditCreate(RiskTabList, m_EdtPotRiskM, second_risk_column_start, y, second_risk_column_start + normal_edit_width, y + element_height, "m_EdtPotRiskM", ""))                                                   return false;
     m_EdtPotRiskM.ReadOnly(true);
     m_EdtPotRiskM.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -734,9 +761,9 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblPotentialProfitMoney, second_risk_column_start, y, second_risk_column_start + narrow_edit_width, y + element_height, "m_LblPotentialProfitMoney", "Reward $"))                                                  return false;
-    if (!LabelCreate(RiskTabList, m_LblPotentialProfitPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialProfitPerc", "Reward %"))                                                  return false;
-    if (!LabelCreate(RiskTabList, m_LblPotentialRRR, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialRRR", "RRR", "Risk-to-reward ratio of the potential portfolio"))                                                  return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialProfitMoney, second_risk_column_start, y, second_risk_column_start + narrow_edit_width, y + element_height, "m_LblPotentialProfitMoney", TRANSLATION_LABEL_REWARD + " $"))                                                  return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialProfitPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialProfitPerc", TRANSLATION_LABEL_REWARD + " %"))                                                  return false;
+    if (!LabelCreate(RiskTabList, m_LblPotentialRRR, fourth_risk_column_start, y, fourth_risk_column_start + narrowest_label_width, y + element_height, "m_LblPotentialRRR", "RRR", TRANSLATION_LABEL_PRRR_TOOLTIP))                                                  return false;
 
     y += element_height + v_spacing;
 
@@ -755,39 +782,39 @@ bool CPositionSizeCalculator::CreateObjects()
     // Reset
     y = row_start + element_height + 3 * v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblPosMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPosMargin", "Position margin:"))                               return false;
+    if (!LabelCreate(MarginTabList, m_LblPosMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPosMargin", TRANSLATION_LABEL_POSITION_MARGIN + ":"))                               return false;
     if (!EditCreate(MarginTabList, m_EdtPosMargin, second_margin_column_start, y, second_margin_column_start + wide_edit_width, y + element_height, "m_EdtPosMargin", ""))                                                   return false;
     m_EdtPosMargin.ReadOnly(true);
     m_EdtPosMargin.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblUsedMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblUsedMargin", "Future used margin:"))                      return false;
+    if (!LabelCreate(MarginTabList, m_LblUsedMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblUsedMargin", TRANSLATION_LABEL_FUTURE_USED_MARGIN + ":"))                      return false;
     if (!EditCreate(MarginTabList, m_EdtUsedMargin, second_margin_column_start, y, second_margin_column_start + wide_edit_width, y + element_height, "m_EdtUsedMargin", "            "))                              return false;
     m_EdtUsedMargin.ReadOnly(true);
     m_EdtUsedMargin.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblFreeMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblFreeMargin", "Future free margin:"))                          return false;
+    if (!LabelCreate(MarginTabList, m_LblFreeMargin, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblFreeMargin", TRANSLATION_LABEL_FUTURE_FREE_MARGIN + ":"))                          return false;
     if (!EditCreate(MarginTabList, m_EdtFreeMargin, second_margin_column_start, y, second_margin_column_start + wide_edit_width, y + element_height, "m_EdtFreeMargin", ""))                                                 return false;
     m_EdtFreeMargin.ReadOnly(true);
     m_EdtFreeMargin.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblCustomLeverage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblCustomLeverage", "Custom leverage = 1:"))                         return false;
+    if (!LabelCreate(MarginTabList, m_LblCustomLeverage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblCustomLeverage", TRANSLATION_LABEL_CUSTOM_LEVERAGE + " = 1:"))                         return false;
     if (!EditCreate(MarginTabList, m_EdtCustomLeverage, second_margin_column_start - (int)MathRound(10 * m_DPIScale), y, second_margin_column_start + leverage_edit_width, y + element_height, "m_EdtCustomLeverage", ""))                                              return false;
     if (!LabelCreate(MarginTabList, m_LblAccLeverage, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale), y, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale) + wide_edit_width, y + element_height, "m_LblAccLeverage", ""))                        return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblSymbolLeverage, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale), y, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale) + wide_edit_width, y + element_height, "m_LblSymbolLeverage", "(Symbol = 1:?)"))                        return false;
+    if (!LabelCreate(MarginTabList, m_LblSymbolLeverage, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale), y, second_margin_column_start + leverage_edit_width + (int)MathRound(5 * m_DPIScale) + wide_edit_width, y + element_height, "m_LblSymbolLeverage", "(" + TRANSLATION_LABEL_SYMBOL + " = 1:?)"))                        return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(MarginTabList, m_LblMaxPositionSizeByMargin, first_column_start, y, first_column_start + wide_label_width, y + element_height, "m_LblMaxPositionSizeByMargin", "Maximum position size by margin:"))                         return false;
-    if (!EditCreate(MarginTabList, m_EdtMaxPositionSizeByMargin, max_psc_column_start, y, max_psc_column_start + max_psc_edit_width, y + element_height, "m_EdtMaxPositionSizeByMargin", "", "In lots"))                                                 return false;
+    if (!LabelCreate(MarginTabList, m_LblMaxPositionSizeByMargin, first_column_start, y, first_column_start + wide_label_width, y + element_height, "m_LblMaxPositionSizeByMargin", TRANSLATION_LABEL_MAX_PS_BY_MARGIN + ":"))                         return false;
+    if (!EditCreate(MarginTabList, m_EdtMaxPositionSizeByMargin, max_psc_column_start, y, max_psc_column_start + max_psc_edit_width, y + element_height, "m_EdtMaxPositionSizeByMargin", "", TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN))                                                 return false;
     m_EdtMaxPositionSizeByMargin.ReadOnly(true);
     m_EdtMaxPositionSizeByMargin.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
@@ -796,26 +823,26 @@ bool CPositionSizeCalculator::CreateObjects()
     // Reset
     y = row_start + element_height + 3 * v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsType, first_column_start, y, first_column_start + narrow_edit_width, y + element_height, "m_LblSwapsType", "Type:"))                                       return false;
-    if (!EditCreate(SwapsTabList, m_EdtSwapsType, first_column_start + narrow_edit_width, y, second_swaps_column_start + swap_type_edit_width, y + element_height, "m_EdtSwapsType", "Unknown"))                                                return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsType, first_column_start, y, first_column_start + narrow_edit_width, y + element_height, "m_LblSwapsType", TRANSLATION_LABEL_TYPE + ":"))                                       return false;
+    if (!EditCreate(SwapsTabList, m_EdtSwapsType, first_column_start + narrow_edit_width, y, second_swaps_column_start + swap_type_edit_width, y + element_height, "m_EdtSwapsType", TRANSLATION_LABEL_UNKNOWN))                                                return false;
     m_EdtSwapsType.ReadOnly(true);
     m_EdtSwapsType.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsTripleDay, first_column_start, y, first_column_start + narrow_edit_width, y + element_height, "m_LblSwapsTripleDay", "Triple swap:"))                                          return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsTripleDay, first_column_start, y, first_column_start + narrow_edit_width, y + element_height, "m_LblSwapsTripleDay", TRANSLATION_LABEL_TRIPLE_SWAP + ":"))                                          return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsTripleDay, first_column_start + narrow_edit_width, y, second_swaps_column_start + swap_type_edit_width, y + element_height, "m_EdtSwapsTripleDay", "?"))                                                return false;
     m_EdtSwapsTripleDay.ReadOnly(true);
     m_EdtSwapsTripleDay.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsLong, second_swaps_column_start, y, second_swaps_column_start + narrow_edit_width, y + element_height, "m_LblSwapsLong", "Long"))                                          return false;
-    if (!LabelCreate(SwapsTabList, m_LblSwapsShort, third_swaps_column_start, y, third_swaps_column_start + narrow_edit_width, y + element_height, "m_LblSwapsShort", "Short"))                                         return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsLong, second_swaps_column_start, y, second_swaps_column_start + narrow_edit_width, y + element_height, "m_LblSwapsLong", TRANSLATION_BUTTON_LONG))                                          return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsShort, third_swaps_column_start, y, third_swaps_column_start + narrow_edit_width, y + element_height, "m_LblSwapsShort", TRANSLATION_BUTTON_SHORT))                                         return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsNominal, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsNominal", "Nominal:"))                                          return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsNominal, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsNominal", TRANSLATION_LABEL_NOMINAL + ":"))                                          return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsNominalLong, second_swaps_column_start, y, second_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsNominalLong", "?"))                                                 return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsNominalShort, third_swaps_column_start, y, third_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsNominalShort", "?"))                                                 return false;
     m_EdtSwapsNominalLong.ReadOnly(true);
@@ -825,10 +852,10 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsDaily, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsDaily", "Daily:"))                                        return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsDaily, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsDaily", TRANSLATION_LABEL_DAILY+ ":"))                                        return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsDailyLongLot, second_swaps_column_start, y, second_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsDailyLongLot", "?"))                                               return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsDailyShortLot, third_swaps_column_start, y, third_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsDailyShortLot", "?"))                                               return false;
-    if (!LabelCreate(SwapsTabList, m_LblSwapsPerLotDaily, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerLotDaily", "USD per lot"))                                         return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsPerLotDaily, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerLotDaily", "USD " + TRANSLATION_LABEL_PER_LOT))                                         return false;
     m_EdtSwapsDailyLongLot.ReadOnly(true);
     m_EdtSwapsDailyLongLot.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     m_EdtSwapsDailyShortLot.ReadOnly(true);
@@ -838,7 +865,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (!EditCreate(SwapsTabList, m_EdtSwapsDailyLongPS, second_swaps_column_start, y, second_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsDailyLongPS", "?"))                                                 return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsDailyShortPS, third_swaps_column_start, y, third_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsDailyShortPS", "?"))                                                 return false;
-    if (!LabelCreate(SwapsTabList, m_LblSwapsPerPSDaily, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerPSDaily", "USD per PS ()"))                                         return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsPerPSDaily, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerPSDaily", "USD " + TRANSLATION_LABEL_PER_PS + " ()"))                                         return false;
     m_EdtSwapsDailyLongPS.ReadOnly(true);
     m_EdtSwapsDailyLongPS.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     m_EdtSwapsDailyShortPS.ReadOnly(true);
@@ -846,10 +873,10 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(SwapsTabList, m_LblSwapsYearly, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsYearly", "Yearly:"))                                         return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsYearly, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_LblSwapsYearly", TRANSLATION_LABEL_YEARLY + ":"))                                         return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsYearlyLongLot, second_swaps_column_start, y, second_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsYearlyLongLot", "?"))                                                 return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsYearlyShortLot, third_swaps_column_start, y, third_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsYearlyShortLot", "?"))                                                 return false;
-    if (!LabelCreate(SwapsTabList, m_LblSwapsPerLotYearly, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerLotYearly", "USD per lot"))                                       return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsPerLotYearly, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerLotYearly", "USD " + TRANSLATION_LABEL_PER_LOT))                                       return false;
     m_EdtSwapsYearlyLongLot.ReadOnly(true);
     m_EdtSwapsYearlyLongLot.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     m_EdtSwapsYearlyShortLot.ReadOnly(true);
@@ -859,7 +886,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (!EditCreate(SwapsTabList, m_EdtSwapsYearlyLongPS, second_swaps_column_start, y, second_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsYearlyLongPS", "?"))                                               return false;
     if (!EditCreate(SwapsTabList, m_EdtSwapsYearlyShortPS, third_swaps_column_start, y, third_swaps_column_start + swap_size_edit_width, y + element_height, "m_EdtSwapsYearlyShortPS", "?"))                                               return false;
-    if (!LabelCreate(SwapsTabList, m_LblSwapsPerPSYearly, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerPSYearly", "USD per PS ()"))                                       return false;
+    if (!LabelCreate(SwapsTabList, m_LblSwapsPerPSYearly, fourth_swaps_column_start, y, fourth_swaps_column_start + swap_last_label_width, y + element_height, "m_LblSwapsPerPSYearly", "USD " + TRANSLATION_LABEL_PER_PS + " ()"))                                       return false;
     m_EdtSwapsYearlyLongPS.ReadOnly(true);
     m_EdtSwapsYearlyLongPS.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     m_EdtSwapsYearlyShortPS.ReadOnly(true);
@@ -870,66 +897,66 @@ bool CPositionSizeCalculator::CreateObjects()
     // Reset
     y = row_start + element_height + 3 * v_spacing;
 
-    if (!ButtonCreate(TradingTabList, m_BtnTrade, first_column_start, y, first_column_start + tab_button_width, y + element_height, "m_BtnTrade", "Trade"))                                          return false;
-    if (!LabelCreate(TradingTabList, m_LblTrailingStop, first_column_start + tab_button_width + v_spacing * 2, y, first_column_start + v_spacing + tab_button_width + normal_edit_width, y + element_height, "m_LblTrailingStop", "Trailing stop:"))                                          return false;
+    if (!ButtonCreate(TradingTabList, m_BtnTrade, first_column_start, y, first_column_start + tab_button_width, y + element_height, "m_BtnTrade", TRANSLATION_BUTTON_TRADE))                                          return false;
+    if (!LabelCreate(TradingTabList, m_LblTrailingStop, first_column_start + tab_button_width + v_spacing * 2, y, first_column_start + v_spacing + tab_button_width + normal_edit_width, y + element_height, "m_LblTrailingStop", TRANSLATION_LABEL_TRAILING_STOP + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtTrailingStopPoints, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtTrailingStopPoints", "0"))                                                 return false;
-    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", "Breakeven:"))                                          return false;
+    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtBreakEvenPoints, first_column_start + v_spacing * 4 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y, first_column_start + v_spacing * 4 + tab_button_width * 3 + normal_edit_width + narrow_edit_width, y + element_height, "m_EdtBreakEvenPoints", "0"))                                                 return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(TradingTabList, m_LblMagicNumber, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMagicNumber", "Magic number:"))                                          return false;
+    if (!LabelCreate(TradingTabList, m_LblMagicNumber, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMagicNumber", TRANSLATION_LABEL_MAGIC_NUMBER + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtMagicNumber, first_column_start + normal_label_width, y, first_column_start + normal_label_width + normal_edit_width, y + element_height, "m_EdtMagicNumber", ""))                                                 return false;
-    if (!LabelCreate(TradingTabList, m_LblExpiry, first_column_start + normal_label_width + normal_edit_width + v_spacing, y, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width, y + element_height, "m_LblExpiry", "Expiry:", "Expiration time in minutes for the next created pending order. Minimum = 10."))                                          return false;
-    if (!EditCreate(TradingTabList, m_EdtExpiry, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width, y, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width + tab_button_width, y + element_height, "m_EdtExpiry", "", "Expiration time in minutes for the next created pending order. Minimum = 10."))                                          return false;
-    if (!LabelCreate(TradingTabList, m_LblMinutes, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width + tab_button_width + v_spacing, y, panel_end, y + element_height, "m_LblMinutes", "min.", "Minutes"))                                          return false;
+    if (!LabelCreate(TradingTabList, m_LblExpiry, first_column_start + normal_label_width + normal_edit_width + v_spacing, y, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width, y + element_height, "m_LblExpiry", TRANSLATION_LABEL_EXPIRY + ":", TRANSLATION_TOOLTIP_EXPIRY))                                          return false;
+    if (!EditCreate(TradingTabList, m_EdtExpiry, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width, y, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width + tab_button_width, y + element_height, "m_EdtExpiry", "", TRANSLATION_TOOLTIP_EXPIRY))                                          return false;
+    if (!LabelCreate(TradingTabList, m_LblMinutes, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width + tab_button_width + v_spacing, y, panel_end, y + element_height, "m_LblMinutes", TRANSLATION_LABEL_MINUTES, TRANSLATION_TOOLTIP_MINUTES))                                          return false;
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(TradingTabList, m_LblCommentary, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblCommentary", "Order commentary:"))                                        return false;
+    if (!LabelCreate(TradingTabList, m_LblCommentary, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblCommentary", TRANSLATION_LABEL_ORDER_COMMENTARY + ":"))                                        return false;
     if (!EditCreate(TradingTabList, m_EdtCommentary, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtCommentary", ""))                                               return false;
-    if (!CheckBoxCreate(TradingTabList, m_ChkCommentAutoSuffix, third_trading_column_start, y, third_trading_column_start + max_psc_edit_width, y + element_height, "m_ChkCommentAutoSuffix", "Auto-suffix"))                                               return false;
+    if (!CheckBoxCreate(TradingTabList, m_ChkCommentAutoSuffix, third_trading_column_start, y, third_trading_column_start + max_psc_edit_width, y + element_height, "m_ChkCommentAutoSuffix", TRANSLATION_LABEL_ORDER_AUTOSUFFIX, TRANSLATION_TOOLTIP_ORDER_AUTOSUFFIX))                                               return false;
 
     y += element_height + v_spacing;
 
     if (ShowMaxParametersOnTrading)
     {
-        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTrades, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxNumberOfTrades", "Max # of trades"))                                        return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTradesTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxNumberOfTradesTotal", "Total:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTrades, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxNumberOfTrades", TRANSLATION_LABEL_MAX_NUMBER_OF_TRADES))                                        return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTradesTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxNumberOfTradesTotal", TRANSLATION_LABEL_TOTAL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxNumberOfTradesTotal, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtMaxNumberOfTradesTotal", ""))                                                 return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTradesPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxNumberOfTradesPerSymbol", "Per symbol:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxNumberOfTradesPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxNumberOfTradesPerSymbol", TRANSLATION_LABEL_PER_SYMBOL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxNumberOfTradesPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width, y, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width * 2, y + element_height, "m_EdtMaxNumberOfTradesPerSymbol", ""))                                                 return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMaxPositionSize, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxPositionSize", "Max volume"))                                         return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxPositionSizeTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxPositionSizeTotal", "Total:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxPositionSize, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxPositionSize", TRANSLATION_LABEL_MAX_VOLUME))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxPositionSizeTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxPositionSizeTotal", TRANSLATION_LABEL_TOTAL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxPositionSizeTotal, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtMaxPositionSizeTotal", ""))                                                 return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxPositionSizePerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxPositionSizePerSymbol", "Per symbol:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxPositionSizePerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxPositionSizePerSymbol", TRANSLATION_LABEL_PER_SYMBOL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxPositionSizePerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width, y, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width * 2, y + element_height, "m_EdtMaxPositionSizePerSymbol", ""))                                                 return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMaxRisk, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxRisk", "Max risk, %"))                                         return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxRiskTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxRiskTotal", "Total:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxRisk, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxRisk", TRANSLATION_LABEL_MAX_RISK + ", %"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxRiskTotal, first_column_start + narrow_label_width + element_height, y, multi_tp_column_start + tab_button_width, y + element_height, "m_LblMaxRiskTotal", TRANSLATION_LABEL_TOTAL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxRiskTotal, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtMaxRiskTotal", ""))                                                 return false;
-        if (!LabelCreate(TradingTabList, m_LblMaxRiskPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxRiskPerSymbol", "Per symbol:"))                                         return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxRiskPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 2, y, multi_tp_button_start + leverage_edit_width + v_spacing * 6 + tab_button_width, y + element_height, "m_LblMaxRiskPerSymbol", TRANSLATION_LABEL_PER_SYMBOL + ":"))                                         return false;
         if (!EditCreate(TradingTabList, m_EdtMaxRiskPerSymbol, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width, y, multi_tp_button_start + leverage_edit_width + v_spacing * 7 + tab_button_width * 2, y + element_height, "m_EdtMaxRiskPerSymbol", ""))                                                 return false;
     
         y += element_height + v_spacing;
     }
 
-    if (!CheckBoxCreate(TradingTabList, m_ChkDisableTradingWhenLinesAreHidden, first_column_start, y, panel_end, y + element_height, "m_ChkDisableTradingWhenLinesAreHidden", "Disable trading when lines are hidden"))           return false;
+    if (!CheckBoxCreate(TradingTabList, m_ChkDisableTradingWhenLinesAreHidden, first_column_start, y, panel_end, y + element_height, "m_ChkDisableTradingWhenLinesAreHidden", TRANSLATION_CHECKBOX_DISABLE_TRADING_LINES_HIDDEN))           return false;
 
     y += element_height + v_spacing;
 
     // Need multiple TP targets.
     if (sets.TakeProfitsNumber > 1)
     {
-        if (!LabelCreate(TradingTabList, m_LblTradingTP, multi_tp_column_start, y, multi_tp_column_start + multi_tp_label_width, y + element_height, "m_LblTradingTP", "TP"))                                        return false;
-        if (!ButtonCreate(TradingTabList, m_BtnTPsInward, multi_tp_button_start, y, multi_tp_button_start + leverage_edit_width, y + element_height, "m_BtnTPsInward", "<<", "Fill additional TPs equidistantly between Entry and Main TP."))                                          return false;
-        if (!ButtonCreate(TradingTabList, m_BtnTPsOutward, multi_tp_button_start + leverage_edit_width + v_spacing, y, multi_tp_button_start + 2 * leverage_edit_width + v_spacing, y + element_height, "m_BtnTPsOutward", ">>", "Place additional TPs beyond the Main TP using the same distance."))                                          return false;
-        if (!ButtonCreate(TradingTabList, m_BtnTradingTPShare, third_trading_column_start, y, third_trading_column_start + normal_edit_width, y + element_height, "m_BtnTradingTPShare", "Share, %", "Automatically fill the volume shares"))                                       return false;
+        if (!LabelCreate(TradingTabList, m_LblTradingTP, multi_tp_column_start, y, multi_tp_column_start + multi_tp_label_width, y + element_height, "m_LblTradingTP", TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE))                                        return false;
+        if (!ButtonCreate(TradingTabList, m_BtnTPsInward, multi_tp_button_start, y, multi_tp_button_start + leverage_edit_width, y + element_height, "m_BtnTPsInward", "<<", TRANSLATION_TOOLTIP_FILL_INWARD))                                          return false;
+        if (!ButtonCreate(TradingTabList, m_BtnTPsOutward, multi_tp_button_start + leverage_edit_width + v_spacing, y, multi_tp_button_start + 2 * leverage_edit_width + v_spacing, y + element_height, "m_BtnTPsOutward", ">>", TRANSLATION_TOOLTIP_FILL_OUTWARD))                                          return false;
+        if (!ButtonCreate(TradingTabList, m_BtnTradingTPShare, third_trading_column_start, y, third_trading_column_start + normal_edit_width, y + element_height, "m_BtnTradingTPShare", TRANSLATION_LABEL_SHARE + ", %", TRANSLATION_TOOLTIP_SHARE))                                       return false;
 
         y += element_height + v_spacing;
 
@@ -938,7 +965,7 @@ bool CPositionSizeCalculator::CreateObjects()
         ArrayResize(TradingTPShareEdits, sets.TakeProfitsNumber);
         for (int i = 0; i < sets.TakeProfitsNumber; i++)
         {
-            if (!LabelCreate(TradingTabList, TradingTPLabels[i], first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblTradingTPLabel" + IntegerToString(i + 1), "Take-profit " + IntegerToString(i + 1)))                                        return false;
+            if (!LabelCreate(TradingTabList, TradingTPLabels[i], first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblTradingTPLabel" + IntegerToString(i + 1), TRANSLATION_LABEL_TAKEPROFIT + " " + IntegerToString(i + 1)))                                        return false;
             if (!EditCreate(TradingTabList, TradingTPEdits[i], multi_tp_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtTradingTPEdit" + IntegerToString(i + 1), ""))                                              return false;
             if (!EditCreate(TradingTabList, TradingTPShareEdits[i], third_trading_column_start, y, third_trading_column_start + leverage_edit_width, y + element_height, "m_EdtTradingTPShareEdit" + IntegerToString(i + 1), ""))                                               return false;
             y += element_height + v_spacing;
@@ -947,58 +974,63 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (ShowFusesOnTrading)
     {
-        if (!LabelCreate(TradingTabList, m_LblTradingPoints, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_LblTradingPoints", "Points", ""))                                       return false;
+        if (!LabelCreate(TradingTabList, m_LblTradingPoints, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_LblTradingPoints", TRANSLATION_LABEL_POINTS, ""))                                       return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMaxSlippage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxSlippage", "Max slippage:"))                                          return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxSlippage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxSlippage", TRANSLATION_LABEL_MAX_SLIPPAGE + ":"))                                          return false;
         if (!EditCreate(TradingTabList, m_EdtMaxSlippage, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMaxSlippage", ""))                                                 return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMaxSpread, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxSpread", "Max spread:"))                                        return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxSpread, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxSpread", TRANSLATION_LABEL_MAX_SPREAD + ":"))                                        return false;
         if (!EditCreate(TradingTabList, m_EdtMaxSpread, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMaxSpread", ""))                                                 return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMaxEntrySLDistance, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxEntrySLDistance", "Max Entry/SL distance:"))                                       return false;
+        if (!LabelCreate(TradingTabList, m_LblMaxEntrySLDistance, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxEntrySLDistance", TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE + ":"))                                       return false;
         if (!EditCreate(TradingTabList, m_EdtMaxEntrySLDistance, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMaxEntrySLDistance", ""))                                               return false;
     
         y += element_height + v_spacing;
     
-        if (!LabelCreate(TradingTabList, m_LblMinEntrySLDistance, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMinEntrySLDistance", "Min Entry/SL distance:"))                                       return false;
+        if (!LabelCreate(TradingTabList, m_LblMinEntrySLDistance, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMinEntrySLDistance", TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE + ":"))                                       return false;
         if (!EditCreate(TradingTabList, m_EdtMinEntrySLDistance, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMinEntrySLDistance", ""))                                               return false;
+    
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(TradingTabList, m_LblMaxRiskPercentage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxRiskPercentage", TRANSLATION_LABEL_MAX_RISK_PERCENTAGE + ":"))                                       return false;
+        if (!EditCreate(TradingTabList, m_EdtMaxRiskPercentage, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMaxRiskPercentage", ""))                                               return false;
     
         y += element_height + v_spacing;
     }
 
     if (ShowCheckboxesOnTrading)
     {
-        if (!CheckBoxCreate(TradingTabList, m_ChkSubtractPositions, first_column_start, y, panel_end, y + element_height, "m_ChkSubtractPositions", "Subtract open positions volume", "The EA will subtract currently open trades' volume from the calculated position size before opening a trade."))            return false;
+        if (!CheckBoxCreate(TradingTabList, m_ChkSubtractPositions, first_column_start, y, panel_end, y + element_height, "m_ChkSubtractPositions", TRANSLATION_CHECKBOX_SUBTRACT_OPEN_POSITIONS_VOLUME, TRANSLATION_TOOLTIP_SUBTRACT_OPEN_POSITIONS_VOLUME))            return false;
     
         y += element_height + v_spacing;
     
-        if (!CheckBoxCreate(TradingTabList, m_ChkSubtractPendingOrders, first_column_start, y, panel_end, y + element_height, "m_ChkSubtractPendingOrders", "Subtract pending orders volume", "The EA will subtract pending orders' volume from the calculated position size before opening a trade."))           return false;
+        if (!CheckBoxCreate(TradingTabList, m_ChkSubtractPendingOrders, first_column_start, y, panel_end, y + element_height, "m_ChkSubtractPendingOrders", TRANSLATION_CHECKBOX_SUBTRACT_PENDING_ORDERS_VOLUME, TRANSLATION_TOOLTIP_SUBTRACT_PENDING_ORDERS_VOLUME))           return false;
     
         y += element_height + v_spacing;
     
-        if (!CheckBoxCreate(TradingTabList, m_ChkDoNotApplyStopLoss, first_column_start, y, panel_end, y + element_height, "m_ChkDoNotApplyStopLoss", "Do not apply stop-loss", "The EA won't apply stop-loss to the trade it opens."))           return false;
+        if (!CheckBoxCreate(TradingTabList, m_ChkDoNotApplyStopLoss, first_column_start, y, panel_end, y + element_height, "m_ChkDoNotApplyStopLoss", TRANSLATION_CHECKBOX_DO_NOT_APPLY_STOPLOSS, TRANSLATION_TOOLTIP_DO_NOT_APPLY_STOPLOSS))           return false;
     
         y += element_height + v_spacing;
     
-        if (!CheckBoxCreate(TradingTabList, m_ChkDoNotApplyTakeProfit, first_column_start, y, panel_end, y + element_height, "m_ChkDoNotApplyTakeProfit", "Do not apply take-profit", "The EA won't apply take-profit to the trade it opens."))           return false;
+        if (!CheckBoxCreate(TradingTabList, m_ChkDoNotApplyTakeProfit, first_column_start, y, panel_end, y + element_height, "m_ChkDoNotApplyTakeProfit", TRANSLATION_CHECKBOX_DO_NOT_APPLY_TAKEPROFIT, TRANSLATION_TOOLTIP_DO_NOT_APPLY_TAKEPROFIT))           return false;
     
         y += element_height + v_spacing;
     }
 
-    if (!CheckBoxCreate(TradingTabList, m_ChkAskForConfirmation, first_column_start, y, panel_end, y + element_height, "m_ChkAskForConfirmation", "Ask for confirmation", "The EA will ask for confirmation before opening a trade."))            return false;
+    if (!CheckBoxCreate(TradingTabList, m_ChkAskForConfirmation, first_column_start, y, panel_end, y + element_height, "m_ChkAskForConfirmation", TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION, TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION))            return false;
 
     // Outside button for quick trading:
     if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_LINE) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH))
     {
         int width = normal_label_width;
         if (ShowAdditionalEntryLabel) width = int(width * 1.2);
-        if (!CreateOutsideButton(m_OutsideTradeButton, 0, 0, width, element_height, "m_OutsideTradeButton", "", "Click to open an order/position.")) Print("Failed to create an outside button.");
+        if (!CreateOutsideButton(m_OutsideTradeButton, 0, 0, width, element_height, "m_OutsideTradeButton", "", TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON)) Print(TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON);
         m_OutsideTradeButton.Hide(); // Will be unhidden after it's moved to above the Entry line.
     }
 
@@ -1079,6 +1111,7 @@ bool CPositionSizeCalculator::InitObjects()
         if (!m_EdtMaxSpread.TextAlign(align))                                    return false;
         if (!m_EdtMaxEntrySLDistance.TextAlign(align))                           return false;
         if (!m_EdtMinEntrySLDistance.TextAlign(align))                           return false;
+        if (!m_EdtMaxRiskPercentage.TextAlign(align))                            return false;
     }
     if (!m_EdtTrailingStopPoints.TextAlign(align))                           return false;
     if (!m_EdtBreakEvenPoints.TextAlign(align))                              return false;
@@ -1115,6 +1148,12 @@ bool CPositionSizeCalculator::InitObjects()
 
     SeekAndDestroyDuplicatePanels();
 
+    // For use in visual backtesting only.
+    if (MinMaxButtonId < 0) // No value yet.
+    {
+        MinMaxButtonId = Control(ControlsTotal() - 1).Id(); // Last control.
+    }
+    
     return true;
 }
 
@@ -1124,18 +1163,18 @@ void CPositionSizeCalculator::InitControlsValues()
     {
         if (!sets.TPDistanceInPoints)
         {
-            m_BtnTakeProfit.Text("Take-profit x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
+            m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
         }
-        else m_BtnTakeProfit.Text("TP x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
+        else m_BtnTakeProfit.Text(TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " x " + DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)) + ":");
     }
 
     if (sets.EntryType)
     {
-        m_BtnOrderType.Text("Pending");
+        m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_PENDING);
     }
     else
     {
-        m_BtnOrderType.Text("Instant");
+        m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_INSTANT);
         m_EdtEntryLevel.ReadOnly(true);
         m_EdtEntryLevel.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     }
@@ -1148,7 +1187,7 @@ void CPositionSizeCalculator::InitControlsValues()
         {
         default:
         case Balance:
-            m_BtnAccount.Text("Account balance");
+            m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_BALANCE);
             // Custom balance.
             if (CustomBalance > 0) acc_val = CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
@@ -1157,14 +1196,14 @@ void CPositionSizeCalculator::InitControlsValues()
             m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_ENABLE);
             break;
         case Equity:
-            m_BtnAccount.Text("Account equity");
+            m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_EQUITY);
             acc_val = AccountInfoDouble(ACCOUNT_EQUITY);
             // Account balance uneditable.
             m_EdtAccount.ReadOnly(true);
             m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
             break;
         case Balance_minus_Risk:
-            m_BtnAccount.Text("Balance - CPR");
+            m_BtnAccount.Text(TRANSLATION_BUTTON_BALANCE_MINUS_CPR);
             // Custom balance.
             if (CustomBalance > 0) acc_val = CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
@@ -1218,13 +1257,25 @@ void CPositionSizeCalculator::InitControlsValues()
         m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
         m_ChkSpreadAdjustmentTP.Checked(sets.SpreadAdjustmentTP);
         if (sets.ATRTimeframe != PERIOD_CURRENT) m_BtnATRTimeframe.Text(EnumToString(sets.ATRTimeframe));
-        else m_BtnATRTimeframe.Text("CURRENT");
+        else m_BtnATRTimeframe.Text(TRANSLATION_BUTTON_ATR_PERIOD_CURRENT);
     }
 
     m_ChkCountPendings.Checked(sets.CountPendingOrders);
     m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL);
     m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP);
-    m_ChkIgnoreOtherSymbols.Checked(sets.IgnoreOtherSymbols);
+    switch(sets.IgnoreSymbols)
+    {
+    default:
+    case IGNORE_SYMBOLS_NONE:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+        break;
+    case IGNORE_SYMBOLS_OTHER:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+        break;
+    case IGNORE_SYMBOLS_CURRENT:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+        break;
+    }
 
     // Show/hide RiskReward
     if (sets.TakeProfitLevel == 0)
@@ -1263,6 +1314,7 @@ void CPositionSizeCalculator::InitControlsValues()
         m_EdtMaxSpread.Text(IntegerToString(sets.MaxSpread));
         m_EdtMaxEntrySLDistance.Text(IntegerToString(sets.MaxEntrySLDistance));
         m_EdtMinEntrySLDistance.Text(IntegerToString(sets.MinEntrySLDistance));
+        m_EdtMaxRiskPercentage.Text(DoubleToString(sets.MaxRiskPercentage, 2));
     }
     if (ShowCheckboxesOnTrading)
     {
@@ -1335,14 +1387,14 @@ bool CPositionSizeCalculator::DisplayValues()
     //=== Spread
     if (ShowSpread == Points)
     {
-        if (!Caption(PanelCaption + " | Spread: " + IntegerToString(SymbolInfoInteger(Symbol(), SYMBOL_SPREAD)))) return false;
+        if (!Caption(PanelCaption + " | " + TRANSLATION_LABEL_SPREAD + ": " + IntegerToString(SymbolInfoInteger(Symbol(), SYMBOL_SPREAD)))) return false;
     }
     else if (ShowSpread == Ratio) // Spread / SL ratio in percentage.
     {
         double SL;
         if (sets.SLDistanceInPoints) SL = sets.StopLoss * _Point;
         else SL = MathAbs(sets.StopLossLevel - sets.EntryLevel);
-        if (SL != 0) if (!Caption(PanelCaption + " | Spread: " + DoubleToString((SymbolInfoInteger(Symbol(), SYMBOL_SPREAD) * _Point / SL) * 100, 2) + "%")) return false;
+        if (SL != 0) if (!Caption(PanelCaption + " | " + TRANSLATION_LABEL_SPREAD + ": " + DoubleToString((SymbolInfoInteger(Symbol(), SYMBOL_SPREAD) * _Point / SL) * 100, 2) + "%")) return false;
     }
     else if (!Caption(PanelCaption)) return false;
 
@@ -1389,13 +1441,13 @@ bool CPositionSizeCalculator::DisplayValues()
 
     /* Order type */ if (sets.EntryType == Instant)
                      {
-                         m_BtnOrderType.Text("Instant");
+                         m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_INSTANT);
                          m_EdtEntryLevel.ReadOnly(true);
                          m_EdtEntryLevel.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
                      }
                      else if (sets.EntryType == Pending)
                      {
-                         m_BtnOrderType.Text("Pending");
+                         m_BtnOrderType.Text(TRANSLATION_BUTTON_ORDER_TYPE_PENDING);
                          m_EdtEntryLevel.ReadOnly(false);
                          m_EdtEntryLevel.ColorBackground(CONTROLS_EDIT_COLOR_ENABLE);
                      }
@@ -1413,7 +1465,7 @@ bool CPositionSizeCalculator::DisplayValues()
             if (sets.CustomBalance > 0)
             {
                 if (!m_minimized) m_LblAdditionalFundsAsterisk.Show();
-                ObjectSetString(ChartID(), m_name + "m_LblAdditionalFundsAsterisk", OBJPROP_TOOLTIP, "Custom balance set");
+                ObjectSetString(ChartID(), m_name + "m_LblAdditionalFundsAsterisk", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_CUSTOM);
             }
             else
             {
@@ -1430,8 +1482,8 @@ bool CPositionSizeCalculator::DisplayValues()
             {
                 if (!m_minimized) m_LblAdditionalFundsAsterisk.Show();
                 string tooltip = "";
-                if (AdditionalFunds > 0) tooltip = "+" + DoubleToString(AdditionalFunds, 2) + " additional funds";
-                else if (AdditionalFunds < 0) tooltip = DoubleToString(-AdditionalFunds, 2) + " funds subtracted";
+                if (AdditionalFunds > 0) tooltip = "+" + DoubleToString(AdditionalFunds, 2) + " " + TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_ADD;
+                else if (AdditionalFunds < 0) tooltip = DoubleToString(-AdditionalFunds, 2) + " " + TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_SUB;
 
                 ObjectSetString(ChartID(), m_name + "m_LblAdditionalFundsAsterisk", OBJPROP_TOOLTIP, tooltip);
             }
@@ -1440,21 +1492,21 @@ bool CPositionSizeCalculator::DisplayValues()
 
     /* Lines */          if (sets.ShowLines)
     {
-        if (!m_BtnLines.Text("Hide lines"))                                                            return false;
+        if (!m_BtnLines.Text(TRANSLATION_BUTTON_HIDE_LINES))                                                            return false;
     }
     else
     {
-        if (!m_BtnLines.Text("Show lines"))                                                            return false;
+        if (!m_BtnLines.Text(TRANSLATION_BUTTON_SHOW_LINES))                                                            return false;
     }
     //=== ATR SL and TP
     if (ShowATROptions)
     {
         double atr = iATR(_Symbol, sets.ATRTimeframe, sets.ATRPeriod, ATRCandle);
-        m_LblATRValue.Text("ATR = " + DoubleToString(atr, _Digits));
+        m_LblATRValue.Text(TRANSLATION_LABEL_ATR_VALUE + " = " + DoubleToString(atr, _Digits));
     }
     //=== Commission, risk, position size
     /* Commission size*/ m_EdtCommissionSize.Text(DoubleToString(sets.CommissionPerLot, CommissionDecimals));
-    /* Risk currency  */ if (acc_currency != "") if (!m_LblRiskM.Text("Risk, " + acc_currency + ":"))            return false;
+    /* Risk currency  */ if (acc_currency != "") if (!m_LblRiskM.Text(TRANSLATION_LABEL_RISK + ", " + acc_currency + ":"))            return false;
     /* Risk In        */ if (!m_EdtRiskPIn.Text(FormatDouble(DoubleToString(DisplayRisk, 2))))                                 return false;
     /* Risk Money In  */ if (!m_EdtRiskMIn.Text(FormatDouble(DoubleToString(RiskMoney, 2))))                                   return false;
     /* Risk Money Out */ if (!m_EdtRiskMRes.Text(FormatDouble(DoubleToString(OutputRiskMoney))))                               return false;
@@ -1468,11 +1520,11 @@ bool CPositionSizeCalculator::DisplayValues()
         
     }
     else if (!m_EdtRiskPRes.Text("0")) return false;
-    /* Reward currency*/ if (acc_currency != "") if (!m_LblReward.Text("Reward, " + acc_currency + ":"))         return false;
+    /* Reward currency*/ if (acc_currency != "") if (!m_LblReward.Text(TRANSLATION_LABEL_REWARD + ", " + acc_currency + ":"))         return false;
     /* Reward 1       */ if (!m_EdtReward1.Text(FormatDouble(InputReward)))                                                return false;
     /* Reward 2       */ if (!m_EdtReward2.Text(FormatDouble(DoubleToString(OutputReward, 2))))                            return false;
     /* Risk/Reward 1  */ if (!m_EdtRR1.Text(InputRR))                                                                      return false;
-    if (InputRR == "Invalid TP") m_EdtRR1.Color(clrRed);
+    if (InputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) m_EdtRR1.Color(clrRed);
     else m_EdtRR1.Color(m_EdtTP.Color());
     if (StringToDouble(m_EdtTP.Text()) != 0)
     {
@@ -1480,31 +1532,31 @@ bool CPositionSizeCalculator::DisplayValues()
         else if (m_EdtRR2.IsVisible()) m_EdtRR1.Show();
     }
     /* Risk/Reward 2  */ if (!m_EdtRR2.Text(OutputRR))                                                                         return false;
-    if (OutputRR == "Invalid TP") m_EdtRR2.Color(clrRed);
+    if (OutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) m_EdtRR2.Color(clrRed);
     else m_EdtRR2.Color(m_EdtTP.Color());
     /* Position size  */ if (!m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits)))                         return false;
     if (OutputPositionSize > OutputMaxPositionSize)
     {
         m_EdtPosSize.Color(clrRed); // Calculated position size is greater than maximum position size by margin.
-        ObjectSetString(ChartID(), m_name + "m_EdtPosSize", OBJPROP_TOOLTIP, "Greater than maximum position size by margin!");
+        ObjectSetString(ChartID(), m_name + "m_EdtPosSize", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_WARNING_PS);
     }
     else
     {
         m_EdtPosSize.Color(m_EdtTP.Color());
-        ObjectSetString(ChartID(), m_name + "m_EdtPosSize", OBJPROP_TOOLTIP, "In lots");
+        ObjectSetString(ChartID(), m_name + "m_EdtPosSize", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN);
     }
     /* Point value      */ if (ShowPointValue)
     {
-        if (acc_currency != "") if (!m_LblPointValue.Text("Point value, " + acc_currency + ":")) return false;
+        if (acc_currency != "") if (!m_LblPointValue.Text(TRANSLATION_LABEL_POINT_VALUE + ", " + acc_currency + ":")) return false;
         if (!m_EdtPointValue.Text(OutputPointValue))                                                        return false;
     }
     //=== Portfolio Risk
     /* Money label    */ if (acc_currency != "")
     {
-        if (!m_LblCurrentRiskMoney.Text("Risk " + acc_currency))                            return false;
-        if (!m_LblCurrentProfitMoney.Text("Reward " + acc_currency))                        return false;
-        if (!m_LblPotentialRiskMoney.Text("Risk " + acc_currency))                          return false;
-        if (!m_LblPotentialProfitMoney.Text("Reward " + acc_currency))                      return false;
+        if (!m_LblCurrentRiskMoney.Text(TRANSLATION_LABEL_RISK + " " + acc_currency))                            return false;
+        if (!m_LblCurrentProfitMoney.Text(TRANSLATION_LABEL_REWARD + " " + acc_currency))                        return false;
+        if (!m_LblPotentialRiskMoney.Text(TRANSLATION_LABEL_RISK + " " + acc_currency))                          return false;
+        if (!m_LblPotentialProfitMoney.Text(TRANSLATION_LABEL_REWARD + " " + acc_currency))                      return false;
     }
     /* Current Portfolio Risk $     */ if (!m_EdtCurRiskM.Text(PLM))                                                       return false;
     /* Current Portfolio Risk %     */ if (!m_EdtCurRiskP.Text(CPR))                                                       return false;
@@ -1525,8 +1577,8 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Future Free Margin      */ if (!m_EdtFreeMargin.Text(FormatDouble(DoubleToString(FutureMargin, 2))))                return false;
     /* Custom Leverage         */ if (!m_EdtCustomLeverage.Text(DoubleToString(sets.CustomLeverage, CustomLeverageDecimals)))                     return false;
     string acc_lev = IntegerToString(AccountInfoInteger(ACCOUNT_LEVERAGE));
-    /* Account Leverage   */ if (acc_lev != "") if (!m_LblAccLeverage.Text("(Default = 1:" + acc_lev + ")"))                       return false;
-    /* Symbol Leverage    */ if (SymbolLeverage) if (!m_LblSymbolLeverage.Text("(Symbol = 1:" + DoubleToString(SymbolLeverage, SymbolLeverageDecimals) + ")")) return false;
+    /* Account Leverage   */ if (acc_lev != "") if (!m_LblAccLeverage.Text("(" + TRANSLATION_LABEL_DEFAULT + " = 1:" + acc_lev + ")"))                       return false;
+    /* Symbol Leverage    */ if (SymbolLeverage) if (!m_LblSymbolLeverage.Text("(" + TRANSLATION_LABEL_SYMBOL + " = 1:" + DoubleToString(SymbolLeverage, SymbolLeverageDecimals) + ")")) return false;
 
     /* Max Position size  */ if (!m_EdtMaxPositionSizeByMargin.Text(FormatDouble(DoubleToString(OutputMaxPositionSize, LotStep_digits), LotStep_digits)))          return false;
     if (!StopOut) // Black
@@ -1580,8 +1632,8 @@ bool CPositionSizeCalculator::DisplayValues()
 
 void CPositionSizeCalculator::Minimize()
 {
-    if (sets.TradeDirection == Short) PanelCaption = "Short | " + PanelCaptionBase;
-    else PanelCaption = "Long  | " + PanelCaptionBase;
+    if (sets.TradeDirection == Short) PanelCaption = TRANSLATION_BUTTON_SHORT + " | " + PanelCaptionBase;
+    else PanelCaption = TRANSLATION_BUTTON_LONG + " | " + PanelCaptionBase;
     DisplayValues();
     CAppDialog::Minimize();
     sets.IsPanelMinimized = true;
@@ -1596,8 +1648,8 @@ void CPositionSizeCalculator::Maximize()
 {
     if (!NoPanelMaximization)
     {
-        if (sets.TradeDirection == Short) PanelCaption = PanelCaptionBase + " Short";
-        else PanelCaption = PanelCaptionBase + " Long";
+        if (sets.TradeDirection == Short) PanelCaption = PanelCaptionBase + " " + TRANSLATION_BUTTON_SHORT;
+        else PanelCaption = PanelCaptionBase + " " + TRANSLATION_BUTTON_LONG;
         DisplayValues();
         sets.IsPanelMinimized = false;
         CAppDialog::Maximize();
@@ -1634,6 +1686,12 @@ bool CPositionSizeCalculator::CreateOutsideButton(CButton &Btn, int X1, int Y1, 
     if (!Btn.Text(Text))                                                  return false;
     ObjectSetString(ChartID(), m_name + Name, OBJPROP_TOOLTIP, Tooltip);
 
+    // Used in the Strategy Tester visual mode to find this button's ID.
+    CStringForList *obj = new CStringForList;
+    obj.Name = Name;
+    obj.Obj = GetPointer(Btn);
+    PersistentList.Add(obj);
+
     return true;
 }
 
@@ -1650,33 +1708,33 @@ void CPositionSizeCalculator::MoveOutsideTradeButton()
         if (sets.TradeDirection == Short)
         {
             // Stop
-            if (sets.EntryLevel < Bid) order_type = "Sell Stop";
+            if (sets.EntryLevel < Bid) order_type = TRANSLATION_MESSAGE_SELL_STOP;
             // Limit
-            else order_type = "Sell Limit";
+            else order_type = TRANSLATION_MESSAGE_SELL_LIMIT;
         }
         // Buy
         else
         {
             // Stop
-            if (sets.EntryLevel > Ask) order_type = "Buy Stop";
+            if (sets.EntryLevel > Ask) order_type = TRANSLATION_MESSAGE_BUY_STOP;
             // Limit
-            else order_type = "Buy Limit";
+            else order_type = TRANSLATION_MESSAGE_BUY_LIMIT;
         }
     }
     // Instant
     else
     {
         // Sell
-        if (sets.TradeDirection == Short) order_type = "Sell Instant";
+        if (sets.TradeDirection == Short) order_type = TRANSLATION_MESSAGE_SELL + " " + TRANSLATION_BUTTON_ORDER_TYPE_INSTANT;
         // Buy
-        else order_type = "Buy Instant";
+        else order_type = TRANSLATION_MESSAGE_BUY + " " + TRANSLATION_BUTTON_ORDER_TYPE_INSTANT;
     }
     
     // If additional entry label is on, merge it with the button.
     string lots = "";
     if (ShowAdditionalEntryLabel)
     {
-        lots = " - " + FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits) + " lot";
+        lots = " - " + FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits);
     }
 
     m_OutsideTradeButton.Text(order_type + lots);
@@ -1736,6 +1794,12 @@ void CPositionSizeCalculator::RefreshValues()
             }
             sets.TakeProfit = (int)MathRound(MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / _Point);
         }
+    }
+
+    if (ShowATROptions) // Make sure ATR SL and TP multipliers get initialzied with non-zero values if default ones were zero.
+    {
+        if (sets.ATRMultiplierSL == 0) UpdateFixedSL();
+        if ((sets.ATRMultiplierTP == 0) && (sets.TakeProfitLevel != 0)) UpdateFixedTP();
     }
 
     double read_value;
@@ -1846,13 +1910,13 @@ void CPositionSizeCalculator::RefreshValues()
 
     if (m_minimized)
     {
-        if (sets.TradeDirection == Short) PanelCaption = "Short | " + PanelCaptionBase;
-        else PanelCaption = "Long  | " + PanelCaptionBase;    
+        if (sets.TradeDirection == Short) PanelCaption = TRANSLATION_BUTTON_SHORT + " | " + PanelCaptionBase;
+        else PanelCaption = TRANSLATION_BUTTON_LONG + " | " + PanelCaptionBase;    
     }
     else
     {
-        if (sets.TradeDirection == Short) PanelCaption = PanelCaptionBase + " Short";
-        else PanelCaption = PanelCaptionBase + " Long";
+        if (sets.TradeDirection == Short) PanelCaption = PanelCaptionBase + " " + TRANSLATION_BUTTON_SHORT;
+        else PanelCaption = PanelCaptionBase + " " + TRANSLATION_BUTTON_LONG;
     }
     
     if (sets.TPLockedOnSL)
@@ -2071,7 +2135,8 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         // Profit = Risk * N + Commission * 2.
         // TP distance =  (Risk * N + Commission * 2) / Point_value.
         if ((UnitCost_reward != 0) && (OutputPositionSize != 0) && (TickSize != 0))
-            tp_distance = (RiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
+            //tp_distance = (RiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
+            tp_distance = (OutputRiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
         if (tEntryLevel < tStopLossLevel) tp_distance = -tp_distance;
     }
     else tp_distance = (tEntryLevel - tStopLossLevel) * TP_Multiplier;
@@ -2114,7 +2179,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
-            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
+            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
 
             // Create multiple TP lines.
             for (int i = 1; i < sets.TakeProfitsNumber; i++)
@@ -2123,7 +2188,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
-                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
+                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             }
         }
         else
@@ -2135,14 +2200,16 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.TP[i]);
             }
         }
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
-        if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
+        if (!sets.TPLockedOnSL)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
+            if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
+        }
         for (int i = 1; i < sets.TakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true);
         }
-
         if (StringToDouble(m_EdtTP.Text()) == 0) // Hide.
         {
             m_LblRR.Hide();
@@ -2199,8 +2266,11 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                     }
                 }
             }
-            HideShowMaximize();
-            MoveAndResize();
+            if (tp_button_click)
+            {
+                HideShowMaximize();
+                //MoveAndResize();
+            }
         }
         // Need to call RefreshValues() only if this function is invoked from TP Button click event handler. In all other cases it is called from within RefreshValues() itself.
         if (tp_button_click)
@@ -2317,7 +2387,11 @@ void CPositionSizeCalculator::OnClickBtnOrderType()
             m_BtnEntryIncrease.Show();
             m_BtnEntryDecrease.Show();
         }
-        if ((sets.ShowLines) && (ShowLineLabels)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        if (sets.ShowLines)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            if (ShowLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        }
     }
 
     RefreshValues();
@@ -2330,7 +2404,7 @@ void CPositionSizeCalculator::OnClickBtnAccount()
     case Balance:
         // Switch to Equity.
         sets.AccountButton = Equity;
-        m_BtnAccount.Text("Account equity");
+        m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_EQUITY);
         // Account balance uneditable.
         m_EdtAccount.ReadOnly(true);
         m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -2338,7 +2412,7 @@ void CPositionSizeCalculator::OnClickBtnAccount()
     case Equity:
         // Switch to Balance minus Risk.
         sets.AccountButton = Balance_minus_Risk;
-        m_BtnAccount.Text("Balance - CPR");
+        m_BtnAccount.Text(TRANSLATION_BUTTON_BALANCE_MINUS_CPR);
         // Account balance uneditable.
         m_EdtAccount.ReadOnly(true);
         m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
@@ -2347,7 +2421,7 @@ void CPositionSizeCalculator::OnClickBtnAccount()
     case Balance_minus_Risk:
         // Switch to Balance.
         sets.AccountButton = Balance;
-        m_BtnAccount.Text("Account balance");
+        m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_BALANCE);
         // Account balance editable.
         m_EdtAccount.ReadOnly(false);
         m_EdtAccount.ColorBackground(CONTROLS_EDIT_COLOR_ENABLE);
@@ -2361,11 +2435,11 @@ void CPositionSizeCalculator::OnClickBtnLines()
     sets.ShowLines = !sets.ShowLines;
     if (sets.ShowLines)
     {
-        m_BtnLines.Text("Hide lines");
+        m_BtnLines.Text(TRANSLATION_BUTTON_HIDE_LINES);
     }
     else
     {
-        m_BtnLines.Text("Show lines");
+        m_BtnLines.Text(TRANSLATION_BUTTON_SHOW_LINES);
     }
     if (sets.ShowLines)
     {
@@ -2459,7 +2533,7 @@ void CPositionSizeCalculator::OnClickBtnLines()
 
 void CPositionSizeCalculator::OnClickButtonClose()
 {
-    if ((!AskBeforeClosing) || (MessageBox("Are you sure you want to close the Position Sizer?", "Exit?", MB_YESNO) == IDYES))
+    if ((!AskBeforeClosing) || (MessageBox(TRANSLATION_MESSAGE_ARE_YOU_SURE, TRANSLATION_MESSAGE_EXIT, MB_YESNO) == IDYES))
     {
         CAppDialog::OnClickButtonClose();
     }
@@ -2493,6 +2567,8 @@ void CPositionSizeCalculator::OnClickBtnTakeProfit()
     {
         m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_UNLOCKED);
         sets.TPLockedOnSL = false;
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, sets.WasSelectedTakeProfitLine);
         return;
     }
     // If already have some take-profit, switch to a locked mode - TP always follows SL when Entry-SL difference changes.
@@ -2500,6 +2576,9 @@ void CPositionSizeCalculator::OnClickBtnTakeProfit()
     {
         sets.TPLockedOnSL = true;
         m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_LOCKED);
+        sets.WasSelectedTakeProfitLine = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, false);
     }
 
     ProcessTPChange(true);
@@ -2652,7 +2731,7 @@ void CPositionSizeCalculator::OnClickBtnATRTimeframe()
         break;
     }
     if (sets.ATRTimeframe != PERIOD_CURRENT) m_BtnATRTimeframe.Text(EnumToString(sets.ATRTimeframe));
-    else m_BtnATRTimeframe.Text("CURRENT");
+    else m_BtnATRTimeframe.Text(TRANSLATION_BUTTON_ATR_PERIOD_CURRENT);
     RefreshValues();
 }
 
@@ -3075,12 +3154,12 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         ArrayResize(TradingTPEdits, sets.TakeProfitsNumber);
         ArrayResize(TradingTPShareEdits, sets.TakeProfitsNumber);
     }
-    string additional_tp_label_beginning = "Take-profit ";
+    string additional_tp_label_beginning = TRANSLATION_LABEL_TAKEPROFIT + " ";
     string additional_tp_label_end = ":";
     if (sets.TPDistanceInPoints)
     {
-        additional_tp_label_beginning = "TP ";
-        additional_tp_label_end = ", points:";
+        additional_tp_label_beginning = TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " ";
+        additional_tp_label_end = ", " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS + ":";
     }
     if (ArraySize(sets.TP) < sets.TakeProfitsNumber) // Resize only if required. Sometimes, when switching symbols, this won't be required.
     {
@@ -3149,7 +3228,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         // And it is added for the first time, create the Remove button:
         if (MaxTakeProfitsNumber == 1)
         {
-            ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, name, "x", "Remove Take-profit");
+            ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, name, "x", TRANSLATION_TOOLTIP_TAKEPROFIT_REMOVE);
             if (DarkMode)
             {
                 m_BtnTakeProfitsNumberRemove.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3187,7 +3266,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         MainTabList.MoveListElementByName(name, index + 1);
 
         name = "m_BtnAdditionalTPButtonsIncrease" + IntegerToString(i + 2);
-        ButtonCreate(MainTabList, AdditionalTPButtonsIncrease[i], second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, name, "+", "Increase Take-profit #" + IntegerToString(i + 2) + " by 1 point");
+        ButtonCreate(MainTabList, AdditionalTPButtonsIncrease[i], second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, name, "+", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT);
         if (DarkMode)
         {
             AdditionalTPButtonsIncrease[i].ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3196,7 +3275,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         MainTabList.MoveListElementByName(name, index + 2);
 
         name = "m_BtnAdditionalTPButtonsDecrease" + IntegerToString(i + 2);
-        ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, name, "-", "Decrease Take-profit #" + IntegerToString(i + 2) + " by 1 point");
+        ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, name, "-", TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT);
         if (DarkMode)
         {
             AdditionalTPButtonsDecrease[i].ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3248,7 +3327,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (MaxTakeProfitsNumber == 1)
         {
             name = "m_LblTradingTP";
-            LabelCreate(TradingTabList, m_LblTradingTP, multi_tp_column_start, y, multi_tp_column_start + multi_tp_label_width, y + element_height, name, "TP");
+            LabelCreate(TradingTabList, m_LblTradingTP, multi_tp_column_start, y, multi_tp_column_start + multi_tp_label_width, y + element_height, name, TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE);
             if (DarkMode)
             {
                 m_LblTradingTP.Color(DARKMODE_TEXT_COLOR);
@@ -3256,7 +3335,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             TradingTabList.MoveListElementByName(name, index);
     
             name = "m_BtnTPsInward";
-            ButtonCreate(TradingTabList, m_BtnTPsInward, multi_tp_button_start, y, multi_tp_button_start + leverage_edit_width, y + element_height, name, "<<", "Fill additional TPs equidistantly between Entry and Main TP.");
+            ButtonCreate(TradingTabList, m_BtnTPsInward, multi_tp_button_start, y, multi_tp_button_start + leverage_edit_width, y + element_height, name, "<<", TRANSLATION_TOOLTIP_FILL_INWARD);
             if (DarkMode)
             {
                 m_BtnTPsInward.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3265,7 +3344,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             TradingTabList.MoveListElementByName(name, index + 1);
 
             name = "m_BtnTPsOutward";
-            ButtonCreate(TradingTabList, m_BtnTPsOutward, multi_tp_button_start + leverage_edit_width + v_spacing, y, multi_tp_button_start + 2 * leverage_edit_width + v_spacing, y + element_height, name, ">>", "Place additional TPs beyond the Main TP using the same distance.");
+            ButtonCreate(TradingTabList, m_BtnTPsOutward, multi_tp_button_start + leverage_edit_width + v_spacing, y, multi_tp_button_start + 2 * leverage_edit_width + v_spacing, y + element_height, name, ">>", TRANSLATION_TOOLTIP_FILL_OUTWARD);
             if (DarkMode)
             {
                 m_BtnTPsOutward.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3274,7 +3353,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             TradingTabList.MoveListElementByName(name, index + 2);
 
             name = "m_BtnTradingTPShare";
-            ButtonCreate(TradingTabList, m_BtnTradingTPShare, third_trading_column_start, y, third_trading_column_start + normal_edit_width, y + element_height, name, "Share, %", "Automatically fill the volume shares");
+            ButtonCreate(TradingTabList, m_BtnTradingTPShare, third_trading_column_start, y, third_trading_column_start + normal_edit_width, y + element_height, name, TRANSLATION_LABEL_SHARE + ", %", TRANSLATION_TOOLTIP_SHARE);
             if (DarkMode)
             {
                 m_BtnTradingTPShare.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3288,7 +3367,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             // First (main) TP:
         
             name = "m_LblTradingTPLabel1";
-            LabelCreate(TradingTabList, TradingTPLabels[0], first_column_start, y, first_column_start + normal_label_width, y + element_height, name, "Take-profit 1");
+            LabelCreate(TradingTabList, TradingTPLabels[0], first_column_start, y, first_column_start + normal_label_width, y + element_height, name, TRANSLATION_LABEL_TAKEPROFIT + " 1");
             if (DarkMode)
             {
                 TradingTPLabels[0].Color(DARKMODE_TEXT_COLOR);
@@ -3338,7 +3417,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
     if (MaxTakeProfitsNumber < sets.TakeProfitsNumber)
     {
         name = "m_LblTradingTPLabel" + IntegerToString(sets.TakeProfitsNumber);
-        LabelCreate(TradingTabList, TradingTPLabels[sets.TakeProfitsNumber - 1], first_column_start, y, first_column_start + normal_label_width, y + element_height, name, "Take-profit " + IntegerToString(sets.TakeProfitsNumber));
+        LabelCreate(TradingTabList, TradingTPLabels[sets.TakeProfitsNumber - 1], first_column_start, y, first_column_start + normal_label_width, y + element_height, name, TRANSLATION_LABEL_TAKEPROFIT + " " + IntegerToString(sets.TakeProfitsNumber));
         if (DarkMode)
         {
             TradingTPLabels[sets.TakeProfitsNumber - 1].Color(DARKMODE_TEXT_COLOR);
@@ -3574,7 +3653,7 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
     {
         if ((int)StringToInteger(m_EdtSL.Text()) <= 0)
         {
-            Print("StopLoss should be positive.");
+            Print(TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE);
             m_EdtSL.Text(IntegerToString(sets.StopLoss));
         }
         else
@@ -3653,7 +3732,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_STYLE, takeprofit_line_style);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
-            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
+            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
             // Create multiple TP lines.
             for (int i = 1; i < sets.TakeProfitsNumber; i++)
             {
@@ -3661,7 +3740,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_STYLE, takeprofit_line_style);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
-                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
+                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             }
         }
         else
@@ -3736,8 +3815,12 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
         }
         if (ShowATROptions) // Update ATR multiplier after the line was moved by the user.
         {
-            double atr = iATR(_Symbol, sets.ATRTimeframe, sets.ATRPeriod, ATRCandle);
-            if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
+            if (sets.TakeProfitLevel == 0) sets.ATRMultiplierTP = 0;
+            else
+            {
+                double atr = iATR(_Symbol, sets.ATRTimeframe, sets.ATRPeriod, ATRCandle);
+                if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
+            }
             m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
             // Untick spread adjustment checkbox as TP was set explicitly:
             m_ChkSpreadAdjustmentTP.Checked(false);
@@ -3967,14 +4050,27 @@ void CPositionSizeCalculator::OnChangeChkIgnoreOrdersWithoutTP()
     }
 }
 
-void CPositionSizeCalculator::OnChangeChkIgnoreOtherSymbols()
+void CPositionSizeCalculator::OnClickBtnIgnoreSymbols()
 {
-    if (sets.IgnoreOtherSymbols != m_ChkIgnoreOtherSymbols.Checked())
+    // Switch to the next value.
+    switch(sets.IgnoreSymbols)
     {
-        sets.IgnoreOtherSymbols = m_ChkIgnoreOtherSymbols.Checked();
-        CalculatePortfolioRisk();
-        DisplayValues();
+    default:
+    case IGNORE_SYMBOLS_NONE:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_OTHER;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+        break;
+    case IGNORE_SYMBOLS_OTHER:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_CURRENT;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+        break;
+    case IGNORE_SYMBOLS_CURRENT:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_NONE;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+        break;
     }
+    CalculatePortfolioRisk();
+    DisplayValues();
 }
 
 void CPositionSizeCalculator::OnEndEditEdtCustomLeverage()
@@ -4028,6 +4124,11 @@ void CPositionSizeCalculator::OnEndEditEdtMaxEntrySLDistance()
 void CPositionSizeCalculator::OnEndEditEdtMinEntrySLDistance()
 {
     sets.MinEntrySLDistance = (int)StringToInteger(m_EdtMinEntrySLDistance.Text());
+}
+
+void CPositionSizeCalculator::OnEndEditEdtMaxRiskPercentage()
+{
+    sets.MaxRiskPercentage = (double)StringToDouble(m_EdtMaxRiskPercentage.Text());
 }
 
 void CPositionSizeCalculator::OnEndEditEdtMaxPositionSizeTotal()
@@ -4134,7 +4235,7 @@ void CPositionSizeCalculator::OnEndEditEdtExpiry()
     if ((sets.ExpiryMinutes != 0) && (sets.ExpiryMinutes < 10))
     {
         sets.ExpiryMinutes = 0;
-        Print("Minimum expiry duration is 10 minutes.");
+        Print(TRANSLATION_MESSAGE_MINIMUM_EXPIRY);
     }
     m_EdtExpiry.Text(IntegerToString(sets.ExpiryMinutes));
 }
@@ -4144,14 +4245,14 @@ void CPositionSizeCalculator::OnEndEditEdtExpiry()
 //|+----------------------+
 bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
 {
-    Print("Trying to save settings to file: " + m_FileName + ".");
+    Print(TRANSLATION_MESSAGE_TRYING_TO_SAVE_FILE + ": " + m_FileName + ".");
 
     int fh;
     // Save to new format only.
     fh = FileOpen("PS_Settings\\" + m_FileName, FILE_CSV | FILE_WRITE);
     if (fh == INVALID_HANDLE)
     {
-        Print("Failed to open file for writing: PS_Settings\\" + m_FileName + ". Error: " + IntegerToString(GetLastError()));
+        Print(TRANSLATION_MESSAGE_FAILED_TO_OPEN_FOR_WRITING + ": PS_Settings\\" + m_FileName + ". " + TRANSLATION_MESSAGE_ERROR + ": " + IntegerToString(GetLastError()));
         return false;
     }
 
@@ -4199,8 +4300,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutSL));
     FileWrite(fh, "IgnoreOrdersWithoutTP");
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutTP));
-    FileWrite(fh, "IgnoreOtherSymbols");
-    FileWrite(fh, IntegerToString(sets.IgnoreOtherSymbols));
+    FileWrite(fh, "IgnoreSymbols");
+    FileWrite(fh, IntegerToString(sets.IgnoreSymbols));
     FileWrite(fh, "ShowLines");
     FileWrite(fh, IntegerToString(sets.ShowLines));
     FileWrite(fh, "SelectedTab");
@@ -4232,6 +4333,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.MaxEntrySLDistance));
     FileWrite(fh, "MinEntrySLDistance");
     FileWrite(fh, IntegerToString(sets.MinEntrySLDistance));
+    FileWrite(fh, "MaxRiskPercentage");
+    FileWrite(fh, DoubleToString(sets.MaxRiskPercentage));
     FileWrite(fh, "SLDistanceInPoints");
     FileWrite(fh, IntegerToString(sets.SLDistanceInPoints));
     FileWrite(fh, "TPDistanceInPoints");
@@ -4356,8 +4459,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutSL));
         FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutTP");
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutTP));
-        FileWrite(fh, "Parameter_DefaultIgnoreOtherSymbols");
-        FileWrite(fh, IntegerToString(DefaultIgnoreOtherSymbols));
+        FileWrite(fh, "Parameter_DefaultIgnoreSymbols");
+        FileWrite(fh, IntegerToString(DefaultIgnoreSymbols));
         FileWrite(fh, "Parameter_DefaultCustomLeverage");
         FileWrite(fh, DoubleToString(DefaultCustomLeverage));
         FileWrite(fh, "Parameter_DefaultMagicNumber");
@@ -4376,6 +4479,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultMaxEntrySLDistance));
         FileWrite(fh, "Parameter_DefaultMinEntrySLDistance");
         FileWrite(fh, IntegerToString(DefaultMinEntrySLDistance));
+        FileWrite(fh, "Parameter_DefaultMaxRiskPercentage");
+        FileWrite(fh, DoubleToString(DefaultMaxRiskPercentage));
         FileWrite(fh, "Parameter_DefaultMaxPositionSizeTotal");
         FileWrite(fh, DoubleToString(DefaultMaxPositionSizeTotal, LotStep_digits));
         FileWrite(fh, "Parameter_DefaultMaxPositionSizePerSymbol");
@@ -4426,13 +4531,13 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
 
     FileClose(fh);
 
-    Print("Saved settings successfully.");
+    Print(TRANSLATION_MESSAGE_SAVED_SETTINGS);
     return true;
 }
 
 bool CPositionSizeCalculator::LoadSettingsFromDisk()
 {
-    Print("Trying to load settings from file.");
+    Print(TRANSLATION_MESSAGE_TRYING_TO_LOAD_FILE);
 
     int fh;
 
@@ -4441,7 +4546,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
         fh = FileOpen("PS_Settings\\" + m_FileName, FILE_CSV | FILE_READ);
         if (fh == INVALID_HANDLE)
         {
-            Print("Failed to open file for reading: PS_Settings\\" + m_FileName + ". Error: " + IntegerToString(GetLastError()));
+            Print(TRANSLATION_MESSAGE_FAILED_TO_OPEN_FOR_READING + ": PS_Settings\\" + m_FileName + ". " + TRANSLATION_MESSAGE_ERROR + ": " + IntegerToString(GetLastError()));
             return false;
         }
     }
@@ -4449,13 +4554,13 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
     {
         if (!FileIsExist("PS_" + m_FileName))
         {
-            Print("No settings file to load.");
+            Print(TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_LOAD);
             return false;
         }
         fh = FileOpen("PS_" + m_FileName, FILE_CSV | FILE_READ);
         if (fh == INVALID_HANDLE)
         {
-            Print("Failed to open file for reading: PS_" + m_FileName + ". Error: " + IntegerToString(GetLastError()));
+            Print(TRANSLATION_MESSAGE_FAILED_TO_OPEN_FOR_READING + ": PS_" + m_FileName + ". " + TRANSLATION_MESSAGE_ERROR + ": " + IntegerToString(GetLastError()));
             return false;
         }
     }
@@ -4514,8 +4619,8 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.IgnoreOrdersWithoutSL = (bool)StringToInteger(var_content);
         else if (var_name == "IgnoreOrdersWithoutTP")
             sets.IgnoreOrdersWithoutTP = (bool)StringToInteger(var_content);
-        else if (var_name == "IgnoreOtherSymbols")
-            sets.IgnoreOtherSymbols = (bool)StringToInteger(var_content);
+        else if (var_name == "IgnoreSymbols")
+            sets.IgnoreSymbols = (IGNORE_SYMBOLS)StringToInteger(var_content);
         else if (var_name == "ShowLines")
             sets.ShowLines = (bool)StringToInteger(var_content);
         else if (var_name == "SelectedTab")
@@ -4572,6 +4677,8 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.MaxEntrySLDistance = (int)StringToInteger(var_content);
         else if (var_name == "MinEntrySLDistance")
             sets.MinEntrySLDistance = (int)StringToInteger(var_content);
+        else if (var_name == "MaxRiskPercentage")
+            sets.MaxRiskPercentage = StringToDouble(var_content);
         else if (var_name == "TradeDirection")
             sets.TradeDirection = (TRADE_DIRECTION)StringToInteger(var_content);
         else if (var_name == "SLDistanceInPoints")
@@ -4744,9 +4851,9 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             {
                 if ((bool)StringToInteger(var_content) != DefaultIgnoreOrdersWithoutTP) sets.IgnoreOrdersWithoutTP = DefaultIgnoreOrdersWithoutTP;
             }
-            else if (var_name == "Parameter_DefaultIgnoreOtherSymbols")
+            else if (var_name == "Parameter_DefaultIgnoreSymbols")
             {
-                if ((bool)StringToInteger(var_content) != DefaultIgnoreOtherSymbols) sets.IgnoreOtherSymbols = DefaultIgnoreOtherSymbols;
+                if ((IGNORE_SYMBOLS)StringToInteger(var_content) != DefaultIgnoreSymbols) sets.IgnoreSymbols = DefaultIgnoreSymbols;
             }
             else if (var_name == "Parameter_DefaultCustomLeverage")
             {
@@ -4783,6 +4890,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             else if (var_name == "Parameter_DefaultMinEntrySLDistance")
             {
                 if (StringToInteger(var_content) != DefaultMinEntrySLDistance) sets.MinEntrySLDistance = DefaultMinEntrySLDistance;
+            }
+            else if (var_name == "Parameter_DefaultMaxRiskPercentage")
+            {
+                if (StringToDouble(var_content) != DefaultMaxRiskPercentage) sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
             }
             else if (var_name == "Parameter_DefaultMaxPositionSizeTotal")
             {
@@ -4910,7 +5021,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
     if ((sets.MaxRiskTotal < sets.MaxRiskPerSymbol) && (sets.MaxRiskTotal != 0)) sets.MaxRiskTotal = sets.MaxRiskPerSymbol;
 
     FileClose(fh);
-    Print("Loaded settings successfully.");
+    Print(TRANSLATION_MESSAGE_LOADED_SETTINGS);
 
     // Is expert advisor reloading due to the input parameters change? Delete the flag variable.
     if (GlobalVariableGet("PS-" + IntegerToString(ChartID()) + "-Parameters") > 0) GlobalVariableDel("PS-" + IntegerToString(ChartID()) + "-Parameters");
@@ -4927,16 +5038,16 @@ bool CPositionSizeCalculator::DeleteSettingsFile()
     }
     if (!FileIsExist(fn_with_path))
     {
-        Print("No settings file to delete.");
+        Print(TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_DELETE);
         return false;
     }
-    Print("Trying to delete settings file.");
+    Print(TRANSLATION_MESSAGE_TRYING_TO_DELETE_FILE);
     if (!FileDelete(fn_with_path))
     {
-        Print("Failed to delete file: " + fn_with_path + ". Error: " + IntegerToString(GetLastError()));
+        Print(TRANSLATION_MESSAGE_FAILED_TO_DELETE_FILE + ": " + m_FileName + ". " + TRANSLATION_MESSAGE_ERROR + ": " + IntegerToString(GetLastError()));
         return false;
     }
-    Print("Deleted settings file successfully.");
+    Print(TRANSLATION_MESSAGE_DELETED_SETTINGS);
     return true;
 }
 
@@ -5244,7 +5355,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_STYLE, entry_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_COLOR, entry_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_WIDTH, entry_line_width);
-        ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, "Entry");
+        ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_ENTRY);
         if (sets.EntryType == Instant)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_SELECTABLE, false);
@@ -5266,7 +5377,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_COLOR, stoploss_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_WIDTH, stoploss_line_width);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTABLE, true);
-        ObjectSetString(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TOOLTIP, "Stop-Loss");
+        ObjectSetString(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_STOPLOSS);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTED, true);
         if (!sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         RestoredSomething = true;
@@ -5281,7 +5392,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
-        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
+        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
         RestoredSomething = true;
     }
@@ -5298,7 +5409,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
-            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
+            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
             RestoredSomething = true;
         }
@@ -5325,7 +5436,7 @@ void CPositionSizeCalculator::SeekAndDestroyDuplicatePanels()
                 // Reset object counter.
                 ot = ObjectsTotal(ChartID());
                 i = ot;
-                Print("Deleted duplicate panel objects with prefix = ", prefix, ".");
+                Print(TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL + " = ", prefix, ".");
                 continue;
             }
         }
@@ -5342,6 +5453,333 @@ int CPositionSizeCalculator::KeyBasedMultiplier()
     if (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0) return MULTIPLIER_VALUE_SHIFT; // Only Shift.
     
     return 1;
+}
+
+// Cycles through the controls list of the currently active tab to find the object with the given name.
+// Returns control id, which can then be used in custom event processing.
+long CPositionSizeCalculator::FindControlId(string obj_name)
+{
+    long id = FindControlIdInList(obj_name, PersistentList); // Check tab buttons and the outside Trade button.
+    if (id != -1) return id; // Return if found.
+    
+    // Proceed to all other buttons.
+    if (sets.SelectedTab == MainTab)
+    {
+        return FindControlIdInList(obj_name, MainTabList);
+    }
+    else if (sets.SelectedTab == RiskTab)
+    {
+        return FindControlIdInList(obj_name, RiskTabList);
+    }
+    else if (sets.SelectedTab == MarginTab)
+    {
+        return FindControlIdInList(obj_name, MarginTabList);
+    }
+    else if (sets.SelectedTab == SwapsTab)
+    {
+        return FindControlIdInList(obj_name, SwapsTabList);
+    }
+    else if (sets.SelectedTab == TradingTab)
+    {
+        return FindControlIdInList(obj_name, TradingTabList);
+    }
+    
+    return -1;
+}
+
+// Finds the specific object inside the specific list.
+long CPositionSizeCalculator::FindControlIdInList(string obj_name, CPanelList* list)
+{
+    for (CStringForList * obj = list.GetFirstNode(); obj != NULL; obj = list.GetNextNode())
+    {
+        if (obj.Obj.Name() == obj_name)
+        {
+            return(obj.Obj.Id());
+        }
+    }
+    return -1; // Object not found.
+}
+
+// Creates and positions a Close button for an order in Visual Backtesting mode.
+void CPositionSizeCalculator::CreateOutsideCloseButton(int ticket)
+{
+    int Starting_X = 0, Y_Offset = 0;
+    if (OutsideCloseButtonsCorner == CORNER_RIGHT_LOWER)
+    {
+        Starting_X = normal_edit_width * 3;
+        Y_Offset = element_height;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_RIGHT_UPPER)
+    {
+        Starting_X = normal_edit_width * 3;
+        Y_Offset = 0;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_UPPER)
+    {
+        Starting_X = 0;
+        Y_Offset = 0;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_LOWER)
+    {
+        Starting_X = 0;
+        Y_Offset = element_height;
+    }
+    int prev_size = ArraySize(OutsideCloseButtons);
+    ArrayResize(OutsideCloseButtons, prev_size + 1, 100);
+    if (!OrderSelect(ticket, SELECT_BY_TICKET))
+    {
+        Print(TRANSLATION_MESSAGE_ORDERSELECT_FAILED);
+        return;
+    }
+    string obj_name = Name() + "m_BtnOutsideClose" + IntegerToString(ticket); // Using tickets for object naming because they have to be unique. And not recreate when an order is closed and a new one opens.
+    OutsideCloseButtons[prev_size].Create(0, obj_name, 0, Starting_X, prev_size * (element_height + 1) + Y_Offset, normal_edit_width * 3, element_height);
+    OutsideCloseButtons[prev_size].Corner(OutsideCloseButtonsCorner);
+    if (DarkMode)
+    {
+        OutsideCloseButtons[prev_size].BackColor(CONTROLS_BUTTON_COLOR_ENABLE);
+        OutsideCloseButtons[prev_size].BorderColor(DARKMODE_CONTROL_BRODER_COLOR);
+    }
+    OutsideCloseButtons[prev_size].Color(clrBlack);
+    OutsideCloseButtons[prev_size].Description(TRANSLATION_CLOSE_BUTTON + " " + OrderTypeToString(OrderType()) + " #" + IntegerToString(ticket));
+    
+    if (prev_size == 0) // If no buttons existed, need to create the switch button too.
+    {
+        CreateOutsideCloseButtonsSwitch();
+    }
+    else // Move the switch button.
+    {
+        OutsideCloseButtonsSwitchButton.Y_Distance((prev_size + 1) * (element_height + 1) + Y_Offset);
+    }
+}
+
+// Closes the order, deletes it from the array, re-arranges the buttons, "unclicks" the button.
+void CPositionSizeCalculator::ProcessOutsideCloseButtonClick(int ticket)
+{
+    // Convert the ticket to array element number.
+    int n = -1;
+    int buttons_total = ArraySize(OutsideCloseButtons);
+    for (int i = 0; i < buttons_total; i++)
+    {
+        if (OutsideCloseButtons[i].Name() == Name() + "m_BtnOutsideClose" + IntegerToString(ticket))
+        {
+            n = i;
+            break;
+        }
+    }
+    if (n < 0)
+    {
+        Print(TRANSLATION_MESSAGE_OBJECT_NOT_FOUND);
+        return;
+    }
+    if (CloseOrder(ticket)) // Close successful.
+    {
+        RemoveOutsideCloseButton(n);
+    }
+    else // Close failed.
+    {
+        OutsideCloseButtons[n].State(false); // Unclick required only if OrderClose failed, otherwise, it's deleted.
+    }
+}
+
+void CPositionSizeCalculator::RemoveOutsideCloseButton(int n)
+{
+    // Prepare the correct Y offset because it's different if the buttons are anchored to the top of the screen.
+    int Y_Offset = element_height;
+    if (OutsideCloseButtonsCorner == CORNER_RIGHT_UPPER)
+    {
+        Y_Offset = 0;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_UPPER)
+    {
+        Y_Offset = 0;
+    }
+
+    OutsideCloseButtons[n].Delete();
+    int old_size = ArraySize(OutsideCloseButtons);
+    // The button can now be removed from the array with next elements shifted backwards.
+    for (int i = n; i < old_size; i++)
+    {
+        if (i == old_size - 1) // Final element.
+        {
+            OutsideCloseButtons[i].Detach(); // Dissociate the CChartObjectButton object from the actual chart object, so that deleting the CChartObjectButton object wouldn't result in the deletion of the chart object.
+            ArrayResize(OutsideCloseButtons, old_size - 1);
+        }
+        else
+        {
+            OutsideCloseButtons[i] = OutsideCloseButtons[i + 1];
+            OutsideCloseButtons[i].Y_Distance(i * (element_height + 1) + Y_Offset);
+        }
+    }
+    if (old_size - 1 == 0) // If there are no more Close buttons, the switch is no longer required.
+    {
+        OutsideCloseButtonsSwitchButton.Delete();
+    }
+    else // Move the switch button.
+    {
+        OutsideCloseButtonsSwitchButton.Y_Distance((old_size - 1) * (element_height + 1) + Y_Offset);
+    }
+}
+
+// Basic close trade funciton: either deletes a pending order or closes a position.
+bool CPositionSizeCalculator::CloseOrder(int ticket)
+{
+    if (!OrderSelect(ticket, SELECT_BY_TICKET))
+    {
+        Print(TRANSLATION_MESSAGE_ORDERSELECT_FAILED + ": " + ErrorDescription(GetLastError()) + ".");
+        return false;
+    }
+    if ((OrderType() != OP_BUY) && (OrderType() != OP_SELL))
+    {
+        bool res = OrderDelete(ticket);
+        if (!res)
+        {
+            Print(TRANSLATION_MESSAGE_ORDERDELETE_FAILED + ": " + ErrorDescription(GetLastError()) + ".");
+            return false;
+        }
+        else return true;
+    }
+    double price;
+    if (OrderType() == OP_BUY)
+    {
+        price = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+    }
+    else // OP_SELL
+    {
+        price = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+    }
+    bool res = OrderClose(ticket, OrderLots(), price, 0, clrGoldenrod);
+    if (!res)
+    {
+        Print(TRANSLATION_MESSAGE_ORDERCLOSE_FAILED + ": " + ErrorDescription(GetLastError()) + ".");
+        return false;
+    }
+    else return true;
+}
+
+// Checks:
+// - if any TP/SL has been hit (trade disappeared);
+// - if any pending order turned into a trade, including the case when the resulting order closed immediately.
+// Updates profit for open positions.
+void CPositionSizeCalculator::UpdateStrategyTesterTrades()
+{
+    int buttons_total = ArraySize(OutsideCloseButtons);
+    for (int i = buttons_total - 1; i >= 0; i--) // Going to because some buttons might get deleted.
+    {
+        string button_text = OutsideCloseButtons[i].Description();
+        int start_pos = StringFind(button_text, "#") + 1; // The ticket number starts right after #.
+        int ticket = (int)StringToInteger(StringSubstr(button_text, start_pos));
+
+        // OrderSelect by ticket will work on closed orders too. Need to check further if the order is closed after it's selected.
+        if (!OrderSelect(ticket, SELECT_BY_TICKET)) // Deleted pending order.
+        {
+            RemoveOutsideCloseButton(i);
+        }
+        else // Either an existing market order, existing pending order, or a pending-turned-market order.
+        {
+            if (OrderCloseTime() > 0) // Closed order.
+            {
+                RemoveOutsideCloseButton(i);
+                continue;
+            }
+            int order_type = OrderType();
+            if ((order_type == OP_BUY) || (order_type == OP_SELL))
+            {
+                double profit_money = OrderProfit() + OrderCommission() + OrderSwap();
+                double profit_points;
+                if (order_type == OP_BUY) profit_points = (OrderClosePrice() - OrderOpenPrice()) / SymbolInfoDouble(Symbol(), SYMBOL_POINT);
+                else profit_points = (OrderOpenPrice() - OrderClosePrice()) / SymbolInfoDouble(Symbol(), SYMBOL_POINT);
+                
+                string profit_string = DoubleToString(profit_points, 0) + "/" + DoubleToString(profit_money, 2);
+                OutsideCloseButtons[i].Description("[" + profit_string + "] " + TRANSLATION_CLOSE_BUTTON + " " + OrderTypeToString(OrderType()) + " #" + IntegerToString(ticket));
+            }
+        }
+    }
+}
+
+void CPositionSizeCalculator::CreateOutsideCloseButtonsSwitch()
+{
+    int array_size = ArraySize(OutsideCloseButtons);
+    string obj_name = Name() + "m_BtnOutsideCloseButtonsSwitchButton";
+
+    int Starting_X = 0, Y_Offset = 0;
+    if (OutsideCloseButtonsCorner == CORNER_RIGHT_LOWER)
+    {
+        Starting_X = element_height;
+        Y_Offset = 0;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_RIGHT_UPPER)
+    {
+        Starting_X = element_height;
+        Y_Offset = element_height;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_UPPER)
+    {
+        Starting_X = 0;
+        Y_Offset = element_height;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_LOWER)
+    {
+        Starting_X = 0;
+        Y_Offset = 0;
+    }
+
+    OutsideCloseButtonsSwitchButton.Create(0, obj_name, 0, Starting_X, array_size * (element_height + 1) + element_height - Y_Offset, element_height, element_height);
+    OutsideCloseButtonsSwitchButton.Corner(OutsideCloseButtonsCorner);
+    if (DarkMode)
+    {
+        OutsideCloseButtonsSwitchButton.BackColor(CONTROLS_BUTTON_COLOR_ENABLE);
+        OutsideCloseButtonsSwitchButton.BorderColor(DARKMODE_CONTROL_BRODER_COLOR);
+    }
+    OutsideCloseButtonsSwitchButton.Color(clrBlack);
+    if (OutsideCloseButtonsCorner == CORNER_RIGHT_LOWER) OutsideCloseButtonsSwitchButton.Description("^");
+    else if (OutsideCloseButtonsCorner == CORNER_RIGHT_UPPER) OutsideCloseButtonsSwitchButton.Description("<");
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_UPPER) OutsideCloseButtonsSwitchButton.Description("v");
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_LOWER) OutsideCloseButtonsSwitchButton.Description(">");
+}
+
+void CPositionSizeCalculator::ProcessOutsideCloseButtonsSwitchClick()
+{
+    int Starting_X = 0, Y_Offset = 0;
+    if (OutsideCloseButtonsCorner == CORNER_RIGHT_LOWER) // Switching from right-lower to right-upper.
+    {
+        OutsideCloseButtonsCorner = CORNER_RIGHT_UPPER;
+        OutsideCloseButtonsSwitchButton.Description("<");
+        Starting_X = element_height;
+        Y_Offset = element_height;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_RIGHT_UPPER) // Switching from right-upper to left-upper.
+    {
+        OutsideCloseButtonsCorner = CORNER_LEFT_UPPER;
+        OutsideCloseButtonsSwitchButton.Description("v");
+        Starting_X = 0;
+        Y_Offset = 0;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_UPPER) // Switching from left-upper to left-lower.
+    {
+        OutsideCloseButtonsCorner = CORNER_LEFT_LOWER;
+        OutsideCloseButtonsSwitchButton.Description(">");
+        Starting_X = 0;
+        Y_Offset = -element_height;
+    }
+    else if (OutsideCloseButtonsCorner == CORNER_LEFT_LOWER) // Switching from left-lower to right-lower.
+    {
+        OutsideCloseButtonsCorner = CORNER_RIGHT_LOWER;
+        OutsideCloseButtonsSwitchButton.Description("^");
+        Starting_X = element_height;
+        Y_Offset = 0;
+    }
+    OutsideCloseButtonsSwitchButton.X_Distance(Starting_X);
+    OutsideCloseButtonsSwitchButton.Y_Distance(OutsideCloseButtonsSwitchButton.Y_Distance() - Y_Offset);
+    // Set the new corner to all buttons.
+    int buttons_total = ArraySize(OutsideCloseButtons);
+    for (int i = 0; i < buttons_total; i++)
+    {
+        if (Starting_X != 0) Starting_X = normal_edit_width * 3; // Change from the switch button's value to a close button's value.
+        OutsideCloseButtons[i].Corner(OutsideCloseButtonsCorner);
+        OutsideCloseButtons[i].X_Distance(Starting_X);
+        OutsideCloseButtons[i].Y_Distance(OutsideCloseButtons[i].Y_Distance() - Y_Offset);
+    }
+    OutsideCloseButtonsSwitchButton.Corner(OutsideCloseButtonsCorner);
 }
 
 //+------------------------------------------------+
@@ -5373,7 +5811,7 @@ double DisplayRisk, RiskMoney, PositionMargin, UsedMargin, FutureMargin, PreHedg
 string InputRR, OutputRR, MainOutputRR, PLM, CPR, PRM, CPRew, PPMR, PPR, PPMRew, PPRew, CPL, PPL, CPRRR, PPRRR, AdditionalOutputRR[];
 string InputReward;
 double OutputReward, AdditionalOutputReward[], MainOutputReward;
-string OutputPointValue = "", OutputSwapsType = "Unknown", SwapsTripleDay = "?",
+string OutputPointValue = "", OutputSwapsType = TRANSLATION_LABEL_UNKNOWN, SwapsTripleDay = "?",
        OutputSwapsDailyLongLot = "?", OutputSwapsDailyShortLot = "?", OutputSwapsDailyLongPS = "?", OutputSwapsDailyShortPS = "?",
        OutputSwapsYearlyLongLot = "?", OutputSwapsYearlyShortLot = "?", OutputSwapsYearlyLongPS = "?", OutputSwapsYearlyShortPS = "?",
        OutputSwapsCurrencyDailyLot = "", OutputSwapsCurrencyDailyPS = "", OutputSwapsCurrencyYearlyLot = "", OutputSwapsCurrencyYearlyPS = "";
@@ -5435,8 +5873,7 @@ void Initialization()
     if ((sets.TPDistanceInPoints) && (sets.TakeProfit == 0) && (sets.TakeProfitLevel != 0)) sets.TakeProfit = (int)MathRound(MathAbs((sets.TakeProfitLevel - sets.EntryLevel) / _Point));
     if (sets.EntryLevel - sets.StopLossLevel == 0)
     {
-        Print("Entry and Stop-Loss levels should be different and non-zero.");
-//        return;
+        Print(TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO);
     }
 
     if (sets.EntryType == Instant)
@@ -5476,7 +5913,7 @@ void Initialization()
     ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_STYLE, entry_line_style);
     ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_COLOR, entry_line_color);
     ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_WIDTH, entry_line_width);
-    ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, "Entry");
+    ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_ENTRY);
     if (sets.EntryType == Instant)
     {
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_SELECTABLE, false);
@@ -5507,7 +5944,7 @@ void Initialization()
     ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_COLOR, stoploss_line_color);
     ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_WIDTH, stoploss_line_width);
     ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTABLE, true);
-    ObjectSetString(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TOOLTIP, "Stop-Loss");
+    ObjectSetString(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_STOPLOSS);
     if (!line_existed)
     {
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
@@ -5529,7 +5966,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_HIDDEN, false);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
-        ObjectSetString(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TOOLTIP, "SL Distance, points");
+        ObjectSetString(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_SL_LABEL);
         if ((ShowAdditionalSLLabel) && (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1))
         {
             ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
@@ -5540,7 +5977,7 @@ void Initialization()
             ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
             ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, "Risk, % ($)");
+            ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_RISK + ", % ($)");
         }
 
         ObjectCreate(ChartID(), ObjectPrefix + "EntryLabel", OBJ_LABEL, 0, 0, 0);
@@ -5551,7 +5988,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_HIDDEN, false);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
-        ObjectSetString(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TOOLTIP, "Entry Distance, points");
+        ObjectSetString(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL);
         if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH) && (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1))
         {
             ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
@@ -5562,7 +5999,7 @@ void Initialization()
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, "Position Size, lots");
+            ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL);
         }
     }
 
@@ -5582,7 +6019,7 @@ void Initialization()
     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
-    ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
+    ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
     if (!line_existed)
     {
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
@@ -5602,7 +6039,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_HIDDEN, false);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_BACK, DrawTextAsBackground);
-        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TOOLTIP, "TP Distance, points");
+        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_TP_LABEL);
         if (ShowAdditionalTPLabel)
         {
             ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJ_LABEL, 0, 0, 0);
@@ -5613,7 +6050,7 @@ void Initialization()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TOOLTIP, "Reward, % ($), R/R");
+            ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + ", % ($), R/R");
         }
     }
 
@@ -5636,7 +6073,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
-        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
+        ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
         if (!line_existed)
         {
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true); // Only for new lines. Old lines retain their selected status unless default parameter value changed.
@@ -5656,7 +6093,7 @@ void Initialization()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_HIDDEN, false);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_CORNER, CORNER_LEFT_UPPER);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TOOLTIP, "TP #" + IntegerToString(i + 1) + " Distance, points");
+            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " #" + IntegerToString(i + 1) + ", " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS);
             if (ShowAdditionalTPLabel)
             {
                 ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJ_LABEL, 0, 0, 0);
@@ -5667,7 +6104,7 @@ void Initialization()
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_HIDDEN, false);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_CORNER, CORNER_LEFT_UPPER);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
-                ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TOOLTIP, "Reward #" + IntegerToString(i + 1) + ", $ (%), R/R");
+                ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + " #" + IntegerToString(i + 1) + ", $ (%), R/R");
             }
         }
     }
@@ -5767,7 +6204,7 @@ void RecalculatePositionSize()
     double AskBid = 0;
     if (sets.EntryType == Instant)
     {
-        if ((tStopLossLevel < Ask) && (tStopLossLevel > Bid)) WarningSL = "(Wrong value!)";
+        if ((tStopLossLevel < Ask) && (tStopLossLevel > Bid)) WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
         else if (tStopLossLevel < Ask) AskBid = Ask;
         else if (tStopLossLevel > Bid) AskBid = Bid;
     }
@@ -5777,16 +6214,16 @@ void RecalculatePositionSize()
         else if (tStopLossLevel > tEntryLevel) AskBid = Bid;
         if (AskBid)
         {
-            if (MathAbs(AskBid - tEntryLevel) < StopLevel) WarningEntry = "(Too close!)";
+            if (MathAbs(AskBid - tEntryLevel) < StopLevel) WarningEntry = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
         }
-        else WarningSL = "(Wrong value!)";
+        else WarningSL = " " + TRANSLATION_LABEL_WARNING_WRONG_VALUE;
     }
 
-    if ((WarningSL == "") && (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel)) WarningSL = "(Too close!)";
+    if ((WarningSL == "") && (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel)) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
 
     if (tTakeProfitLevel > 0)
     {
-        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = "(Too close!)";
+        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
@@ -5796,7 +6233,7 @@ void RecalculatePositionSize()
         add_tTakeProfitLevel = Round(add_tTakeProfitLevel, _Digits);
         if (add_tTakeProfitLevel > 0)
         {
-            if (MathAbs(add_tTakeProfitLevel - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = "(Too close!)";
+            if (MathAbs(add_tTakeProfitLevel - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
         }
     }
 
@@ -5862,7 +6299,7 @@ void RecalculatePositionSize()
             if (ShowAdditionalTPLabel)
             {
                 string label_text;
-                if ((WarningTP == "") && (MainOutputRR != "Invalid TP"))
+                if ((WarningTP == "") && (MainOutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP))
                 {
                     string perc_risk;
                     if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(MainOutputReward / AccSize * 100, 2, RoundDown), 2));
@@ -5874,7 +6311,7 @@ void RecalculatePositionSize()
                 else
                 {
                     label_text = WarningTP;
-                    if (MainOutputRR == "Invalid TP") label_text += MainOutputRR;
+                    if (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += MainOutputRR;
                 }
                 DrawLineLabel(ObjectPrefix + "TPAdditionalLabel", label_text, tTakeProfitLevel, tp_label_font_color, true);
                 if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -5891,7 +6328,7 @@ void RecalculatePositionSize()
             if (ShowAdditionalTPLabel)
             {
                 string label_text;
-                if ((AdditionalWarningTP[i - 1] == "") && (AdditionalOutputRR[i - 1] != "Invalid TP"))
+                if ((AdditionalWarningTP[i - 1] == "") && (AdditionalOutputRR[i - 1] != TRANSLATION_LABEL_WARNING_INVALID_TP))
                 {
                     string perc_risk;
                     if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(AdditionalOutputReward[i - 1] / AccSize * 100, 2, RoundDown), 2));
@@ -5901,7 +6338,7 @@ void RecalculatePositionSize()
                 else
                 {
                     label_text = AdditionalWarningTP[i - 1];
-                    if (AdditionalOutputRR[i - 1] == "Invalid TP") label_text += AdditionalOutputRR[i - 1];
+                    if (AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += AdditionalOutputRR[i - 1];
                 }
                 DrawLineLabel(ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), label_text, add_tTakeProfitLevel, tp_label_font_color, true);
                 if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -5912,7 +6349,7 @@ void RecalculatePositionSize()
 
     if (StopLoss == 0)
     {
-        Print("Stop-loss should be different from Entry.");
+        Print(TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT);
         return;
     }
 
@@ -5993,17 +6430,17 @@ double CalculateAdjustment(const PROFIT_LOSS calc_mode, string profit_currency =
             // The condition checks whether we are caclulating conversion coefficient for the chart's symbol or for some other.
             // The error output is OK for the current symbol only because it won't be repeated ad infinitum.
             // It should be avoided for non-chart symbols because it will just flood the log.
-            if (profit_currency == ProfitCurrency) Print("Couldn't detect proper currency pair for adjustment calculation. Profit currency: ", profit_currency, ". Account currency: ", account_currency, ". Trying to find a possible two-symbol combination.");
+            if (profit_currency == ProfitCurrency) Print(TRANSLATION_MESSAGE_COULDNT_DETECT + " " + TRANSLATION_LABEL_PROFIT_CURRENCY + ": ", profit_currency, ". " + TRANSLATION_MESSAGE_ACCOUNT_CURRENCY + ": ", account_currency, ". " + TRANSLATION_MESSAGE_TRYING_TO_FIND);
             if ((FindDoubleReferenceSymbol("USD", profit_currency, ref_symbol, ref_mode, add_ref_symbol, add_ref_mode))  // USD should work in 99.9% of cases.
              || (FindDoubleReferenceSymbol("EUR", profit_currency, ref_symbol, ref_mode, add_ref_symbol, add_ref_mode))  // For very rare cases.
              || (FindDoubleReferenceSymbol("GBP", profit_currency, ref_symbol, ref_mode, add_ref_symbol, add_ref_mode))  // For extremely rare cases.
              || (FindDoubleReferenceSymbol("JPY", profit_currency, ref_symbol, ref_mode, add_ref_symbol, add_ref_mode))) // For extremely rare cases.
             {
-                if (profit_currency == ProfitCurrency) Print("Converting via ", ref_symbol, " and ", add_ref_symbol, ".");
+                if (profit_currency == ProfitCurrency) Print(TRANSLATION_MESSAGE_CONVERTING_VIA + ": ", ref_symbol, ", ", add_ref_symbol, ".");
             }
             else
             {
-                Print("Adjustment calculation critical failure. Failed both simple and two-pair conversion methods.");
+                Print(TRANSLATION_MESSAGE_ADJUSTMENT_CALCULATION_CRITICAL_FAILURE);
                 return 1;
             }
         }
@@ -6105,7 +6542,7 @@ bool FindDoubleReferenceSymbol(const string cross_currency, const string profit_
     }
     if (ref_symbol == NULL)
     {
-        Print("Error. Couldn't detect proper currency pair for 2-pair adjustment calculation. Cross currency: ", cross_currency, ". Account currency: ", account_currency, ".");
+        Print(TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR + " " + TRANSLATION_MESSAGE_CROSS_CURRENCY + ": ", cross_currency, ". " + TRANSLATION_MESSAGE_ACCOUNT_CURRENCY + ": ", account_currency, ".");
         return false;
     }
 
@@ -6123,7 +6560,7 @@ bool FindDoubleReferenceSymbol(const string cross_currency, const string profit_
     }
     if (add_ref_symbol == NULL)
     {
-        Print("Error. Couldn't detect proper currency pair for 2-pair adjustment calculation. Cross currency: ", cross_currency, ". Chart's pair currency: ", profit_currency, ".");
+        Print(TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR + " " + TRANSLATION_MESSAGE_CROSS_CURRENCY + ": ", cross_currency, ". " + TRANSLATION_MESSAGE_CHARTS_PAIR_CURRENCY + ": ", profit_currency, ".");
         return false;
     }
 
@@ -6184,12 +6621,14 @@ void CalculateRiskAndPositionSize()
     if (!sets.UseMoneyInsteadOfPercentage)
     {
         RiskMoney = Round(AccSize * sets.Risk / 100, 2, RoundDown);
+        sets.MoneyRisk = RiskMoney;
     }
     else
     {
         RiskMoney = sets.MoneyRisk;
         if (AccSize != 0) DisplayRisk = Round(sets.MoneyRisk / AccSize * 100, 2);
-        else DisplayRisk = 0;        
+        else DisplayRisk = 0;
+        sets.Risk = DisplayRisk;
     }
 
     // If Symbol is CFD or futures but with different profit currency.
@@ -6246,6 +6685,7 @@ void CalculateRiskAndPositionSize()
             sets.MoneyRisk = RiskMoney;
             if (AccSize != 0) DisplayRisk = Round(sets.MoneyRisk / AccSize * 100, 2);
             else DisplayRisk = 0;
+            sets.Risk = DisplayRisk;
             PositionSize = OutputPositionSize;
         }
         else
@@ -6257,13 +6697,9 @@ void CalculateRiskAndPositionSize()
 
     if (!CalculateUnadjustedPositionSize) // If need to adjust to broker's restrictions.
     {
-        if (PositionSize < MinLot) OutputPositionSize = MinLot;
-        else if ((PositionSize > MaxLot) && (!SurpassBrokerMaxPositionSize)) OutputPositionSize = MaxLot;
-        double steps = 0;
-        if (LotStep != 0) steps = OutputPositionSize / LotStep;
-        if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
-        if (MathFloor(steps) < steps) OutputPositionSize = MathFloor(steps) * LotStep;
+        OutputPositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
     }
+    if ((CapMaxPositionSizeBasedOnMargin) && (OutputPositionSize > OutputMaxPositionSize)) OutputPositionSize = OutputMaxPositionSize; // Cap with max position size by free margin if necessary.
 
     if (TickSize == 0) return;
     OutputRiskMoney = Round((StopLoss * UnitCost / TickSize + 2 * commission) * OutputPositionSize, 2);
@@ -6316,7 +6752,7 @@ void CalculateRiskAndPositionSize()
         }
         else
         {
-            InputRR = "Invalid TP";
+            InputRR = TRANSLATION_LABEL_WARNING_INVALID_TP;
             MainOutputRR = InputRR;
         }
         if (MainOutputRR == InputRR) InputRR = "";
@@ -6359,7 +6795,7 @@ void CalculateRiskAndPositionSize()
             }
             else
             {
-                AdditionalOutputRR[i - 1] = "Invalid TP";
+                AdditionalOutputRR[i - 1] = TRANSLATION_LABEL_WARNING_INVALID_TP;
             }
         }
         else AdditionalOutputRR[i - 1] = "";
@@ -6382,12 +6818,12 @@ void CalculateRiskAndPositionSize()
         for (int i = 1; i < sets.TakeProfitsNumber; i++)
         {
             OutputReward += AdditionalOutputReward[i - 1];
-            if ((AdditionalOutputRR[i - 1] == "Invalid TP") || (MainOutputRR == "Invalid TP")) OutputRR = "Invalid TP"; // At least one Invalid TP means that total RR is also invalid.
+            if ((AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) || (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP)) OutputRR = TRANSLATION_LABEL_WARNING_INVALID_TP; // At least one Invalid TP means that total RR is also invalid.
             if ((OutputPositionSize > 0) && (ArrayPositionSize[i] > 0)) TotalOutputRisk += (OutputRiskMoney / OutputPositionSize * ArrayPositionSize[i]);
             TotalInputRisk += (RiskMoney * (double)sets.TPShare[i] / 100.0);
             if (sets.TP[i] > 0) InputReward = DoubleToString(StringToDouble(InputReward) + Round(RiskMoney * (double)sets.TPShare[i] / 100.0 * MathAbs(sets.TP[i] - tEntryLevel) / StopLoss, 2, RoundDown), 2);
         }
-        if (OutputRR != "Invalid TP")
+        if (OutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP)
         {
             if (TotalOutputRisk != 0) OutputRR = DoubleToString(Round(OutputReward / TotalOutputRisk, 2, RoundDown), 2);
             else OutputRR = "";
@@ -6445,7 +6881,8 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
         // Skip orders in other symbols if the ignore checkbox is ticked.
         if (!calculate_risk_for_trading_tab)
         {
-            if ((OrderSymbol() != Symbol()) && (sets.IgnoreOtherSymbols)) continue;
+            if ((OrderSymbol() != Symbol()) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_OTHER)) continue;
+            else if ((OrderSymbol() == Symbol()) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_CURRENT)) continue;
         }
         else if ((OrderSymbol() != Symbol()) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
 
@@ -6523,7 +6960,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
 
             if (TickSize_local == 0)
             {
-                Print("Cannot retrieve tick size for ", OrderSymbol(), ". Looks like the instrument is no longer available. Calculation may not be accurate.");
+                Print(TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE, OrderSymbol(), ". " + TRANSLATION_MESSAGE_LOOKS_LIKE);
             }
             else
             {
@@ -6581,7 +7018,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
 
             if (TickSize_local == 0)
             {
-                Print("Cannot retrieve tick size for ", OrderSymbol(), ". Looks like the instrument is no longer available. Calculation may not be accurate.");
+                Print(TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE, OrderSymbol(), ". " + TRANSLATION_MESSAGE_LOOKS_LIKE);
             }
             else
             {
@@ -6616,28 +7053,28 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     // If account size did not load yet.
     if (AccSize == 0) return;
 
-    if (PortfolioLossMoney == DBL_MAX) PLM = "      Infinity";
+    if (PortfolioLossMoney == DBL_MAX) PLM = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PLM = FormatDouble(DoubleToString(PortfolioLossMoney, 2));
 
-    if (PortfolioLossMoney == DBL_MAX) CPR = "      Infinity";
+    if (PortfolioLossMoney == DBL_MAX) CPR = "      " + TRANSLATION_MESSAGE_INFINITY;
     else CPR = FormatDouble(DoubleToString(PortfolioLossMoney / AccSize * 100, 2));
 
-    if (PortfolioLossMoney == DBL_MAX) PPMR = "      Infinity";
+    if (PortfolioLossMoney == DBL_MAX) PPMR = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PPMR = FormatDouble(DoubleToString(PortfolioLossMoney + OutputRiskMoney, 2));
 
-    if (PortfolioLossMoney == DBL_MAX) PPR = "      Infinity";
+    if (PortfolioLossMoney == DBL_MAX) PPR = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PPR = FormatDouble(DoubleToString((PortfolioLossMoney + OutputRiskMoney) / AccSize * 100, 2));
 
-    if (PortfolioRewardMoney == DBL_MAX) PRM = "      Infinity";
+    if (PortfolioRewardMoney == DBL_MAX) PRM = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PRM = FormatDouble(DoubleToString(PortfolioRewardMoney, 2));
 
-    if (PortfolioRewardMoney == DBL_MAX) CPRew = "      Infinity";
+    if (PortfolioRewardMoney == DBL_MAX) CPRew = "      " + TRANSLATION_MESSAGE_INFINITY;
     else CPRew = FormatDouble(DoubleToString(PortfolioRewardMoney / AccSize * 100, 2));
 
-    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPMRew = "      Infinity";
+    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPMRew = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PPMRew = FormatDouble(DoubleToString(PortfolioRewardMoney + OutputReward, 2));
 
-    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPRew = "      Infinity";
+    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPRew = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PPRew = FormatDouble(DoubleToString((PortfolioRewardMoney + OutputReward) / AccSize * 100, 2));
 
     CPL = FormatDouble(DoubleToString(volume, LotStep_digits), LotStep_digits);
@@ -6646,12 +7083,12 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     if (PortfolioRewardMoney == DBL_MAX)
     {
         if (PortfolioLossMoney == DBL_MAX) CPRRR = "-";
-        else CPRRR = "Infinity";
+        else CPRRR = TRANSLATION_MESSAGE_INFINITY;
     }
     else if (PortfolioLossMoney == DBL_MAX) CPRRR = "0.00";
     else if (PortfolioLossMoney == 0)
     {
-        if (PortfolioRewardMoney != 0) CPRRR = "Infinity";
+        if (PortfolioRewardMoney != 0) CPRRR = TRANSLATION_MESSAGE_INFINITY;
         else CPRRR = "-";
     }
     else CPRRR = FormatDouble(DoubleToString(PortfolioRewardMoney / PortfolioLossMoney, 2));
@@ -6659,12 +7096,12 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0))
     {
         if (PortfolioLossMoney == DBL_MAX) PPRRR = "-";
-        else PPRRR = "Infinity";
+        else PPRRR = TRANSLATION_MESSAGE_INFINITY;
     }
     else if (PortfolioLossMoney == DBL_MAX) PPRRR = "0.00";
     else if (PortfolioLossMoney + OutputRiskMoney == 0)
     {
-        if (PortfolioRewardMoney + OutputReward != 0) PPRRR = "Infinity";
+        if (PortfolioRewardMoney + OutputReward != 0) PPRRR = TRANSLATION_MESSAGE_INFINITY;
         else PPRRR = "-";
     }
     else PPRRR = FormatDouble(DoubleToString((PortfolioRewardMoney + OutputReward) / (PortfolioLossMoney + OutputRiskMoney), 2));
@@ -6816,12 +7253,7 @@ void CalculateMargin()
     OutputMaxPositionSize = MaxPositionSizeByMargin;
     if (!CalculateUnadjustedPositionSize) // If need to adjust to broker's restrictions.
     {
-        if (MaxPositionSizeByMargin < MinLot) OutputMaxPositionSize = 0; // Cannot open any position at all.
-        else if ((MaxPositionSizeByMargin > MaxLot) && (!SurpassBrokerMaxPositionSize)) OutputMaxPositionSize = MaxLot;
-        double steps = 0;
-        if (LotStep != 0) steps = OutputMaxPositionSize / LotStep;
-        if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
-        if (MathFloor(steps) < steps) OutputMaxPositionSize = MathFloor(steps) * LotStep;
+        OutputMaxPositionSize = AdjustPositionSizeByMinMaxStep(OutputMaxPositionSize);
     }
 
     UsedMargin = AccountMargin() + PositionMargin;
@@ -6892,7 +7324,7 @@ void GetSwapData()
             tick_value_long = tick_value;
             tick_value_short = tick_value;
         }
-        OutputSwapsType = "Points";
+        OutputSwapsType = TRANSLATION_LABEL_POINTS;
         swap_long_1_lot = swap_long * tick_value_long;
         swap_short_1_lot = swap_short * tick_value_short;
     }
@@ -6901,7 +7333,7 @@ void GetSwapData()
     case 1:
     {
         string base_currency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_BASE);
-        OutputSwapsType = "Base currency (" + base_currency + ")";
+        OutputSwapsType = TRANSLATION_LABEL_BASE_CURRENCY + " (" + base_currency + ")";
         // Simple case:
         if (account_currency == base_currency)
         {
@@ -6986,7 +7418,7 @@ void GetSwapData()
     {
         if (TickSize == 0) return;
         double symbol_cost_1_lot_profit, symbol_cost_1_lot_loss;
-        OutputSwapsType = "Interest";
+        OutputSwapsType = TRANSLATION_LABEL_INTEREST;
         // Calculate it by pending order's price.
 
         // If Forex or futures (same currency), current formula should be OK.
@@ -7261,7 +7693,7 @@ void WarnAboutZeroUnitCost()
 {
     if (WarnedAboutZeroUnitCost == 1) // Issue the actual alert only after the first dry run, to avoid sending an alert when symbol data is still loading.
     {
-        if (WarnedAboutZeroUnitCost != 2) Alert("Misconfigured symbol on trading server - zero unit cost.");
+        if (WarnedAboutZeroUnitCost != 2) Alert(TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL);
         WarnedAboutZeroUnitCost = 2;
         return;
     }
@@ -7342,5 +7774,16 @@ void PositionSizeToArray(double ps)
         }
     }
     else ArrayPositionSize[0] = ps;
+}
+
+double AdjustPositionSizeByMinMaxStep(double ps)
+{
+    if (ps < MinLot) ps = MinLot;
+    else if ((ps > MaxLot) && (!SurpassBrokerMaxPositionSize)) ps = MaxLot;
+    double steps = 0;
+    if (LotStep != 0) steps = ps / LotStep;
+    if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
+    if (MathFloor(steps) < steps) ps = MathFloor(steps) * LotStep;
+    return ps;
 }
 //+------------------------------------------------------------------+

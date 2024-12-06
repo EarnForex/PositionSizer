@@ -4,14 +4,15 @@
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include "Defines.mqh"
+#include <ChartObjects\ChartObjectsTxtControls.mqh>
 
 class CPositionSizeCalculator : public CAppDialog
 {
 private:
-    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnStopPriceIncrease, m_BtnStopPriceDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade;
-    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkCountPendings, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkIgnoreOtherSymbols, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix;
-    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtStopPrice, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtMaxPositionSize, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol;
-    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol;;
+    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnStopPriceIncrease, m_BtnStopPriceDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIgnoreSymbols;
+    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkCountPendings, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix;
+    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtStopPrice, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage;
+    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIgnoreSymbols;
 
     string           m_FileName;
     double           m_DPIScale;
@@ -27,7 +28,7 @@ private:
     CLabel           AdditionalTPLabels[], AdditionalTPWarnings[];
     CButton          AdditionalTPButtonsIncrease[], AdditionalTPButtonsDecrease[];
     // Store ordered and named panel objects arranged by tabs.
-    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList;
+    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList, *PersistentList; // PersisntentList can be potentially used for Strategy Tester event tracking in the future.
     
     // Some of the panel measurement parameters are used by more than one method:
     int              first_column_start, normal_label_width, normal_edit_width, second_column_start, element_height, third_column_start, narrow_label_width, v_spacing, multi_tp_column_start,
@@ -72,7 +73,7 @@ public:
     virtual void     CheckAndRestoreLines();
     virtual void     DummyObjectSelect(string dummy_name);
     virtual bool     IsMinimized() {return m_minimized;}
-    virtual void     IniFileLoad() {CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
+    virtual void     IniFileLoad() {if (FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
     virtual void     EmulateMinMaxClick();
             void     OnClickBtnTakeProfitsNumberAdd();
             void     OnClickBtnTakeProfitsNumberRemove();
@@ -82,6 +83,15 @@ public:
             void     OnClickBtnOrderType();
             void     OnClickBtnLines();
     virtual void     OnClickButtonClose();
+            void     OnClickEdtPosSize();
+            void     OnClickEdtEntryLevel();
+            void     OnClickEdtSL();
+            void     OnClickEdtTP();
+            void     OnClickEdtAccount();
+            void     OnClickEdtRiskPIn();
+            void     OnClickEdtRiskMIn();
+            void     OnClickAdditionalTPEdit(int);
+            void     OnClickEdtTradingTPEdit1();
 
             int      MaxTakeProfitsNumber;
     virtual void     UpdateAdditionalTradingPanelTP(int i);
@@ -91,6 +101,7 @@ public:
     virtual void     Maximize();
     virtual void     Minimize();
             void     SetTPButtonBackGroundColor(color);
+    virtual void     ProcessTPChange(const bool tp_button_click);
     CEdit            AdditionalTPEdits[];
     CButton          m_OutsideTradeButton;
             void     MoveOutsideTradeButton();
@@ -112,7 +123,6 @@ private:
     virtual bool     CreateObjects();
     virtual bool     InitObjects();
     virtual bool     DisplayValues(); // Updates values in the panel.
-    virtual void     ProcessTPChange(const bool tp_button_click);
 
     virtual bool     ButtonCreate    (CList* list, CButton&    Btn, int X1, int Y1, int X2, int Y2, string Name, string Text, string Tooltip = "\n");
     virtual bool     CheckBoxCreate  (CList* list, CCheckBox&  Chk, int X1, int Y1, int X2, int Y2, string Name, string Text, string Tooltip = "\n");
@@ -151,7 +161,7 @@ private:
     void OnChangeChkCountPendings();
     void OnChangeChkIgnoreOrdersWithoutSL();
     void OnChangeChkIgnoreOrdersWithoutTP();
-    void OnChangeChkIgnoreOtherSymbols();
+    void OnClickBtnIgnoreSymbols();
     void OnEndEditEdtCustomLeverage();
     void OnEndEditEdtMagicNumber();
     void OnEndEditEdtCommentary();
@@ -160,6 +170,7 @@ private:
     void OnEndEditEdtMaxSpread();
     void OnEndEditEdtMaxEntrySLDistance();
     void OnEndEditEdtMinEntrySLDistance();
+    void OnEndEditEdtMaxRiskPercentage();
     void OnEndEditEdtMaxPositionSizeTotal();
     void OnEndEditEdtMaxPositionSizePerSymbol();
     void OnEndEditEdtTrailingStopPoints();
@@ -222,23 +233,30 @@ ON_EVENT(ON_CHANGE, m_ChkSpreadAdjustmentTP, OnChangeChkSpreadAdjustmentTP)
 ON_EVENT(ON_CHANGE, m_ChkCountPendings, OnChangeChkCountPendings)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutSL, OnChangeChkIgnoreOrdersWithoutSL)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutTP, OnChangeChkIgnoreOrdersWithoutTP)
-ON_EVENT(ON_CHANGE, m_ChkIgnoreOtherSymbols, OnChangeChkIgnoreOtherSymbols)
+ON_EVENT(ON_CLICK, m_BtnIgnoreSymbols, OnClickBtnIgnoreSymbols)
 ON_EVENT(ON_END_EDIT, m_EdtCustomLeverage, OnEndEditEdtCustomLeverage)
 ON_EVENT(ON_END_EDIT, m_EdtMagicNumber, OnEndEditEdtMagicNumber)
 ON_EVENT(ON_END_EDIT, m_EdtCommentary, OnEndEditEdtCommentary)
 ON_EVENT(ON_CHANGE, m_ChkDisableTradingWhenLinesAreHidden, OnChangeChkDisableTradingWhenLinesAreHidden)
+ON_EVENT(ON_END_EDIT, m_EdtTrailingStopPoints, OnEndEditEdtTrailingStopPoints)
+ON_EVENT(ON_END_EDIT, m_EdtBreakEvenPoints, OnEndEditEdtBreakEvenPoints)
+if (ShowFusesOnTrading)
+{
 ON_EVENT(ON_END_EDIT, m_EdtMaxSlippage, OnEndEditEdtMaxSlippage)
 ON_EVENT(ON_END_EDIT, m_EdtMaxSpread, OnEndEditEdtMaxSpread)
 ON_EVENT(ON_END_EDIT, m_EdtMaxEntrySLDistance, OnEndEditEdtMaxEntrySLDistance)
 ON_EVENT(ON_END_EDIT, m_EdtMinEntrySLDistance, OnEndEditEdtMinEntrySLDistance)
+ON_EVENT(ON_END_EDIT, m_EdtMaxRiskPercentage, OnEndEditEdtMaxRiskPercentage)
+}
+if (ShowMaxParametersOnTrading)
+{
 ON_EVENT(ON_END_EDIT, m_EdtMaxPositionSizeTotal, OnEndEditEdtMaxPositionSizeTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxPositionSizePerSymbol, OnEndEditEdtMaxPositionSizePerSymbol)
-ON_EVENT(ON_END_EDIT, m_EdtTrailingStopPoints, OnEndEditEdtTrailingStopPoints)
-ON_EVENT(ON_END_EDIT, m_EdtBreakEvenPoints, OnEndEditEdtBreakEvenPoints)
 ON_EVENT(ON_END_EDIT, m_EdtMaxNumberOfTradesTotal, OnEndEditEdtMaxNumberOfTradesTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxNumberOfTradesPerSymbol, OnEndEditEdtMaxNumberOfTradesPerSymbol)
 ON_EVENT(ON_END_EDIT, m_EdtMaxRiskTotal, OnEndEditEdtMaxRiskTotal)
 ON_EVENT(ON_END_EDIT, m_EdtMaxRiskPerSymbol, OnEndEditEdtMaxRiskPerSymbol)
+}
 ON_EVENT(ON_END_EDIT, m_EdtExpiry, OnEndEditEdtExpiry)
 ON_EVENT(ON_CHANGE, m_ChkSubtractPositions, OnChangeChkSubtractPositions)
 ON_EVENT(ON_CHANGE, m_ChkSubtractPendingOrders, OnChangeChkSubtractPendingOrders)
@@ -280,6 +298,7 @@ CPositionSizeCalculator::~CPositionSizeCalculator(void)
     delete MarginTabList;
     delete SwapsTabList;
     delete TradingTabList;
+    delete PersistentList;
 }
 
 // Updates filename used for settings storage.
@@ -403,7 +422,7 @@ bool CPositionSizeCalculator::CreateObjects()
     int row_start, h_spacing,
         tab_button_start, tab_button_width, tab_button_spacing, narrow_edit_width, risk_perc_edit_width, narrowest_label_width, risk_lot_edit, wide_edit_width, wide_label_width, swap_last_label_width, swap_type_edit_width, swap_size_edit_width, atr_period_label_width, atr_period_edit_width, quick_risk_button_width, quick_risk_button_offset,
         second_risk_column_start, second_margin_column_start, second_swaps_column_start, third_risk_column_start, third_swaps_column_start, fourth_risk_column_start, fourth_swaps_column_start, max_psc_column_start,
-        panel_end;
+        panel_end, ignore_symbols_button_width;
 
     // Same for both modes - narrow and wide.
     row_start = (int)MathRound(10 * m_DPIScale);
@@ -425,6 +444,7 @@ bool CPositionSizeCalculator::CreateObjects()
     second_swaps_column_start = first_column_start + narrowest_label_width + h_spacing;
     multi_tp_column_start = first_column_start + normal_label_width;
     multi_tp_label_width = (int)MathRound(70 * m_DPIScale);
+    ignore_symbols_button_width = (int)MathRound(95 * m_DPIScale);
 
     // Wide mode.
     if (PanelWidth > 350) // Wide panel required.
@@ -492,15 +512,16 @@ bool CPositionSizeCalculator::CreateObjects()
 
 // Tabs
 
-    if (!ButtonCreate(NULL, m_BtnTabMain, tab_button_start, y, tab_button_start + tab_button_width, y + element_height, "m_BtnTabMain", TRANSLATION_TAB_BUTTON_MAIN))                                                                                                                    return false;
+    PersistentList = new CPanelList;
+    if (!ButtonCreate(PersistentList, m_BtnTabMain, tab_button_start, y, tab_button_start + tab_button_width, y + element_height, "m_BtnTabMain", TRANSLATION_TAB_BUTTON_MAIN))                                                                                                                    return false;
     MainTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabRisk, tab_button_start + tab_button_width + tab_button_spacing, y, tab_button_start + tab_button_width * 2 + tab_button_spacing, y + element_height, "m_BtnTabRisk", TRANSLATION_TAB_BUTTON_RISK))                                                                                                                   return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabRisk, tab_button_start + tab_button_width + tab_button_spacing, y, tab_button_start + tab_button_width * 2 + tab_button_spacing, y + element_height, "m_BtnTabRisk", TRANSLATION_TAB_BUTTON_RISK))                                                                                                                   return false;
     RiskTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabMargin, tab_button_start + tab_button_width * 2 + tab_button_spacing * 2, y, tab_button_start + tab_button_width * 3 + tab_button_spacing * 2, y + element_height, "m_BtnTabMargin", TRANSLATION_TAB_BUTTON_MARGIN))                                                                                                             return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabMargin, tab_button_start + tab_button_width * 2 + tab_button_spacing * 2, y, tab_button_start + tab_button_width * 3 + tab_button_spacing * 2, y + element_height, "m_BtnTabMargin", TRANSLATION_TAB_BUTTON_MARGIN))                                                                                                             return false;
     MarginTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabSwaps, tab_button_start + tab_button_width * 3 + tab_button_spacing * 3, y, tab_button_start + tab_button_width * 4 + tab_button_spacing * 3, y + element_height, "m_BtnTabSwaps", TRANSLATION_TAB_BUTTON_SWAPS))                                                                                                                return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabSwaps, tab_button_start + tab_button_width * 3 + tab_button_spacing * 3, y, tab_button_start + tab_button_width * 4 + tab_button_spacing * 3, y + element_height, "m_BtnTabSwaps", TRANSLATION_TAB_BUTTON_SWAPS))                                                                                                                return false;
     SwapsTabList = new CPanelList;
-    if (!ButtonCreate(NULL, m_BtnTabTrading, tab_button_start + tab_button_width * 4 + tab_button_spacing * 4, y, tab_button_start + tab_button_width * 5 + tab_button_spacing * 4, y + element_height, "m_BtnTabTrading", TRANSLATION_TAB_BUTTON_TRADING))                                                                                                             return false;
+    if (!ButtonCreate(PersistentList, m_BtnTabTrading, tab_button_start + tab_button_width * 4 + tab_button_spacing * 4, y, tab_button_start + tab_button_width * 5 + tab_button_spacing * 4, y + element_height, "m_BtnTabTrading", TRANSLATION_TAB_BUTTON_TRADING))                                                                                                             return false;
     TradingTabList = new CPanelList;
 
 // Main
@@ -667,8 +688,8 @@ bool CPositionSizeCalculator::CreateObjects()
         y += element_height + v_spacing;
     }
 
-    if (!LabelCreate(MainTabList, m_LblInput, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblInput", TRANSLATION_LABEL_INPUT))                                                 return false;
-    if (!LabelCreate(MainTabList, m_LblResult, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_LblResult", TRANSLATION_LABEL_RESULT))                                            return false;
+    if (!LabelCreate(MainTabList, m_LblInput, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_LblInput", TRANSLATION_LABEL_INPUT, TRANSLATION_TOOLTIP_INPUTS))                                                 return false;
+    if (!LabelCreate(MainTabList, m_LblResult, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_LblResult", TRANSLATION_LABEL_RESULT, TRANSLATION_TOOLTIP_RESULT))                                            return false;
 
     y += element_height + v_spacing;
 
@@ -714,7 +735,7 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (!LabelCreate(MainTabList, m_LblPosSize, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblPosSize", TRANSLATION_LABEL_POSITION_SIZE + ":"))                                 return false;
     if (ShowMaxPSButton) if (!ButtonCreate(MainTabList, m_BtnMaxPS, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_BtnMaxPS", TRANSLATION_BUTTON_MAX_PS))                                                               return false;
-    if (!EditCreate(MainTabList, m_EdtPosSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPosSize", ""))                                                     return false;
+    if (!EditCreate(MainTabList, m_EdtPosSize, third_column_start, y, third_column_start + normal_edit_width, y + element_height, "m_EdtPosSize", "", TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN))                                                     return false;
 
     if (ShowPointValue)
     {
@@ -750,7 +771,8 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkIgnoreOtherSymbols, first_column_start, y, panel_end, y + element_height, "m_ChkIgnoreOtherSymbols", TRANSLATION_CHECKBOX_IGNORE_ORDERS_IN_OTHER_SYMBOLS)) return false;
+    if (!LabelCreate(RiskTabList, m_LblIgnoreSymbols, first_column_start, y, first_column_start + ignore_symbols_button_width, y + element_height, "m_LblIgnoreSymbols", TRANSLATION_LABEL_IGNORE_TRADES_IN))                                    return false;
+    if (!ButtonCreate(RiskTabList, m_BtnIgnoreSymbols, first_column_start + ignore_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIgnoreSymbols", TRANSLATION_BUTTON_SYMBOLS_NO, TRANSLATION_BUTTON_SYMBOLS_TOOLTIP))                                            return false;
 
     y += element_height + v_spacing;
 
@@ -956,9 +978,6 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-//    if (!LabelCreate(TradingTabList, m_LblMagicNumber, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMagicNumber", TRANSLATION_LABEL_MAGIC_NUMBER + ":"))                                          return false;
-    //if (!EditCreate(TradingTabList, m_EdtMagicNumber, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMagicNumber", ""))                                                 return false;
-
     if (!LabelCreate(TradingTabList, m_LblMagicNumber, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMagicNumber", TRANSLATION_LABEL_MAGIC_NUMBER + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtMagicNumber, first_column_start + normal_label_width, y, first_column_start + normal_label_width + normal_edit_width, y + element_height, "m_EdtMagicNumber", ""))                                                 return false;
     if (!LabelCreate(TradingTabList, m_LblExpiry, first_column_start + normal_label_width + normal_edit_width + v_spacing, y, first_column_start + normal_label_width + normal_edit_width + narrowest_label_width, y + element_height, "m_LblExpiry", TRANSLATION_LABEL_EXPIRY + ":", TRANSLATION_TOOLTIP_EXPIRY))                                          return false;
@@ -1049,6 +1068,11 @@ bool CPositionSizeCalculator::CreateObjects()
     
         if (!LabelCreate(TradingTabList, m_LblMinEntrySLDistance, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMinEntrySLDistance", TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE + ":"))                                       return false;
         if (!EditCreate(TradingTabList, m_EdtMinEntrySLDistance, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMinEntrySLDistance", ""))                                               return false;
+    
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(TradingTabList, m_LblMaxRiskPercentage, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMaxRiskPercentage", TRANSLATION_LABEL_MAX_RISK_PERCENTAGE + ":"))                                       return false;
+        if (!EditCreate(TradingTabList, m_EdtMaxRiskPercentage, second_trading_column_start, y, second_trading_column_start + normal_edit_width, y + element_height, "m_EdtMaxRiskPercentage", ""))                                               return false;
     
         y += element_height + v_spacing;
     }
@@ -1174,6 +1198,7 @@ bool CPositionSizeCalculator::InitObjects()
         if (!m_EdtMaxSpread.TextAlign(align))                                    return false;
         if (!m_EdtMaxEntrySLDistance.TextAlign(align))                           return false;
         if (!m_EdtMinEntrySLDistance.TextAlign(align))                           return false;
+        if (!m_EdtMaxRiskPercentage.TextAlign(align))                            return false;
     }
     if (!m_EdtTrailingStopPoints.TextAlign(align))                           return false;
     if (!m_EdtBreakEvenPoints.TextAlign(align))                              return false;
@@ -1216,6 +1241,7 @@ bool CPositionSizeCalculator::InitObjects()
             TradingTPEdits[i].Text(DoubleToString(sets.TP[i], _Digits));
         }
     }
+
     return true;
 }
 
@@ -1304,6 +1330,7 @@ void CPositionSizeCalculator::InitControlsValues()
         CommissionDecimals = (int)AccountInfoInteger(ACCOUNT_CURRENCY_DIGITS);
         m_BtnCommissionType.Text(AccountInfoString(ACCOUNT_CURRENCY));
     }
+    /* Commission size*/ m_EdtCommissionSize.Text(DoubleToString(sets.CommissionPerLot, CommissionDecimals));
 
     if (QuickRisk1 > 0)
     {
@@ -1337,7 +1364,19 @@ void CPositionSizeCalculator::InitControlsValues()
     m_ChkCountPendings.Checked(sets.CountPendingOrders);
     m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL);
     m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP);
-    m_ChkIgnoreOtherSymbols.Checked(sets.IgnoreOtherSymbols);
+    switch(sets.IgnoreSymbols)
+    {
+    default:
+    case IGNORE_SYMBOLS_NONE:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+        break;
+    case IGNORE_SYMBOLS_OTHER:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+        break;
+    case IGNORE_SYMBOLS_CURRENT:
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+        break;
+    }
 
     // Show/hide RiskReward
     if (sets.TakeProfitLevel == 0)
@@ -1352,6 +1391,7 @@ void CPositionSizeCalculator::InitControlsValues()
 
     CustomLeverage = sets.CustomLeverage;
     CustomLeverageDecimals = CountDecimalPlaces(CustomLeverage);
+    /* Custom Leverage             */ m_EdtCustomLeverage.Text(DoubleToString(sets.CustomLeverage, CustomLeverageDecimals));
 
     // Trading
     m_EdtTrailingStopPoints.Text(IntegerToString(sets.TrailingStopPoints));
@@ -1376,6 +1416,7 @@ void CPositionSizeCalculator::InitControlsValues()
         m_EdtMaxSpread.Text(IntegerToString(sets.MaxSpread));
         m_EdtMaxEntrySLDistance.Text(IntegerToString(sets.MaxEntrySLDistance));
         m_EdtMinEntrySLDistance.Text(IntegerToString(sets.MinEntrySLDistance));
+        m_EdtMaxRiskPercentage.Text(DoubleToString(sets.MaxRiskPercentage, 2));
     }
     if (ShowCheckboxesOnTrading)
     {
@@ -1527,36 +1568,42 @@ bool CPositionSizeCalculator::DisplayValues()
     //=== Spread
     if (ShowSpread == Points)
     {
-        if (!Caption(PanelCaption + " " + TRANSLATION_LABEL_SPREAD + ": " + IntegerToString(SymbolInfoInteger(Symbol(), SYMBOL_SPREAD)))) return false;
+        if (!Caption(PanelCaption + " " + TRANSLATION_LABEL_SPREAD + ": " + IntegerToString(SymbolInfoInteger(SymbolForTrading, SYMBOL_SPREAD)))) return false;
     }
     else if (ShowSpread == Ratio) // Spread / SL ratio in percentage.
     {
         double SL;
         if (sets.SLDistanceInPoints) SL = sets.StopLoss * _Point;
         else SL = MathAbs(sets.StopLossLevel - sets.EntryLevel);
-        if (SL != 0) if (!Caption(PanelCaption + " " + TRANSLATION_LABEL_SPREAD + ": " + DoubleToString((SymbolInfoInteger(Symbol(), SYMBOL_SPREAD) * _Point / SL) * 100, 2) + "%")) return false;
+        if (SL != 0) if (!Caption(PanelCaption + " " + TRANSLATION_LABEL_SPREAD + ": " + DoubleToString((SymbolInfoInteger(SymbolForTrading, SYMBOL_SPREAD) * _Point / SL) * 100, 2) + "%")) return false;
     }
     else if (!Caption(PanelCaption)) return false;
 
     //=== Levels
-    /* Entry Level    */ if (!m_EdtEntryLevel.Text(DoubleToString(sets.EntryLevel, _Digits)))                                  return false;
+    /* Entry Level    */ if (!m_EdtEntryLevel.PropFlags()) m_EdtEntryLevel.Text(DoubleToString(sets.EntryLevel, _Digits));
     if (sets.TradeDirection == Long) m_BtnEntry.Text(TRANSLATION_BUTTON_LONG);
     else if (sets.TradeDirection == Short) m_BtnEntry.Text(TRANSLATION_BUTTON_SHORT);
     /* Entry Warning  */ if (!m_LblEntryWarning.Text(WarningEntry))                                                        return false;
 
-    /* Stop-Loss      */ if (!sets.SLDistanceInPoints)
+    if (!m_EdtSL.PropFlags())
     {
-        if (!m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)))                                return false;
+        /* Stop-Loss      */ if (!sets.SLDistanceInPoints)
+        {
+            if (!m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)))                                return false;
+        }
+        else if (!m_EdtSL.Text(IntegerToString(sets.StopLoss)))                                            return false;
     }
-    else if (!m_EdtSL.Text(IntegerToString(sets.StopLoss)))                                            return false;
 
     /* SL Warning     */ if (!m_LblSLWarning.Text(WarningSL))                                                              return false;
 
-    /* Take Profit    */ if (!sets.TPDistanceInPoints)
+    if (!m_EdtTP.PropFlags())
     {
-        if (!m_EdtTP.Text(DoubleToString(sets.TakeProfitLevel, _Digits)))                              return false;
+        /* Take Profit    */ if (!sets.TPDistanceInPoints)
+        {
+            if (!m_EdtTP.Text(DoubleToString(sets.TakeProfitLevel, _Digits)))                              return false;
+        }
+        else if (!m_EdtTP.Text(IntegerToString(sets.TakeProfit)))                                           return false;
     }
-    else if (!m_EdtTP.Text(IntegerToString(sets.TakeProfit)))                                           return false;
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
         if (!sets.TPDistanceInPoints)
@@ -1570,7 +1617,7 @@ bool CPositionSizeCalculator::DisplayValues()
             string tp_text = "0";
             // If line's value was zero, then points distance should be also zero.
             if (sets.TP[i] != 0) tp_text = IntegerToString((int)MathRound(MathAbs(sets.TP[i] - sets.EntryLevel) / _Point));
-            if (!AdditionalTPEdits[i - 1].Text(tp_text))                                                                         return false;
+            if (!AdditionalTPEdits[i - 1].PropFlags()) AdditionalTPEdits[i - 1].Text(tp_text);
         }
     }
 
@@ -1604,7 +1651,7 @@ bool CPositionSizeCalculator::DisplayValues()
                          m_EdtEntryLevel.ReadOnly(false);
                          m_EdtEntryLevel.ColorBackground(CONTROLS_EDIT_COLOR_ENABLE);
                      }
-    /* Account Value  */ if (!HideAccSize) if (!m_EdtAccount.Text(FormatDouble(DoubleToString(AccSize, AccountCurrencyDigits), AccountCurrencyDigits)))                  return false;
+    /* Account Value  */ if (!HideAccSize) if (!m_EdtAccount.PropFlags()) m_EdtAccount.Text(FormatDouble(DoubleToString(AccSize, AccountCurrencyDigits), AccountCurrencyDigits));
 
     /* Account Asterisk */
     if (sets.SelectedTab == MainTab)
@@ -1660,9 +1707,9 @@ bool CPositionSizeCalculator::DisplayValues()
         m_LblATRValue.Text(TRANSLATION_LABEL_ATR_VALUE + " = " + DoubleToString(atr, _Digits));
     }
     //=== Commission, risk, position size
-    /* Commission size*/ m_EdtCommissionSize.Text(DoubleToString(sets.CommissionPerLot, CommissionDecimals));
-    /* Risk In        */ if (!m_EdtRiskPIn.Text(FormatDouble(DoubleToString(DisplayRisk, 2))))                                 return false;
-    /* Risk currency  */ if (StringLen(AccountCurrency) > 0) if (!m_LblRiskM.Text(TRANSLATION_LABEL_RISK + ", " + AccountCurrency + ":"))       return false;
+    
+    /* Risk In        */ if (!m_EdtRiskPIn.PropFlags()) m_EdtRiskPIn.Text(FormatDouble(DoubleToString(DisplayRisk, 2)));
+    /* Risk currency  */ if (StringLen(AccountCurrency) > 0) if (!m_LblRiskM.PropFlags()) m_LblRiskM.Text(TRANSLATION_LABEL_RISK + ", " + AccountCurrency + ":");
     /* Risk Money In  */ if (!m_EdtRiskMIn.Text(FormatDouble(DoubleToString(RiskMoney, AccountCurrencyDigits), AccountCurrencyDigits)))                                return false;
     /* Risk Money Out */ if (!m_EdtRiskMRes.Text(FormatDouble(DoubleToString(OutputRiskMoney), AccountCurrencyDigits)))                                return false;
     if (OutputRiskMoney != 0)
@@ -1688,7 +1735,8 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Risk/Reward 2  */ if (!m_EdtRR2.Text(OutputRR))                                                                         return false;
     if (OutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) m_EdtRR2.Color(clrRed);
     else m_EdtRR2.Color(m_EdtTP.Color());
-    /* Position size  */ if (!m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits)))                         return false;
+    
+    /* Position size  */ if (!m_EdtPosSize.PropFlags()) m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits));
     if (OutputPositionSize > OutputMaxPositionSize)
     {
         m_EdtPosSize.Color(clrRed); // Calculated position size is greater than maximum position size by margin.
@@ -1740,7 +1788,7 @@ bool CPositionSizeCalculator::DisplayValues()
         /* Future Used Margin      */ if (!m_EdtUsedMargin.Text(FormatDouble(DoubleToString(UsedMargin, AccountCurrencyDigits), AccountCurrencyDigits)))               return false;
         /* Future Free Margin      */ if (!m_EdtFreeMargin.Text(FormatDouble(DoubleToString(FutureMargin, AccountCurrencyDigits), AccountCurrencyDigits)))                 return false;
     }
-    /* Custom Leverage             */ if (!m_EdtCustomLeverage.Text(DoubleToString(sets.CustomLeverage, CustomLeverageDecimals)))                     return false;
+
     string acc_lev = IntegerToString(AccountInfoInteger(ACCOUNT_LEVERAGE));
     /* Account Leverage   */ if (StringLen(acc_lev) > 0) if (!m_LblAccLeverage.Text("(" + TRANSLATION_LABEL_DEFAULT + " = 1:" + acc_lev + ")"))                      return false;
     /* Symbol Leverage    */ if (SymbolLeverage) if (!m_LblSymbolLeverage.Text("(" + TRANSLATION_LABEL_SYMBOL + " = 1:" + DoubleToString(SymbolLeverage, SymbolLeverageDecimals) + ")")) return false;
@@ -1760,10 +1808,10 @@ bool CPositionSizeCalculator::DisplayValues()
     //=== Swaps
     /* Swaps Type                  */ if (!m_EdtSwapsType.Text(OutputSwapsType))                                                           return false;
     /* Swaps Triple Day            */ if (!m_EdtSwapsTripleDay.Text(SwapsTripleDay))                                                       return false;
-    double swap_long = SymbolInfoDouble(Symbol(), SYMBOL_SWAP_LONG);
-    int swap_long_decimal_places = CountDecimalPlaces(swap_long);
-    double swap_short = SymbolInfoDouble(Symbol(), SYMBOL_SWAP_SHORT);
-    int swap_short_decimal_places = CountDecimalPlaces(swap_short);
+    double swap_long = SymbolInfoDouble(SymbolForTrading, SYMBOL_SWAP_LONG);
+    int swap_long_decimal_places = (int)MathMin(4, CountDecimalPlaces(swap_long));
+    double swap_short = SymbolInfoDouble(SymbolForTrading, SYMBOL_SWAP_SHORT);
+    int swap_short_decimal_places = (int)MathMin(4, CountDecimalPlaces(swap_short));
     /* Swaps Nominal Long            */ if (!m_EdtSwapsNominalLong.Text(DoubleToString(swap_long, swap_long_decimal_places)))    return false;
     /* Swaps Nominal Short           */ if (!m_EdtSwapsNominalShort.Text(DoubleToString(swap_short, swap_short_decimal_places))) return false;
     /* Swaps Daily Long Lot          */ if (!m_EdtSwapsDailyLongLot.Text(OutputSwapsDailyLongLot))                                         return false;
@@ -1784,7 +1832,7 @@ bool CPositionSizeCalculator::DisplayValues()
     if (sets.TakeProfitsNumber > 1)
     {
         sets.TP[0] = sets.TakeProfitLevel; // Always the main TP.
-        TradingTPEdits[0].Text(DoubleToString(sets.TP[0], _Digits));
+        if (!TradingTPEdits[0].PropFlags()) TradingTPEdits[0].Text(DoubleToString(sets.TP[0], _Digits));
         if (AdditionalTPLineMoved)
         {
             for (int i = 1; i < sets.TakeProfitsNumber; i++)
@@ -1858,12 +1906,12 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
                 if (sets.TradeDirection == Long)
                 {
                     sets.StopLossLevel = sets.EntryLevel - sl;
-                    if (sets.SpreadAdjustmentSL) sets.StopLossLevel -= (SymbolInfoDouble(Symbol(), SYMBOL_ASK) - SymbolInfoDouble(Symbol(), SYMBOL_BID)); // Adjust for spread to preserve probabilities.
+                    if (sets.SpreadAdjustmentSL) sets.StopLossLevel -= (SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) - SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)); // Adjust for spread to preserve probabilities.
                 }
                 else
                 {
                     sets.StopLossLevel = sets.EntryLevel + sl;
-                    if (sets.SpreadAdjustmentSL) sets.StopLossLevel += (SymbolInfoDouble(Symbol(), SYMBOL_ASK) - SymbolInfoDouble(Symbol(), SYMBOL_BID)); // Adjust for spread to preserve probabilities.
+                    if (sets.SpreadAdjustmentSL) sets.StopLossLevel += (SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) - SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)); // Adjust for spread to preserve probabilities.
                 }
                 sets.StopLoss = (int)MathRound(MathAbs(sets.StopLossLevel - sets.EntryLevel) / _Point);
             }
@@ -1874,12 +1922,12 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
                 if (sets.StopLossLevel < sets.EntryLevel)
                 {
                     sets.TakeProfitLevel = sets.EntryLevel + tp;
-                    if (sets.SpreadAdjustmentTP) sets.TakeProfitLevel -= (SymbolInfoDouble(Symbol(), SYMBOL_ASK) - SymbolInfoDouble(Symbol(), SYMBOL_BID)); // Adjust for spread to preserve probabilities.
+                    if (sets.SpreadAdjustmentTP) sets.TakeProfitLevel -= (SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) - SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)); // Adjust for spread to preserve probabilities.
                 }
                 else
                 {
                     sets.TakeProfitLevel = sets.EntryLevel - tp;
-                    if (sets.SpreadAdjustmentTP) sets.TakeProfitLevel += (SymbolInfoDouble(Symbol(), SYMBOL_ASK) - SymbolInfoDouble(Symbol(), SYMBOL_BID)); // Adjust for spread to preserve probabilities.
+                    if (sets.SpreadAdjustmentTP) sets.TakeProfitLevel += (SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) - SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)); // Adjust for spread to preserve probabilities.
                 }
                 sets.TakeProfit = (int)MathRound(MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / _Point);
             }
@@ -1921,18 +1969,18 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
         double read_tStopLossLevel;
         if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return; // Line was deleted, waiting for automatic restoration.
         tStopLossLevel = Round(read_tStopLossLevel, _Digits);
-        if ((SymbolInfoDouble(_Symbol, SYMBOL_ASK) > 0) && (SymbolInfoDouble(_Symbol, SYMBOL_BID) > 0))
+        if ((SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) > 0) && (SymbolInfoDouble(SymbolForTrading, SYMBOL_BID) > 0))
         {
             // Long entry
-            if (tStopLossLevel < SymbolInfoDouble(_Symbol, SYMBOL_BID)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+            if (tStopLossLevel < SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)) tEntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             // Short entry
-            else if (tStopLossLevel > SymbolInfoDouble(_Symbol, SYMBOL_ASK)) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+            else if (tStopLossLevel > SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK)) tEntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
             // Undefined entry
             else
             {
                 // Move tEntryLevel to the nearest line.
-                if ((tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_BID)) < (tEntryLevel - SymbolInfoDouble(_Symbol, SYMBOL_ASK))) tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-                else tEntryLevel = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+                if ((tEntryLevel - SymbolInfoDouble(SymbolForTrading, SYMBOL_BID)) < (tEntryLevel - SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK))) tEntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
+                else tEntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             }
             ObjectSetDouble(0, ObjectPrefix + "EntryLine", OBJPROP_PRICE, tEntryLevel);
             sets.EntryLevel = tEntryLevel;
@@ -1993,14 +2041,6 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
     if (sets.EntryLevel < sets.StopLossLevel) sets.TradeDirection = Short;
     else if (sets.EntryLevel > sets.StopLossLevel) sets.TradeDirection = Long;
 
-    if (sets.TPLockedOnSL)
-    {
-        tEntryLevel = sets.EntryLevel;
-        tStopLossLevel = sets.StopLossLevel;
-        if (sets.TakeProfitLevel == 0) ProcessTPChange(true); // When TPLockedOnSL has been enabled via an input parameter.
-        else ProcessTPChange(false);
-    }
-
     if (sets.TradeDirection == Short) PanelCaption = "\x25BC " + PanelCaptionBase;
     else PanelCaption = "\x25B2 " + PanelCaptionBase;
 }
@@ -2010,6 +2050,12 @@ bool CPositionSizeCalculator::CreateOutsideButton(CButton &Btn, int X1, int Y1, 
     if (!Btn.Create(m_chart_id, m_name + Name, m_subwin, X1, Y1, X2, Y2)) return false;
     if (!Btn.Text(Text))                                                  return false;
     ObjectSetString(ChartID(), m_name + Name, OBJPROP_TOOLTIP, Tooltip);
+
+    // Used in the Strategy Tester visual mode to find this button's ID.
+    CStringForList *obj = new CStringForList;
+    obj.Name = Name;
+    obj.Obj = GetPointer(Btn);
+    PersistentList.Add(obj);
 
     return true;
 }
@@ -2078,6 +2124,11 @@ void CPositionSizeCalculator::MoveOutsideTradeButton()
 void CPositionSizeCalculator::RefreshValues()
 {
     if (sets.StopLossLevel < 0) Initialization(); // Helps with 'Waiting for data'. MT5 only solution. MT4 handles this differently.
+    if (ShowATROptions) // Make sure ATR SL and TP multipliers get initialzied with non-zero values if default ones were zero.
+    {
+        if (sets.ATRMultiplierSL == 0) UpdateFixedSL();
+        if ((sets.ATRMultiplierTP == 0) && (sets.TakeProfitLevel != 0)) UpdateFixedTP();
+    }
 
     CalculateSettingsBasedOnLines();
     RecalculatePositionSize();
@@ -2318,7 +2369,8 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
         // Profit = Risk * N + Commission * 2.
         // TP distance =  (Risk * N + Commission * 2) / Point_value.
         if ((UnitCost_reward != 0) && (OutputPositionSize != 0) && (TickSize != 0))
-            tp_distance = (RiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
+            //tp_distance = (RiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
+            tp_distance = (OutputRiskMoney * TP_Multiplier + OutputPositionSize * commission * 2) / (OutputPositionSize * UnitCost_reward / TickSize);
         if (tEntryLevel < tStopLossLevel) tp_distance = -tp_distance;
     }
     else tp_distance = (tEntryLevel - tStopLossLevel) * TP_Multiplier;
@@ -2363,7 +2415,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_COLOR, takeprofit_line_color);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_WIDTH, takeprofit_line_width);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_HIDDEN, false);
-            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, "Take-Profit");
+            ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT);
 
             // Create multiple TP lines.
             for (int i = 1; i < sets.TakeProfitsNumber; i++)
@@ -2373,7 +2425,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_COLOR, takeprofit_line_color);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_WIDTH, takeprofit_line_width);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_HIDDEN, false);
-                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, "Take-Profit #" + IntegerToString(i + 1));
+                ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT + " #" + IntegerToString(i + 1));
             }
         }
         else
@@ -2385,8 +2437,11 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 ObjectSetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, sets.TP[i]);
             }
         }
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
-        if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
+        if (!sets.TPLockedOnSL)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
+            if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
+        }
         for (int i = 1; i < sets.TakeProfitsNumber; i++)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTABLE, true);
@@ -2453,7 +2508,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             if (tp_button_click)
             {
                 HideShowMaximize();
-                MoveAndResize();
+                //MoveAndResize();
             }
         }
         // Need to call RefreshValues() only if this function is invoked from TP Button click event handler. In all other cases it is called from within RefreshValues() itself.
@@ -2586,7 +2641,11 @@ void CPositionSizeCalculator::OnClickBtnOrderType()
         m_BtnStopPriceIncrease.Hide();
         m_BtnStopPriceDecrease.Hide();
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        if ((sets.ShowLines) && (ShowLineLabels)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        if (sets.ShowLines)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            if (ShowLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        }
     }
     else if (sets.EntryType == StopLimit)
     {
@@ -2615,7 +2674,11 @@ void CPositionSizeCalculator::OnClickBtnOrderType()
             m_BtnStopPriceIncrease.Show();
             m_BtnStopPriceDecrease.Show();
         }
-        if ((sets.ShowLines) && (ShowLineLabels)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        if (sets.ShowLines)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            if (ShowLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        }
     }
     RefreshValues();
 }
@@ -2768,7 +2831,7 @@ void CPositionSizeCalculator::OnClickBtnLines()
 
 void CPositionSizeCalculator::OnClickButtonClose()
 {
-    if ((!AskBeforeClosing) || (MessageBox("Are you sure you want to close the Position Sizer?", "Exit?", MB_YESNO) == IDYES))
+    if ((!AskBeforeClosing) || (MessageBox(TRANSLATION_MESSAGE_ARE_YOU_SURE, TRANSLATION_MESSAGE_EXIT, MB_YESNO) == IDYES))
     {
         CAppDialog::OnClickButtonClose();
     }
@@ -2802,6 +2865,8 @@ void CPositionSizeCalculator::OnClickBtnTakeProfit()
     {
         m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_UNLOCKED);
         sets.TPLockedOnSL = false;
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, sets.WasSelectedTakeProfitLine);
         return;
     }
     // If already have some take-profit, switch to a locked mode - TP always follows SL when Entry-SL difference changes.
@@ -2809,6 +2874,9 @@ void CPositionSizeCalculator::OnClickBtnTakeProfit()
     {
         sets.TPLockedOnSL = true;
         m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_LOCKED);
+        sets.WasSelectedTakeProfitLine = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, false);
     }
 
     ProcessTPChange(true);
@@ -2843,7 +2911,7 @@ void SwitchEntryDirection()
         // Remember old SL:
         double old_sl_distance = sets.EntryLevel - sets.StopLossLevel;
 
-        if (sets.EntryType == Instant) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+        if (sets.EntryType == Instant) sets.EntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
 
         if ((ShowATROptions) && (sets.ATRMultiplierSL > 0))
         {
@@ -2900,7 +2968,7 @@ void SwitchEntryDirection()
         // Remember old SL:
         double old_sl_distance = sets.StopLossLevel - sets.EntryLevel;
 
-        if (sets.EntryType == Instant) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+        if (sets.EntryType == Instant) sets.EntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
 
         if ((ShowATROptions) && (sets.ATRMultiplierSL > 0))
         {
@@ -3036,6 +3104,8 @@ void CPositionSizeCalculator::OnClickBtnCommissionType()
         CommissionDecimals = AccountCurrencyDigits;
         m_BtnCommissionType.Text(AccountCurrency);
     }
+    
+    m_EdtCommissionSize.Text(DoubleToString(sets.CommissionPerLot, CommissionDecimals));
     CalculateRiskAndPositionSize();
     DisplayValues();
 }
@@ -3567,7 +3637,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         // And it is added for the first time, create the Remove button:
         if (MaxTakeProfitsNumber == 1)
         {
-            ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, name, "x", "Remove Take-profit");
+            ButtonCreate(MainTabList, m_BtnTakeProfitsNumberRemove, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, name, "x", TRANSLATION_TOOLTIP_TAKEPROFIT_REMOVE);
             if (DarkMode)
             {
                 m_BtnTakeProfitsNumberRemove.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
@@ -3965,6 +4035,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberRemove()
 void CPositionSizeCalculator::OnEndEditEdtEntryLevel()
 {
     string s = m_EdtEntryLevel.Text();
+    m_EdtEntryLevel.PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
     sets.EntryLevel = StringToDouble(s);
     if (tEntryLevel != sets.EntryLevel)
@@ -3982,6 +4053,7 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
     if (!sets.SLDistanceInPoints)
     {
         string s = m_EdtSL.Text();
+        m_EdtSL.PropFlags(0); // Reset the 'being edited' flag.
         StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
         double new_value = StringToDouble(s);
         if (new_value == 0) // Not allowed.
@@ -4031,6 +4103,7 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
 void CPositionSizeCalculator::OnEndEditEdtTP()
 {
     string s = m_EdtTP.Text();
+    m_EdtTP.PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
     if (!sets.TPDistanceInPoints)
     {
@@ -4165,10 +4238,14 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
         }
         if (ShowATROptions) // Update ATR multiplier after the line was moved by the user.
         {
-            double buf[1] = {0};
-            if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
-            double atr = buf[0];
-            if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
+            if (sets.TakeProfitLevel == 0) sets.ATRMultiplierTP = 0;
+            else
+            {
+                double buf[1] = {0};
+                if (ATR_handle != INVALID_HANDLE) CopyBuffer(ATR_handle, 0, (int)ATRCandle, 1, buf);
+                double atr = buf[0];
+                if (atr != 0) sets.ATRMultiplierTP = MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / atr;
+            }
             m_EdtATRMultiplierTP.Text(DoubleToString(sets.ATRMultiplierTP, 2));
             // Untick spread adjustment checkbox as TP was set explicitly:
             m_ChkSpreadAdjustmentTP.Checked(false);
@@ -4227,6 +4304,7 @@ void CPositionSizeCalculator::OnEndEditEdtCommissionSize()
     {
         sets.CommissionPerLot = StringToDouble(s);
         if (sets.CommissionType == COMMISSION_PERCENT) CommissionDecimals = CountDecimalPlaces(sets.CommissionPerLot);
+        m_EdtCommissionSize.Text(DoubleToString(sets.CommissionPerLot, CommissionDecimals));
         CalculateRiskAndPositionSize();
         DisplayValues();
     }
@@ -4235,6 +4313,7 @@ void CPositionSizeCalculator::OnEndEditEdtCommissionSize()
 void CPositionSizeCalculator::OnEndEditEdtAccount()
 {
     string text = m_EdtAccount.Text();
+    m_EdtAccount.PropFlags(0); // Reset the 'being edited' flag.
     // Try to swap , for . in the "normal" decimal separator positions only. Other commas will be simply removed.
     if (StringGetCharacter(text, StringLen(text) - 2) == ',') StringSetCharacter(text, StringLen(text) - 2, '.');
     if (StringGetCharacter(text, StringLen(text) - 3) == ',') StringSetCharacter(text, StringLen(text) - 3, '.');
@@ -4251,6 +4330,7 @@ void CPositionSizeCalculator::OnEndEditEdtAccount()
 void CPositionSizeCalculator::OnEndEditEdtRiskPIn()
 {
     string text = m_EdtRiskPIn.Text();
+    m_EdtRiskPIn.PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(text, ",", "."); // Replace comma with period for normal double conversion.
     double field_value = StringToDouble(text);
     sets.UseMoneyInsteadOfPercentage = false;
@@ -4266,6 +4346,7 @@ void CPositionSizeCalculator::OnEndEditEdtRiskPIn()
 void CPositionSizeCalculator::OnEndEditEdtRiskMIn()
 {
     string text = m_EdtRiskMIn.Text();
+    m_EdtRiskMIn.PropFlags(0); // Reset the 'being edited' flag.
     // Try to swap , for . in the "normal" decimal separator positions only. Other commas will be simply removed.
     if (StringGetCharacter(text, StringLen(text) - 2) == ',') StringSetCharacter(text, StringLen(text) - 2, '.');
     if (StringGetCharacter(text, StringLen(text) - 3) == ',') StringSetCharacter(text, StringLen(text) - 3, '.');
@@ -4284,6 +4365,7 @@ void CPositionSizeCalculator::OnEndEditEdtRiskMIn()
 void CPositionSizeCalculator::OnEndEditEdtPosSize()
 {
     string text = m_EdtPosSize.Text();
+    m_EdtPosSize.PropFlags(0); // Reset the 'being edited' flag.
     // Try to swap , for . in the "normal" decimal separator positions only. Other commas will be simply removed.
     if (StringGetCharacter(text, StringLen(text) - 2) == ',') StringSetCharacter(text, StringLen(text) - 2, '.');
     if (StringGetCharacter(text, StringLen(text) - 3) == ',') StringSetCharacter(text, StringLen(text) - 3, '.');
@@ -4434,14 +4516,27 @@ void CPositionSizeCalculator::OnChangeChkIgnoreOrdersWithoutTP()
     }
 }
 
-void CPositionSizeCalculator::OnChangeChkIgnoreOtherSymbols()
+void CPositionSizeCalculator::OnClickBtnIgnoreSymbols()
 {
-    if (sets.IgnoreOtherSymbols != m_ChkIgnoreOtherSymbols.Checked())
+    // Switch to the next value.
+    switch(sets.IgnoreSymbols)
     {
-        sets.IgnoreOtherSymbols = m_ChkIgnoreOtherSymbols.Checked();
-        CalculatePortfolioRisk();
-        DisplayValues();
+    default:
+    case IGNORE_SYMBOLS_NONE:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_OTHER;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+        break;
+    case IGNORE_SYMBOLS_OTHER:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_CURRENT;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+        break;
+    case IGNORE_SYMBOLS_CURRENT:
+        sets.IgnoreSymbols = IGNORE_SYMBOLS_NONE;
+        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+        break;
     }
+    CalculatePortfolioRisk();
+    DisplayValues();
 }
 
 void CPositionSizeCalculator::OnEndEditEdtCustomLeverage()
@@ -4453,6 +4548,7 @@ void CPositionSizeCalculator::OnEndEditEdtCustomLeverage()
     {
         CustomLeverage = sets.CustomLeverage;
         CustomLeverageDecimals = CountDecimalPlaces(CustomLeverage);
+        m_EdtCustomLeverage.Text(DoubleToString(sets.CustomLeverage, CustomLeverageDecimals));
         RefreshValues();
     }
 }
@@ -4495,6 +4591,11 @@ void CPositionSizeCalculator::OnEndEditEdtMaxEntrySLDistance()
 void CPositionSizeCalculator::OnEndEditEdtMinEntrySLDistance()
 {
     sets.MinEntrySLDistance = (int)StringToInteger(m_EdtMinEntrySLDistance.Text());
+}
+
+void CPositionSizeCalculator::OnEndEditEdtMaxRiskPercentage()
+{
+    sets.MaxRiskPercentage = (double)StringToDouble(m_EdtMaxRiskPercentage.Text());
 }
 
 void CPositionSizeCalculator::OnEndEditEdtMaxPositionSizeTotal()
@@ -4606,6 +4707,54 @@ void CPositionSizeCalculator::OnEndEditEdtExpiry()
     m_EdtExpiry.Text(IntegerToString(sets.ExpiryMinutes));
 }
 
+void CPositionSizeCalculator::OnClickEdtPosSize() // Clicking on an edit starts its editing process.
+{
+    m_EdtPosSize.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtEntryLevel() // Clicking on an edit starts its editing process.
+{
+    if (m_EdtEntryLevel.ReadOnly()) return; // Skip if the Edit is read-only.
+    m_EdtEntryLevel.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtSL() // Clicking on an edit starts its editing process.
+{
+    m_EdtSL.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtTP() // Clicking on an edit starts its editing process.
+{
+    m_EdtTP.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtAccount() // Clicking on an edit starts its editing process.
+{
+    if (m_EdtAccount.ReadOnly()) return; // Skip if the Edit is read-only.
+    m_EdtAccount.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtRiskPIn() // Clicking on an edit starts its editing process.
+{
+    m_EdtRiskPIn.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtRiskMIn() // Clicking on an edit starts its editing process.
+{
+    m_EdtRiskMIn.PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickAdditionalTPEdit(int i) // Clicking on an edit starts its editing process.
+{
+    AdditionalTPEdits[i - 1].PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
+void CPositionSizeCalculator::OnClickEdtTradingTPEdit1() // Clicking on an edit starts its editing process.
+{
+    // Only for the main TP:
+    TradingTPEdits[0].PropFlags(1); // Edit is being edited, do not modify it anywhere else.
+}
+
 //+-----------------------+
 //| Working with settings |
 //|+----------------------+
@@ -4668,8 +4817,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutSL));
     FileWrite(fh, "IgnoreOrdersWithoutTP");
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutTP));
-    FileWrite(fh, "IgnoreOtherSymbols");
-    FileWrite(fh, IntegerToString(sets.IgnoreOtherSymbols));
+    FileWrite(fh, "IgnoreSymbols");
+    FileWrite(fh, IntegerToString(sets.IgnoreSymbols));
     FileWrite(fh, "ShowLines");
     FileWrite(fh, IntegerToString(sets.ShowLines));
     FileWrite(fh, "SelectedTab");
@@ -4701,6 +4850,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.MaxEntrySLDistance));
     FileWrite(fh, "MinEntrySLDistance");
     FileWrite(fh, IntegerToString(sets.MinEntrySLDistance));
+    FileWrite(fh, "MaxRiskPercentage");
+    FileWrite(fh, DoubleToString(sets.MaxRiskPercentage));
     FileWrite(fh, "SLDistanceInPoints");
     FileWrite(fh, IntegerToString(sets.SLDistanceInPoints));
     FileWrite(fh, "TPDistanceInPoints");
@@ -4827,8 +4978,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutSL));
         FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutTP");
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutTP));
-        FileWrite(fh, "Parameter_DefaultIgnoreOtherSymbols");
-        FileWrite(fh, IntegerToString(DefaultIgnoreOtherSymbols));
+        FileWrite(fh, "Parameter_DefaultIgnoreSymbols");
+        FileWrite(fh, IntegerToString(DefaultIgnoreSymbols));
         FileWrite(fh, "Parameter_DefaultCustomLeverage");
         FileWrite(fh, DoubleToString(DefaultCustomLeverage));
         FileWrite(fh, "Parameter_DefaultMagicNumber");
@@ -4847,6 +4998,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultMaxEntrySLDistance));
         FileWrite(fh, "Parameter_DefaultMinEntrySLDistance");
         FileWrite(fh, IntegerToString(DefaultMinEntrySLDistance));
+        FileWrite(fh, "Parameter_DefaultMaxRiskPercentage");
+        FileWrite(fh, DoubleToString(DefaultMaxRiskPercentage));
         FileWrite(fh, "Parameter_DefaultMaxPositionSizeTotal");
         FileWrite(fh, DoubleToString(DefaultMaxPositionSizeTotal, LotStep_digits));
         FileWrite(fh, "Parameter_DefaultMaxPositionSizePerSymbol");
@@ -4988,8 +5141,8 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.IgnoreOrdersWithoutSL = (bool)StringToInteger(var_content);
         else if (var_name == "IgnoreOrdersWithoutTP")
             sets.IgnoreOrdersWithoutTP = (bool)StringToInteger(var_content);
-        else if (var_name == "IgnoreOtherSymbols")
-            sets.IgnoreOtherSymbols = (bool)StringToInteger(var_content);
+        else if (var_name == "IgnoreSymbols")
+            sets.IgnoreSymbols = (IGNORE_SYMBOLS)StringToInteger(var_content);
         else if (var_name == "ShowLines")
             sets.ShowLines = (bool)StringToInteger(var_content);
         else if (var_name == "SelectedTab")
@@ -5046,6 +5199,8 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.MaxEntrySLDistance = (int)StringToInteger(var_content);
         else if (var_name == "MinEntrySLDistance")
             sets.MinEntrySLDistance = (int)StringToInteger(var_content);
+        else if (var_name == "MaxRiskPercentage")
+            sets.MaxRiskPercentage = StringToDouble(var_content);
         else if (var_name == "TradeDirection")
             sets.TradeDirection = (TRADE_DIRECTION)StringToInteger(var_content);
         else if (var_name == "SLDistanceInPoints")
@@ -5220,9 +5375,9 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             {
                 if ((bool)StringToInteger(var_content) != DefaultIgnoreOrdersWithoutTP) sets.IgnoreOrdersWithoutTP = DefaultIgnoreOrdersWithoutTP;
             }
-            else if (var_name == "Parameter_DefaultIgnoreOtherSymbols")
+            else if (var_name == "Parameter_DefaultIgnoreSymbols")
             {
-                if ((bool)StringToInteger(var_content) != DefaultIgnoreOtherSymbols) sets.IgnoreOtherSymbols = DefaultIgnoreOtherSymbols;
+                if ((IGNORE_SYMBOLS)StringToInteger(var_content) != DefaultIgnoreSymbols) sets.IgnoreSymbols = DefaultIgnoreSymbols;
             }
             else if (var_name == "Parameter_DefaultCustomLeverage")
             {
@@ -5259,6 +5414,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             else if (var_name == "Parameter_DefaultMinEntrySLDistance")
             {
                 if (StringToInteger(var_content) != DefaultMinEntrySLDistance) sets.MinEntrySLDistance = DefaultMinEntrySLDistance;
+            }
+            else if (var_name == "Parameter_DefaultMaxRiskPercentage")
+            {
+                if (StringToDouble(var_content) != DefaultMaxRiskPercentage) sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
             }
             else if (var_name == "Parameter_DefaultMaxPositionSizeTotal")
             {
@@ -5423,7 +5582,10 @@ void CPositionSizeCalculator::HideShowMaximize()
     remember_left = Left();
     remember_top = Top();
 
+// A weird fix for a weird bug. The TP line will get deselected by CWndContainer::Hide().
+bool tp_line_selected = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
     Hide();
+ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, tp_line_selected);
     Show();
     NoPanelMaximization = true;
     Maximize();
@@ -5537,6 +5699,7 @@ void CPositionSizeCalculator::UpdateAdditionalFixedTP(int i)
 void CPositionSizeCalculator::UpdateTradingTPEdit(int i)
 {
     string s = TradingTPEdits[i].Text();
+    if (i == 0) TradingTPEdits[0].PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
     // First, do the formatting.
     double new_value = StringToDouble(s);
@@ -5587,6 +5750,7 @@ void CPositionSizeCalculator::UpdateTradingTPEdit(int i)
 void CPositionSizeCalculator::UpdateAdditionalTPEdit(int i)
 {
     string s = AdditionalTPEdits[i - 1].Text();
+    AdditionalTPEdits[i - 1].PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
     // First, do the formatting.
     double new_value = StringToDouble(s);
@@ -5741,7 +5905,7 @@ void CPositionSizeCalculator::CheckAndRestoreLines()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_STYLE, entry_line_style);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_COLOR, entry_line_color);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_WIDTH, entry_line_width);
-        ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, "Entry");
+        ObjectSetString(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TOOLTIP, TRANSLATION_LABEL_ENTRY);
         if (sets.EntryType == Instant)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_SELECTABLE, false);
@@ -5929,7 +6093,7 @@ void Initialization()
     {
         if (sets.TradeDirection == Long)
         {
-            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel - DefaultSL * _Point;
             else sets.StopLossLevel = iLow(Symbol(), Period(), 0);
             if (sets.StopLossLevel == 0) sets.StopLossLevel = sets.EntryLevel - _Point;
@@ -5943,7 +6107,7 @@ void Initialization()
         }
         else
         {
-            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+            if (sets.EntryLevel == 0) sets.EntryLevel = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
             if (DefaultSL > 0) sets.StopLossLevel = sets.EntryLevel + DefaultSL * _Point;
             else sets.StopLossLevel = iHigh(Symbol(), Period(), 0);
             if (sets.StopLossLevel == 0) sets.StopLossLevel = sets.EntryLevel + _Point;
@@ -5980,13 +6144,12 @@ void Initialization()
     if (sets.EntryLevel - sets.StopLossLevel == 0)
     {
         Print(TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO);
-//        return;
     }
 
     if (sets.EntryType == Instant)
     {
-        double Ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-        double Bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+        double Ask = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
+        double Bid = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
         if ((Ask > 0) && (Bid > 0))
         {
             // SL got inside Ask/Bid range.
@@ -6332,7 +6495,6 @@ void Initialization()
         }
         sets.TemplateChanged = false;
     }
-    
     ChartRedraw();
 }
 
@@ -6347,31 +6509,28 @@ void RecalculatePositionSize()
     double Ask, Bid;
 
     // If could not find account currency, probably not connected. Also check for symbol availability.
-    if ((AccountInfoString(ACCOUNT_CURRENCY) == "") || (!TerminalInfoInteger(TERMINAL_CONNECTED) || (!SymbolInfoInteger(Symbol(), SYMBOL_SELECT)))) return;
+    if ((AccountInfoString(ACCOUNT_CURRENCY) == "") || (!TerminalInfoInteger(TERMINAL_CONNECTED)) || (!SymbolInfoInteger(Symbol(), SYMBOL_SELECT)) || (!SymbolInfoInteger(SymbolForTrading, SYMBOL_SELECT))) return;
     else if ((TickSize == -1) || (TickValue == 0))
     {
         GetSymbolAndAccountData();
     }
-    Bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-    Ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+    Bid = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
+    Ask = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
 
-    double read_tEntryLevel, read_tStopLossLevel, read_tTakeProfitLevel, read_tStopPriceLevel;
+    double read_tEntryLevel, read_tStopLossLevel, /*read_tTakeProfitLevel,*/ read_tStopPriceLevel;
     if (!ObjectGetDouble(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_PRICE, 0, read_tEntryLevel)) return; // Line was deleted, waiting for automatic restoration.
     tEntryLevel = Round(read_tEntryLevel, _Digits);
     if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_PRICE, 0, read_tStopLossLevel)) return;
     tStopLossLevel = Round(read_tStopLossLevel, _Digits);
-    if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0, read_tTakeProfitLevel)) tTakeProfitLevel = Round(read_tTakeProfitLevel, _Digits);
-    else tTakeProfitLevel = 0;
     if (!DisableStopLimit)
     {
         if (!ObjectGetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, 0, read_tStopPriceLevel)) return;
         tStopPriceLevel = Round(read_tStopPriceLevel, _Digits);
     }
     
-    double StopLevel = SymbolInfoInteger(Symbol(), SYMBOL_TRADE_STOPS_LEVEL) * _Point;
+    double StopLevel = SymbolInfoInteger(SymbolForTrading, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
     WarningEntry = "";
     WarningSL = "";
-    WarningTP = "";
     WarningSP = "";
     double AskBid = 0;
     if (sets.EntryType == Instant)
@@ -6417,22 +6576,6 @@ void RecalculatePositionSize()
     }
 
     if (MathAbs(tStopLossLevel - tEntryLevel) < StopLevel) WarningSL = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
-    if (tTakeProfitLevel > 0)
-    {
-        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
-    }
-
-    double add_tTakeProfitLevel[];
-    ArrayResize(add_tTakeProfitLevel, sets.TakeProfitsNumber - 1);
-    for (int i = 1; i < sets.TakeProfitsNumber; i++)
-    {
-        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, add_tTakeProfitLevel[i - 1])) return;
-        add_tTakeProfitLevel[i - 1] = Round(add_tTakeProfitLevel[i - 1], _Digits);
-        if (add_tTakeProfitLevel[i - 1] > 0)
-        {
-            if (MathAbs(add_tTakeProfitLevel[i - 1] - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
-        }
-    }
 
     StopLoss = MathAbs(tEntryLevel - tStopLossLevel);
 
@@ -6456,12 +6599,23 @@ void RecalculatePositionSize()
 
     sets.EntryLevel = tEntryLevel;
     sets.StopLossLevel = tStopLossLevel;
-    sets.TakeProfitLevel = tTakeProfitLevel;
     sets.StopPriceLevel = tStopPriceLevel;
-    for (int i = 1; i < sets.TakeProfitsNumber; i++) sets.TP[i] = add_tTakeProfitLevel[i - 1];
-//!!!!    
 
     if (StopLoss != 0) CalculateRiskAndPositionSize();
+
+    double add_tTakeProfitLevel[];
+    ArrayResize(add_tTakeProfitLevel, sets.TakeProfitsNumber - 1);
+    for (int i = 1; i < sets.TakeProfitsNumber; i++)
+    {
+        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, add_tTakeProfitLevel[i - 1])) return;
+        add_tTakeProfitLevel[i - 1] = Round(add_tTakeProfitLevel[i - 1], _Digits);
+        if (add_tTakeProfitLevel[i - 1] > 0)
+        {
+            if (MathAbs(add_tTakeProfitLevel[i - 1] - tEntryLevel) < StopLevel) AdditionalWarningTP[i - 1] = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+        }
+    }
+    sets.TakeProfitLevel = tTakeProfitLevel;
+    for (int i = 1; i < sets.TakeProfitsNumber; i++) sets.TP[i] = add_tTakeProfitLevel[i - 1];
 
     if (ShowLineLabels)
     {
@@ -6574,38 +6728,38 @@ void RecalculatePositionSize()
 //+------------------------------------------------------------------+
 void GetSymbolAndAccountData()
 {
-    TickSize = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_SIZE);
-    MinLot = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MIN);
-    MaxLot = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MAX);
-    LotStep = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_STEP);
+    TickSize = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_SIZE);
+    MinLot = SymbolInfoDouble(SymbolForTrading, SYMBOL_VOLUME_MIN);
+    MaxLot = SymbolInfoDouble(SymbolForTrading, SYMBOL_VOLUME_MAX);
+    LotStep = SymbolInfoDouble(SymbolForTrading, SYMBOL_VOLUME_STEP);
     if (!CalculateUnadjustedPositionSize) LotStep_digits = CountDecimalPlaces(LotStep);
     else LotStep_digits = 8;
-    ContractSize = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_CONTRACT_SIZE);
-    CalcMode = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol(), SYMBOL_TRADE_CALC_MODE);
+    ContractSize = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_CONTRACT_SIZE);
+    CalcMode = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(SymbolForTrading, SYMBOL_TRADE_CALC_MODE);
     AccountMarginMode = (ENUM_ACCOUNT_MARGIN_MODE)AccountInfoInteger(ACCOUNT_MARGIN_MODE);
-    MarginHedging = SymbolInfoDouble(Symbol(), SYMBOL_MARGIN_HEDGED);
+    MarginHedging = SymbolInfoDouble(SymbolForTrading, SYMBOL_MARGIN_HEDGED);
     AccountCurrency = AccountInfoString(ACCOUNT_CURRENCY);
     AccountCurrencyDigits = (int)AccountInfoInteger(ACCOUNT_CURRENCY_DIGITS);
 
     // A rough patch for cases when account currency is set as RUR instead of RUB.
     if (AccountCurrency == "RUR") AccountCurrency = "RUB";
 
-    MarginCurrency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_MARGIN);
+    MarginCurrency = SymbolInfoString(SymbolForTrading, SYMBOL_CURRENCY_MARGIN);
     if (MarginCurrency == "RUR") MarginCurrency = "RUB";
-    ProfitCurrency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_PROFIT);
+    ProfitCurrency = SymbolInfoString(SymbolForTrading, SYMBOL_CURRENCY_PROFIT);
     if (ProfitCurrency == "RUR") ProfitCurrency = "RUB";
-    BaseCurrency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_BASE);
+    BaseCurrency = SymbolInfoString(SymbolForTrading, SYMBOL_CURRENCY_BASE);
     if (BaseCurrency == "RUR") BaseCurrency = "RUB";
 
     AccStopoutMode = AccountInfoInteger(ACCOUNT_MARGIN_SO_MODE);
     AccStopoutLevel = AccountInfoDouble(ACCOUNT_MARGIN_SO_SO);
-    TickValue = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE);
+    TickValue = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE);
 
-    InitialMargin = SymbolInfoDouble(Symbol(), SYMBOL_MARGIN_INITIAL);
-    MaintenanceMargin = SymbolInfoDouble(Symbol(), SYMBOL_MARGIN_MAINTENANCE);
+    InitialMargin = SymbolInfoDouble(SymbolForTrading, SYMBOL_MARGIN_INITIAL);
+    MaintenanceMargin = SymbolInfoDouble(SymbolForTrading, SYMBOL_MARGIN_MAINTENANCE);
     if (MaintenanceMargin == 0) MaintenanceMargin = InitialMargin;
 
-    SwapsTripleDay = WeekdayToString((int)SymbolInfoInteger(Symbol(), SYMBOL_SWAP_ROLLOVER3DAYS));
+    SwapsTripleDay = WeekdayToString((int)SymbolInfoInteger(SymbolForTrading, SYMBOL_SWAP_ROLLOVER3DAYS));
 }
 
 //+------------------------------------------------------------------+
@@ -6622,12 +6776,14 @@ void CalculateRiskAndPositionSize()
     if (!sets.UseMoneyInsteadOfPercentage)
     {
         RiskMoney = Round(AccSize * sets.Risk / 100, AccountCurrencyDigits, RoundDown);
+        sets.MoneyRisk = RiskMoney;
     }
     else
     {
         RiskMoney = sets.MoneyRisk;
         if (AccSize != 0) DisplayRisk = Round(sets.MoneyRisk / AccSize * 100, 2);
         else DisplayRisk = 0;
+        sets.Risk = DisplayRisk;
     }
 
     CalculateUnitCost(UnitCost, UnitCost_reward);
@@ -6651,11 +6807,11 @@ void CalculateRiskAndPositionSize()
         double current_rate = 1;
         if (tStopLossLevel < tEntryLevel)
         {
-            current_rate = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+            current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
         }
         else if (tStopLossLevel > tEntryLevel)
         {
-            current_rate = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+            current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
         }
         UnitCost *= (current_rate / future_rate);
     }
@@ -6668,7 +6824,8 @@ void CalculateRiskAndPositionSize()
             sets.MoneyRisk = RiskMoney;
             if (AccSize != 0) DisplayRisk = Round(sets.MoneyRisk / AccSize * 100, 2);
             else DisplayRisk = 0;
-            PositionSize = OutputPositionSize;
+            sets.Risk = DisplayRisk;
+            PositionSize = OutputPositionSize;            
         }
         else
         {
@@ -6679,12 +6836,9 @@ void CalculateRiskAndPositionSize()
 
     if (!CalculateUnadjustedPositionSize) // If need to adjust to broker's restrictions.
     {
-        if (PositionSize < MinLot) OutputPositionSize = MinLot;
-        else if ((PositionSize > MaxLot) && (!SurpassBrokerMaxPositionSize)) OutputPositionSize = MaxLot;
-        double steps = OutputPositionSize / LotStep;
-        if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
-        if (MathFloor(steps) < steps) OutputPositionSize = MathFloor(steps) * LotStep;
+        OutputPositionSize = AdjustPositionSizeByMinMaxStep(OutputPositionSize);
     }
+    if ((CapMaxPositionSizeBasedOnMargin) && (OutputPositionSize > OutputMaxPositionSize)) OutputPositionSize = OutputMaxPositionSize; // Cap with max position size by free margin if necessary.
 
     if (TickSize == 0) return;
     OutputRiskMoney = Round((StopLoss * UnitCost / TickSize + 2 * commission) * OutputPositionSize, AccountCurrencyDigits);
@@ -6699,6 +6853,23 @@ void CalculateRiskAndPositionSize()
     // Calculate adjusted position size shares for use here and in RecalculatePositionSize().
     PositionSizeToArray(OutputPositionSize); // Fills ArrayPositionSize[].
 
+    if (sets.TPLockedOnSL)
+    {
+        tEntryLevel = sets.EntryLevel;
+        tStopLossLevel = sets.StopLossLevel;
+        if (sets.TakeProfitLevel == 0) ExtDialog.ProcessTPChange(true); // When TPLockedOnSL has been enabled via an input parameter.
+        else ExtDialog.ProcessTPChange(false);
+    }
+    double read_tTakeProfitLevel;
+    if (ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_PRICE, 0, read_tTakeProfitLevel)) tTakeProfitLevel = Round(read_tTakeProfitLevel, _Digits);
+    else tTakeProfitLevel = 0;
+    WarningTP = "";
+    if (tTakeProfitLevel > 0)
+    {
+        double StopLevel = SymbolInfoInteger(SymbolForTrading, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
+        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+    }
+
     if (tTakeProfitLevel > 0)
     {
         // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
@@ -6708,11 +6879,11 @@ void CalculateRiskAndPositionSize()
             double current_rate = 1;
             if (tStopLossLevel < tEntryLevel)
             {
-                current_rate = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+                current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             }
             else if (tStopLossLevel > tEntryLevel)
             {
-                current_rate = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+                current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
             }
             UnitCost_reward *= (current_rate / future_rate);
         }
@@ -6757,11 +6928,11 @@ void CalculateRiskAndPositionSize()
                 double current_rate = 1;
                 if (tStopLossLevel < tEntryLevel)
                 {
-                    current_rate = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+                    current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
                 }
                 else if (tStopLossLevel > tEntryLevel)
                 {
-                    current_rate = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+                    current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
                 }
                 UnitCost_reward *= (current_rate / future_rate);
             }
@@ -6866,9 +7037,10 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
             // Skip orders in other symbols if the ignore checkbox is ticked.
             if (!calculate_risk_for_trading_tab)
             {
-                if ((OrderGetString(ORDER_SYMBOL) != Symbol()) && (sets.IgnoreOtherSymbols)) continue;
+                if ((OrderGetString(ORDER_SYMBOL) != SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_OTHER)) continue;
+                else if ((OrderGetString(ORDER_SYMBOL) == SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_CURRENT)) continue;
             }
-            else if ((OrderGetString(ORDER_SYMBOL) != Symbol()) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
+            else if ((OrderGetString(ORDER_SYMBOL) != SymbolForTrading) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
 
             // Buy orders.
             if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
@@ -7045,9 +7217,10 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
             // Skip orders in other symbols if the ignore checkbox is ticked.
             if (!calculate_risk_for_trading_tab)
             {
-                if ((PositionGetString(POSITION_SYMBOL) != Symbol()) && (sets.IgnoreOtherSymbols)) continue;
+                if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_OTHER)) continue;
+                else if ((PositionGetString(POSITION_SYMBOL) == SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_CURRENT)) continue;
             }
-            else if ((PositionGetString(POSITION_SYMBOL) != Symbol()) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
+            else if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
 
             // Buy position.
             if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
@@ -7260,7 +7433,7 @@ void CalculateMargin()
     if (TickValue == 0) return;
     
     double initial_margin_rate = 0, maintenance_margin_rate = 0, max_margin_rate = 0;
-    SymbolInfoMarginRate(Symbol(), OrderType, initial_margin_rate, maintenance_margin_rate);
+    SymbolInfoMarginRate(SymbolForTrading, OrderType, initial_margin_rate, maintenance_margin_rate);
     if (maintenance_margin_rate == 0) maintenance_margin_rate = initial_margin_rate;
 
     PositionMargin = 0;
@@ -7289,7 +7462,7 @@ void CalculateMargin()
             (CalcMode == SYMBOL_CALC_MODE_EXCH_STOCKS) || (CalcMode == SYMBOL_CALC_MODE_CFDLEVERAGE))
     {
         MqlTick tick;
-        SymbolInfoTick(Symbol(), tick);
+        SymbolInfoTick(SymbolForTrading, tick);
         if (PositionDirection == POSITION_TYPE_BUY) PriceCorrectionCoefficient = tick.ask;
         else if (PositionDirection == POSITION_TYPE_SELL) PriceCorrectionCoefficient = tick.bid;
     }
@@ -7299,7 +7472,7 @@ void CalculateMargin()
     PositionMargin = (OutputPositionSize * ContractSize * PriceCorrectionCoefficient / Leverage) * maintenance_margin_rate;
 
     // Otherwise, no need to adjust margin.
-    if (AccountCurrency != MarginCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, MarginCurrency, AccountCurrency, Symbol());
+    if (AccountCurrency != MarginCurrency) CurrencyCorrectionCoefficient = CalculateAdjustment(Loss, MarginCurrency, AccountCurrency, SymbolForTrading);
     if (CurrencyCorrectionCoefficient == 0) // Couldn't calculate correction coefficient due to the lack of the required currency pair.
     {
         CurrencyCorrectionCoefficient = 1;
@@ -7334,7 +7507,7 @@ void CalculateMargin()
     // Netting:
     if (AccountMarginMode != ACCOUNT_MARGIN_MODE_RETAIL_HEDGING)
     {
-        if ((PositionSelect(Symbol())) && (PositionGetInteger(POSITION_TYPE) != PositionDirection))
+        if ((PositionSelect(SymbolForTrading)) && (PositionGetInteger(POSITION_TYPE) != PositionDirection))
         {
             double existing_open_price = 1;
             double existing_volume = PositionGetDouble(POSITION_VOLUME);
@@ -7352,7 +7525,7 @@ void CalculateMargin()
             if (AccountCurrency != MarginCurrency)
             {
                 MqlTick tick;
-                SymbolInfoTick(Symbol(), tick);
+                SymbolInfoTick(SymbolForTrading, tick);
                 // This yields inaccurate margin of existing position, but it is the best we can get so far.
                 CurrencyCorrectionCoefficient_existing = (tick.bid != 0) ?  (1 / tick.bid) : -1;
             }
@@ -7412,7 +7585,7 @@ void CalculateMargin()
             {
                 if (!PositionSelectByTicket(PositionGetTicket(i))) continue;
 
-                if (PositionGetString(POSITION_SYMBOL) != Symbol()) continue;
+                if (PositionGetString(POSITION_SYMBOL) != SymbolForTrading) continue;
 
                 if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
                 {
@@ -7516,12 +7689,7 @@ void CalculateMargin()
     OutputMaxPositionSize = MaxPositionSizeByMargin;
     if (!CalculateUnadjustedPositionSize) // If need to adjust to broker's restrictions.
     {
-        if (MaxPositionSizeByMargin < MinLot) OutputMaxPositionSize = 0; // Cannot open any position at all.
-        else if ((MaxPositionSizeByMargin > MaxLot) && (!SurpassBrokerMaxPositionSize)) OutputMaxPositionSize = MaxLot;
-        double steps = 0;
-        if (LotStep != 0) steps = OutputMaxPositionSize / LotStep;
-        if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
-        if (MathFloor(steps) < steps) OutputMaxPositionSize = MathFloor(steps) * LotStep;
+        OutputMaxPositionSize = AdjustPositionSizeByMinMaxStep(MaxPositionSizeByMargin);
     }
     // End Max position size.
 
@@ -7687,9 +7855,9 @@ string GetSymbolByCurrencies(string base_currency, string profit_currency)
 //+------------------------------------------------------------------+
 void GetSwapData()
 {
-    ENUM_SYMBOL_SWAP_MODE swap_mode = (ENUM_SYMBOL_SWAP_MODE)SymbolInfoInteger(Symbol(), SYMBOL_SWAP_MODE);
-    double swap_long = SymbolInfoDouble(Symbol(), SYMBOL_SWAP_LONG);
-    double swap_short = SymbolInfoDouble(Symbol(), SYMBOL_SWAP_SHORT);
+    ENUM_SYMBOL_SWAP_MODE swap_mode = (ENUM_SYMBOL_SWAP_MODE)SymbolInfoInteger(SymbolForTrading, SYMBOL_SWAP_MODE);
+    double swap_long = SymbolInfoDouble(SymbolForTrading, SYMBOL_SWAP_LONG);
+    double swap_short = SymbolInfoDouble(SymbolForTrading, SYMBOL_SWAP_SHORT);
     double swap_long_1_lot = EMPTY_VALUE, swap_short_1_lot = EMPTY_VALUE;
     switch(swap_mode)
     {
@@ -7706,10 +7874,10 @@ void GetSwapData()
 
         double UnitCost_long, UnitCost_short;
 
-        if (swap_long > 0) UnitCost_long = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_PROFIT);
-        else UnitCost_long = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_LOSS);
-        if (swap_short > 0) UnitCost_short = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_PROFIT);
-        else UnitCost_short = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_LOSS);
+        if (swap_long > 0) UnitCost_long = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_PROFIT);
+        else UnitCost_long = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_LOSS);
+        if (swap_short > 0) UnitCost_short = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_PROFIT);
+        else UnitCost_short = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_LOSS);
 
         if ((ProfitCurrency != AccountCurrency) && (CalcMode != SYMBOL_CALC_MODE_FOREX) && (CalcMode != SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE))
         {
@@ -7731,12 +7899,12 @@ void GetSwapData()
         string base_or_margin_currency;
         if (swap_mode == SYMBOL_SWAP_MODE_CURRENCY_SYMBOL)
         {
-            base_or_margin_currency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_BASE);
+            base_or_margin_currency = SymbolInfoString(SymbolForTrading, SYMBOL_CURRENCY_BASE);
             OutputSwapsType = TRANSLATION_LABEL_BASE_CURRENCY + " (" + base_or_margin_currency + ")";
         }
         else
         {
-            base_or_margin_currency = SymbolInfoString(Symbol(), SYMBOL_CURRENCY_MARGIN);
+            base_or_margin_currency = SymbolInfoString(SymbolForTrading, SYMBOL_CURRENCY_MARGIN);
             OutputSwapsType = TRANSLATION_LABEL_MARGIN_CURRENCY + " (" + base_or_margin_currency + ")";
         }
         // Simple case:
@@ -7751,14 +7919,14 @@ void GetSwapData()
             // Simple case - use Symbol rates for conversion:
             if (AccountCurrency == ProfitCurrency)
             {
-                double bid = SymbolInfoDouble(Symbol(), SYMBOL_BID);
+                double bid = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
                 swap_long_1_lot = swap_long * bid;
                 swap_short_1_lot = swap_short * bid;
             }
             // Go through Market Watch trying to find the currency pair with both base_currency and account_currency in it.
             else
             {
-                double CCC = CalculateAdjustment(Profit, base_or_margin_currency, AccountCurrency, Symbol());
+                double CCC = CalculateAdjustment(Profit, base_or_margin_currency, AccountCurrency, SymbolForTrading);
                 swap_long_1_lot = swap_long * CCC;
                 swap_short_1_lot = swap_short * CCC;
             }
@@ -7781,12 +7949,12 @@ void GetSwapData()
             if ((sets.EntryType == Pending) || (sets.EntryType == StopLimit))
                 symbol_cost_1_lot_loss = ContractSize * sets.EntryLevel;
             // Calculate it by current price of contract - it is impossible to determine potential future price.
-            else symbol_cost_1_lot_loss = ContractSize * SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+            else symbol_cost_1_lot_loss = ContractSize * SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             symbol_cost_1_lot_profit = symbol_cost_1_lot_loss;
             if (ProfitCurrency != AccountCurrency)
             {
-                double CCC_loss = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency, Symbol());
-                double CCC_profit = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency, Symbol());
+                double CCC_loss = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency, SymbolForTrading);
+                double CCC_profit = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency, SymbolForTrading);
                 // Adjust the unit cost.
                 symbol_cost_1_lot_profit = symbol_cost_1_lot_loss * CCC_profit;
                 symbol_cost_1_lot_loss = symbol_cost_1_lot_loss * CCC_loss;
@@ -7801,12 +7969,12 @@ void GetSwapData()
             if ((sets.EntryType == Pending) || (sets.EntryType == StopLimit))
                 symbol_cost_1_lot_loss = UnitCost_loss * sets.EntryLevel / TickSize;
             // Calculate it by current price of contract - it is impossible to determine potential future price.
-            else symbol_cost_1_lot_loss = UnitCost_loss * SymbolInfoDouble(Symbol(), SYMBOL_ASK) / TickSize;
+            else symbol_cost_1_lot_loss = UnitCost_loss * SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) / TickSize;
             // For profit (positive swap):
             if ((sets.EntryType == Pending) || (sets.EntryType == StopLimit))
                 symbol_cost_1_lot_profit = UnitCost_profit * sets.EntryLevel / TickSize;
             // Calculate it by current price of contract - it is impossible to determine potential future price.
-            else symbol_cost_1_lot_profit = UnitCost_profit * SymbolInfoDouble(Symbol(), SYMBOL_ASK) / TickSize;
+            else symbol_cost_1_lot_profit = UnitCost_profit * SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) / TickSize;
         }
 
         // Percentage per 360 days.
@@ -7837,6 +8005,35 @@ void GetSwapData()
     case SYMBOL_SWAP_MODE_REOPEN_BID:
         OutputSwapsType = TRANSLATION_LABEL_REOPENING;
         break;
+    case SYMBOL_SWAP_MODE_CURRENCY_PROFIT:
+    {
+        OutputSwapsType = TRANSLATION_LABEL_PROFIT_CURRENCY + " (" + ProfitCurrency + ")";
+        // Simple case:
+        if (AccountCurrency == ProfitCurrency)
+        {
+            swap_long_1_lot = swap_long;
+            swap_short_1_lot = swap_short;
+        }
+        // Need to find the current PRO/ACC or ACC/PRO rate.
+        else
+        {
+            // Simple case - use Symbol rates for conversion:
+            if (AccountCurrency == BaseCurrency)
+            {
+                double ask = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
+                swap_long_1_lot = swap_long / ask;
+                swap_short_1_lot = swap_short / ask;
+            }
+            // Go through Market Watch trying to find the currency pair with both ProfitCurrency and AccountCurrency in it.
+            else
+            {
+                double CCC = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency, SymbolForTrading);
+                swap_long_1_lot = swap_long * CCC;
+                swap_short_1_lot = swap_short * CCC;
+            }
+        }
+    }
+    break;
     default:
         break;
     }
@@ -7952,7 +8149,7 @@ void CalculateSymbolLeverage()
     double UnitCost_loss, UnitCost_profit;
     CalculateUnitCost(UnitCost_loss, UnitCost_profit);
     if ((TickSize == 0) || (UnitCost_loss == 0)) return;
-    double lotValue = SymbolInfoDouble(Symbol(), SYMBOL_ASK) / TickSize * UnitCost_loss;
+    double lotValue = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK) / TickSize * UnitCost_loss;
     if (PreHedgingPositionMargin == 0) return;
     double margin = PreHedgingPositionMargin;
     if ((PreCustomLeverage > 0) && (CustomLeverage > 0)) margin = margin * CustomLeverage / PreCustomLeverage; // Recalculate margin using the original leverage, not the custom leverage.
@@ -7976,18 +8173,18 @@ void CalculateUnitCost(double &UnitCost_loss, double &UnitCost_profit)
         // If profit currency is different from account currency.
         if (ProfitCurrency != AccountCurrency)
         {
-            double CCC = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency, Symbol());
+            double CCC = CalculateAdjustment(Loss, ProfitCurrency, AccountCurrency, SymbolForTrading);
             // Adjust the unit cost.
             UnitCost_loss *= CCC;
-            CCC = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency, Symbol());
+            CCC = CalculateAdjustment(Profit, ProfitCurrency, AccountCurrency, SymbolForTrading);
             UnitCost_profit *= CCC;
         }
     }
     // With Forex instruments, tick value already equals 1 unit cost.
     else
     {
-        UnitCost_loss = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_LOSS);
-        UnitCost_profit = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_TICK_VALUE_PROFIT);
+        UnitCost_loss = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_LOSS);
+        UnitCost_profit = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_TICK_VALUE_PROFIT);
         if ((UnitCost_loss == 0) || (UnitCost_profit == 0)) WarnAboutZeroUnitCost();
     }
 }
@@ -8087,7 +8284,7 @@ double CalculateCommission()
     if (sets.CommissionType == COMMISSION_PERCENT) // Commission in %. Tricky.
     {
         // Need to convert this commission to currency units. The result may be incorrect in some cases.
-        double contract_size = SymbolInfoDouble(Symbol(), SYMBOL_TRADE_CONTRACT_SIZE);
+        double contract_size = SymbolInfoDouble(SymbolForTrading, SYMBOL_TRADE_CONTRACT_SIZE);
         double ContractValue = 0;
         if ((CalcMode == SYMBOL_CALC_MODE_FOREX) || (CalcMode == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)) // Forex.
         {
@@ -8099,12 +8296,12 @@ double CalculateCommission()
             {
                 if (ProfitCurrency == AccountCurrency) // E.g., EUR/USD.
                 {
-                    ContractValue = contract_size * SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+                    ContractValue = contract_size * SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
                 }
                 else // E.g., GBP/JPY.
                 {
                     // Conversion needed:
-                    double ccc = CalculateAdjustment(Loss, BaseCurrency, AccountCurrency, Symbol());
+                    double ccc = CalculateAdjustment(Loss, BaseCurrency, AccountCurrency, SymbolForTrading);
                     ContractValue = contract_size * ccc;
                 }
             }
@@ -8114,12 +8311,12 @@ double CalculateCommission()
             // Let's consider that the contract price is in the profit currency (which isn't strictly true unfortunately).
             if (ProfitCurrency == AccountCurrency) // E.g., trading US500 on a USD account.
             {
-                ContractValue = contract_size * SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+                ContractValue = contract_size * SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
             }
             else // E.g., trading Nikkei on a USD account.
             {
                 // Conversion needed:
-                double ccc = CalculateAdjustment(Loss, BaseCurrency, AccountCurrency, Symbol());
+                double ccc = CalculateAdjustment(Loss, BaseCurrency, AccountCurrency, SymbolForTrading);
                 ContractValue = contract_size * ccc;
             }
         }
@@ -8170,5 +8367,16 @@ void PositionSizeToArray(double ps)
         }
     }
     else ArrayPositionSize[0] = ps;
+}
+
+double AdjustPositionSizeByMinMaxStep(double ps)
+{
+    if (ps < MinLot) ps = MinLot;
+    else if ((ps > MaxLot) && (!SurpassBrokerMaxPositionSize)) ps = MaxLot;
+    double steps = 0;
+    if (LotStep != 0) steps = ps / LotStep;
+    if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
+    if (MathFloor(steps) < steps) ps = MathFloor(steps) * LotStep;
+    return ps;
 }
 //+------------------------------------------------------------------+

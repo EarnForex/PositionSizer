@@ -6,12 +6,13 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.09"
-string    Version = "3.09";
+#property version   "3.10"
+string    Version = "3.10";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
 //#include "Translations\Chinese.mqh"
+//#include "Translations\ChineseTraditional.mqh" // Contributed by fxchess.
 //#include "Translations\Portuguese.mqh" // Contributed by Matheus Sevaroli.
 //#include "Translations\Russian.mqh"
 //#include "Translations\Spanish.mqh"
@@ -87,7 +88,7 @@ input ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Def
 input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
 input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
 input double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
-input COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommossionType: Default commission type.
+input COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommissionType: Default commission type.
 input ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
 input double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
 input double DefaultMoneyRisk = 0; // MoneyRisk: If > 0, money risk tolerance in currency.
@@ -95,16 +96,17 @@ input double DefaultPositionSize = 0; // PositionSize: If > 0, position size in 
 input bool DefaultCountPendingOrders = false; // CountPendingOrders: Count pending orders for portfolio risk.
 input bool DefaultIgnoreOrdersWithoutSL = false; // IgnoreOrdersWithoutSL: Ignore orders w/o SL in portfolio risk.
 input bool DefaultIgnoreOrdersWithoutTP = false; // IgnoreOrdersWithoutTP: Ignore orders w/o TP in portfolio risk.
-input bool DefaultIgnoreOtherSymbols = false; // IgnoreOtherSymbols: Ignore other symbols' orders in portfolio risk.
+input IGNORE_SYMBOLS DefaultIgnoreSymbols = IGNORE_SYMBOLS_NONE; // IgnoreSymbols: Ignore trades in some symbols for portfolio risk?
 input double DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
 input int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
 input string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
-input bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order commentary in Trading tab.
+input bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order comment in Trading tab.
 input bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Trading tab.
 input int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Trading tab.
 input int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Trading tab.
 input int DefaultMaxEntrySLDistance = 0; // MaxEntrySLDistance: Maximum entry/SL distance for Trading tab.
 input int DefaultMinEntrySLDistance = 0; // MinEntrySLDistance: Minimum entry/SL distance for Trading tab.
+input double DefaultMaxRiskPercentage = 0; // MaxRiskPercentage: Maximum risk % for Trading tab.
 input double DefaultMaxPositionSizeTotal = 0; // Maximum position size total for Trading tab.
 input double DefaultMaxPositionSizePerSymbol = 0; // Maximum position size per symbol for Trading tab.
 input bool DefaultSubtractOPV = false; // SubtractOPV: Subtract open positions volume (Trading tab).
@@ -155,11 +157,13 @@ input bool DisableStopLimit = false; // DisableStopLimit: If true, Stop Limit wi
 input string TradeSymbol = ""; // TradeSymbol: If non-empty, this symbol will be traded.
 input bool DisableTradingSounds = false; // DisableTradingSounds: If true, no sound for trading actions.
 input bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If true, ignore Market execution.
-input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode - Apply SL/TP After All Trades Executed
+input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode: Apply SL/TP after all trades executed.
 input bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
-input string SettingsFile = ""; // SettingsFile: Load custom panel settings from \Files\ folder.
+input string SettingsFile = ""; // SettingsFile: Custom settings file from \Files\PS_Settings\
 input bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
 input bool AskBeforeClosing = false; // Ask for confirmation before closing the panel?
+input bool CapMaxPositionSizeBasedOnMargin = false; // Cap position size based on avaiable margin?
+input bool LessRestrictiveMaxLimits = false; // Allow smaller trades when trading limits are exceeded?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -283,7 +287,7 @@ int OnInit()
         sets.CountPendingOrders = DefaultCountPendingOrders; // If true, portfolio risk calculation will also involve pending orders.
         sets.IgnoreOrdersWithoutSL = DefaultIgnoreOrdersWithoutSL; // If true, portfolio risk calculation will skip orders without stop-loss.
         sets.IgnoreOrdersWithoutTP = DefaultIgnoreOrdersWithoutTP; // If true, portfolio risk calculation will skip orders without take-profit.
-        sets.IgnoreOtherSymbols = DefaultIgnoreOtherSymbols; // If true, portfolio risk calculation will skip orders in other symbols.
+        sets.IgnoreSymbols = DefaultIgnoreSymbols; // Skip trades in other/current/no symbols for portfolio risk calculation.
         sets.HideAccSize = HideAccSize; // If true, account size line will not be shown.
         sets.ShowLines = DefaultShowLines;
         sets.SelectedTab = MainTab;
@@ -304,6 +308,7 @@ int OnInit()
         sets.MaxSpread = DefaultMaxSpread;
         sets.MaxEntrySLDistance = DefaultMaxEntrySLDistance;
         sets.MinEntrySLDistance = DefaultMinEntrySLDistance;
+        sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
         sets.MaxPositionSizeTotal = DefaultMaxPositionSizeTotal;
         sets.MaxPositionSizePerSymbol = DefaultMaxPositionSizePerSymbol;
         if ((sets.MaxPositionSizeTotal < sets.MaxPositionSizePerSymbol) && (sets.MaxPositionSizeTotal != 0)) sets.MaxPositionSizeTotal = sets.MaxPositionSizePerSymbol;
@@ -480,7 +485,7 @@ int OnInit()
     }
 
     if (!EventSetTimer(1)) Print(TRANSLATION_MESSAGE_ERROR_SETTING_TIMER + ": ", GetLastError());
-
+    
     if (ShowATROptions) ExtDialog.InitATR();
 
     if (TradeSymbol != "") SymbolForTrading = TradeSymbol;
@@ -646,11 +651,53 @@ void OnChartEvent(const int id,
         }
     }
 
-    // This cannot be done using the panel's event handler because the outside trade button isn't added to its list of controls.
-    if ((id == CHARTEVENT_OBJECT_CLICK) && (sparam == ExtDialog.Name() + "m_OutsideTradeButton"))
+    // Clicks on objects that cannot be processed via the class Event Map.
+    if (id == CHARTEVENT_OBJECT_CLICK) 
     {
-        ExtDialog.m_OutsideTradeButton.Pressed(false);
-        Trade();
+        // This cannot be done using the panel's event handler because the outside trade button isn't added to its list of controls.
+        if (sparam == ExtDialog.Name() + "m_OutsideTradeButton")
+        {
+            ExtDialog.m_OutsideTradeButton.Pressed(false);
+            Trade();
+        }
+        // Setting flags to mark Edit controls as being edited to avoid changing their values during that process:
+        else if (sparam == ExtDialog.Name() + "m_EdtPosSize")
+        {
+            ExtDialog.OnClickEdtPosSize();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtEntryLevel")
+        {
+            ExtDialog.OnClickEdtEntryLevel();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtSL")
+        {
+            ExtDialog.OnClickEdtSL();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtTP")
+        {
+            ExtDialog.OnClickEdtTP();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtAccount")
+        {
+            ExtDialog.OnClickEdtAccount();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtRiskPIn")
+        {
+            ExtDialog.OnClickEdtRiskPIn();
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtRiskMIn")
+        {
+            ExtDialog.OnClickEdtRiskMIn();
+        }
+        else if (StringSubstr(sparam, 0, StringLen(ExtDialog.Name() + "m_EdtAdditionalTPEdits")) == ExtDialog.Name() + "m_EdtAdditionalTPEdits")
+        {
+            int i = (int)StringToInteger(StringSubstr(sparam, StringLen(ExtDialog.Name() + "m_EdtAdditionalTPEdits"))) - 1;
+            ExtDialog.OnClickAdditionalTPEdit(i);
+        }
+        else if (sparam == ExtDialog.Name() + "m_EdtTradingTPEdit1") // Needed only for the main TP as others aren't updated unless their lines are being moved, which means that the Edits aren't in focus at that time.
+        {
+            ExtDialog.OnClickEdtTradingTPEdit1();
+        }
     }
 
     if (id == CHARTEVENT_CLICK) // Avoid "sticking" of xxxLineIsBeingMoved variables.
@@ -856,7 +903,7 @@ void OnChartEvent(const int id,
             else
             {
                 sets.TPDistanceInPoints = true; // If was in level, set to points.
-                sets.TakeProfit = (int)MathRound(MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / _Point);
+                if (sets.TakeProfitLevel != 0) sets.TakeProfit = (int)MathRound(MathAbs(sets.TakeProfitLevel - sets.EntryLevel) / _Point);
                 // Additional take-profits.
                 if (sets.TakeProfitsNumber > 1)
                 {
@@ -864,7 +911,7 @@ void OnChartEvent(const int id,
                     {
                         if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                         {
-                            ExtDialog.AdditionalTPEdits[i - 1].Text(DoubleToString(MathAbs(MathRound((sets.TP[i] - sets.EntryLevel) / _Point)), 0));
+                            if (sets.TP[i] != 0) ExtDialog.AdditionalTPEdits[i - 1].Text(DoubleToString(MathAbs(MathRound((sets.TP[i] - sets.EntryLevel) / _Point)), 0));
                         }
                     }
                 }

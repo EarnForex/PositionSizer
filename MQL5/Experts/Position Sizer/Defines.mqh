@@ -8,6 +8,7 @@
 #include <Controls\CheckBox.mqh>
 #include <Controls\Label.mqh>
 #include <Arrays\List.mqh>
+#include <Trade\Trade.mqh>
 
 color CONTROLS_EDIT_COLOR_ENABLE  = C'255,255,255';
 color CONTROLS_EDIT_COLOR_DISABLE = C'221,221,211';
@@ -118,6 +119,13 @@ enum ADDITIONAL_TRADE_BUTTONS
     ADDITIONAL_TRADE_BUTTONS_BOTH  // Both 
 };
 
+enum IGNORE_SYMBOLS
+{
+    IGNORE_SYMBOLS_NONE, // No symbols
+    IGNORE_SYMBOLS_OTHER, // Other symbols
+    IGNORE_SYMBOLS_CURRENT, // Current symbol
+};
+
 struct Settings
 {
     ENTRY_TYPE EntryType;
@@ -139,7 +147,7 @@ struct Settings
     bool CountPendingOrders;
     bool IgnoreOrdersWithoutSL;
     bool IgnoreOrdersWithoutTP;
-    bool IgnoreOtherSymbols;
+    IGNORE_SYMBOLS IgnoreSymbols;
     bool HideAccSize;
     bool ShowLines;
     TABS SelectedTab;
@@ -153,6 +161,7 @@ struct Settings
     int MaxSpread;
     int MaxEntrySLDistance;
     int MinEntrySLDistance;
+    double MaxRiskPercentage;
     // For SL/TP distance modes:
     bool SLDistanceInPoints;
     bool TPDistanceInPoints;
