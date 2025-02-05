@@ -92,13 +92,19 @@
 #define TRANSLATION_LABEL_POSITION_SIZE "Tamanho da Ordem"
 #define TRANSLATION_BUTTON_MAX_PS "Tamanho Máximo da Ordem"
 #define TRANSLATION_LABEL_POINT_VALUE "Valor do Ponto"
+#define TRANSLATION_TOOLTIP_INPUTS "Os campos nesta coluna são calculados com base nas entradas"
+#define TRANSLATION_TOOLTIP_RESULT "Os campos nesta coluna levam em conta as limitações da corretora"
 
 
 // Guia Risco
 #define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "Contar Ordens Pendentes"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar Ordens sem Stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar Ordens sem Take-profit"
-#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_IN_OTHER_SYMBOLS "Ignorar Ordens em Outros Ativos"
+#define TRANSLATION_LABEL_IGNORE_TRADES_IN "Ignorar negociações em"
+#define TRANSLATION_BUTTON_SYMBOLS_NO "sem símbolos     "
+#define TRANSLATION_BUTTON_SYMBOLS_OTHER "outros símbolos "
+#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "símbolo atual"
+#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "Alternar entre Nenhum, Outros e Atual."
 #define TRANSLATION_LABEL_LOTS "Lotes"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Carteira Atual"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Negociações que estão atualmente abertas"
@@ -106,7 +112,6 @@
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Incluindo a ordem que está sendo calculada"
 #define TRANSLATION_LABEL_CRRR_TOOLTIP "Razão de risco-recompensa da carteira atual"
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "Razão de risco-recompensa da carteira potencial"
-
 
 // Guia Margem
 #define TRANSLATION_LABEL_POSITION_MARGIN "Margem da Ordem"
@@ -122,6 +127,7 @@
 // Guia Swaps
 #define TRANSLATION_LABEL_TYPE "Tipo"
 #define TRANSLATION_LABEL_UNKNOWN "Desconhecido"
+#define TRANSLATION_LABEL_INTEREST "Juros"
 #define TRANSLATION_LABEL_TRIPLE_SWAP "Swaps Triplos"
 #define TRANSLATION_EDIT_WEEKDAY_SUNDAY "Domingo"
 #define TRANSLATION_EDIT_WEEKDAY_MONDAY "Segunda-feira"
@@ -137,6 +143,8 @@
 #define TRANSLATION_LABEL_PER_PS "por Ord."
 #define TRANSLATION_LABEL_BASE_CURRENCY "Moeda Base"
 #define TRANSLATION_LABEL_MARGIN_CURRENCY "Moeda de Margem"
+#define TRANSLATION_LABEL_PROFIT_CURRENCY "Moeda do lucro"
+
 
 // Guia Trading
 #define TRANSLATION_BUTTON_TRADE "Ordem"
@@ -161,6 +169,7 @@
 #define TRANSLATION_LABEL_MAX_SPREAD "Spread Máx."
 #define TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE "Dist. Máx. de Entrada/SL"
 #define TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE "Dist. Mín. de Entrada/SL"
+#define TRANSLATION_LABEL_MAX_RISK_PERCENTAGE "Risco máximo %"
 #define TRANSLATION_CHECKBOX_SUBTRACT_OPEN_POSITIONS_VOLUME "Subtrair volume de ordens abertas"
 #define TRANSLATION_CHECKBOX_SUBTRACT_PENDING_ORDERS_VOLUME "Subtrair volume de ordens pendentes"
 #define TRANSLATION_CHECKBOX_DO_NOT_APPLY_STOPLOSS "Não aplicar Stop Loss"
@@ -172,7 +181,7 @@
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Pedir confirmação"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "O EA pedirá confirmação antes de abrir uma ordem."
 #define TRANSLATION_LABEL_EXPIRY "Expiração"
-#define TRANSLATION_TOOLTIP_EXPIRY "Tempo de expiração em minutos para a próxima ordem pendente criada. Mínimo = 10."
+#define TRANSLATION_TOOLTIP_EXPIRY "Tempo de expiração em minutos para a próxima ordem pendente criada. Mínimo = 2."
 #define TRANSLATION_LABEL_MINUTES "min."
 #define TRANSLATION_TOOLTIP_MINUTES "Minutos"
 
@@ -182,12 +191,14 @@
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distância da Entrada, pontos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamanho da Ordem, lotes"
 #define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Clique para abrir uma ordem."
+#define TRANSLATION_CLOSE_BUTTON "Fechar"
 
 // Avisos
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Muito próximo!)"
 #define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Valor incorreto!)"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "TP inválido"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Maior que o tamanho máximo de ordem por margem!"
+
 
 // Mensagens
 #define TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE "O Stop Loss deve ser positivo."
@@ -209,7 +220,8 @@
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "Não é possível obter o tamanho do tick para"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "Parece que o instrumento não está mais disponível. O cálculo pode não ser preciso."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "Símbolo mal configurado no servidor de trading - custo unitário zero."
-#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED "Algo Trading desativado! Por favor, ative o Algo Trading."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_1 "A negociação automática está desativada nas opções da plataforma! Por favor, habilite-a em Ferramentas->Opções->Expert Advisors."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_2 "A negociação automática está desativada nas configurações do Position Sizer! Por favor, marque a caixa Permitir Negociação Automática na aba Comum."
 #define TRANSLATION_MESSAGE_STOPLOSS_PROBLEM "Problema com o Stop Loss"
 #define TRANSLATION_MESSAGE_WRONG_POSITION_SIZE_VALUE "Valor de tamanho de ordem incorreto!"
 #define TRANSLATION_MESSAGE_MULTIPLE_TP_VOLUME_SHARE_SUM "Soma de volume de múltiplos TP"
@@ -219,7 +231,9 @@
 #define TRANSLATION_MESSAGE_NTAT_SPREAD "spread atual"
 #define TRANSLATION_MESSAGE_MAXIMUM_SPREAD "spread máximo"
 #define TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE "distância atual de Entrada/SL"
-#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual total de ordens"
+#define TRANSLATION_MESSAGE_NTAT_CURRENT_RISK "risco atual"
+#define TRANSLATION_MESSAGE_NTAT_MAX_RISK "risco máximo"
+#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual # total de ordens"
 #define TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION "número de ordens em execução"
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_NUMBER_OF_TRADES_ALLOWED "número máximo total de ordens permitido"
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "número atual de ordens por símbolo"
@@ -271,3 +285,26 @@
 #define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "'Não aplicar Stop Losss' está marcada."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "'Não aplicar Take Profit' está marcada."
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Falha ao criar um botão externo."
+#define TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE "Realizando uma ordem menor"
+#define TRANSLATION_MESSAGE_NEW_POSITION_SIZE "Novo tamanho de ordem"
+#define TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE "Não é possível realizar uma ordem menor."
+#define TRANSLATION_MESSAGE_ARE_YOU_SURE "Você tem certeza que deseja fechar o Position Sizer?"
+#define TRANSLATION_MESSAGE_EXIT "Sair?"
+#define TRANSLATION_MESSAGE_COULDNT_DETECT "Não foi possível detectar o par de moedas adequado para o cálculo de ajuste."
+#define TRANSLATION_MESSAGE_ACCOUNT_CURRENCY "Moeda da conta"
+#define TRANSLATION_MESSAGE_TRYING_TO_FIND "Tentando encontrar uma possível combinação de dois símbolos."
+#define TRANSLATION_MESSAGE_CONVERTING_VIA "Convertendo via"
+#define TRANSLATION_MESSAGE_ADJUSTMENT_CALCULATION_CRITICAL_FAILURE "Falha crítica no cálculo de ajuste. Falhou nos métodos de conversão simples e de dois pares."
+#define TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR "Erro. Não foi possível detectar o par de moedas adequado para o cálculo de ajuste de 2 pares."
+#define TRANSLATION_MESSAGE_CROSS_CURRENCY "Moeda cruzada"
+#define TRANSLATION_MESSAGE_CHARTS_PAIR_CURRENCY "Moeda do par do gráfico"
+#define TRANSLATION_MESSAGE_INFINITY "Infinito"
+#define TRANSLATION_MESSAGE_EXECUTION_FAILED "Falha na execução."
+#define TRANSLATION_MESSAGE_FAILED_TO_FIND_ORDER "Falha ao encontrar a ordem para aplicar SL/TP."
+#define TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER "Erro ao modificar a ordem"
+#define TRANSLATION_MESSAGE_ORDERSELECT_FAILED "Falha ao selecionar a ordem"
+#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_BUY "Falha ao definir o trailing stop para a ordem de compra"
+#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_SELL "Falha ao definir o trailing stop para a ordem de venda"
+#define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Falha ao deletar a ordem"
+#define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Falha ao fechar a ordem"
+#define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Objeto não encontrado."
