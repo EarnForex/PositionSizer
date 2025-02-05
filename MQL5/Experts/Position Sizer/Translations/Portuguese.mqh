@@ -99,13 +99,19 @@
 #define TRANSLATION_LABEL_POSITION_SIZE "Tamanho da Ordem"
 #define TRANSLATION_BUTTON_MAX_PS "Tamanho Máximo da Ordem"
 #define TRANSLATION_LABEL_POINT_VALUE "Valor do Ponto"
+#define TRANSLATION_TOOLTIP_INPUTS "Os campos nesta coluna são calculados com base nas entradas"
+#define TRANSLATION_TOOLTIP_RESULT "Os campos nesta coluna levam em conta as limitações da corretora"
 
 
 // Guia Risco
 #define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "Contar Ordens Pendentes"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar Ordens sem Stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar Ordens sem Take-profit"
-#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_IN_OTHER_SYMBOLS "Ignorar Ordens em Outros Ativos"
+#define TRANSLATION_LABEL_IGNORE_TRADES_IN "Ignorar negociações em"
+#define TRANSLATION_BUTTON_SYMBOLS_NO "sem símbolos     "
+#define TRANSLATION_BUTTON_SYMBOLS_OTHER "outros símbolos "
+#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "símbolo atual"
+#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "Alternar entre Nenhum, Outros e Atual."
 #define TRANSLATION_LABEL_LOTS "Lotes"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Carteira Atual"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Negociações que estão atualmente abertas"
@@ -113,7 +119,6 @@
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "Incluindo a ordem que está sendo calculada"
 #define TRANSLATION_LABEL_CRRR_TOOLTIP "Razão de risco-recompensa da carteira atual"
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "Razão de risco-recompensa da carteira potencial"
-
 
 // Guia Margem
 #define TRANSLATION_LABEL_POSITION_MARGIN "Margem da Ordem"
@@ -148,6 +153,8 @@
 #define TRANSLATION_LABEL_PER_PS "por Ord."
 #define TRANSLATION_LABEL_BASE_CURRENCY "Moeda Base"
 #define TRANSLATION_LABEL_MARGIN_CURRENCY "Moeda de Margem"
+#define TRANSLATION_LABEL_PROFIT_CURRENCY "Moeda do lucro"
+
 
 // Guia Trading
 #define TRANSLATION_BUTTON_TRADE "Ordem"
@@ -172,6 +179,7 @@
 #define TRANSLATION_LABEL_MAX_SPREAD "Spread Máx."
 #define TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE "Dist. Máx. de Entrada/SL"
 #define TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE "Dist. Mín. de Entrada/SL"
+#define TRANSLATION_LABEL_MAX_RISK_PERCENTAGE "Risco máximo %"
 #define TRANSLATION_CHECKBOX_SUBTRACT_OPEN_POSITIONS_VOLUME "Subtrair volume de ordens abertas"
 #define TRANSLATION_CHECKBOX_SUBTRACT_PENDING_ORDERS_VOLUME "Subtrair volume de ordens pendentes"
 #define TRANSLATION_CHECKBOX_DO_NOT_APPLY_STOPLOSS "Não aplicar Stop Loss"
@@ -202,6 +210,7 @@
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "TP inválido"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Maior que o tamanho máximo de ordem por margem!"
 
+
 // Mensagens
 #define TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE "O Stop Loss deve ser positivo."
 #define TRANSLATION_MESSAGE_TRYING_TO_SAVE_FILE "Tentando salvar as configurações no arquivo"
@@ -223,7 +232,8 @@
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "Não é possível obter o tamanho do tick para"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "Parece que o instrumento não está mais disponível. O cálculo pode não ser preciso."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "Símbolo mal configurado no servidor de trading - custo unitário zero."
-#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED "Algo Trading desativado! Por favor, ative o Algo Trading."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_1 "A negociação automática está desativada nas opções da plataforma! Por favor, habilite-a em Ferramentas->Opções->Expert Advisors."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_2 "A negociação automática está desativada nas configurações do Position Sizer! Por favor, marque a caixa Permitir Negociação Automática na aba Comum."
 #define TRANSLATION_MESSAGE_STOPLOSS_PROBLEM "Problema com o Stop Loss"
 #define TRANSLATION_MESSAGE_WRONG_POSITION_SIZE_VALUE "Valor de tamanho de ordem incorreto!"
 #define TRANSLATION_MESSAGE_MULTIPLE_TP_VOLUME_SHARE_SUM "Soma de volume de múltiplos TP"
@@ -234,7 +244,9 @@
 #define TRANSLATION_MESSAGE_NTAT_SPREAD "spread atual"
 #define TRANSLATION_MESSAGE_MAXIMUM_SPREAD "spread máximo"
 #define TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE "distância atual de Entrada/SL"
-#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual total de ordens"
+#define TRANSLATION_MESSAGE_NTAT_CURRENT_RISK "risco atual"
+#define TRANSLATION_MESSAGE_NTAT_MAX_RISK "risco máximo"
+#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual # total de ordens"
 #define TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION "número de ordens em execução"
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_NUMBER_OF_TRADES_ALLOWED "número máximo total de ordens permitido"
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "número atual de ordens por símbolo"
@@ -310,3 +322,8 @@
 #define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "'Não aplicar Stop Losss' está marcada."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "'Não aplicar Take Profit' está marcada."
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Falha ao criar um botão externo."
+#define TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE "Realizando uma ordem menor"
+#define TRANSLATION_MESSAGE_NEW_POSITION_SIZE "Novo tamanho de ordem"
+#define TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE "Não é possível realizar uma ordem menor."
+#define TRANSLATION_MESSAGE_ARE_YOU_SURE "Você tem certeza que deseja fechar o Position Sizer?"
+#define TRANSLATION_MESSAGE_EXIT "Sair?"
