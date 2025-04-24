@@ -1,6 +1,6 @@
 ﻿//+------------------------------------------------------------------+
 //|                                       Position Sizer Trading.mqh |
-//|                                  Copyright © 2024, EarnForex.com |
+//|                                  Copyright © 2025, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 
@@ -798,7 +798,7 @@ void DoBreakEven()
             if (!PositionSelectByTicket(ticket)) // No longer exists.
             {
                 ObjectDelete(ChartID(), obj_name); // Delete the line.
-                if (ShowLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
+                if (ShowMainLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
             }
             else // Check if already triggered. Position selected.
             {
@@ -807,7 +807,7 @@ void DoBreakEven()
                  || ((PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) && (PositionGetDouble(POSITION_SL) <= be_price) && (PositionGetDouble(POSITION_SL) != 0)))
                 {
                     ObjectDelete(ChartID(), obj_name); // Delete the line.
-                    if (ShowLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
+                    if (ShowMainLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
                 }
             }
         }
@@ -947,7 +947,7 @@ void DrawBELine(ulong ticket, double be_threshold, double be_price)
     if (sets.ShowLines) ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
     else ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
 
-    if (ShowLineLabels)
+    if (ShowMainLineLabels)
     {
         obj_name = ObjectPrefix + "BEL" + IntegerToString(ticket); // Label.
         ObjectCreate(ChartID(), obj_name, OBJ_LABEL, 0, 0, 0);

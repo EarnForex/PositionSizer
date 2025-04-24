@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                      Defines.mqh |
-//|                                  Copyright © 2024, EarnForex.com |
+//|                                  Copyright © 2025, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <Controls\Button.mqh>
@@ -117,11 +117,25 @@ enum ADDITIONAL_TRADE_BUTTONS
     ADDITIONAL_TRADE_BUTTONS_BOTH  // Both 
 };
 
-enum IGNORE_SYMBOLS
+enum INCLUDE_SYMBOLS
 {
-    IGNORE_SYMBOLS_NONE, // No symbols
-    IGNORE_SYMBOLS_OTHER, // Other symbols
-    IGNORE_SYMBOLS_CURRENT, // Current symbol
+    INCLUDE_SYMBOLS_ALL, // All symbols
+    INCLUDE_SYMBOLS_CURRENT, // Current symbol only
+    INCLUDE_SYMBOLS_OTHER, // Other symbols only
+};
+
+enum INCLUDE_ORDERS
+{
+    INCLUDE_ORDERS_ALL, // All orders
+    INCLUDE_ORDERS_OPEN, // Open orders only
+    INCLUDE_ORDERS_PENDING, // Pending orders only
+};
+
+enum INCLUDE_DIRECTIONS
+{
+    INCLUDE_DIRECTIONS_ALL, // All directions
+    INCLUDE_DIRECTIONS_BUY, // Buy only
+    INCLUDE_DIRECTIONS_SELL, // Sell only
 };
 
 struct Settings
@@ -141,10 +155,11 @@ struct Settings
     ACCOUNT_BUTTON   AccountButton;
     double           CustomBalance;
     bool             DeleteLines;
-    bool             CountPendingOrders;
+    INCLUDE_ORDERS   IncludeOrders;
     bool             IgnoreOrdersWithoutSL;
     bool             IgnoreOrdersWithoutTP;
-    IGNORE_SYMBOLS   IgnoreSymbols;
+    INCLUDE_SYMBOLS  IncludeSymbols;
+    INCLUDE_DIRECTIONS IncludeDirections;
     bool             HideAccSize;
     bool             ShowLines;
     TABS             SelectedTab;

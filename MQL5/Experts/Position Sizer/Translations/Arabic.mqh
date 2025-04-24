@@ -31,7 +31,7 @@
 #define TRANSLATION_BUTTON_TP "أخذ الربح، بالنقاط"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "أضِف مستوى أخذ الربح"
-#define TRANSLATION_TOOLTIP_BUTTON_TP "تعيين TP بناءً على SL أو تفعيل وضع تأمين TP "
+#define TRANSLATION_TOOLTIP_BUTTON_TP "تعيين TP بناءً على SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "زيادة أخذ الربح بـ 1 نقطة"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "تقليل أخذ الربح بـ 1 نقطة"
@@ -105,14 +105,8 @@
 
 
 // Risk tab
-#define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "عد الأوامر المعلقة"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "تجاهل الأوامر بدون إيقاف الخسارة"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "تجاهل الأوامر بدون أخذ الربح"
-#define TRANSLATION_LABEL_IGNORE_TRADES_IN "تجاهل الصفقات في"
-#define TRANSLATION_BUTTON_SYMBOLS_NO "لا رموز     "
-#define TRANSLATION_BUTTON_SYMBOLS_OTHER "رموز أخرى "
-#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "الرمز الحالي"
-#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "التبديل بين لا شيء، أخرى، والحالي."
 #define TRANSLATION_LABEL_LOTS "لوت"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "المحفظة الحالية"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "الصفقات المفتوحة حاليًا"
@@ -211,8 +205,8 @@
 
 
 // Warnings
-#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(قريب للغاية!)"
-#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(قيمة خاطئة!)"
+#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "قريب للغاية!"
+#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "قيمة خاطئة!"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "قيمة TP  خاطئة"
 
 #define TRANSLATION_TOOLTIP_WARNING_PS "أكبر من الحد الأقصى لحجم المركز حسب الهامش!"

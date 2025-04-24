@@ -31,10 +31,13 @@
 #define TRANSLATION_BUTTON_TP "TP, points"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Add a take-profit level"
-#define TRANSLATION_TOOLTIP_BUTTON_TP "Set TP based on SL or enable locked TP mode"
+#define TRANSLATION_TOOLTIP_BUTTON_TP "Set TP based on SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "Increase Take-profit by 1 point"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "Decrease Take-profit by 1 point"
+
+#define TRANSLATION_CHECKBOX_TPLOCKEDONSL "Lock"
+#define TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL "Lock take-profit distance on stop-loss distance using the given multiplier?"
 
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE "TP"
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS "points"
@@ -104,14 +107,23 @@
 
 
 // Risk tab
-#define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "Count pending orders"
+#define TRANSLATION_LABEL_INCLUDE_ORDERS "Include orders"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "All"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "Pending only"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "Open only"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "Switch between All, Open, and Pending."
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignore orders without stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignore orders without take-profit"
-#define TRANSLATION_LABEL_IGNORE_TRADES_IN "Ignore trades in"
-#define TRANSLATION_BUTTON_SYMBOLS_NO "no symbols     "
-#define TRANSLATION_BUTTON_SYMBOLS_OTHER "other symbols "
-#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "current symbol"
-#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "Switch between No, Other, and Current."
+#define TRANSLATION_LABEL_INCLUDE_SYMBOLS "Include symbols"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "All"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "Current only"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "Other only"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "Switch between All, Current, and Other."
+#define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "Include"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "All directions"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "Buy only"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "Sell only"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "Switch between All, Buy, and Sell."
 #define TRANSLATION_LABEL_LOTS "Lots"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Current portfolio"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Trades that are currently open"
@@ -205,8 +217,8 @@
 #define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Click to open an order/position."
 
 // Warnings
-#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Too close!)"
-#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Wrong value!)"
+#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "Too close!"
+#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "Wrong value!"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "Invalid TP"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Greater than maximum position size by margin!"
 

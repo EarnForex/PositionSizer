@@ -27,10 +27,13 @@
 #define TRANSLATION_BUTTON_TP "ТП, пункти"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Додати рівень тейк-профіту"
-#define TRANSLATION_TOOLTIP_BUTTON_TP "Встановити ТП на основі СЛ або увімкнути режим стеження за рівнем СЛ"
+#define TRANSLATION_TOOLTIP_BUTTON_TP "Встановити ТП на основі СЛ"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "Збільшити Тейк-профіт на 1 пункт"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "Зменшити Тейк-профіт на 1 пункт"
+
+#define TRANSLATION_CHECKBOX_TPLOCKEDONSL "Слід."
+#define TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL "Увімкнути режим стеження тейк-профіту за рівнем стоп-лоссу з врахуванням заданого множника"
 
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE "ТП"
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS "пункти"
@@ -100,14 +103,23 @@
 
 
 // Risk tab
-#define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "Рахувати відкладені ордери"
+#define TRANSLATION_LABEL_INCLUDE_ORDERS "Рахувати ордери"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "Усі"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "Тільки відкл."
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "Тільки відкр."
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "Перемикайте поміж «всіма», «відкритими» та «відкладеними»."
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ігнорувати ордери без стоп-лосу"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ігнорувати ордери без тейк-профіта"
-#define TRANSLATION_LABEL_IGNORE_TRADES_IN "Ігнорувати"
-#define TRANSLATION_BUTTON_SYMBOLS_NO "нічого"
-#define TRANSLATION_BUTTON_SYMBOLS_OTHER "інш. символи"
-#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "пот. символ"
-#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "Перемикайте поміж «нічого», «іншими символами» та «поточним символом»."
+#define TRANSLATION_LABEL_INCLUDE_SYMBOLS "Рахувати символи"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "Усі"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "Только поточ."
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "Только інш."
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "Перемикайте поміж «всіма», «поточним» та «іншими»."
+#define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "Рахувати"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "Усі напрямки"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "Тільки покупку"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "Тільки продаж"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "Перемикайте поміж «всіма», «покупкою» та «продажем»."
 #define TRANSLATION_LABEL_LOTS "Лоти"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Поточ. портфоліо"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Угоди, що зараз є відкритими"
@@ -204,8 +216,8 @@
 
 
 // Warnings
-#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(Близько!)"
-#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Значення!)"
+#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "Близько!"
+#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "Значення!"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "Невірний ТП"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Більше, ніж максимальний розмір позиції по маржі!"
 

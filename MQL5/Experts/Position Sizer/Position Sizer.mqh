@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                               Position Sizer.mqh |
-//|                                  Copyright © 2024, EarnForex.com |
+//|                                  Copyright © 2025, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include "Defines.mqh"
@@ -9,10 +9,10 @@
 class CPositionSizeCalculator : public CAppDialog
 {
 private:
-    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnStopPriceIncrease, m_BtnStopPriceDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIgnoreSymbols;
-    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkCountPendings, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix;
+    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnStopPriceIncrease, m_BtnStopPriceDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIncludeOrders, m_BtnIncludeSymbols, m_BtnIncludeDirections;
+    CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix, m_ChkTPLockedOnSL;
     CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtStopPrice, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage;
-    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblTPWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIgnoreSymbols;
+    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblStopPrice, m_LblStopPriceWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIncludeOrders, m_LblIncludeSymbols, m_LblIncludeDirections;
 
     string           m_FileName;
     double           m_DPIScale;
@@ -75,6 +75,7 @@ public:
     virtual bool     IsMinimized() {return m_minimized;}
     virtual void     IniFileLoad() {if (FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
     virtual void     EmulateMinMaxClick();
+    virtual void     ResetChkTPLockedOnSL();
             void     OnClickBtnTakeProfitsNumberAdd();
             void     OnClickBtnTakeProfitsNumberRemove();
             void     OnClickBtnTPsInward();
@@ -100,7 +101,6 @@ public:
             void     InitControlsValues();
     virtual void     Maximize();
     virtual void     Minimize();
-            void     SetTPButtonBackGroundColor(color);
     virtual void     ProcessTPChange(const bool tp_button_click);
     CEdit            AdditionalTPEdits[];
     CButton          m_OutsideTradeButton;
@@ -145,6 +145,7 @@ private:
     void OnEndEditEdtStopPrice();
     void OnClickBtnStopPriceIncrease();
     void OnClickBtnStopPriceDecrease();
+    void OnChangeChkTPLockedOnSL();
     void OnClickBtnAccount();
     void OnClickBtnCommissionType();
     void OnClickBtnMaxPS();
@@ -158,10 +159,11 @@ private:
     void OnEndEditATRMultiplierTP();
     void OnChangeChkSpreadAdjustmentSL();
     void OnChangeChkSpreadAdjustmentTP();
-    void OnChangeChkCountPendings();
+    void OnClickBtnIncludeOrders();
     void OnChangeChkIgnoreOrdersWithoutSL();
     void OnChangeChkIgnoreOrdersWithoutTP();
-    void OnClickBtnIgnoreSymbols();
+    void OnClickBtnIncludeSymbols();
+    void OnClickBtnIncludeDirections();
     void OnEndEditEdtCustomLeverage();
     void OnEndEditEdtMagicNumber();
     void OnEndEditEdtCommentary();
@@ -212,6 +214,7 @@ ON_EVENT(ON_END_EDIT, m_EdtTP, OnEndEditEdtTP)
 ON_EVENT(ON_CLICK, m_BtnTakeProfitsNumberAdd, OnClickBtnTakeProfitsNumberAdd)
 ON_EVENT(ON_CLICK, m_BtnTakeProfitIncrease, OnClickBtnTakeProfitIncrease)
 ON_EVENT(ON_CLICK, m_BtnTakeProfitDecrease, OnClickBtnTakeProfitDecrease)
+ON_EVENT(ON_CHANGE, m_ChkTPLockedOnSL, OnChangeChkTPLockedOnSL)
 ON_EVENT(ON_END_EDIT, m_EdtStopPrice, OnEndEditEdtStopPrice)
 ON_EVENT(ON_CLICK, m_BtnStopPriceIncrease, OnClickBtnStopPriceIncrease)
 ON_EVENT(ON_CLICK, m_BtnStopPriceDecrease, OnClickBtnStopPriceDecrease)
@@ -230,10 +233,11 @@ ON_EVENT(ON_END_EDIT, m_EdtATRMultiplierSL, OnEndEditATRMultiplierSL)
 ON_EVENT(ON_END_EDIT, m_EdtATRMultiplierTP, OnEndEditATRMultiplierTP)
 ON_EVENT(ON_CHANGE, m_ChkSpreadAdjustmentSL, OnChangeChkSpreadAdjustmentSL)
 ON_EVENT(ON_CHANGE, m_ChkSpreadAdjustmentTP, OnChangeChkSpreadAdjustmentTP)
-ON_EVENT(ON_CHANGE, m_ChkCountPendings, OnChangeChkCountPendings)
+ON_EVENT(ON_CLICK, m_BtnIncludeOrders, OnClickBtnIncludeOrders)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutSL, OnChangeChkIgnoreOrdersWithoutSL)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutTP, OnChangeChkIgnoreOrdersWithoutTP)
-ON_EVENT(ON_CLICK, m_BtnIgnoreSymbols, OnClickBtnIgnoreSymbols)
+ON_EVENT(ON_CLICK, m_BtnIncludeSymbols, OnClickBtnIncludeSymbols)
+ON_EVENT(ON_CLICK, m_BtnIncludeDirections, OnClickBtnIncludeDirections)
 ON_EVENT(ON_END_EDIT, m_EdtCustomLeverage, OnEndEditEdtCustomLeverage)
 ON_EVENT(ON_END_EDIT, m_EdtMagicNumber, OnEndEditEdtMagicNumber)
 ON_EVENT(ON_END_EDIT, m_EdtCommentary, OnEndEditEdtCommentary)
@@ -422,7 +426,7 @@ bool CPositionSizeCalculator::CreateObjects()
     int row_start, h_spacing,
         tab_button_start, tab_button_width, tab_button_spacing, narrow_edit_width, risk_perc_edit_width, narrowest_label_width, risk_lot_edit, wide_edit_width, wide_label_width, swap_last_label_width, swap_type_edit_width, swap_size_edit_width, atr_period_label_width, atr_period_edit_width, quick_risk_button_width, quick_risk_button_offset,
         second_risk_column_start, second_margin_column_start, second_swaps_column_start, third_risk_column_start, third_swaps_column_start, fourth_risk_column_start, fourth_swaps_column_start, max_psc_column_start,
-        panel_end, ignore_symbols_button_width;
+        panel_end, include_symbols_button_width;
 
     // Same for both modes - narrow and wide.
     row_start = (int)MathRound(10 * m_DPIScale);
@@ -444,7 +448,7 @@ bool CPositionSizeCalculator::CreateObjects()
     second_swaps_column_start = first_column_start + narrowest_label_width + h_spacing;
     multi_tp_column_start = first_column_start + normal_label_width;
     multi_tp_label_width = (int)MathRound(70 * m_DPIScale);
-    ignore_symbols_button_width = (int)MathRound(95 * m_DPIScale);
+    include_symbols_button_width = (int)MathRound(95 * m_DPIScale);
 
     // Wide mode.
     if (PanelWidth > 350) // Wide panel required.
@@ -531,6 +535,7 @@ bool CPositionSizeCalculator::CreateObjects()
     if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_MAIN) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH))
     {
         if (!ButtonCreate(MainTabList, m_BtnMainTrade, first_column_start, y, first_column_start + narrowest_label_width, y + element_height, "m_BtnMainTrade", TRANSLATION_BUTTON_TRADE))                                        return false;
+        m_BtnMainTrade.ColorBackground(TradeButtonColorAdjusted);
     }
     else 
     {
@@ -538,6 +543,8 @@ bool CPositionSizeCalculator::CreateObjects()
     }
     // Button to quickly switch between Long/Short trade planning.
     if (!ButtonCreate(MainTabList, m_BtnEntry, first_column_start + narrowest_label_width + v_spacing, y, second_column_start - v_spacing, y + element_height, "m_BtnEntry", EnumToString(sets.TradeDirection), TRANSLATION_TOOLTIP_BUTTON_LONG_SHORT))                    return false;
+    if (sets.TradeDirection == Long) m_BtnEntry.ColorBackground(LongButtonColorAdjusted);
+    else m_BtnEntry.ColorBackground(ShortButtonColorAdjusted);
     if (!EditCreate(MainTabList, m_EdtEntryLevel, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtEntryLevel", ""))                                                 return false;
     if (!ButtonCreate(MainTabList, m_BtnEntryIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnEntryIncrease", "+", TRANSLATION_TOOLTIP_ENTRY_INCREASE))                    return false;
     if (!ButtonCreate(MainTabList, m_BtnEntryDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnEntryDecrease", "-", TRANSLATION_TOOLTIP_ENTRY_DECREASE))                    return false;
@@ -568,7 +575,7 @@ bool CPositionSizeCalculator::CreateObjects()
     if (!EditCreate(MainTabList, m_EdtTP, second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtTP", ""))                                                                 return false;
     if (!ButtonCreate(MainTabList, m_BtnTakeProfitIncrease, second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnTakeProfitIncrease", "+", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE))                    return false;
     if (!ButtonCreate(MainTabList, m_BtnTakeProfitDecrease, second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnTakeProfitDecrease", "-", TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE))                    return false;
-    if (!LabelCreate(MainTabList, m_LblTPWarning, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblTPWarning", ""))                                               return false;
+    if (!CheckBoxCreate(MainTabList, m_ChkTPLockedOnSL, third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_ChkTPLockedOnSL", TRANSLATION_CHECKBOX_TPLOCKEDONSL, TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL))                                               return false;
 
     // Multiple TP levels for the Main tab.
     if (sets.TakeProfitsNumber > 1)
@@ -759,7 +766,8 @@ bool CPositionSizeCalculator::CreateObjects()
 // Reset
     y = row_start + element_height + 3 * v_spacing;
 
-    if (!CheckBoxCreate(RiskTabList, m_ChkCountPendings, first_column_start, y, panel_end, y + element_height, "m_ChkCountPendings", TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS))          return false;
+    if (!LabelCreate(RiskTabList, m_LblIncludeOrders, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeOrders", TRANSLATION_LABEL_INCLUDE_ORDERS))                                    return false;
+    if (!ButtonCreate(RiskTabList, m_BtnIncludeOrders, first_column_start + include_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIncludeOrders", TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL, TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP))                                            return false;
 
     y += element_height + v_spacing;
 
@@ -771,8 +779,13 @@ bool CPositionSizeCalculator::CreateObjects()
 
     y += element_height + v_spacing;
 
-    if (!LabelCreate(RiskTabList, m_LblIgnoreSymbols, first_column_start, y, first_column_start + ignore_symbols_button_width, y + element_height, "m_LblIgnoreSymbols", TRANSLATION_LABEL_IGNORE_TRADES_IN))                                    return false;
-    if (!ButtonCreate(RiskTabList, m_BtnIgnoreSymbols, first_column_start + ignore_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIgnoreSymbols", TRANSLATION_BUTTON_SYMBOLS_NO, TRANSLATION_BUTTON_SYMBOLS_TOOLTIP))                                            return false;
+    if (!LabelCreate(RiskTabList, m_LblIncludeSymbols, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeSymbols", TRANSLATION_LABEL_INCLUDE_SYMBOLS))                                    return false;
+    if (!ButtonCreate(RiskTabList, m_BtnIncludeSymbols, first_column_start + include_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIncludeSymbols", TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL, TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP))                                            return false;
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(RiskTabList, m_LblIncludeDirections, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeDirections", TRANSLATION_LABEL_INCLUDE_DIRECTIONS))                                    return false;
+    if (!ButtonCreate(RiskTabList, m_BtnIncludeDirections, first_column_start + include_symbols_button_width + v_spacing, y, second_column_start + narrow_edit_width, y + element_height, "m_BtnIncludeDirections", TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL, TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP))                                            return false;
 
     y += element_height + v_spacing;
 
@@ -971,6 +984,7 @@ bool CPositionSizeCalculator::CreateObjects()
     y = row_start + element_height + 3 * v_spacing;
 
     if (!ButtonCreate(TradingTabList, m_BtnTrade, first_column_start, y, first_column_start + tab_button_width, y + element_height, "m_BtnTrade", TRANSLATION_BUTTON_TRADE))                                          return false;
+    m_BtnTrade.ColorBackground(TradeButtonColorAdjusted);
     if (!LabelCreate(TradingTabList, m_LblTrailingStop, first_column_start + tab_button_width + v_spacing * 2, y, first_column_start + v_spacing + tab_button_width + normal_edit_width, y + element_height, "m_LblTrailingStop", TRANSLATION_LABEL_TRAILING_STOP + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtTrailingStopPoints, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtTrailingStopPoints", "0"))                                                 return false;
     if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                          return false;
@@ -1115,8 +1129,9 @@ bool CPositionSizeCalculator::CreateObjects()
     if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_LINE) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH))
     {
         int width = normal_label_width;
-        if (ShowAdditionalEntryLabel) width = int(width * 1.3);
+        if (ShowAdditionalEntryLabel) width = int(width * 1.5);
         if (!CreateOutsideButton(m_OutsideTradeButton, 0, 0, width, element_height, "m_OutsideTradeButton", "", TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON)) Print(TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON);
+        m_OutsideTradeButton.ColorBackground(TradeButtonColorAdjusted);
         m_OutsideTradeButton.Hide(); // Will be unhidden after it's moved to above the Entry line.
     }
 
@@ -1212,8 +1227,6 @@ bool CPositionSizeCalculator::InitObjects()
         if (!m_EdtMaxRiskTotal.TextAlign(align))                                 return false;
         if (!m_EdtMaxRiskPerSymbol.TextAlign(align))                             return false;
     }
-    if (sets.TPLockedOnSL) m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_LOCKED);
-    else m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_UNLOCKED);
 
     HideRisk();
     HideMargin();
@@ -1278,6 +1291,8 @@ void CPositionSizeCalculator::InitControlsValues()
         m_EdtStopPrice.Hide();
         m_LblStopPriceWarning.Hide();
     }
+
+    m_ChkTPLockedOnSL.Checked(sets.TPLockedOnSL);
 
     double acc_val;
 
@@ -1361,20 +1376,45 @@ void CPositionSizeCalculator::InitControlsValues()
         else m_BtnATRTimeframe.Text(TRANSLATION_BUTTON_ATR_PERIOD_CURRENT);
     }
 
-    m_ChkCountPendings.Checked(sets.CountPendingOrders);
-    m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL);
-    m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP);
-    switch(sets.IgnoreSymbols)
+    switch(sets.IncludeOrders)
     {
     default:
-    case IGNORE_SYMBOLS_NONE:
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+    case INCLUDE_ORDERS_ALL:
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL);
         break;
-    case IGNORE_SYMBOLS_OTHER:
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+    case INCLUDE_ORDERS_OPEN:
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN);
         break;
-    case IGNORE_SYMBOLS_CURRENT:
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+    case INCLUDE_ORDERS_PENDING:
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING);
+        break;
+    }
+    m_ChkIgnoreOrdersWithoutSL.Checked(sets.IgnoreOrdersWithoutSL);
+    m_ChkIgnoreOrdersWithoutTP.Checked(sets.IgnoreOrdersWithoutTP);
+    switch(sets.IncludeSymbols)
+    {
+    default:
+    case INCLUDE_SYMBOLS_ALL:
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL);
+        break;
+    case INCLUDE_SYMBOLS_OTHER:
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER);
+        break;
+    case INCLUDE_SYMBOLS_CURRENT:
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT);
+        break;
+    }
+    switch(sets.IncludeDirections)
+    {
+    default:
+    case INCLUDE_DIRECTIONS_ALL:
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL);
+        break;
+    case INCLUDE_DIRECTIONS_BUY:
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY);
+        break;
+    case INCLUDE_DIRECTIONS_SELL:
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL);
         break;
     }
 
@@ -1583,6 +1623,8 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Entry Level    */ if (!m_EdtEntryLevel.PropFlags()) m_EdtEntryLevel.Text(DoubleToString(sets.EntryLevel, _Digits));
     if (sets.TradeDirection == Long) m_BtnEntry.Text(TRANSLATION_BUTTON_LONG);
     else if (sets.TradeDirection == Short) m_BtnEntry.Text(TRANSLATION_BUTTON_SHORT);
+    if (sets.TradeDirection == Long) m_BtnEntry.ColorBackground(LongButtonColorAdjusted);
+    else m_BtnEntry.ColorBackground(ShortButtonColorAdjusted);
     /* Entry Warning  */ if (!m_LblEntryWarning.Text(WarningEntry))                                                        return false;
 
     if (!m_EdtSL.PropFlags())
@@ -1621,7 +1663,6 @@ bool CPositionSizeCalculator::DisplayValues()
         }
     }
 
-    /* TP Warning     */ if (!m_LblTPWarning.Text(WarningTP))                                                              return false;
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
         AdditionalTPWarnings[i - 1].Text(AdditionalWarningTP[i - 1]);
@@ -1725,7 +1766,7 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Reward 1       */ if (!m_EdtReward1.Text(FormatDouble(InputReward, AccountCurrencyDigits)))                                                return false;
     /* Reward 2       */ if (!m_EdtReward2.Text(FormatDouble(DoubleToString(OutputReward, AccountCurrencyDigits), AccountCurrencyDigits)))                            return false;
     /* Risk/Reward 1  */ if (!m_EdtRR1.Text(InputRR))                                                                      return false;
-    if (InputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) m_EdtRR1.Color(clrRed);
+    if ((InputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) || (InputRR == TRANSLATION_LABEL_WARNING_TOO_CLOSE)) m_EdtRR1.Color(clrRed);
     else m_EdtRR1.Color(m_EdtTP.Color());
     if (StringToDouble(m_EdtTP.Text()) != 0)
     {
@@ -1733,7 +1774,7 @@ bool CPositionSizeCalculator::DisplayValues()
         else if (m_EdtRR2.IsVisible()) m_EdtRR1.Show();
     }
     /* Risk/Reward 2  */ if (!m_EdtRR2.Text(OutputRR))                                                                         return false;
-    if (OutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) m_EdtRR2.Color(clrRed);
+    if ((OutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) || (OutputRR == TRANSLATION_LABEL_WARNING_TOO_CLOSE)) m_EdtRR2.Color(clrRed);
     else m_EdtRR2.Color(m_EdtTP.Color());
     
     /* Position size  */ if (!m_EdtPosSize.PropFlags()) m_EdtPosSize.Text(FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits));
@@ -1884,11 +1925,6 @@ void CPositionSizeCalculator::Maximize()
 
     MoveAndResize();
     if (remember_left != -1) Move(remember_left, remember_top);
-}
-
-void CPositionSizeCalculator::SetTPButtonBackGroundColor(color bg_color)
-{
-    m_BtnTakeProfit.ColorBackground(bg_color);
 }
 
 void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
@@ -2208,7 +2244,7 @@ void CPositionSizeCalculator::ShowMain()
         m_BtnTakeProfitDecrease.Show();
     }
     if (sets.TakeProfitsNumber > 1) m_BtnTakeProfitsNumberRemove.Show();
-    m_LblTPWarning.Show();
+    m_ChkTPLockedOnSL.Show();
     if (sets.EntryType == StopLimit)
     {
         m_LblStopPrice.Show();
@@ -2478,7 +2514,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_BACK, false);
-                if (ShowLineLabels)
+                if (ShowMainLineLabels)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_BACK, DrawTextAsBackground);
@@ -2492,7 +2528,7 @@ void CPositionSizeCalculator::ProcessTPChange(const bool tp_button_click)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_BACK, false);
-                    if (ShowLineLabels)
+                    if (ShowMainLineLabels)
                     {
                         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
@@ -2644,7 +2680,7 @@ void CPositionSizeCalculator::OnClickBtnOrderType()
         if (sets.ShowLines)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            if (ShowLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            if (ShowMainLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         }
     }
     else if (sets.EntryType == StopLimit)
@@ -2677,7 +2713,7 @@ void CPositionSizeCalculator::OnClickBtnOrderType()
         if (sets.ShowLines)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            if (ShowLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            if (ShowMainLineLabels) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         }
     }
     RefreshValues();
@@ -2739,50 +2775,56 @@ void CPositionSizeCalculator::OnClickBtnLines()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         }
 
-        if (ShowLineLabels)
+        if (ShowMainLineLabels)
         {
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
-            if (ShowAdditionalSLLabel)
-            {
-                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            }
-            if (sets.EntryType != Instant)
-            {
-                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
-            }
-            if (ShowAdditionalEntryLabel)
-            {
-                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            }
-            if (StringToDouble(m_EdtTP.Text()) != 0)
+        }
+        if (ShowAdditionalSLLabel)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+        }
+        if ((ShowMainLineLabels) && (sets.EntryType != Instant))
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
+        }
+        if (ShowAdditionalEntryLabel)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+        }
+        if (StringToDouble(m_EdtTP.Text()) != 0)
+        {
+            if (ShowMainLineLabels)
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_BACK, DrawTextAsBackground);
-                if (ShowAdditionalTPLabel)
-                {
-                    ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                    ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-                }
-                for (int i = 1; i < sets.TakeProfitsNumber; i++)
+            }
+            if (ShowAdditionalTPLabel)
+            {
+                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+            }
+            for (int i = 1; i < sets.TakeProfitsNumber; i++)
+            {
+                if (ShowMainLineLabels)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
-                    if (ShowAdditionalTPLabel)
-                    {
-                        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
-                    }
+                }
+                if (ShowAdditionalTPLabel)
+                {
+                    ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+                    ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
                 }
             }
-            if (sets.EntryType == StopLimit)
-            {
-                ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_BACK, DrawTextAsBackground);
-            }
+        }
+        if ((ShowMainLineLabels) && (sets.EntryType == StopLimit))
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_BACK, DrawTextAsBackground);
         }
 
         if ((sets.WasSelectedEntryLine) && (sets.EntryType != Instant)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_SELECTED, true);
@@ -2860,25 +2902,6 @@ void CPositionSizeCalculator::OnClickBtnStopLoss()
 
 void CPositionSizeCalculator::OnClickBtnTakeProfit()
 {
-    // If "TP locked on SL" mode was on, turn it off.
-    if (sets.TPLockedOnSL)
-    {
-        m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_UNLOCKED);
-        sets.TPLockedOnSL = false;
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, sets.WasSelectedTakeProfitLine);
-        return;
-    }
-    // If already have some take-profit, switch to a locked mode - TP always follows SL when Entry-SL difference changes.
-    else if (sets.TakeProfitLevel != 0)
-    {
-        sets.TPLockedOnSL = true;
-        m_BtnTakeProfit.ColorBackground(CONTROLS_BUTTON_COLOR_TP_LOCKED);
-        sets.WasSelectedTakeProfitLine = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, false);
-        ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, false);
-    }
-
     ProcessTPChange(true);
 }
 
@@ -3895,7 +3918,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         }
     }
 
-    if ((ShowLineLabels) || (ShowAdditionalTPLabel)) Initialization(); // Creates necessary line labels.
+    if ((ShowMainLineLabels) || (ShowAdditionalTPLabel)) Initialization(); // Creates necessary line labels.
     HideShowMaximize(); // For panel resizing.
     RefreshValues(); // For some value to appear inside the TP edit field.
     for (int i = 0; i < sets.TakeProfitsNumber; i++)
@@ -4207,7 +4230,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_BACK, false);
-                if (ShowLineLabels)
+                if (ShowMainLineLabels)
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_BACK, DrawTextAsBackground);
@@ -4221,7 +4244,7 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
                 {
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                     ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_BACK, false);
-                    if (ShowLineLabels)
+                    if (ShowMainLineLabels)
                     {
                         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
@@ -4252,6 +4275,26 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
             sets.SpreadAdjustmentTP = false;
         }
         RefreshValues();
+    }
+}
+
+void CPositionSizeCalculator::OnChangeChkTPLockedOnSL()
+{
+    if (sets.TPLockedOnSL != m_ChkTPLockedOnSL.Checked())
+    {
+        sets.TPLockedOnSL = m_ChkTPLockedOnSL.Checked();
+        if (!sets.TPLockedOnSL)
+        {
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, true);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, sets.WasSelectedTakeProfitLine);
+        }
+        else if (sets.TakeProfitLevel != 0)
+        {
+            sets.WasSelectedTakeProfitLine = ObjectGetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, false);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTABLE, false);
+            ProcessTPChange(true);
+        }
     }
 }
 
@@ -4486,14 +4529,27 @@ void CPositionSizeCalculator::OnChangeChkSpreadAdjustmentTP()
     }
 }
 
-void CPositionSizeCalculator::OnChangeChkCountPendings()
+void CPositionSizeCalculator::OnClickBtnIncludeOrders()
 {
-    if (sets.CountPendingOrders != m_ChkCountPendings.Checked())
+    // Switch to the next value.
+    switch(sets.IncludeOrders)
     {
-        sets.CountPendingOrders = m_ChkCountPendings.Checked();
-        CalculatePortfolioRisk();
-        DisplayValues();
+    default:
+    case INCLUDE_ORDERS_ALL:
+        sets.IncludeOrders = INCLUDE_ORDERS_OPEN;
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN);
+        break;
+    case INCLUDE_ORDERS_OPEN:
+        sets.IncludeOrders = INCLUDE_ORDERS_PENDING;
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING);
+        break;
+    case INCLUDE_ORDERS_PENDING:
+        sets.IncludeOrders = INCLUDE_ORDERS_ALL;
+        m_BtnIncludeOrders.Text(TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL);
+        break;
     }
+    CalculatePortfolioRisk();
+    DisplayValues();
 }
 
 void CPositionSizeCalculator::OnChangeChkIgnoreOrdersWithoutSL()
@@ -4516,23 +4572,46 @@ void CPositionSizeCalculator::OnChangeChkIgnoreOrdersWithoutTP()
     }
 }
 
-void CPositionSizeCalculator::OnClickBtnIgnoreSymbols()
+void CPositionSizeCalculator::OnClickBtnIncludeSymbols()
 {
     // Switch to the next value.
-    switch(sets.IgnoreSymbols)
+    switch(sets.IncludeSymbols)
     {
     default:
-    case IGNORE_SYMBOLS_NONE:
-        sets.IgnoreSymbols = IGNORE_SYMBOLS_OTHER;
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_OTHER);
+    case INCLUDE_SYMBOLS_ALL:
+        sets.IncludeSymbols = INCLUDE_SYMBOLS_CURRENT;
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT);
         break;
-    case IGNORE_SYMBOLS_OTHER:
-        sets.IgnoreSymbols = IGNORE_SYMBOLS_CURRENT;
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_CURRENT);
+    case INCLUDE_SYMBOLS_CURRENT:
+        sets.IncludeSymbols = INCLUDE_SYMBOLS_OTHER;
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER);
         break;
-    case IGNORE_SYMBOLS_CURRENT:
-        sets.IgnoreSymbols = IGNORE_SYMBOLS_NONE;
-        m_BtnIgnoreSymbols.Text(TRANSLATION_BUTTON_SYMBOLS_NO);
+    case INCLUDE_SYMBOLS_OTHER:
+        sets.IncludeSymbols = INCLUDE_SYMBOLS_ALL;
+        m_BtnIncludeSymbols.Text(TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL);
+        break;
+    }
+    CalculatePortfolioRisk();
+    DisplayValues();
+}
+
+void CPositionSizeCalculator::OnClickBtnIncludeDirections()
+{
+    // Switch to the next value.
+    switch(sets.IncludeDirections)
+    {
+    default:
+    case INCLUDE_DIRECTIONS_ALL:
+        sets.IncludeDirections = INCLUDE_DIRECTIONS_BUY;
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY);
+        break;
+    case INCLUDE_DIRECTIONS_BUY:
+        sets.IncludeDirections = INCLUDE_DIRECTIONS_SELL;
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL);
+        break;
+    case INCLUDE_DIRECTIONS_SELL:
+        sets.IncludeDirections = INCLUDE_DIRECTIONS_ALL;
+        m_BtnIncludeDirections.Text(TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL);
         break;
     }
     CalculatePortfolioRisk();
@@ -4811,14 +4890,16 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     }
     FileWrite(fh, "AccountButton");
     FileWrite(fh, IntegerToString(sets.AccountButton));
-    FileWrite(fh, "CountPendingOrders");
-    FileWrite(fh, IntegerToString(sets.CountPendingOrders));
+    FileWrite(fh, "IncludeOrders");
+    FileWrite(fh, IntegerToString(sets.IncludeOrders));
     FileWrite(fh, "IgnoreOrdersWithoutSL");
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutSL));
     FileWrite(fh, "IgnoreOrdersWithoutTP");
     FileWrite(fh, IntegerToString(sets.IgnoreOrdersWithoutTP));
-    FileWrite(fh, "IgnoreSymbols");
-    FileWrite(fh, IntegerToString(sets.IgnoreSymbols));
+    FileWrite(fh, "IncludeSymbols");
+    FileWrite(fh, IntegerToString(sets.IncludeSymbols));
+    FileWrite(fh, "IncludeDirections");
+    FileWrite(fh, IntegerToString(sets.IncludeDirections));
     FileWrite(fh, "ShowLines");
     FileWrite(fh, IntegerToString(sets.ShowLines));
     FileWrite(fh, "SelectedTab");
@@ -4972,14 +5053,16 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, DoubleToString(DefaultMoneyRisk, AccountCurrencyDigits));
         FileWrite(fh, "Parameter_DefaultPositionSize");
         FileWrite(fh, DoubleToString(DefaultPositionSize, LotStep_digits));
-        FileWrite(fh, "Parameter_DefaultCountPendingOrders");
-        FileWrite(fh, IntegerToString(DefaultCountPendingOrders));
+        FileWrite(fh, "Parameter_DefaultIncludeOrders");
+        FileWrite(fh, IntegerToString(DefaultIncludeOrders));
         FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutSL");
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutSL));
         FileWrite(fh, "Parameter_DefaultIgnoreOrdersWithoutTP");
         FileWrite(fh, IntegerToString(DefaultIgnoreOrdersWithoutTP));
-        FileWrite(fh, "Parameter_DefaultIgnoreSymbols");
-        FileWrite(fh, IntegerToString(DefaultIgnoreSymbols));
+        FileWrite(fh, "Parameter_DefaultIncludeSymbols");
+        FileWrite(fh, IntegerToString(DefaultIncludeSymbols));
+        FileWrite(fh, "Parameter_DefaultIncludeDirections");
+        FileWrite(fh, IntegerToString(DefaultIncludeDirections));
         FileWrite(fh, "Parameter_DefaultCustomLeverage");
         FileWrite(fh, DoubleToString(DefaultCustomLeverage));
         FileWrite(fh, "Parameter_DefaultMagicNumber");
@@ -5135,14 +5218,16 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
         }
         else if (var_name == "AccountButton")
             sets.AccountButton = (ACCOUNT_BUTTON)StringToInteger(var_content);
-        else if (var_name == "CountPendingOrders")
-            sets.CountPendingOrders = (bool)StringToInteger(var_content);
+        else if (var_name == "IncludeOrders")
+            sets.IncludeOrders = (INCLUDE_ORDERS)StringToInteger(var_content);
         else if (var_name == "IgnoreOrdersWithoutSL")
             sets.IgnoreOrdersWithoutSL = (bool)StringToInteger(var_content);
         else if (var_name == "IgnoreOrdersWithoutTP")
             sets.IgnoreOrdersWithoutTP = (bool)StringToInteger(var_content);
-        else if (var_name == "IgnoreSymbols")
-            sets.IgnoreSymbols = (IGNORE_SYMBOLS)StringToInteger(var_content);
+        else if (var_name == "IncludeSymbols")
+            sets.IncludeSymbols = (INCLUDE_SYMBOLS)StringToInteger(var_content);
+        else if (var_name == "IncludeDirections")
+            sets.IncludeDirections = (INCLUDE_DIRECTIONS)StringToInteger(var_content);
         else if (var_name == "ShowLines")
             sets.ShowLines = (bool)StringToInteger(var_content);
         else if (var_name == "SelectedTab")
@@ -5363,9 +5448,9 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                     else sets.RiskFromPositionSize = false;
                 }
             }
-            else if (var_name == "Parameter_DefaultCountPendingOrders")
+            else if (var_name == "Parameter_DefaultIncludeOrders")
             {
-                if ((bool)StringToInteger(var_content) != DefaultCountPendingOrders) sets.CountPendingOrders = DefaultCountPendingOrders;
+                if ((INCLUDE_ORDERS)StringToInteger(var_content) != DefaultIncludeOrders) sets.IncludeOrders = DefaultIncludeOrders;
             }
             else if (var_name == "Parameter_DefaultIgnoreOrdersWithoutSL")
             {
@@ -5375,13 +5460,13 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             {
                 if ((bool)StringToInteger(var_content) != DefaultIgnoreOrdersWithoutTP) sets.IgnoreOrdersWithoutTP = DefaultIgnoreOrdersWithoutTP;
             }
-            else if (var_name == "Parameter_DefaultIgnoreSymbols")
+            else if (var_name == "Parameter_DefaultIncludeSymbols")
             {
-                if ((IGNORE_SYMBOLS)StringToInteger(var_content) != DefaultIgnoreSymbols) sets.IgnoreSymbols = DefaultIgnoreSymbols;
+                if ((INCLUDE_SYMBOLS)StringToInteger(var_content) != DefaultIncludeSymbols) sets.IncludeSymbols = DefaultIncludeSymbols;
             }
-            else if (var_name == "Parameter_DefaultCustomLeverage")
+            else if (var_name == "Parameter_DefaultIncludeDirections")
             {
-                if (StringToDouble(var_content) != DefaultCustomLeverage) sets.CustomLeverage = DefaultCustomLeverage;
+                if ((INCLUDE_DIRECTIONS)StringToInteger(var_content) != DefaultIncludeDirections) sets.IncludeDirections = DefaultIncludeDirections;
             }
             else if (var_name == "Parameter_DefaultMagicNumber")
             {
@@ -5820,7 +5905,7 @@ void CPositionSizeCalculator::ProcessLineObjectsAfterUpdatingMultipleTP(int i)
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + postfix, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + postfix, OBJPROP_SELECTED, true);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + postfix, OBJPROP_BACK, false);
-            if (ShowLineLabels)
+            if (ShowMainLineLabels)
             {
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + postfix, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
                 ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + postfix, OBJPROP_BACK, DrawTextAsBackground);
@@ -5891,6 +5976,12 @@ void CPositionSizeCalculator::EmulateMinMaxClick()
         Minimize();
         minmax_button.Pressed(true); // Shown as two small windows.
     }
+}
+
+// Resets the m_ChkTPLockedOnSL checkbox. To be called from outside the class.
+void CPositionSizeCalculator::ResetChkTPLockedOnSL()
+{
+    m_ChkTPLockedOnSL.Checked(false);
 }
 
 // Check if all required lines exist and restore them if they have been accidentally deleted.
@@ -6238,7 +6329,7 @@ void Initialization()
     }
     StopLoss = MathAbs(sets.EntryLevel - sets.StopLossLevel);
 
-    if (ShowLineLabels)
+    if (ShowMainLineLabels)
     {
         ObjectCreate(ChartID(), ObjectPrefix + "StopLossLabel", OBJ_LABEL, 0, 0, 0);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_COLOR, clrNONE);
@@ -6248,19 +6339,6 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_SL_LABEL);
-        if ((ShowAdditionalSLLabel) && (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1))
-        {
-            ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_COLOR, clrNONE);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_SELECTABLE, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_HIDDEN, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_RISK + ", % ($)");
-        }
-
         ObjectCreate(ChartID(), ObjectPrefix + "EntryLabel", OBJ_LABEL, 0, 0, 0);
         if ((sets.ShowLines) && (sets.EntryType != Instant)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -6270,18 +6348,30 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL);
-        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH) && (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1))
-        {
-            ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_COLOR, clrNONE);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_SELECTABLE, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_HIDDEN, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL);
-        }
+    }
+    if ((ShowAdditionalSLLabel) && (ObjectFind(0, ObjectPrefix + "SLAdditionalLabel") == -1))
+    {
+        ObjectCreate(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_COLOR, clrNONE);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_HIDDEN, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+        ObjectSetString(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_RISK + ", % ($)");
+    }
+    if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH) && (ObjectFind(0, ObjectPrefix + "EntryAdditionalLabel") == -1))
+    {
+        ObjectCreate(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_COLOR, clrNONE);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_HIDDEN, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+        ObjectSetString(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL);
     }
 
     if (ObjectFind(ChartID(), ObjectPrefix + "TakeProfitLine") == -1)
@@ -6311,7 +6401,7 @@ void Initialization()
         if (LinesSelectedStatus == 1) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, true);
         else if (LinesSelectedStatus == 2) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, false);
     }
-    if (ShowLineLabels)
+    if (ShowMainLineLabels)
     {
         ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJ_LABEL, 0, 0, 0);
         if ((sets.TakeProfitLevel > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6322,18 +6412,18 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
         ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_BACK, DrawTextAsBackground);
         ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_TP_LABEL);
-        if (ShowAdditionalTPLabel)
-        {
-            ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJ_LABEL, 0, 0, 0);
-            if ((sets.TakeProfitLevel > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_COLOR, clrNONE);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_SELECTABLE, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_HIDDEN, false);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
-            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
-            ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + ", % ($), R/R");
-        }
+    }
+    if (ShowAdditionalTPLabel)
+    {
+        ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJ_LABEL, 0, 0, 0);
+        if ((sets.TakeProfitLevel > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_COLOR, clrNONE);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_SELECTABLE, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_HIDDEN, false);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_CORNER, CORNER_LEFT_UPPER);
+        ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_BACK, DrawTextAsBackground);
+        ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + ", % ($), R/R");
     }
 
     if (!DisableStopLimit)
@@ -6350,7 +6440,7 @@ void Initialization()
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_SELECTABLE, true);
         ObjectSetString(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_TOOLTIP, TRANSLATION_TOOLTIP_STOP_PRICE_LINE);
         if (DefaultLinesSelected) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_SELECTED, true);
-        if (ShowLineLabels)
+        if (ShowMainLineLabels)
         {
             ObjectCreate(ChartID(), ObjectPrefix + "StopPriceLabel", OBJ_LABEL, 0, 0, 0);
             if ((sets.EntryType == StopLimit) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6420,7 +6510,7 @@ void Initialization()
             if (LinesSelectedStatus == 1) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, true);
             else if (LinesSelectedStatus == 2) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_SELECTED, false);
         }
-        if (ShowLineLabels)
+        if (ShowMainLineLabels)
         {
             ObjectCreate(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJ_LABEL, 0, 0, 0);
             if ((sets.TP[i] > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
@@ -6431,18 +6521,18 @@ void Initialization()
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_CORNER, CORNER_LEFT_UPPER);
             ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
             ObjectSetString(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE + " #" + IntegerToString(i + 1) + ", " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS);
-                if (ShowAdditionalTPLabel)
-            {
-                ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJ_LABEL, 0, 0, 0);
-                if ((sets.TP[i] > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_COLOR, clrNONE);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_SELECTABLE, false);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_HIDDEN, false);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_CORNER, CORNER_LEFT_UPPER);
-                ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
-                ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + " #" + IntegerToString(i + 1) + ", $ (%), R/R");
-            }
+        }
+        if (ShowAdditionalTPLabel)
+        {
+            ObjectCreate(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJ_LABEL, 0, 0, 0);
+            if ((sets.TP[i] > 0) && (sets.ShowLines)) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_COLOR, clrNONE);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_SELECTABLE, false);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_HIDDEN, false);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_CORNER, CORNER_LEFT_UPPER);
+            ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_BACK, DrawTextAsBackground);
+            ObjectSetString(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TOOLTIP, TRANSLATION_LABEL_REWARD + " #" + IntegerToString(i + 1) + ", $ (%), R/R");
         }
     }
 
@@ -6510,10 +6600,9 @@ void RecalculatePositionSize()
 
     // If could not find account currency, probably not connected. Also check for symbol availability.
     if ((AccountInfoString(ACCOUNT_CURRENCY) == "") || (!TerminalInfoInteger(TERMINAL_CONNECTED)) || (!SymbolInfoInteger(Symbol(), SYMBOL_SELECT)) || (!SymbolInfoInteger(SymbolForTrading, SYMBOL_SELECT))) return;
-    else if ((TickSize == -1) || (TickValue == 0))
-    {
-        GetSymbolAndAccountData();
-    }
+
+    GetSymbolAndAccountData();
+
     Bid = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
     Ask = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
 
@@ -6617,99 +6706,102 @@ void RecalculatePositionSize()
     sets.TakeProfitLevel = tTakeProfitLevel;
     for (int i = 1; i < sets.TakeProfitsNumber; i++) sets.TP[i] = add_tTakeProfitLevel[i - 1];
 
-    if (ShowLineLabels)
+    if (ShowMainLineLabels)
     {
         DrawLineLabel(ObjectPrefix + "StopLossLabel", IntegerToString((int)MathRound((MathAbs(tStopLossLevel - tEntryLevel) / _Point))), tStopLossLevel, sl_label_font_color);
         if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        if (ShowAdditionalSLLabel)
+    }
+    if (ShowAdditionalSLLabel)
+    {
+        string label_text;
+        if (WarningSL == "")
         {
-            string label_text;
-            if (WarningSL == "")
-            {
-                string perc_risk;
-                if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(OutputRiskMoney / AccSize * 100, 2), 2));
-                else perc_risk = "100";
-                label_text = perc_risk + "% (" + FormatDouble(DoubleToString(OutputRiskMoney, AccountCurrencyDigits)) + " " + AccountCurrency + ")";
-            }
-            else label_text = WarningSL;
-            DrawLineLabel(ObjectPrefix + "SLAdditionalLabel", label_text, tStopLossLevel, sl_label_font_color, true);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+            string perc_risk;
+            if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(OutputRiskMoney / AccSize * 100, 2), 2));
+            else perc_risk = "100";
+            label_text = perc_risk + "% (" + FormatDouble(DoubleToString(OutputRiskMoney, AccountCurrencyDigits)) + " " + AccountCurrency + ")";
         }
-        if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH))
-        {
-            DrawLineLabel(ObjectPrefix + "EntryAdditionalLabel", FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits), tEntryLevel, entry_label_font_color, true);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        }
-        if (sets.EntryType != Instant)
-        {
-            DrawLineLabel(ObjectPrefix + "EntryLabel", IntegerToString((int)MathRound((MathAbs(tEntryLevel - AskBid) / _Point))), tEntryLevel, entry_label_font_color);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        }
-        if (tTakeProfitLevel > 0)
+        else label_text = WarningSL;
+        DrawLineLabel(ObjectPrefix + "SLAdditionalLabel", label_text, tStopLossLevel, sl_label_font_color, true);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "SLAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+    }
+    if ((ShowAdditionalEntryLabel) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_LINE) && (AdditionalTradeButtons != ADDITIONAL_TRADE_BUTTONS_BOTH))
+    {
+        DrawLineLabel(ObjectPrefix + "EntryAdditionalLabel", FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits), tEntryLevel, entry_label_font_color, true);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+    }
+    if ((ShowMainLineLabels) && (sets.EntryType != Instant))
+    {
+        DrawLineLabel(ObjectPrefix + "EntryLabel", IntegerToString((int)MathRound((MathAbs(tEntryLevel - AskBid) / _Point))), tEntryLevel, entry_label_font_color);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+    }
+    if (tTakeProfitLevel > 0)
+    {
+        if (ShowMainLineLabels)
         {
             DrawLineLabel(ObjectPrefix + "TakeProfitLabel", IntegerToString((int)MathRound((MathAbs(tTakeProfitLevel - tEntryLevel) / _Point))), tTakeProfitLevel, tp_label_font_color);
             if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-
-            if (ShowAdditionalTPLabel)
-            {
-                string label_text;
-                if ((WarningTP == "") && (MainOutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP))
-                {
-                    string perc_risk;
-                    if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(MainOutputReward / AccSize * 100, 2, RoundDown), 2));
-                    else perc_risk = "100";
-                    label_text = perc_risk + "% (" + FormatDouble(DoubleToString(MainOutputReward, AccountCurrencyDigits)) + " " + AccountCurrency + ") " + MainOutputRR + "R";
-                    // When multiple TPs are used, append correct lot volume for each TP at the beginning of the additional TP label:
-                    if (sets.TakeProfitsNumber > 1) label_text = FormatDouble(DoubleToString(ArrayPositionSize[0], LotStep_digits), LotStep_digits) + " Lots " + label_text;
-                }
-                else
-                {
-                    label_text = WarningTP;
-                    if (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += MainOutputRR;
-                }
-                DrawLineLabel(ObjectPrefix + "TPAdditionalLabel", label_text, tTakeProfitLevel, tp_label_font_color, true);
-                if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            }
         }
-        for (int i = 1; i < sets.TakeProfitsNumber; i++)
+        if (ShowAdditionalTPLabel)
         {
-            //double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
+            string label_text;
+            if ((WarningTP == "") && (MainOutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP))
+            {
+                string perc_risk;
+                if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(MainOutputReward / AccSize * 100, 2, RoundDown), 2));
+                else perc_risk = "100";
+                label_text = perc_risk + "% (" + FormatDouble(DoubleToString(MainOutputReward, AccountCurrencyDigits)) + " " + AccountCurrency + ") " + MainOutputRR + "R";
+                // When multiple TPs are used, append correct lot volume for each TP at the beginning of the additional TP label:
+                if (sets.TakeProfitsNumber > 1) label_text = FormatDouble(DoubleToString(ArrayPositionSize[0], LotStep_digits), LotStep_digits) + " Lots " + label_text;
+            }
+            else
+            {
+                label_text = WarningTP;
+                if (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += " " + MainOutputRR;
+            }
+            DrawLineLabel(ObjectPrefix + "TPAdditionalLabel", label_text, tTakeProfitLevel, tp_label_font_color, true);
+            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+        }
+    }
+    for (int i = 1; i < sets.TakeProfitsNumber; i++)
+    {
+        if (ShowMainLineLabels)
+        {
             DrawLineLabel(ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), IntegerToString((int)MathRound((MathAbs(add_tTakeProfitLevel[i - 1] - tEntryLevel) / _Point))), add_tTakeProfitLevel[i - 1], tp_label_font_color);
             if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
             else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-
-            if (ShowAdditionalTPLabel)
-            {
-                string label_text;
-                if ((AdditionalWarningTP[i - 1] == "") && (AdditionalOutputRR[i - 1] != TRANSLATION_LABEL_WARNING_INVALID_TP))
-                {
-                    string perc_risk;
-                    if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(AdditionalOutputReward[i - 1] / AccSize * 100, 2, RoundDown), 2));
-                    else perc_risk = "100";
-                    label_text = FormatDouble(DoubleToString(ArrayPositionSize[i], LotStep_digits), LotStep_digits) + " Lots " + perc_risk + "% (" + FormatDouble(DoubleToString(AdditionalOutputReward[i - 1], AccountCurrencyDigits)) + " " + AccountCurrency + ") " + AdditionalOutputRR[i - 1] + "R";
-                }
-                else
-                {
-                    label_text = AdditionalWarningTP[i - 1];
-                    if (AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += AdditionalOutputRR[i - 1];
-                }
-                DrawLineLabel(ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), label_text, add_tTakeProfitLevel[i - 1], tp_label_font_color, true);
-                if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-                else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-            }
         }
-        if (sets.EntryType == StopLimit)
+        if (ShowAdditionalTPLabel)
         {
-            DrawLineLabel(ObjectPrefix + "StopPriceLabel", IntegerToString((int)MathRound((MathAbs(tStopPriceLevel - tEntryLevel) / _Point))), tStopPriceLevel, sp_label_font_color);
-            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
-            else ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+            string label_text;
+            if ((AdditionalWarningTP[i - 1] == "") && (AdditionalOutputRR[i - 1] != TRANSLATION_LABEL_WARNING_INVALID_TP))
+            {
+                string perc_risk;
+                if (AccSize > 0) perc_risk = FormatDouble(DoubleToString(Round(AdditionalOutputReward[i - 1] / AccSize * 100, 2, RoundDown), 2));
+                else perc_risk = "100";
+                label_text = FormatDouble(DoubleToString(ArrayPositionSize[i], LotStep_digits), LotStep_digits) + " Lots " + perc_risk + "% (" + FormatDouble(DoubleToString(AdditionalOutputReward[i - 1], AccountCurrencyDigits)) + " " + AccountCurrency + ") " + AdditionalOutputRR[i - 1] + "R";
+            }
+            else
+            {
+                label_text = AdditionalWarningTP[i - 1];
+                if (AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) label_text += AdditionalOutputRR[i - 1];
+            }
+            DrawLineLabel(ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), label_text, add_tTakeProfitLevel[i - 1], tp_label_font_color, true);
+            if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+            else ObjectSetInteger(ChartID(), ObjectPrefix + "TPAdditionalLabel" + IntegerToString(i), OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
         }
+    }
+    if ((ShowMainLineLabels) && (sets.EntryType == StopLimit))
+    {
+        DrawLineLabel(ObjectPrefix + "StopPriceLabel", IntegerToString((int)MathRound((MathAbs(tStopPriceLevel - tEntryLevel) / _Point))), tStopPriceLevel, sp_label_font_color);
+        if (sets.ShowLines) ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        else ObjectSetInteger(ChartID(), ObjectPrefix + "StopPriceLabel", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
     }
 
     if (StopLoss == 0)
@@ -6867,7 +6959,7 @@ void CalculateRiskAndPositionSize()
     if (tTakeProfitLevel > 0)
     {
         double StopLevel = SymbolInfoInteger(SymbolForTrading, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
-        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = " " + TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+        if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
     if (tTakeProfitLevel > 0)
@@ -6898,6 +6990,11 @@ void CalculateRiskAndPositionSize()
         {
             InputRR = "";
             MainOutputRR = "";
+        }
+        else if (WarningTP != "")
+        {
+            InputRR = TRANSLATION_LABEL_WARNING_TOO_CLOSE;
+            MainOutputRR = InputRR;
         }
         // Have valid take-profit level that is above entry for SL below entry, or below entry for SL above entry.
         else if ((((tTakeProfitLevel > tEntryLevel) && (tEntryLevel > tStopLossLevel)) || ((tTakeProfitLevel < tEntryLevel) && (tEntryLevel < tStopLossLevel))) && (OutputRiskMoney != 0))
@@ -6977,7 +7074,7 @@ void CalculateRiskAndPositionSize()
             TotalInputRisk += (RiskMoney * (double)sets.TPShare[i] / 100.0);
             if (sets.TP[i] > 0) InputReward = DoubleToString(StringToDouble(InputReward) + Round(RiskMoney * (double)sets.TPShare[i] / 100.0 * MathAbs(sets.TP[i] - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
         }
-        if (OutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP)
+        if ((OutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP) && (OutputRR != TRANSLATION_LABEL_WARNING_TOO_CLOSE))
         {
             if (TotalOutputRisk != 0) OutputRR = DoubleToString(Round(OutputReward / TotalOutputRisk, 2, RoundDown), 2);
             else OutputRR = "";
@@ -7024,7 +7121,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     PortfolioLossMoney = 0;
     double PortfolioRewardMoney = 0;
     double volume = 0;
-    if ((sets.CountPendingOrders) || (calculate_risk_for_trading_tab))
+    if ((sets.IncludeOrders != INCLUDE_ORDERS_OPEN) || (calculate_risk_for_trading_tab))
     {
         int total = OrdersTotal();
         for (int i = 0; i < total; i++)
@@ -7037,19 +7134,25 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
             // Skip orders in other symbols if the ignore checkbox is ticked.
             if (!calculate_risk_for_trading_tab)
             {
-                if ((OrderGetString(ORDER_SYMBOL) != SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_OTHER)) continue;
-                else if ((OrderGetString(ORDER_SYMBOL) == SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_CURRENT)) continue;
+                if ((OrderGetString(ORDER_SYMBOL) != SymbolForTrading) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_CURRENT)) continue;
+                else if ((OrderGetString(ORDER_SYMBOL) == SymbolForTrading) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_OTHER)) continue;
+
+                if (((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP_LIMIT)) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_SELL)) continue;
+                if (((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP_LIMIT)) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_BUY)) continue;
+
+                if ((OrderGetDouble(ORDER_SL) == 0) && (sets.IgnoreOrdersWithoutSL)) continue;
+                if ((OrderGetDouble(ORDER_TP) == 0) && (sets.IgnoreOrdersWithoutTP)) continue;
             }
             else if ((OrderGetString(ORDER_SYMBOL) != SymbolForTrading) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
 
             // Buy orders.
-            if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
+            if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP_LIMIT))
             {
                 // No stop-loss.
                 if (OrderGetDouble(ORDER_SL) == 0)
                 {
                     // Losing all the current value.
-                    if ((!sets.IgnoreOrdersWithoutSL) || (calculate_risk_for_trading_tab)) PointsLoss = OrderGetDouble(ORDER_PRICE_OPEN);
+                    PointsLoss = OrderGetDouble(ORDER_PRICE_OPEN);
                 }
                 else
                 {
@@ -7060,7 +7163,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                 if (OrderGetDouble(ORDER_TP) == 0)
                 {
                     // Potential reward is infinite.
-                    if ((!sets.IgnoreOrdersWithoutTP) || (calculate_risk_for_trading_tab)) PointsReward = DBL_MAX;
+                    PointsReward = DBL_MAX;
                 }
                 else
                 {
@@ -7068,13 +7171,13 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                 }
             }
             // Sell orders.
-            else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP))
+            else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP_LIMIT))
             {
                 // No stop-loss.
                 if (OrderGetDouble(ORDER_SL) == 0)
                 {
                     // Potential loss is infinite.
-                    if ((!sets.IgnoreOrdersWithoutSL) || (calculate_risk_for_trading_tab)) PointsLoss = DBL_MAX;
+                    PointsLoss = DBL_MAX;
                 }
                 else
                 {
@@ -7085,7 +7188,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                 if (OrderGetDouble(ORDER_TP) == 0)
                 {
                     // Potential reward is current value.
-                    if ((!sets.IgnoreOrdersWithoutTP) || (calculate_risk_for_trading_tab)) PointsReward = OrderGetDouble(ORDER_PRICE_OPEN);
+                    PointsReward = OrderGetDouble(ORDER_PRICE_OPEN);
                 }
                 else
                 {
@@ -7128,12 +7231,12 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                     if ((AccountCurrency == SymbolInfoString(Symbol_order, SYMBOL_CURRENCY_BASE)) && ((CalcMode_order == SYMBOL_CALC_MODE_FOREX) || (CalcMode_order == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
                     {
                         double current_rate = 1, future_rate = 1;
-                        if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
+                        if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP_LIMIT))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_ASK);
                             future_rate = current_rate - PointsLoss;
                         }
-                        else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP))
+                        else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP_LIMIT))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
                             future_rate = current_rate + PointsLoss;
@@ -7182,12 +7285,12 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                     if ((AccountCurrency == SymbolInfoString(Symbol_order, SYMBOL_CURRENCY_BASE)) && ((CalcMode_order == SYMBOL_CALC_MODE_FOREX) || (CalcMode_order == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
                     {
                         double current_rate = 1, future_rate = 1;
-                        if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP))
+                        if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_BUY_STOP_LIMIT))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_ASK);
                             future_rate = current_rate + PointsReward;
                         }
-                        else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP))
+                        else if ((OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_LIMIT) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP) || (OrderGetInteger(ORDER_TYPE) == ORDER_TYPE_SELL_STOP_LIMIT))
                         {
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
                             future_rate = current_rate - PointsReward;
@@ -7206,164 +7309,173 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
         }
     }
 
-    int total = PositionsTotal();
-    for (int i = 0; i < total; i++)
+    if ((sets.IncludeOrders != INCLUDE_ORDERS_PENDING) || (calculate_risk_for_trading_tab))
     {
-        double PointsLoss = 0;
-        double PointsReward = 0;
-        // Works with hedging and netting.
-        if (PositionSelectByTicket(PositionGetTicket(i)))
+        int total = PositionsTotal();
+        for (int i = 0; i < total; i++)
         {
-            // Skip orders in other symbols if the ignore checkbox is ticked.
-            if (!calculate_risk_for_trading_tab)
+            double PointsLoss = 0;
+            double PointsReward = 0;
+            // Works with hedging and netting.
+            if (PositionSelectByTicket(PositionGetTicket(i)))
             {
-                if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_OTHER)) continue;
-                else if ((PositionGetString(POSITION_SYMBOL) == SymbolForTrading) && (sets.IgnoreSymbols == IGNORE_SYMBOLS_CURRENT)) continue;
-            }
-            else if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
-
-            // Buy position.
-            if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-            {
-                // No stop-loss.
-                if (PositionGetDouble(POSITION_SL) == 0)
+                // Skip orders in other symbols if the ignore checkbox is ticked.
+                if (!calculate_risk_for_trading_tab)
                 {
-                    // Losing all the current value.
-                    if ((!sets.IgnoreOrdersWithoutSL) || (calculate_risk_for_trading_tab)) PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN);
+                    if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_CURRENT)) continue;
+                    else if ((PositionGetString(POSITION_SYMBOL) == SymbolForTrading) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_OTHER)) continue;
+
+                    if ((PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_SELL)) continue;
+                    if ((PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_BUY)) continue;
+                    
+                    if ((PositionGetDouble(POSITION_SL) == 0) && (sets.IgnoreOrdersWithoutSL)) continue;
+                    if ((PositionGetDouble(POSITION_TP) == 0) && (sets.IgnoreOrdersWithoutTP)) continue;
+                }
+                else if ((PositionGetString(POSITION_SYMBOL) != SymbolForTrading) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
+    
+                // Buy position.
+                if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+                {
+                    // No stop-loss.
+                    if (PositionGetDouble(POSITION_SL) == 0)
+                    {
+                        // Losing all the current value.
+                        PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN);
+                    }
+                    else
+                    {
+                        // Stop-loss below open price.
+                        PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_SL);
+                    }
+                    // No take-profit.
+                    if (PositionGetDouble(POSITION_TP) == 0)
+                    {
+                        // Potential reward is infinite.
+                        PointsReward = DBL_MAX;
+                    }
+                    else
+                    {
+                        PointsReward = PositionGetDouble(POSITION_TP) - PositionGetDouble(POSITION_PRICE_OPEN);
+                    }
+                }
+                // Sell positions.
+                else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
+                {
+                    // No stop-loss.
+                    if (PositionGetDouble(POSITION_SL) == 0)
+                    {
+                        // Potential loss is infinite.
+                        PointsLoss = DBL_MAX;
+                    }
+                    else
+                    {
+                        // Stop-loss above open price.
+                        PointsLoss = PositionGetDouble(POSITION_SL) - PositionGetDouble(POSITION_PRICE_OPEN);
+                    }
+                    // No take-profit.
+                    if (PositionGetDouble(POSITION_TP) == 0)
+                    {
+                        // Potential reward is current value.
+                        PointsReward = PositionGetDouble(POSITION_PRICE_OPEN);
+                    }
+                    else
+                    {
+                        PointsReward = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_TP);
+                    }
+                }
+    
+                volume += PositionGetDouble(POSITION_VOLUME);
+    
+                if ((PointsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
+                {
+                    string Symbol_position = PositionGetString(POSITION_SYMBOL);
+                    ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
+                    double UnitCost;
+                    if ((CalcMode_position == SYMBOL_CALC_MODE_CFD) || (CalcMode_position == SYMBOL_CALC_MODE_CFDINDEX) || (CalcMode_position == SYMBOL_CALC_MODE_CFDLEVERAGE))
+                    {
+                        UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE) * SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_CONTRACT_SIZE);
+                        string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
+                        if (symbol_profit_currency != AccountCurrency)
+                        {
+                            ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+                            double CCC = CalculateAdjustment(Loss, symbol_profit_currency, AccountCurrency, Symbol_position);
+                            // Adjust the unit cost.
+                            UnitCost *= CCC;
+                        }
+                    }
+                    // With Forex instruments, tick value already equals 1 unit cost.
+                    else UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_VALUE_LOSS);
+                    double TickSize_local = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE);
+    
+                    // If account currency == pair's base currency, adjust UnitCost to future rate (SL). Works only for Forex pairs.
+                    if ((AccountCurrency == SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_BASE)) && ((CalcMode_position == SYMBOL_CALC_MODE_FOREX) || (CalcMode_position == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
+                    {
+                        double current_rate = 1, future_rate = 1;
+                        if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+                        {
+                            current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
+                            future_rate = current_rate - PointsLoss;
+                        }
+                        else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
+                        {
+                            current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
+                            future_rate = current_rate + PointsLoss;
+                        }
+                        if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
+                        else UnitCost *= (current_rate / future_rate);
+                    }
+                    if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PointsLoss * UnitCost / TickSize_local - PositionGetDouble(POSITION_SWAP);
+                }
+                else // Infinite loss
+                {
+                    PortfolioLossMoney = DBL_MAX;
+                }
+    
+                if ((PointsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
+                {
+                    string Symbol_position = PositionGetString(POSITION_SYMBOL);
+                    ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
+                    double UnitCost;
+                    if ((CalcMode_position == SYMBOL_CALC_MODE_CFD) || (CalcMode_position == SYMBOL_CALC_MODE_CFDINDEX) || (CalcMode_position == SYMBOL_CALC_MODE_CFDLEVERAGE))
+                    {
+                        UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE) * SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_CONTRACT_SIZE);
+                        string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
+                        if (symbol_profit_currency != AccountCurrency)
+                        {
+                            ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+                            double CCC = CalculateAdjustment(Profit, symbol_profit_currency, AccountCurrency, Symbol_position);
+                            // Adjust the unit cost.
+                            UnitCost *= CCC;
+                        }
+                    }
+                    // With Forex instruments, tick value already equals 1 unit cost.
+                    else UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_VALUE_PROFIT);
+                    double TickSize_local = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE);
+    
+                    // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
+                    if ((AccountCurrency == SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_BASE)) && ((CalcMode_position == SYMBOL_CALC_MODE_FOREX) || (CalcMode_position == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
+                    {
+                        double current_rate = 1, future_rate = 1;
+                        if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+                        {
+                            current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
+                            future_rate = current_rate + PointsReward;
+                        }
+                        else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
+                        {
+                            current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
+                            future_rate = current_rate - PointsReward;
+                        }
+                        if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
+                        else UnitCost *= (current_rate / future_rate);
+                    }
+                    if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += PositionGetDouble(POSITION_VOLUME) * PointsReward * UnitCost / TickSize_local + PositionGetDouble(POSITION_SWAP);
                 }
                 else
                 {
-                    // Stop-loss below open price.
-                    PointsLoss = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_SL);
+                    // Infinite profit.
+                    PortfolioRewardMoney = DBL_MAX;
                 }
-                // No take-profit.
-                if (PositionGetDouble(POSITION_TP) == 0)
-                {
-                    // Potential reward is infinite.
-                    if ((!sets.IgnoreOrdersWithoutTP) || (calculate_risk_for_trading_tab)) PointsReward = DBL_MAX;
-                }
-                else
-                {
-                    PointsReward = PositionGetDouble(POSITION_TP) - PositionGetDouble(POSITION_PRICE_OPEN);
-                }
-            }
-            // Sell positions.
-            else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-            {
-                // No stop-loss.
-                if (PositionGetDouble(POSITION_SL) == 0)
-                {
-                    // Potential loss is infinite.
-                    if ((!sets.IgnoreOrdersWithoutSL) || (calculate_risk_for_trading_tab)) PointsLoss = DBL_MAX;
-                }
-                else
-                {
-                    // Stop-loss above open price.
-                    PointsLoss = PositionGetDouble(POSITION_SL) - PositionGetDouble(POSITION_PRICE_OPEN);
-                }
-                // No take-profit.
-                if (PositionGetDouble(POSITION_TP) == 0)
-                {
-                    // Potential reward is current value.
-                    if ((!sets.IgnoreOrdersWithoutTP) || (calculate_risk_for_trading_tab)) PointsReward = PositionGetDouble(POSITION_PRICE_OPEN);
-                }
-                else
-                {
-                    PointsReward = PositionGetDouble(POSITION_PRICE_OPEN) - PositionGetDouble(POSITION_TP);
-                }
-            }
-
-            volume += PositionGetDouble(POSITION_VOLUME);
-
-            if ((PointsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
-            {
-                string Symbol_position = PositionGetString(POSITION_SYMBOL);
-                ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
-                double UnitCost;
-                if ((CalcMode_position == SYMBOL_CALC_MODE_CFD) || (CalcMode_position == SYMBOL_CALC_MODE_CFDINDEX) || (CalcMode_position == SYMBOL_CALC_MODE_CFDLEVERAGE))
-                {
-                    UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE) * SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_CONTRACT_SIZE);
-                    string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
-                    if (symbol_profit_currency != AccountCurrency)
-                    {
-                        ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
-                        double CCC = CalculateAdjustment(Loss, symbol_profit_currency, AccountCurrency, Symbol_position);
-                        // Adjust the unit cost.
-                        UnitCost *= CCC;
-                    }
-                }
-                // With Forex instruments, tick value already equals 1 unit cost.
-                else UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_VALUE_LOSS);
-                double TickSize_local = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE);
-
-                // If account currency == pair's base currency, adjust UnitCost to future rate (SL). Works only for Forex pairs.
-                if ((AccountCurrency == SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_BASE)) && ((CalcMode_position == SYMBOL_CALC_MODE_FOREX) || (CalcMode_position == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
-                {
-                    double current_rate = 1, future_rate = 1;
-                    if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-                    {
-                        current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
-                        future_rate = current_rate - PointsLoss;
-                    }
-                    else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-                    {
-                        current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
-                        future_rate = current_rate + PointsLoss;
-                    }
-                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
-                    else UnitCost *= (current_rate / future_rate);
-                }
-                if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PointsLoss * UnitCost / TickSize_local - PositionGetDouble(POSITION_SWAP);
-            }
-            else // Infinite loss
-            {
-                PortfolioLossMoney = DBL_MAX;
-            }
-
-            if ((PointsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
-            {
-                string Symbol_position = PositionGetString(POSITION_SYMBOL);
-                ENUM_SYMBOL_CALC_MODE CalcMode_position = (ENUM_SYMBOL_CALC_MODE)SymbolInfoInteger(Symbol_position, SYMBOL_TRADE_CALC_MODE);
-                double UnitCost;
-                if ((CalcMode_position == SYMBOL_CALC_MODE_CFD) || (CalcMode_position == SYMBOL_CALC_MODE_CFDINDEX) || (CalcMode_position == SYMBOL_CALC_MODE_CFDLEVERAGE))
-                {
-                    UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE) * SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_CONTRACT_SIZE);
-                    string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
-                    if (symbol_profit_currency != AccountCurrency)
-                    {
-                        ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
-                        double CCC = CalculateAdjustment(Profit, symbol_profit_currency, AccountCurrency, Symbol_position);
-                        // Adjust the unit cost.
-                        UnitCost *= CCC;
-                    }
-                }
-                // With Forex instruments, tick value already equals 1 unit cost.
-                else UnitCost = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_VALUE_PROFIT);
-                double TickSize_local = SymbolInfoDouble(Symbol_position, SYMBOL_TRADE_TICK_SIZE);
-
-                // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
-                if ((AccountCurrency == SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_BASE)) && ((CalcMode_position == SYMBOL_CALC_MODE_FOREX) || (CalcMode_position == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
-                {
-                    double current_rate = 1, future_rate = 1;
-                    if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-                    {
-                        current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_ASK);
-                        future_rate = current_rate + PointsReward;
-                    }
-                    else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-                    {
-                        current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
-                        future_rate = current_rate - PointsReward;
-                    }
-                    if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
-                    else UnitCost *= (current_rate / future_rate);
-                }
-                if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += PositionGetDouble(POSITION_VOLUME) * PointsReward * UnitCost / TickSize_local + PositionGetDouble(POSITION_SWAP);
-            }
-            else
-            {
-                // Infinite profit.
-                PortfolioRewardMoney = DBL_MAX;
             }
         }
     }

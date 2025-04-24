@@ -26,7 +26,7 @@
 #define TRANSLATION_BUTTON_TP "TP, puntos"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Añadir nivel take-profit"
-#define TRANSLATION_TOOLTIP_BUTTON_TP "Poner TP basado en SL o habilitar modo bloqueado de TP"
+#define TRANSLATION_TOOLTIP_BUTTON_TP "Poner TP basado en SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "Aumentar Take-profit 1 punto"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "Disminuir Take-profit 1 punto"
@@ -94,14 +94,8 @@
 #define TRANSLATION_TOOLTIP_INPUTS "Los campos de esta columna se calculan a partir de entradas"
 #define TRANSLATION_TOOLTIP_RESULT "Los campos de esta columna tienen en cuenta las limitaciones del bróker"
 
-#define TRANSLATION_CHECKBOX_COUNT_PENDING_ORDERS "Contar órdenes pendientes"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar órdenes sin stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar órdenes sin take-profit"
-#define TRANSLATION_LABEL_IGNORE_TRADES_IN "Ignorar operaciones en"
-#define TRANSLATION_BUTTON_SYMBOLS_NO "sin símbolos "
-#define TRANSLATION_BUTTON_SYMBOLS_OTHER "otros símbolos "
-#define TRANSLATION_BUTTON_SYMBOLS_CURRENT "símbolo actual"
-#define TRANSLATION_BUTTON_SYMBOLS_TOOLTIP "Alternar entre No, Otro y Actual"
 #define TRANSLATION_LABEL_LOTS "Lots"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Cartera actual"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Operaciones abiertas actualmente"
@@ -201,8 +195,8 @@
 #define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Haga clic para abrir una orden/posición."
 
 
-#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "(¡Muy cerca!)"
-#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "(Valor incorrecto)"
+#define TRANSLATION_LABEL_WARNING_TOO_CLOSE "¡Muy cerca!"
+#define TRANSLATION_LABEL_WARNING_WRONG_VALUE "Valor incorrecto"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "TP no válido"
 
 #define TRANSLATION_TOOLTIP_WARNING_PS "¡Mayor que el tamaño de posición máximo por margen!"

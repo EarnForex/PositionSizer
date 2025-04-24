@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                TesterSupport.mqh |
-//|                                  Copyright © 2024, EarnForex.com |
+//|                                  Copyright © 2025, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 
@@ -169,9 +169,9 @@ void ListenToChartEvents(string panel_id)
         bool state = (bool)ObjectGetInteger(0, object_name, OBJPROP_STATE); // Ticked checkbox?
 
         // The checkbox part has "Button" added to its name.
-        if (((object_name == panel_id + "m_ChkSpreadAdjustmentSL" + "Button") && (state != sets.SpreadAdjustmentSL)) ||
+        if (((object_name == panel_id + "m_ChkTPLockedOnSL" + "Button") && (state != sets.TPLockedOnSL)) ||
+            ((object_name == panel_id + "m_ChkSpreadAdjustmentSL" + "Button") && (state != sets.SpreadAdjustmentSL)) ||
             ((object_name == panel_id + "m_ChkSpreadAdjustmentTP" + "Button") && (state != sets.SpreadAdjustmentTP)) ||
-            ((object_name == panel_id + "m_ChkCountPendings" + "Button") && (state != sets.CountPendingOrders)) ||
             ((object_name == panel_id + "m_ChkDisableTradingWhenLinesAreHidden" + "Button") && (state != sets.DisableTradingWhenLinesAreHidden)) ||
             ((object_name == panel_id + "m_ChkIgnoreOrdersWithoutSL" + "Button") && (state != sets.IgnoreOrdersWithoutSL)) ||
             ((object_name == panel_id + "m_ChkIgnoreOrdersWithoutTP" + "Button") && (state != sets.IgnoreOrdersWithoutTP)) ||
