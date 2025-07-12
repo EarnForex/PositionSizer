@@ -993,6 +993,11 @@ void OnTrade()
 //+------------------------------------------------------------------+
 void OnTimer()
 {
+    /**
+     * Release resource 50ms to prevent freeze
+     * when change symbols or close Position Sizer
+     * */
+    if (GetTickCount() - LastRecalculationTime < 50) return; 
     if (NeedToCheckToggleScaleOffOn)
     {
         if ((double)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS) != PrevChartWidth)
