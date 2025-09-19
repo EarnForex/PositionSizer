@@ -36,6 +36,9 @@
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "زيادة أخذ الربح بـ 1 نقطة"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "تقليل أخذ الربح بـ 1 نقطة"
 
+#define TRANSLATION_CHECKBOX_TPLOCKEDONSL "قفل"
+#define TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL "هل تريد قفل مسافة جني الأرباح على مسافة إيقاف الخسارة باستخدام المضاعف المحدد؟"
+
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE "أخذ الربح"
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS "نقاط"
 
@@ -105,6 +108,11 @@
 
 
 // Risk tab
+#define TRANSLATION_LABEL_INCLUDE_ORDERS "تضمين الأوامر"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "الكل"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "المعلّقة فقط"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "المفتوحة فقط"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "التبديل بين الكل، المفتوحة، والمعلّقة."
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "تجاهل الأوامر بدون إيقاف الخسارة"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "تجاهل الأوامر بدون أخذ الربح"
 #define TRANSLATION_LABEL_LOTS "لوت"
@@ -114,7 +122,16 @@
 #define TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO "بما في ذلك المركز الذي يجري حسابه"
 #define TRANSLATION_LABEL_CRRR_TOOLTIP "نسبة المخاطرة إلى العائد للمحفظة الحالية"
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "نسبة المخاطرة إلى العائد للمحفظة المحتملة"
-
+#define TRANSLATION_LABEL_INCLUDE_SYMBOLS "تضمين الرموز"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "الكل"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "الحالي فقط"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "الأخرى فقط"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "التبديل بين الكل، الحالي، والأخرى."
+#define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "تضمين"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "جميع الاتجاهات"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "شراء فقط"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "بيع فقط"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "التبديل بين الكل، الشراء، والبيع."
 
 // Margin tab
 #define TRANSLATION_LABEL_POSITION_MARGIN "هامش المركز"

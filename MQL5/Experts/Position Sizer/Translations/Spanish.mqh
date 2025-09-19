@@ -31,6 +31,9 @@
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "Aumentar Take-profit 1 punto"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "Disminuir Take-profit 1 punto"
 
+#define TRANSLATION_CHECKBOX_TPLOCKEDONSL "Bloquear"
+#define TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL "¿Bloquear la distancia del take-profit según la distancia del stop-loss usando el multiplicador dado?"
+
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE "TP" 
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS "puntos" 
 
@@ -94,8 +97,23 @@
 #define TRANSLATION_TOOLTIP_INPUTS "Los campos de esta columna se calculan a partir de entradas"
 #define TRANSLATION_TOOLTIP_RESULT "Los campos de esta columna tienen en cuenta las limitaciones del bróker"
 
+#define TRANSLATION_LABEL_INCLUDE_ORDERS "Incluir órdenes"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "Todas"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "Solo pendientes"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "Solo abiertas"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "Cambiar entre Todas, Abiertas y Pendientes."
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar órdenes sin stop-loss"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar órdenes sin take-profit"
+#define TRANSLATION_LABEL_INCLUDE_SYMBOLS "Incluir símbolos"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "Todos"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "Solo actual"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "Solo otros"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "Cambiar entre Todos, Actual y Otros."
+#define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "Incluir"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "Todas las direcciones"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "Solo compra"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "Solo venta"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "Cambiar entre Todas, Compra y Venta."
 #define TRANSLATION_LABEL_LOTS "Lots"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Cartera actual"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Operaciones abiertas actualmente"
