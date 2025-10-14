@@ -856,7 +856,7 @@ void DoBreakEven()
                 {
                   double O_price = PositionGetDouble(POSITION_PRICE_OPEN);
                   double TP_price = PositionGetDouble(POSITION_TP);
-                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0; // (TP - O) -> 100%, x -> 80%
+                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0;
                   BE_threshold = NormalizeDouble(O_price + diff, _Digits);
                 }
                 double BE_price = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) + extra_be_distance, _Digits);
@@ -884,7 +884,7 @@ void DoBreakEven()
                 {
                   double O_price = PositionGetDouble(POSITION_PRICE_OPEN);
                   double TP_price = PositionGetDouble(POSITION_TP);
-                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0; // (O - TP) -> 100%, x -> 80%
+                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0;
                   BE_threshold = NormalizeDouble(O_price - diff, _Digits);
                 }
                 double BE_price = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) - extra_be_distance, _Digits);

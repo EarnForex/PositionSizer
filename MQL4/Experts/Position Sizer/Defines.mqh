@@ -141,7 +141,7 @@ enum INCLUDE_DIRECTIONS
 enum BREAK_EVEN_TYPE
 {
     BREAK_EVEN_POINTS, // Points
-    BREAK_EVEN_PERCENT,  // Percentage
+    BREAK_EVEN_PERCENT, // Percentage
 };
 
 struct Settings

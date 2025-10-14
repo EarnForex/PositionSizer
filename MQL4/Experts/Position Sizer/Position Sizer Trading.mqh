@@ -674,7 +674,7 @@ void DoBreakEven()
                 {
                   double O_price = OrderOpenPrice();
                   double TP_price = OrderTakeProfit();
-                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0; // (TP - O) -> 100%, x -> 80%
+                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0;
                   BE_threshold = NormalizeDouble(O_price + diff, _Digits);
                 }
                 double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
@@ -700,7 +700,7 @@ void DoBreakEven()
                 {
                   double O_price = OrderOpenPrice();
                   double TP_price = OrderTakeProfit();
-                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0; // (O - TP) -> 100%, x -> 80%
+                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0;
                   BE_threshold = NormalizeDouble(O_price - diff, _Digits);
                 }
                 double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
