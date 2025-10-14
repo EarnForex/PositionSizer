@@ -16,9 +16,9 @@ string PanelCaptionBase = "";
 class CPositionSizeCalculator : public CAppDialog
 {
 private:
-    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIncludeOrders, m_BtnIncludeSymbols, m_BtnIncludeDirections;
+    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnIncludeOrders, m_BtnIncludeSymbols, m_BtnIncludeDirections, m_BtnBreakEvenType;
     CCheckBox        m_ChkSpreadAdjustmentSL, m_ChkSpreadAdjustmentTP, m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix, m_ChkTPLockedOnSL;
-    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage;
+    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtTP, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenValue, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage;
     CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIncludeOrders, m_LblIncludeSymbols, m_LblIncludeDirections;
     string           m_FileName;
     double           m_DPIScale;
@@ -174,7 +174,8 @@ private:
     void OnEndEditEdtMaxPositionSizeTotal();
     void OnEndEditEdtMaxPositionSizePerSymbol();
     void OnEndEditEdtTrailingStopPoints();
-    void OnEndEditEdtBreakEvenPoints();
+    void OnClickBtnBreakEvenType();
+    void OnEndEditEdtBreakEvenValue();
     void OnEndEditEdtMaxNumberOfTradesTotal();
     void OnEndEditEdtMaxNumberOfTradesPerSymbol();
     void OnEndEditEdtMaxRiskTotal();
@@ -238,7 +239,8 @@ ON_EVENT(ON_END_EDIT, m_EdtMagicNumber, OnEndEditEdtMagicNumber)
 ON_EVENT(ON_END_EDIT, m_EdtCommentary, OnEndEditEdtCommentary)
 ON_EVENT(ON_CHANGE, m_ChkDisableTradingWhenLinesAreHidden, OnChangeChkDisableTradingWhenLinesAreHidden)
 ON_EVENT(ON_END_EDIT, m_EdtTrailingStopPoints, OnEndEditEdtTrailingStopPoints)
-ON_EVENT(ON_END_EDIT, m_EdtBreakEvenPoints, OnEndEditEdtBreakEvenPoints)
+ON_EVENT(ON_CLICK, m_BtnBreakEvenType, OnClickBtnBreakEvenType)
+ON_EVENT(ON_END_EDIT, m_EdtBreakEvenValue, OnEndEditEdtBreakEvenValue)
 if (ShowFusesOnTrading)
 {
 ON_EVENT(ON_END_EDIT, m_EdtMaxSlippage, OnEndEditEdtMaxSlippage)
@@ -914,8 +916,14 @@ bool CPositionSizeCalculator::CreateObjects()
     m_BtnTrade.ColorBackground(TradeButtonColorAdjusted);
     if (!LabelCreate(TradingTabList, m_LblTrailingStop, first_column_start + tab_button_width + v_spacing * 2, y, first_column_start + v_spacing + tab_button_width + normal_edit_width, y + element_height, "m_LblTrailingStop", TRANSLATION_LABEL_TRAILING_STOP + ":"))                                          return false;
     if (!EditCreate(TradingTabList, m_EdtTrailingStopPoints, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtTrailingStopPoints", "0"))                                                 return false;
-    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                          return false;
-    if (!EditCreate(TradingTabList, m_EdtBreakEvenPoints, first_column_start + v_spacing * 4 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y, first_column_start + v_spacing * 4 + tab_button_width * 3 + normal_edit_width + narrow_edit_width, y + element_height, "m_EdtBreakEvenPoints", "0"))                                                 return false;
+    //if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                          return false;
+    //if (!EditCreate(TradingTabList, m_EdtBreakEvenPoints, first_column_start + v_spacing * 4 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y, first_column_start + v_spacing * 4 + tab_button_width * 3 + normal_edit_width + narrow_edit_width, y + element_height, "m_EdtBreakEvenPoints", "0"))                                                 return false;
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                          return false;
+    if (!ButtonCreate(TradingTabList, m_BtnBreakEvenType, first_column_start + tab_button_width + v_spacing * 7, y, first_column_start + tab_button_width + v_spacing * 7 + tab_button_width, y + element_height, "m_BtnBreakEvenType", "????", TRANSLATION_TOOLTIP_COMMISSION_TYPE))         return false;
+    if (!EditCreate(TradingTabList, m_EdtBreakEvenValue, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtBreakEvenValue", "0"))                                                 return false;
 
     y += element_height + v_spacing;
 
@@ -1129,7 +1137,7 @@ bool CPositionSizeCalculator::InitObjects()
         if (!m_EdtMaxRiskPercentage.TextAlign(align))                            return false;
     }
     if (!m_EdtTrailingStopPoints.TextAlign(align))                           return false;
-    if (!m_EdtBreakEvenPoints.TextAlign(align))                              return false;
+    if (!m_EdtBreakEvenValue.TextAlign(align))                              return false;
     if (!m_EdtExpiry.TextAlign(align))                                       return false;
     if (ShowMaxParametersOnTrading)
     {
@@ -1333,7 +1341,7 @@ void CPositionSizeCalculator::InitControlsValues()
 
     // Trading
     m_EdtTrailingStopPoints.Text(IntegerToString(sets.TrailingStopPoints));
-    m_EdtBreakEvenPoints.Text(IntegerToString(sets.BreakEvenPoints));
+    m_EdtBreakEvenValue.Text(IntegerToString(sets.BreakEvenValue));
     m_EdtMagicNumber.Text(IntegerToString(sets.MagicNumber));
     m_EdtExpiry.Text(IntegerToString(sets.ExpiryMinutes));
     m_EdtCommentary.Text(sets.Commentary);
@@ -1364,6 +1372,11 @@ void CPositionSizeCalculator::InitControlsValues()
         m_ChkDoNotApplyTakeProfit.Checked(sets.DoNotApplyTakeProfit);
     }
     m_ChkAskForConfirmation.Checked(sets.AskForConfirmation);
+    
+    if (sets.BreakEvenType == BREAK_EVEN_POINTS)
+        m_BtnBreakEvenType.Text("Points");
+    else
+        m_BtnBreakEvenType.Text("%");
 }
 
 // Moves elements on the panel depending on the choice of showing TP-related stuff, risk, and margin.
@@ -4267,10 +4280,24 @@ void CPositionSizeCalculator::OnEndEditEdtTrailingStopPoints()
     m_EdtTrailingStopPoints.Text(IntegerToString(sets.TrailingStopPoints));
 }
 
-void CPositionSizeCalculator::OnEndEditEdtBreakEvenPoints()
+void CPositionSizeCalculator::OnClickBtnBreakEvenType()
 {
-    sets.BreakEvenPoints = (int)StringToInteger(m_EdtBreakEvenPoints.Text());
-    m_EdtBreakEvenPoints.Text(IntegerToString(sets.BreakEvenPoints));
+    if (sets.BreakEvenType == BREAK_EVEN_POINTS) // Switching to percent.
+    {
+        sets.BreakEvenType = BREAK_EVEN_PERCENT;
+        m_BtnBreakEvenType.Text("%");
+    }
+    else // Switching to points.
+    {
+        sets.BreakEvenType = BREAK_EVEN_POINTS;
+        m_BtnBreakEvenType.Text("Points");
+    }
+}
+
+void CPositionSizeCalculator::OnEndEditEdtBreakEvenValue()
+{
+    sets.BreakEvenValue = (int)StringToInteger(m_EdtBreakEvenValue.Text());
+    m_EdtBreakEvenValue.Text(IntegerToString(sets.BreakEvenValue));
 }
 
 void CPositionSizeCalculator::OnEndEditEdtMaxNumberOfTradesTotal()
@@ -4468,8 +4495,10 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.CommentAutoSuffix));
     FileWrite(fh, "TrailingStopPoints");
     FileWrite(fh, IntegerToString(sets.TrailingStopPoints));
-    FileWrite(fh, "BreakEvenPoints");
-    FileWrite(fh, IntegerToString(sets.BreakEvenPoints));
+    FileWrite(fh, "BreakEvenType");
+    FileWrite(fh, IntegerToString(sets.BreakEvenType));
+    FileWrite(fh, "BreakEvenValue");
+    FileWrite(fh, IntegerToString(sets.BreakEvenValue));
     FileWrite(fh, "ExpiryMinutes");
     FileWrite(fh, IntegerToString(sets.ExpiryMinutes));
     FileWrite(fh, "MaxNumberOfTradesTotal");
@@ -4589,8 +4618,10 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultTPLockedOnSL));
         FileWrite(fh, "Parameter_DefaultTrailingStop");
         FileWrite(fh, IntegerToString(DefaultTrailingStop));
-        FileWrite(fh, "Parameter_DefaultBreakEven");
-        FileWrite(fh, IntegerToString(DefaultBreakEven));
+        FileWrite(fh, "Parameter_DefaultBreakEvenType");
+        FileWrite(fh, IntegerToString(DefaultBreakEvenType));
+        FileWrite(fh, "Parameter_DefaultBreakEvenValue");
+        FileWrite(fh, IntegerToString(DefaultBreakEvenValue));
         FileWrite(fh, "Parameter_DefaultExpiryMinutes");
         FileWrite(fh, IntegerToString(DefaultExpiryMinutes));
         FileWrite(fh, "Parameter_DefaultSpreadAdjustmentSL");
@@ -4721,8 +4752,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.CommentAutoSuffix = (bool)StringToInteger(var_content);
         else if (var_name == "TrailingStopPoints")
             sets.TrailingStopPoints = (int)StringToInteger(var_content);
-        else if (var_name == "BreakEvenPoints")
-            sets.BreakEvenPoints = (int)StringToInteger(var_content);
+        else if (var_name == "BreakEvenType")
+            sets.BreakEvenType = (BREAK_EVEN_TYPE)StringToInteger(var_content);
+        else if (var_name == "BreakEvenValue")
+            sets.BreakEvenValue = (int)StringToInteger(var_content);
         else if (var_name == "ExpiryMinutes")
         {
             sets.ExpiryMinutes = (int)StringToInteger(var_content);
@@ -5034,9 +5067,13 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             {
                 if (StringToInteger(var_content) != DefaultTrailingStop) sets.TrailingStopPoints = DefaultTrailingStop;
             }
-            else if (var_name == "Parameter_DefaultBreakEven")
+            else if (var_name == "Parameter_DefaultBreakEvenType")
             {
-                if (StringToInteger(var_content) != DefaultBreakEven) sets.BreakEvenPoints = DefaultBreakEven;
+                if (StringToInteger(var_content) != DefaultBreakEvenType) sets.BreakEvenType = DefaultBreakEvenType;
+            }
+            else if (var_name == "Parameter_DefaultBreakEvenValue")
+            {
+                if (StringToInteger(var_content) != DefaultBreakEvenValue) sets.BreakEvenValue = DefaultBreakEvenValue;
             }
             else if (var_name == "Parameter_DefaultExpiryMinutes")
             {

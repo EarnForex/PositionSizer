@@ -114,7 +114,8 @@ input int DefaultPanelPositionY = 15; // PanelPositionY: Panel's Y coordinate.
 input ENUM_BASE_CORNER DefaultPanelPositionCorner = CORNER_LEFT_UPPER; // PanelPositionCorner: Panel's corner.
 input bool DefaultTPLockedOnSL = false; // TPLockedOnSL: Lock TP to (multiplied) SL distance.
 input int DefaultTrailingStop = 0; // TrailingStop: For the Trading tab.
-input int DefaultBreakEven = 0; // BreakEven: For the Trading tab.
+input BREAK_EVEN_TYPE DefaultBreakEvenType = BREAK_EVEN_POINTS; // BreakEven type: For the Trading tab.
+input int DefaultBreakEvenValue = 0; // BreakEven: For the Trading tab.
 input int DefaultExpiryMinutes = 0; // ExpiryMinutes: Pending order expiration in minutes. Min = 10.
 input int DefaultMaxNumberOfTradesTotal = 0; // MaxNumberOfTradesTotal: For the Trading tab. 0 - no limit.
 input int DefaultMaxNumberOfTradesPerSymbol = 0; // MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit.
@@ -354,7 +355,8 @@ int OnInit()
         sets.IsPanelMinimized = false;
         sets.TPLockedOnSL = DefaultTPLockedOnSL;
         sets.TrailingStopPoints = DefaultTrailingStop;
-        sets.BreakEvenPoints = DefaultBreakEven;
+        sets.BreakEvenType = DefaultBreakEvenType;
+        sets.BreakEvenValue = DefaultBreakEvenValue;
         sets.ExpiryMinutes = DefaultExpiryMinutes;
         if ((sets.ExpiryMinutes != 0) && (sets.ExpiryMinutes < 10)) sets.ExpiryMinutes = 0;
         sets.MaxNumberOfTradesTotal = DefaultMaxNumberOfTradesTotal;

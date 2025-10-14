@@ -813,7 +813,7 @@ void DoBreakEven()
         }
     }
     
-    if (sets.BreakEvenPoints <= 0) return;
+    if (sets.BreakEvenValue <= 0) return;
     
     if ((!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) || (!MQLInfoInteger(MQL_TRADE_ALLOWED))) return;
     
@@ -847,7 +847,18 @@ void DoBreakEven()
 
             if ((ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
             {
-                double BE_threshold = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) + sets.BreakEvenPoints * _Point, _Digits);
+                double BE_threshold = DBL_MAX;
+                if(sets.BreakEvenType == BREAK_EVEN_POINTS)
+                {
+                  BE_threshold = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) + sets.BreakEvenValue * _Point, _Digits);
+                }
+                else
+                {
+                  double O_price = PositionGetDouble(POSITION_PRICE_OPEN);
+                  double TP_price = PositionGetDouble(POSITION_TP);
+                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0; // (TP - O) -> 100%, x -> 80%
+                  BE_threshold = NormalizeDouble(O_price + diff, _Digits);
+                }
                 double BE_price = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) + extra_be_distance, _Digits);
                 if ((be_line_color != clrNONE) && (BE_price > PositionGetDouble(POSITION_SL))) DrawBELine((int)PositionGetInteger(POSITION_TICKET), BE_threshold, BE_price); // Only draw if not triggered yet.
                 double Bid = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
@@ -864,7 +875,18 @@ void DoBreakEven()
             }
             else if ((ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
             {
-                double BE_threshold = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) - sets.BreakEvenPoints * _Point, _Digits);
+                double BE_threshold = DBL_MIN;
+                if(sets.BreakEvenType == BREAK_EVEN_POINTS)
+                {
+                  BE_threshold = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) - sets.BreakEvenValue * _Point, _Digits);
+                }
+                else
+                {
+                  double O_price = PositionGetDouble(POSITION_PRICE_OPEN);
+                  double TP_price = PositionGetDouble(POSITION_TP);
+                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0; // (O - TP) -> 100%, x -> 80%
+                  BE_threshold = NormalizeDouble(O_price - diff, _Digits);
+                }
                 double BE_price = NormalizeDouble(PositionGetDouble(POSITION_PRICE_OPEN) - extra_be_distance, _Digits);
                 if ((be_line_color != clrNONE) && ((BE_price < PositionGetDouble(POSITION_SL)) || (PositionGetDouble(POSITION_SL) == 0))) DrawBELine(PositionGetInteger(POSITION_TICKET), BE_threshold, BE_price);
                 double Ask = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);

@@ -91,7 +91,7 @@ void ListenToChartEvents(string panel_id)
                 ((object_name == panel_id + "m_EdtMaxPositionSizeTotal") && (CompareDoubles(double_from_text, sets.MaxPositionSizeTotal, 2))) ||
                 ((object_name == panel_id + "m_EdtMaxPositionSizePerSymbol") && (CompareDoubles(double_from_text, sets.MaxPositionSizePerSymbol, 2))) ||
                 ((object_name == panel_id + "m_EdtTrailingStopPoints") && (text != IntegerToString(sets.TrailingStopPoints))) ||
-                ((object_name == panel_id + "m_EdtBreakEvenPoints") && (text != IntegerToString(sets.BreakEvenPoints))) ||
+                ((object_name == panel_id + "m_EdtBreakEvenValue") && (text != IntegerToString(sets.BreakEvenValue))) ||
                 ((object_name == panel_id + "m_EdtMaxNumberOfTradesTotal") && (text != IntegerToString(sets.MaxNumberOfTradesTotal))) ||
                 ((object_name == panel_id + "m_EdtMaxNumberOfTradesPerSymbol") && (text != IntegerToString(sets.MaxNumberOfTradesPerSymbol))) ||
                 ((object_name == panel_id + "m_EdtMaxRiskTotal") && (CompareDoubles(double_from_text, sets.MaxRiskTotal, 2))) ||

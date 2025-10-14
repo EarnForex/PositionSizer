@@ -637,7 +637,7 @@ void DoBreakEven()
         }
     }
     
-    if (sets.BreakEvenPoints <= 0) return;
+    if (sets.BreakEvenValue <= 0) return;
     
     if ((!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) || (!MQLInfoInteger(MQL_TRADE_ALLOWED))) return;
 
@@ -665,7 +665,18 @@ void DoBreakEven()
 
             if (OrderType() == OP_BUY)
             {
-                double BE_threshold = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenPoints * _Point, _Digits);
+                double BE_threshold = DBL_MAX;
+                if(sets.BreakEvenType == BREAK_EVEN_POINTS)
+                {
+                  BE_threshold = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenValue * _Point, _Digits);
+                }
+                else
+                {
+                  double O_price = OrderOpenPrice();
+                  double TP_price = OrderTakeProfit();
+                  double diff = (TP_price - O_price) * sets.BreakEvenValue / 100.0; // (TP - O) -> 100%, x -> 80%
+                  BE_threshold = NormalizeDouble(O_price + diff, _Digits);
+                }
                 double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
                 if ((be_line_color != clrNONE) && (BE_price > OrderStopLoss())) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
                 if ((Bid >= BE_threshold) && (Bid >= BE_price) && (BE_price > OrderStopLoss())) // Only move to BE if the price reached the necessary threshold, the price is above the calculated BE price, and the current stop-loss is lower.
@@ -680,7 +691,18 @@ void DoBreakEven()
             }
             else if (OrderType() == OP_SELL)
             {
-                double BE_threshold = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
+                double BE_threshold = DBL_MIN;
+                if(sets.BreakEvenType == BREAK_EVEN_POINTS)
+                {
+                  BE_threshold = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenValue * _Point, _Digits);
+                }
+                else
+                {
+                  double O_price = OrderOpenPrice();
+                  double TP_price = OrderTakeProfit();
+                  double diff = (O_price - TP_price) * sets.BreakEvenValue / 100.0; // (O - TP) -> 100%, x -> 80%
+                  BE_threshold = NormalizeDouble(O_price - diff, _Digits);
+                }
                 double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
                 if ((be_line_color != clrNONE) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) DrawBELine(OrderTicket(), BE_threshold, BE_price);
                 if ((Ask <= BE_threshold) && (Ask <= BE_price) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to BE if the price reached the necessary threshold, the price below the calculated BE price, and the current stop-loss is higher (or zero).

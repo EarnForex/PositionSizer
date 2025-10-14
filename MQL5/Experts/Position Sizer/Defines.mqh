@@ -140,6 +140,12 @@ enum INCLUDE_DIRECTIONS
     INCLUDE_DIRECTIONS_SELL, // Sell only
 };
 
+enum BREAK_EVEN_TYPE
+{
+    BREAK_EVEN_POINTS, // Points
+    BREAK_EVEN_PERCENT,  // Percentage
+};
+
 struct Settings
 {
     ENTRY_TYPE EntryType;
@@ -192,7 +198,8 @@ struct Settings
     bool AskForConfirmation;
     bool CommentAutoSuffix;
     int TrailingStopPoints;
-    int BreakEvenPoints;
+    BREAK_EVEN_TYPE BreakEvenType;
+    int BreakEvenValue;
     int MaxNumberOfTrades;
     double MaxTotalRisk;
     int MaxNumberOfTradesTotal;
