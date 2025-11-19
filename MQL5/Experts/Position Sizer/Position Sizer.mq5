@@ -6,22 +6,23 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.11"
-string    Version = "3.11";
+#property version   "3.12"
+string    Version = "3.12";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
 //#include "Translations\Chinese.mqh"
 //#include "Translations\ChineseTraditional.mqh" // Contributed by fxchess.
+//#include "Translations\Japanese.mqh" // Contributed by Satoru Hoshino.
 //#include "Translations\Portuguese.mqh" // Contributed by Matheus Sevaroli.
 //#include "Translations\Russian.mqh"
 //#include "Translations\Spanish.mqh"
 //#include "Translations\Ukrainian.mqh"
 
-#property description "Calculates risk-based position size for your account."
-#property description "Allows trade execution based the calculation results.\r\n"
-#property description "WARNING: No warranty. This EA is offered \"as is\". Use at your own risk.\r\n"
-#property description "Note: Pressing Shift+T will open a trade."
+#property description DESCRIPTION_LINE_1
+#property description DESCRIPTION_LINE_2
+#property description DESCRIPTION_LINE_3
+#property description DESCRIPTION_LINE_4
 
 #include "Position Sizer.mqh";
 #include "Position Sizer Trading.mqh";
@@ -34,141 +35,142 @@ double StopPriceLevel = 0;
 string PanelCaption = "";
 string PanelCaptionBase = "";
 
-input group "Compactness"
-input bool ShowMainLineLabels = true; // ShowMainLineLabels: Show point distance for TP/SL near lines?
-input bool ShowAdditionalSLLabel = false; // ShowAdditionalSLLabel: Show SL $/% label?
-input bool ShowAdditionalTPLabel = false; // ShowAdditionalTPLabel: Show TP $/% + R/R label?
-input bool ShowAdditionalEntryLabel = false; // ShowAdditionalEntryLabel: Show Position Size label?
-input bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
-input bool HideAccSize = false; // HideAccSize: Hide account size?
-input bool ShowPointValue = false; // ShowPointValue: Show point value?
-input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
-input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
-input bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
-input bool ShowMaxParametersOnTrading = true; // Show max parameters on Trading tab?
-input bool ShowFusesOnTrading = true; // Show trading "fuses" on Trading tab?
-input bool ShowCheckboxesOnTrading = true; // Show checkboxes on Trading tab?
-input bool HideEntryLineOnInstant = false; // Hide Entry line for Instant orders?
-input ADDITIONAL_TRADE_BUTTONS AdditionalTradeButtons = ADDITIONAL_TRADE_BUTTONS_NONE; // Additional Trade buttons:
-input group "Fonts"
-input color sl_label_font_color = clrGreen; // SL Label Color
-input color tp_label_font_color = clrGoldenrod; // TP Label Color
-input color sp_label_font_color = clrPurple; // Stop Price Label Color
-input color entry_label_font_color = clrBlue; // Entry Label Font Color
-input uint font_size = 13; // Labels Font Size
-input string font_face = "Courier"; // Labels Font Face
-input group "Lines"
-input color entry_line_color = clrBlue; // Entry Line Color
-input color stoploss_line_color = clrGreen; // Stop-Loss Line Color
-input color takeprofit_line_color = clrGoldenrod; // Take-Profit Line Color
-input color stopprice_line_color = clrPurple; // Stop Price Line Color
-input color be_line_color = clrNONE; // BE Line Color
-input ENUM_LINE_STYLE entry_line_style = STYLE_SOLID; // Entry Line Style
-input ENUM_LINE_STYLE stoploss_line_style = STYLE_SOLID; // Stop-Loss Line Style
-input ENUM_LINE_STYLE takeprofit_line_style = STYLE_SOLID; // Take-Profit Line Style
-input ENUM_LINE_STYLE stopprice_line_style = STYLE_DOT; // Stop Price Line Style
-input ENUM_LINE_STYLE be_line_style = STYLE_DOT; // BE Line Style
-input uint entry_line_width = 1; // Entry Line Width
-input uint stoploss_line_width = 1; // Stop-Loss Line Width
-input uint takeprofit_line_width = 1; // Take-Profit Line Width
-input uint stopprice_line_width = 1; // Stop Price Line Width
-input uint be_line_width = 1; // BE Line Width
-input group "Defaults"
-input TRADE_DIRECTION DefaultTradeDirection = Long; // TradeDirection: Default trade direction.
-input int DefaultSL = 0; // SL: Default stop-loss value, in points.
-input int DefaultTP = 0; // TP: Default take-profit value, in points.
-input int DefaultTakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
-input ENTRY_TYPE DefaultEntryType = Instant; // EntryType: Instant, Pending, or StopLimit.
-input bool DefaultShowLines = true; // ShowLines: Show the lines by default?
-input bool DefaultLinesSelected = true; // LinesSelected: SL/TP (Entry in Pending) lines selected.
-input int DefaultATRPeriod = 14; // ATRPeriod: Default ATR period.
-input double DefaultATRMultiplierSL = 0; // ATRMultiplierSL: Default ATR multiplier for SL.
-input double DefaultATRMultiplierTP = 0; // ATRMultiplierTP: Default ATR multiplier for TP.
-input ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Default timeframe for ATR.
-input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
-input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
-input double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
-input COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommissionType: Default commission type.
-input ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
-input double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
-input double DefaultMoneyRisk = 0; // MoneyRisk: If > 0, money risk tolerance in currency.
-input double DefaultPositionSize = 0; // PositionSize: If > 0, position size in lots.
-input INCLUDE_ORDERS DefaultIncludeOrders = INCLUDE_ORDERS_ALL; // IncludeOrders: Include which orders for portfolio risk?
-input bool DefaultIgnoreOrdersWithoutSL = false; // IgnoreOrdersWithoutSL: Ignore orders w/o SL in portfolio risk.
-input bool DefaultIgnoreOrdersWithoutTP = false; // IgnoreOrdersWithoutTP: Ignore orders w/o TP in portfolio risk.
-input INCLUDE_SYMBOLS DefaultIncludeSymbols = INCLUDE_SYMBOLS_ALL; // IncludeSymbols: Include trades in which symbols for portfolio risk?
-input INCLUDE_DIRECTIONS DefaultIncludeDirections = INCLUDE_DIRECTIONS_ALL; // IncludeDirections: Include which directions for portfolio risk?
-input double DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
-input int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
-input string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
-input bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order comment in Trading tab.
-input bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Trading tab.
-input int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Trading tab.
-input int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Trading tab.
-input int DefaultMaxEntrySLDistance = 0; // MaxEntrySLDistance: Maximum entry/SL distance for Trading tab.
-input int DefaultMinEntrySLDistance = 0; // MinEntrySLDistance: Minimum entry/SL distance for Trading tab.
-input double DefaultMaxRiskPercentage = 0; // MaxRiskPercentage: Maximum risk % for Trading tab.
-input double DefaultMaxPositionSizeTotal = 0; // Maximum position size total for Trading tab.
-input double DefaultMaxPositionSizePerSymbol = 0; // Maximum position size per symbol for Trading tab.
-input bool DefaultSubtractOPV = false; // SubtractOPV: Subtract open positions volume (Trading tab).
-input bool DefaultSubtractPOV = false; // SubtractPOV: Subtract pending orders volume (Trading tab).
-input bool DefaultDoNotApplyStopLoss = false; // DoNotApplyStopLoss: Don't apply SL for Trading tab.
-input bool DefaultDoNotApplyTakeProfit = false; // DoNotApplyTakeProfit: Don't apply TP for Trading tab.
-input bool DefaultAskForConfirmation = true; // AskForConfirmation: Ask for confirmation for Trading tab.
-input int DefaultPanelPositionX = 0; // PanelPositionX: Panel's X coordinate.
-input int DefaultPanelPositionY = 15; // PanelPositionY: Panel's Y coordinate.
-input ENUM_BASE_CORNER DefaultPanelPositionCorner = CORNER_LEFT_UPPER; // PanelPositionCorner: Panel's corner.
-input bool DefaultTPLockedOnSL = false; // TPLockedOnSL: Lock TP to (multiplied) SL distance.
-input int DefaultTrailingStop = 0; // TrailingStop: For the Trading tab.
-input int DefaultBreakEven = 0; // BreakEven: For the Trading tab.
-input int DefaultExpiryMinutes = 0; // ExpiryMinutes: Pending order expiration in minutes. Min = 2.
-input int DefaultMaxNumberOfTradesTotal = 0; // MaxNumberOfTradesTotal: For the Trading tab. 0 - no limit.
-input int DefaultMaxNumberOfTradesPerSymbol = 0; // MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit.
-input double DefaultMaxRiskTotal = 0; // MaxRiskTotal: For the Trading tab. 0 - no limit.
-input double DefaultMaxRiskPerSymbol = 0; // MaxRiskPerSymbol: For the Trading tab. 0 - no limit.
-input bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
-input bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
-input group "Keyboard shortcuts"
-input string ____ = "Case-insensitive hotkey. Supports Ctrl, Shift.";
-input string TradeHotKey = "Shift+T"; // TradeHotKey: Execute a trade.
-input string SwitchOrderTypeHotKey = "O"; // SwitchOrderTypeHotKey: Switch order type.
-input string SwitchEntryDirectionHotKey = "TAB"; // SwitchEntryDirectionHotKey: Switch entry direction.
-input string SwitchHideShowLinesHotKey = "H"; // SwitchHideShowLinesHotKey: Switch Hide/Show lines.
-input string SetStopLossHotKey = "S"; // SetStopLossHotKey: Set SL to where mouse pointer is.
-input string SetTakeProfitHotKey = "P"; // SetTakeProfitHotKey: Set TP to where mouse pointer is.
-input string SetEntryHotKey = "E"; // SetEntryHotKey: Set Entry to where mouse pointer is.
-input string MinimizeMaximizeHotkey = "`"; // MinimizeMaximizeHotkey: Minimize/maximize the panel.
-input string SwitchSLPointsLevelHotKey = "Shift+S"; // SwitchSLPointsLevelHotKey: Switch SL between points and level.
-input string SwitchTPPointsLevelHotKey = "Shift+P"; // SwitchTPPointsLevelHotKey: Switch TP between points and level.
-input group "Miscellaneous"
-input double TP_Multiplier = 1; // TP Multiplier for SL value, appears in Take-profit button.
-input bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
-input SHOW_SPREAD ShowSpread = No; // ShowSpread: Show current spread in points or as an SL ratio.
-input double AdditionalFunds = 0; // AdditionalFunds: Added to account balance for risk calculation.
-input double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
-input CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
-input bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
-input bool SurpassBrokerMaxPositionSize = false; // Surpass Broker Max Position Size with multiple trades.
-input bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
-input double QuickRisk1 = 0; // QuickRisk1: First quick risk button, in percentage points.
-input double QuickRisk2 = 0; // QuickRisk2: Second quick risk button, in percentage points.
-input string ObjectPrefix = "PS_"; // ObjectPrefix: To prevent confusion with other indicators/EAs.
-input SYMBOL_CHART_CHANGE_REACTION SymbolChange = SYMBOL_CHART_CHANGE_EACH_OWN; // SymbolChange: What to do with the panel on chart symbol change?
-input bool DisableStopLimit = false; // DisableStopLimit: If true, Stop Limit will be skipped.
-input string TradeSymbol = ""; // TradeSymbol: If non-empty, this symbol will be traded.
-input bool DisableTradingSounds = false; // DisableTradingSounds: If true, no sound for trading actions.
-input bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If true, ignore Market execution.
-input bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode: Apply SL/TP after all trades executed.
-input bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
-input string SettingsFile = ""; // SettingsFile: Custom settings file from \Files\PS_Settings\
-input bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
-input bool AskBeforeClosing = false; // Ask for confirmation before closing the panel?
-input bool CapMaxPositionSizeBasedOnMargin = false; // Cap position size based on avaiable margin?
-input bool LessRestrictiveMaxLimits = false; // Allow smaller trades when trading limits are exceeded?
-input color LongButtonColor = CONTROLS_BUTTON_COLOR_BG; // Long Button Color
-input color ShortButtonColor = CONTROLS_BUTTON_COLOR_BG; // Short Button Color
-input color TradeButtonColor = CONTROLS_BUTTON_COLOR_BG; // Trade Button Color
-input bool DoNotDeleteLinesLabels = false; // Do Not Delete Lines/Labels on on deinitialization?
+input group INPUT_GROUP_DESCRIPTION_COMPACTNESS
+input(name=INPUT_DESCRIPTION_ShowMainLineLabels) bool ShowMainLineLabels = true; // ShowMainLineLabels: Show point distance for TP/SL near lines?
+input(name=INPUT_DESCRIPTION_ShowAdditionalSLLabel) bool ShowAdditionalSLLabel = false; // ShowAdditionalSLLabel: Show SL $/% label?
+input(name=INPUT_DESCRIPTION_ShowAdditionalTPLabel) bool ShowAdditionalTPLabel = false; // ShowAdditionalTPLabel: Show TP $/% + R/R label?
+input(name=INPUT_DESCRIPTION_ShowAdditionalEntryLabel) bool ShowAdditionalEntryLabel = false; // ShowAdditionalEntryLabel: Show Position Size label?
+input(name=INPUT_DESCRIPTION_DrawTextAsBackground) bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
+input(name=INPUT_DESCRIPTION_HideAccSize) bool HideAccSize = false; // HideAccSize: Hide account size?
+input(name=INPUT_DESCRIPTION_ShowPointValue) bool ShowPointValue = false; // ShowPointValue: Show point value?
+input(name=INPUT_DESCRIPTION_ShowMaxPSButton) bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
+input(name=INPUT_DESCRIPTION_StartPanelMinimized) bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
+input(name=INPUT_DESCRIPTION_ShowATROptions) bool ShowATROptions = false; // ShowATROptions: If true, SL and TP can be set via ATR.
+input(name=INPUT_DESCRIPTION_ShowMaxParametersOnTrading) bool ShowMaxParametersOnTrading = true; // Show max parameters on Trading tab?
+input(name=INPUT_DESCRIPTION_ShowFusesOnTrading) bool ShowFusesOnTrading = true; // Show trading "fuses" on Trading tab?
+input(name=INPUT_DESCRIPTION_ShowCheckboxesOnTrading) bool ShowCheckboxesOnTrading = true; // Show checkboxes on Trading tab?
+input(name=INPUT_DESCRIPTION_HideEntryLineOnInstant) bool HideEntryLineOnInstant = false; // Hide Entry line for Instant orders?
+input(name=INPUT_DESCRIPTION_AdditionalTradeButtons) ADDITIONAL_TRADE_BUTTONS AdditionalTradeButtons = ADDITIONAL_TRADE_BUTTONS_NONE; // Additional Trade buttons:
+input group INPUT_GROUP_DESCRIPTION_FONTS
+input(name=INPUT_DESCRIPTION_sl_label_font_color) color sl_label_font_color = clrGreen; // SL Label Color
+input(name=INPUT_DESCRIPTION_tp_label_font_color) color tp_label_font_color = clrGoldenrod; // TP Label Color
+input(name=INPUT_DESCRIPTION_sp_label_font_color) color sp_label_font_color = clrPurple; // Stop Price Label Color
+input(name=INPUT_DESCRIPTION_entry_label_font_color) color entry_label_font_color = clrBlue; // Entry Label Font Color
+input(name=INPUT_DESCRIPTION_font_size) uint font_size = 13; // Labels Font Size
+input(name=INPUT_DESCRIPTION_font_face) string font_face = "Courier"; // Labels Font Face
+input group INPUT_GROUP_DESCRIPTION_LINES
+input(name=INPUT_DESCRIPTION_entry_line_color) color entry_line_color = clrBlue; // Entry Line Color
+input(name=INPUT_DESCRIPTION_stoploss_line_color) color stoploss_line_color = clrGreen; // Stop-Loss Line Color
+input(name=INPUT_DESCRIPTION_takeprofit_line_color) color takeprofit_line_color = clrGoldenrod; // Take-Profit Line Color
+input(name=INPUT_DESCRIPTION_stopprice_line_color) color stopprice_line_color = clrPurple; // Stop Price Line Color
+input(name=INPUT_DESCRIPTION_be_line_color) color be_line_color = clrNONE; // BE Line Color
+input(name=INPUT_DESCRIPTION_entry_line_style) ENUM_LINE_STYLE entry_line_style = STYLE_SOLID; // Entry Line Style
+input(name=INPUT_DESCRIPTION_stoploss_line_style) ENUM_LINE_STYLE stoploss_line_style = STYLE_SOLID; // Stop-Loss Line Style
+input(name=INPUT_DESCRIPTION_takeprofit_line_style) ENUM_LINE_STYLE takeprofit_line_style = STYLE_SOLID; // Take-Profit Line Style
+input(name=INPUT_DESCRIPTION_stopprice_line_style) ENUM_LINE_STYLE stopprice_line_style = STYLE_DOT; // Stop Price Line Style
+input(name=INPUT_DESCRIPTION_be_line_style) ENUM_LINE_STYLE be_line_style = STYLE_DOT; // BE Line Style
+input(name=INPUT_DESCRIPTION_entry_line_width) uint entry_line_width = 1; // Entry Line Width
+input(name=INPUT_DESCRIPTION_stoploss_line_width) uint stoploss_line_width = 1; // Stop-Loss Line Width
+input(name=INPUT_DESCRIPTION_takeprofit_line_width) uint takeprofit_line_width = 1; // Take-Profit Line Width
+input(name=INPUT_DESCRIPTION_stopprice_line_width) uint stopprice_line_width = 1; // Stop Price Line Width
+input(name=INPUT_DESCRIPTION_be_line_width) uint be_line_width = 1; // BE Line Width
+input group INPUT_GROUP_DESCRIPTION_DEFAULTS
+input(name=INPUT_DESCRIPTION_DefaultTradeDirection) TRADE_DIRECTION DefaultTradeDirection = Long; // TradeDirection: Default trade direction.
+input(name=INPUT_DESCRIPTION_DefaultSL) int DefaultSL = 0; // SL: Default stop-loss value, in points.
+input(name=INPUT_DESCRIPTION_DefaultTP) int DefaultTP = 0; // TP: Default take-profit value, in points.
+input(name=INPUT_DESCRIPTION_DefaultTakeProfitsNumber) int DefaultTakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
+input(name=INPUT_DESCRIPTION_DefaultEntryType) ENTRY_TYPE DefaultEntryType = Instant; // EntryType: Instant, Pending, or StopLimit.
+input(name=INPUT_DESCRIPTION_DefaultShowLines) bool DefaultShowLines = true; // ShowLines: Show the lines by default?
+input(name=INPUT_DESCRIPTION_DefaultLinesSelected) bool DefaultLinesSelected = true; // LinesSelected: SL/TP (Entry in Pending) lines selected.
+input(name=INPUT_DESCRIPTION_DefaultATRPeriod) int DefaultATRPeriod = 14; // ATRPeriod: Default ATR period.
+input(name=INPUT_DESCRIPTION_DefaultATRMultiplierSL) double DefaultATRMultiplierSL = 0; // ATRMultiplierSL: Default ATR multiplier for SL.
+input(name=INPUT_DESCRIPTION_DefaultATRMultiplierTP) double DefaultATRMultiplierTP = 0; // ATRMultiplierTP: Default ATR multiplier for TP.
+input(name=INPUT_DESCRIPTION_DefaultATRTimeframe) ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Default timeframe for ATR.
+input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentSL) bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
+input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentTP) bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
+input(name=INPUT_DESCRIPTION_DefaultCommission) double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
+input(name=INPUT_DESCRIPTION_DefaultCommissionType) COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommissionType: Default commission type.
+input(name=INPUT_DESCRIPTION_DefaultAccountButton) ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
+input(name=INPUT_DESCRIPTION_DefaultRisk) double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
+input(name=INPUT_DESCRIPTION_DefaultMoneyRisk) double DefaultMoneyRisk = 0; // MoneyRisk: If > 0, money risk tolerance in currency.
+input(name=INPUT_DESCRIPTION_DefaultPositionSize) double DefaultPositionSize = 0; // PositionSize: If > 0, position size in lots.
+input(name=INPUT_DESCRIPTION_DefaultIncludeOrders) INCLUDE_ORDERS DefaultIncludeOrders = INCLUDE_ORDERS_ALL; // IncludeOrders: Include which orders for portfolio risk?
+input(name=INPUT_DESCRIPTION_DefaultIgnoreOrdersWithoutSL) bool DefaultIgnoreOrdersWithoutSL = false; // IgnoreOrdersWithoutSL: Ignore orders w/o SL in portfolio risk.
+input(name=INPUT_DESCRIPTION_DefaultIgnoreOrdersWithoutTP) bool DefaultIgnoreOrdersWithoutTP = false; // IgnoreOrdersWithoutTP: Ignore orders w/o TP in portfolio risk.
+input(name=INPUT_DESCRIPTION_DefaultIncludeSymbols) INCLUDE_SYMBOLS DefaultIncludeSymbols = INCLUDE_SYMBOLS_ALL; // IncludeSymbols: Include trades in which symbols for portfolio risk?
+input(name=INPUT_DESCRIPTION_DefaultIncludeDirections) INCLUDE_DIRECTIONS DefaultIncludeDirections = INCLUDE_DIRECTIONS_ALL; // IncludeDirections: Include which directions for portfolio risk?
+input(name=INPUT_DESCRIPTION_DefaultCustomLeverage) double DefaultCustomLeverage = 0; // CustomLeverage: Default custom leverage for Margin tab.
+input(name=INPUT_DESCRIPTION_DefaultMagicNumber) int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultCommentary) string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultCommentAutoSuffix) bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order comment in Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultDisableTradingWhenLinesAreHidden) bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxSlippage) int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxSpread) int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxEntrySLDistance) int DefaultMaxEntrySLDistance = 0; // MaxEntrySLDistance: Maximum entry/SL distance for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMinEntrySLDistance) int DefaultMinEntrySLDistance = 0; // MinEntrySLDistance: Minimum entry/SL distance for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxRiskPercentage) double DefaultMaxRiskPercentage = 0; // MaxRiskPercentage: Maximum risk % for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxPositionSizeTotal) double DefaultMaxPositionSizeTotal = 0; // Maximum position size total for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxPositionSizePerSymbol) double DefaultMaxPositionSizePerSymbol = 0; // Maximum position size per symbol for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultSubtractOPV) bool DefaultSubtractOPV = false; // SubtractOPV: Subtract open positions volume (Trading tab).
+input(name=INPUT_DESCRIPTION_DefaultSubtractPOV) bool DefaultSubtractPOV = false; // SubtractPOV: Subtract pending orders volume (Trading tab).
+input(name=INPUT_DESCRIPTION_DefaultDoNotApplyStopLoss) bool DefaultDoNotApplyStopLoss = false; // DoNotApplyStopLoss: Don't apply SL for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultDoNotApplyTakeProfit) bool DefaultDoNotApplyTakeProfit = false; // DoNotApplyTakeProfit: Don't apply TP for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultAskForConfirmation) bool DefaultAskForConfirmation = true; // AskForConfirmation: Ask for confirmation for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultPanelPositionX) int DefaultPanelPositionX = 0; // PanelPositionX: Panel's X coordinate.
+input(name=INPUT_DESCRIPTION_DefaultPanelPositionY) int DefaultPanelPositionY = 15; // PanelPositionY: Panel's Y coordinate.
+input(name=INPUT_DESCRIPTION_DefaultPanelPositionCorner) ENUM_BASE_CORNER DefaultPanelPositionCorner = CORNER_LEFT_UPPER; // PanelPositionCorner: Panel's corner.
+input(name=INPUT_DESCRIPTION_DefaultTPLockedOnSL) bool DefaultTPLockedOnSL = false; // TPLockedOnSL: Lock TP to (multiplied) SL distance.
+input(name=INPUT_DESCRIPTION_DefaultTrailingStop) int DefaultTrailingStop = 0; // TrailingStop: For the Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultBreakEven) int DefaultBreakEven = 0; // BreakEven: For the Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultExpiryMinutes) int DefaultExpiryMinutes = 0; // ExpiryMinutes: Pending order expiration in minutes. Min = 2.
+input(name=INPUT_DESCRIPTION_DefaultMaxNumberOfTradesTotal) int DefaultMaxNumberOfTradesTotal = 0; // MaxNumberOfTradesTotal: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultMaxNumberOfTradesPerSymbol) int DefaultMaxNumberOfTradesPerSymbol = 0; // MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultMaxRiskTotal) double DefaultMaxRiskTotal = 0; // MaxRiskTotal: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultMaxRiskPerSymbol) double DefaultMaxRiskPerSymbol = 0; // MaxRiskPerSymbol: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultSLDistanceInPoints) bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
+input(name=INPUT_DESCRIPTION_DefaultTPDistanceInPoints) bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
+input group INPUT_GROUP_DESCRIPTION_KEYBOARD_SHORTCUTS
+input string ____ = INPUT_DESCRIPTION_____;
+input(name=INPUT_DESCRIPTION_TradeHotKey) string TradeHotKey = "Shift+T"; // TradeHotKey: Execute a trade.
+input(name=INPUT_DESCRIPTION_SwitchOrderTypeHotKey) string SwitchOrderTypeHotKey = "O"; // SwitchOrderTypeHotKey: Switch order type.
+input(name=INPUT_DESCRIPTION_SwitchEntryDirectionHotKey) string SwitchEntryDirectionHotKey = "TAB"; // SwitchEntryDirectionHotKey: Switch entry direction.
+input(name=INPUT_DESCRIPTION_SwitchHideShowLinesHotKey) string SwitchHideShowLinesHotKey = "H"; // SwitchHideShowLinesHotKey: Switch Hide/Show lines.
+input(name=INPUT_DESCRIPTION_SetStopLossHotKey) string SetStopLossHotKey = "S"; // SetStopLossHotKey: Set SL to where mouse pointer is.
+input(name=INPUT_DESCRIPTION_SetTakeProfitHotKey) string SetTakeProfitHotKey = "P"; // SetTakeProfitHotKey: Set TP to where mouse pointer is.
+input(name=INPUT_DESCRIPTION_SetEntryHotKey) string SetEntryHotKey = "E"; // SetEntryHotKey: Set Entry to where mouse pointer is.
+input(name=INPUT_DESCRIPTION_MinimizeMaximizeHotkey) string MinimizeMaximizeHotkey = "`"; // MinimizeMaximizeHotkey: Minimize/maximize the panel.
+input(name=INPUT_DESCRIPTION_SwitchSLPointsLevelHotKey) string SwitchSLPointsLevelHotKey = "Shift+S"; // SwitchSLPointsLevelHotKey: Switch SL between points and level.
+input(name=INPUT_DESCRIPTION_SwitchTPPointsLevelHotKey) string SwitchTPPointsLevelHotKey = "Shift+P"; // SwitchTPPointsLevelHotKey: Switch TP between points and level.
+input group INPUT_GROUP_DESCRIPTION_MISCELLANEOUS
+input(name=INPUT_DESCRIPTION_TP_Multiplier) double TP_Multiplier = 1; // TP Multiplier for SL value (for take-profit button).
+input(name=INPUT_DESCRIPTION_UseCommissionToSetTPDistance) bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
+input(name=INPUT_DESCRIPTION_ShowSpread) SHOW_SPREAD ShowSpread = No; // ShowSpread: Show current spread in points or as an SL ratio.
+input(name=INPUT_DESCRIPTION_AdditionalFunds) double AdditionalFunds = 0; // AdditionalFunds: Added to account balance for risk calculation.
+input(name=INPUT_DESCRIPTION_CustomBalance) double CustomBalance = 0; // CustomBalance: Overrides AdditionalFunds value.
+input(name=INPUT_DESCRIPTION_ATRCandle) CANDLE_NUMBER ATRCandle = Current_Candle; // ATRCandle: Candle to get ATR value from.
+input(name=INPUT_DESCRIPTION_CalculateUnadjustedPositionSize) bool CalculateUnadjustedPositionSize = false; // CalculateUnadjustedPositionSize: Ignore broker's restrictions.
+input(name=INPUT_DESCRIPTION_SurpassBrokerMaxPositionSize) bool SurpassBrokerMaxPositionSize = false; // Surpass Broker Max Position Size with multiple trades.
+input(name=INPUT_DESCRIPTION_RoundDown) bool RoundDown = true; // RoundDown: Position size and potential reward are rounded down.
+input(name=INPUT_DESCRIPTION_QuickRisk1) double QuickRisk1 = 0; // QuickRisk1: First quick risk button, in percentage points.
+input(name=INPUT_DESCRIPTION_QuickRisk2) double QuickRisk2 = 0; // QuickRisk2: Second quick risk button, in percentage points.
+input(name=INPUT_DESCRIPTION_ObjectPrefix) string ObjectPrefix = "PS_"; // ObjectPrefix: To prevent confusion with other indicators/EAs.
+input(name=INPUT_DESCRIPTION_SymbolChange) SYMBOL_CHART_CHANGE_REACTION SymbolChange = SYMBOL_CHART_CHANGE_EACH_OWN; // SymbolChange: What to do with the panel on chart symbol change?
+input(name=INPUT_DESCRIPTION_DisableStopLimit) bool DisableStopLimit = false; // DisableStopLimit: If true, Stop Limit will be skipped.
+input(name=INPUT_DESCRIPTION_TradeSymbol) string TradeSymbol = ""; // TradeSymbol: If non-empty, this symbol will be traded.
+input(name=INPUT_DESCRIPTION_DisableTradingSounds) bool DisableTradingSounds = false; // DisableTradingSounds: If true, no sound for trading actions.
+input(name=INPUT_DESCRIPTION_IgnoreMarketExecutionMode) bool IgnoreMarketExecutionMode = true; // IgnoreMarketExecutionMode: If true, ignore Market execution.
+input(name=INPUT_DESCRIPTION_MarketModeApplySLTPAfterAllTradesExecuted) bool MarketModeApplySLTPAfterAllTradesExecuted = false; // Market Mode: Apply SL/TP after all trades executed.
+input(name=INPUT_DESCRIPTION_DarkMode) bool DarkMode = false; // DarkMode: Enable dark mode for a less bright panel.
+input(name=INPUT_DESCRIPTION_AutoDetectDarkMode) bool AutoDetectDarkMode = false; // AutoDetectDarkMode: Dark/light mode will be autodetected.
+input(name=INPUT_DESCRIPTION_SettingsFile) string SettingsFile = ""; // SettingsFile: Custom settings file from \Files\PS_Settings\
+input(name=INPUT_DESCRIPTION_PrefillAdditionalTPsBasedOnMain) bool PrefillAdditionalTPsBasedOnMain = true; // Prefill additional TPs based on Main?
+input(name=INPUT_DESCRIPTION_AskBeforeClosing) bool AskBeforeClosing = false; // Ask for confirmation before closing the panel?
+input(name=INPUT_DESCRIPTION_CapMaxPositionSizeBasedOnMargin) bool CapMaxPositionSizeBasedOnMargin = false; // Cap position size based on available margin?
+input(name=INPUT_DESCRIPTION_LessRestrictiveMaxLimits) bool LessRestrictiveMaxLimits = false; // Allow smaller trades when trading limits are exceeded?
+input(name=INPUT_DESCRIPTION_LongButtonColor) color LongButtonColor = CONTROLS_BUTTON_COLOR_BG; // Long Button Color
+input(name=INPUT_DESCRIPTION_ShortButtonColor) color ShortButtonColor = CONTROLS_BUTTON_COLOR_BG; // Short Button Color
+input(name=INPUT_DESCRIPTION_TradeButtonColor) color TradeButtonColor = CONTROLS_BUTTON_COLOR_BG; // Trade Button Color
+input(name=INPUT_DESCRIPTION_DoNotDeleteLinesLabels) bool DoNotDeleteLinesLabels = false; // Do Not Delete Lines/Labels on on deinitialization?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -187,17 +189,19 @@ int OldTakeProfitsNumber = -1;
 string SymbolForTrading;
 int Mouse_Last_X = 0, Mouse_Last_Y = 0; // For SL/TP hotkeys.
 color LongButtonColorAdjusted, ShortButtonColorAdjusted, TradeButtonColorAdjusted; // Based on the DarkMode setting.
+bool DetectedColorMode;
 
 int OnInit()
 {
-    if (DarkMode)
+    if (AutoDetectDarkMode) DetectedColorMode = DetectDarkMode();
+    else DetectedColorMode = DarkMode;
+    
+    if (DetectedColorMode)
     {
         CONTROLS_EDIT_COLOR_ENABLE  = DARKMODE_EDIT_BG_COLOR;
         CONTROLS_EDIT_COLOR_DISABLE = 0x999999;
         CONTROLS_BUTTON_COLOR_ENABLE  = DARKMODE_BUTTON_BG_COLOR;
         CONTROLS_BUTTON_COLOR_DISABLE = 0x919999;
-        CONTROLS_BUTTON_COLOR_TP_UNLOCKED = DARKMODE_BUTTON_BG_COLOR;
-        CONTROLS_BUTTON_COLOR_TP_LOCKED = 0x909090;
     }
     else
     {
@@ -205,12 +209,10 @@ int OnInit()
         CONTROLS_EDIT_COLOR_DISABLE = C'221,221,211';
         CONTROLS_BUTTON_COLOR_ENABLE  = C'200,200,200';
         CONTROLS_BUTTON_COLOR_DISABLE = C'224,224,224';
-        CONTROLS_BUTTON_COLOR_TP_UNLOCKED = CONTROLS_BUTTON_COLOR_BG;
-        CONTROLS_BUTTON_COLOR_TP_LOCKED = CONTROLS_BUTTON_COLOR_ENABLE;
     }
     if (LongButtonColor == CONTROLS_BUTTON_COLOR_BG) // Default color is used.
     {
-        if (DarkMode) LongButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
+        if (DetectedColorMode) LongButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
         else LongButtonColorAdjusted = CONTROLS_BUTTON_COLOR_BG;
     }
     else
@@ -219,7 +221,7 @@ int OnInit()
     }
     if (ShortButtonColor == CONTROLS_BUTTON_COLOR_BG) // Default color is used.
     {
-        if (DarkMode) ShortButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
+        if (DetectedColorMode) ShortButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
         else ShortButtonColorAdjusted = CONTROLS_BUTTON_COLOR_BG;
     }
     else
@@ -228,7 +230,7 @@ int OnInit()
     }
     if (TradeButtonColor == CONTROLS_BUTTON_COLOR_BG) // Default color is used.
     {
-        if (DarkMode) TradeButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
+        if (DetectedColorMode) TradeButtonColorAdjusted = DARKMODE_BUTTON_BG_COLOR;
         else TradeButtonColorAdjusted = CONTROLS_BUTTON_COLOR_BG;
     }
     else
@@ -287,6 +289,7 @@ int OnInit()
         sets.EntryLevel = EntryLevel;
         sets.StopLossLevel = StopLossLevel;
         sets.TakeProfitLevel = TakeProfitLevel; // Optional
+        sets.TPMultiplier = TP_Multiplier;
         sets.TakeProfitsNumber = DefaultTakeProfitsNumber;
         if (sets.TakeProfitsNumber < 1) sets.TakeProfitsNumber = 1; // At least one TP.
         ArrayResize(sets.TP, sets.TakeProfitsNumber);
@@ -525,7 +528,7 @@ int OnInit()
     
     if (ShowATROptions) ExtDialog.InitATR();
 
-    if (DarkMode)
+    if (DetectedColorMode)
     {
         int total = ObjectsTotal(ChartID());
         for (int i = 0; i < total; i++)
@@ -578,6 +581,13 @@ int OnInit()
             else if (StringSubstr(obj_name, 0, StringLen(ExtDialog.Name() + "m_Chk")) == ExtDialog.Name() + "m_Chk")
             {
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, DARKMODE_TEXT_COLOR);
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, DARKMODE_MAIN_AREA_BG_COLOR);
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_BORDER_COLOR, DARKMODE_MAIN_AREA_BG_COLOR);
+            }
+            else if (StringSubstr(obj_name, 0, StringLen(ExtDialog.Name() + "m_Rgp")) == ExtDialog.Name() + "m_Rgp")
+            {
+                if (ObjectGetInteger(ChartID(), obj_name, OBJPROP_TYPE) == OBJ_RECTANGLE_LABEL) ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, DARKMODE_MAIN_AREA_BG_COLOR);
+                else ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, DARKMODE_TEXT_COLOR);
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, DARKMODE_MAIN_AREA_BG_COLOR);
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_BORDER_COLOR, DARKMODE_MAIN_AREA_BG_COLOR);
             }
@@ -824,8 +834,13 @@ void OnChartEvent(const int id,
 
     if (id == CHARTEVENT_KEYDOWN)
     {
+        // Get Unicode key value.
+        short key = TranslateKey((int)lparam);
+        // In case of falire, use raw value.
+        if (key == -1) key = (short)lparam;
+
         // Trade direction:
-        if ((MainKey_SwitchEntryDirectionHotKey != 0) && (lparam == MainKey_SwitchEntryDirectionHotKey)
+        if ((MainKey_SwitchEntryDirectionHotKey != 0) && (key == MainKey_SwitchEntryDirectionHotKey)
             && ((((!ShiftRequired_SwitchEntryDirectionHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SwitchEntryDirectionHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SwitchEntryDirectionHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SwitchEntryDirectionHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0)))) // Control
            )
@@ -833,7 +848,7 @@ void OnChartEvent(const int id,
             SwitchEntryDirection();
         }
         // Order type:
-        else if ((MainKey_SwitchOrderTypeHotKey != 0) && (lparam == MainKey_SwitchOrderTypeHotKey)
+        else if ((MainKey_SwitchOrderTypeHotKey != 0) && (key == MainKey_SwitchOrderTypeHotKey)
             && ((((!ShiftRequired_SwitchOrderTypeHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SwitchOrderTypeHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SwitchOrderTypeHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SwitchOrderTypeHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -841,7 +856,7 @@ void OnChartEvent(const int id,
             ChartRedraw();
         }
         // Hide/Show lines:
-        else if ((MainKey_SwitchHideShowLinesHotKey != 0) && (lparam == MainKey_SwitchHideShowLinesHotKey)
+        else if ((MainKey_SwitchHideShowLinesHotKey != 0) && (key == MainKey_SwitchHideShowLinesHotKey)
             && ((((!ShiftRequired_SwitchHideShowLinesHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SwitchHideShowLinesHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SwitchHideShowLinesHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SwitchHideShowLinesHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -849,14 +864,14 @@ void OnChartEvent(const int id,
             ChartRedraw();
         }  
         // Trade:
-        else if ((MainKey_TradeHotKey != 0) && (lparam == MainKey_TradeHotKey)
+        else if ((MainKey_TradeHotKey != 0) && (key == MainKey_TradeHotKey)
             && ((((!ShiftRequired_TradeHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_TradeHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_TradeHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_TradeHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
             Trade(); 
         }
         // Set stop-loss:
-        else if ((MainKey_SetStopLossHotKey != 0) && (lparam == MainKey_SetStopLossHotKey)
+        else if ((MainKey_SetStopLossHotKey != 0) && (key == MainKey_SetStopLossHotKey)
             && ((((!ShiftRequired_SetStopLossHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SetStopLossHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SetStopLossHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SetStopLossHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -875,7 +890,7 @@ void OnChartEvent(const int id,
             }
         }
         // Set take-profit:
-        else if ((MainKey_SetTakeProfitHotKey != 0) && (lparam == MainKey_SetTakeProfitHotKey)
+        else if ((MainKey_SetTakeProfitHotKey != 0) && (key == MainKey_SetTakeProfitHotKey)
             && ((((!ShiftRequired_SetTakeProfitHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SetTakeProfitHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SetTakeProfitHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SetTakeProfitHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -901,12 +916,16 @@ void OnChartEvent(const int id,
                 if ((sets.TPDistanceInPoints) || (ShowATROptions)) ExtDialog.UpdateFixedTP();
                 ExtDialog.ShowTPRelatedEdits();
                 ExtDialog.RefreshValues();
+                if ((PrefillAdditionalTPsBasedOnMain) && (sets.TakeProfitsNumber > 1))
+                {
+                    ExtDialog.DoPrefillAdditionalTPsBasedOnMain();
+                }
                 ExtDialog.HideShowMaximize();
                 ExtDialog.MoveAndResize();
             }
         }
         // Set entry:
-        else if ((MainKey_SetEntryHotKey != 0) && (lparam == MainKey_SetEntryHotKey)
+        else if ((MainKey_SetEntryHotKey != 0) && (key == MainKey_SetEntryHotKey)
             && ((((!ShiftRequired_SetEntryHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SetEntryHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SetEntryHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SetEntryHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -928,14 +947,14 @@ void OnChartEvent(const int id,
             }
         }
         // Minimize/maximize:
-        else if ((MainKey_MinimizeMaximizeHotkey != 0) && (lparam == MainKey_MinimizeMaximizeHotkey)
+        else if ((MainKey_MinimizeMaximizeHotkey != 0) && (key == MainKey_MinimizeMaximizeHotkey)
             && ((((!ShiftRequired_MinimizeMaximizeHotkey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_MinimizeMaximizeHotkey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_MinimizeMaximizeHotkey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_MinimizeMaximizeHotkey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
             ExtDialog.EmulateMinMaxClick();
         }
         // Switch SL between points and level:
-        else if ((MainKey_SwitchSLPointsLevelHotKey != 0) && (lparam == MainKey_SwitchSLPointsLevelHotKey)
+        else if ((MainKey_SwitchSLPointsLevelHotKey != 0) && (key == MainKey_SwitchSLPointsLevelHotKey)
             && ((((!ShiftRequired_SwitchSLPointsLevelHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SwitchSLPointsLevelHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SwitchSLPointsLevelHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SwitchSLPointsLevelHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -948,7 +967,7 @@ void OnChartEvent(const int id,
             ExtDialog.RefreshValues();
         }
         // Switch TP between points and level:
-        else if ((MainKey_SwitchTPPointsLevelHotKey != 0) && (lparam == MainKey_SwitchTPPointsLevelHotKey)
+        else if ((MainKey_SwitchTPPointsLevelHotKey != 0) && (key == MainKey_SwitchTPPointsLevelHotKey)
             && ((((!ShiftRequired_SwitchTPPointsLevelHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) >= 0))   || ((ShiftRequired_SwitchTPPointsLevelHotKey) && (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0))) // Shift
             &&  (((!CtrlRequired_SwitchTPPointsLevelHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) >= 0)) || ((CtrlRequired_SwitchTPPointsLevelHotKey)  && (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0))))) // Control
         {
@@ -1010,7 +1029,8 @@ void OnChartEvent(const int id,
         if (sparam == ObjectPrefix + "StopLossLine") StopLossLineIsBeingMoved = false; // In any case ending moving state for the stop-loss line.
         if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) ArrayInitialize(TakeProfitLineIsBeingMoved, false); // In any case ending moving state for the take-profit line.
 
-        if (id != CHARTEVENT_CHART_CHANGE) ExtDialog.RefreshValues();
+        if (id == CHARTEVENT_CHART_CHANGE) ChartWidth = ChartGetInteger(0, CHART_WIDTH_IN_PIXELS);
+        else ExtDialog.RefreshValues();
 
         static bool prev_chart_on_top = false;
         // If this is an active chart, make sure the panel is visible (not behind the chart's borders). For inactive chart, this will work poorly, because inactive charts get minimized by MetaTrader.
@@ -1044,9 +1064,27 @@ void OnTrade()
 //+------------------------------------------------------------------+
 void OnTimer()
 {
+    /**
+     * Release resource 50ms to prevent freeze
+     * when change symbols or close Position Sizer
+     * */
+    if (GetTickCount() - LastRecalculationTime < 50) return; 
     ExtDialog.CheckAndRestoreLines(); // Check if any lines should be restored.
     if (GetTickCount() - LastRecalculationTime < 1000) return; // Do not recalculate on timer if less than 1 second passed.
     ExtDialog.RefreshValues();
     ChartRedraw();
+}
+
+// true = dark mode
+// false = light mode
+bool DetectDarkMode()
+{
+    string theme = TerminalInfoString(TERMINAL_COLORTHEME_NAME);
+    if (theme == "Dark") return true;
+    if (theme == "Light") return false;
+    // "System":
+    color window_color = (color)TerminalInfoInteger(THEME_COLOR_WINDOW);
+    if (window_color == clrWhite) return false;
+    return true;
 }
 //+------------------------------------------------------------------+

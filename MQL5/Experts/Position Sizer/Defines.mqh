@@ -7,8 +7,25 @@
 #include <Controls\Dialog.mqh>
 #include <Controls\CheckBox.mqh>
 #include <Controls\Label.mqh>
+#include "HorizontalRadioGroup.mqh"
 #include <Arrays\List.mqh>
 #include <Trade\Trade.mqh>
+
+// Additional checkbox bitmaps:
+#resource "Images\\CheckBoxOnDark.bmp"
+#resource "Images\\CheckBoxOffDark.bmp"
+#resource "Images\\CheckBoxOnDark17.bmp"
+#resource "Images\\CheckBoxOffDark17.bmp"
+#resource "Images\\CheckBoxOn17.bmp"
+#resource "Images\\CheckBoxOff17.bmp"
+
+// Additional radiogroup button bitmaps:
+#resource "Images\\RadioButtonOnDark.bmp"
+#resource "Images\\RadioButtonOffDark.bmp"
+#resource "Images\\RadioButtonOn16Dark.bmp"
+#resource "Images\\RadioButtonOff16Dark.bmp"
+#resource "Images\\RadioButtonOn16.bmp"
+#resource "Images\\RadioButtonOff16.bmp"
 
 color CONTROLS_EDIT_COLOR_ENABLE  = C'255,255,255';
 color CONTROLS_EDIT_COLOR_DISABLE = C'221,221,211';
@@ -23,8 +40,6 @@ color DARKMODE_MAIN_AREA_BG_COLOR = 0x666666;
 color DARKMODE_EDIT_BG_COLOR = 0xAAAAAA;
 color DARKMODE_BUTTON_BG_COLOR = 0xA19999;
 color DARKMODE_TEXT_COLOR = 0x000000;
-
-color CONTROLS_BUTTON_COLOR_TP_UNLOCKED, CONTROLS_BUTTON_COLOR_TP_LOCKED;
 
 #define MULTIPLIER_VALUE_CONTROL 10
 #define MULTIPLIER_VALUE_SHIFT 100
@@ -146,6 +161,7 @@ struct Settings
     double EntryLevel;
     double StopLossLevel;
     double TakeProfitLevel;
+    double TPMultiplier;
     int  TakeProfitsNumber;
     double StopPriceLevel;
     double Risk;

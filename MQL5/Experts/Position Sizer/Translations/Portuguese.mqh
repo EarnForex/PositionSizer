@@ -28,7 +28,7 @@
 
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "Take-profit"
-#define TRANSLATION_BUTTON_TP "TP, pontos"
+#define TRANSLATION_BUTTON_TP "TP"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Adicionar um nível de take-profit"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "Definir TP com base no SL"
@@ -221,8 +221,6 @@
 #define TRANSLATION_MESSAGE_DELETED_SETTINGS "Arquivo de configurações excluído com sucesso."
 #define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "Objetos de painel duplicados excluídos com o prefixo"
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_ATR "Falha ao criar o handle do ATR"
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO "Os níveis de Entrada e Stop Loss devem ser diferentes e diferentes de zero."
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT "O Stop Loss deve ser diferente da Entrada."
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "Não é possível obter o tamanho do tick para"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "Parece que o instrumento não está mais disponível. O cálculo pode não ser preciso."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "Símbolo mal configurado no servidor de trading - custo unitário zero."

@@ -713,7 +713,7 @@ bool CheckConfirmation(const ENUM_ORDER_TYPE ot, const double PositionSize, cons
     message += ": " + FormatDouble(DoubleToString(AccSize, 2)) + " " + AccountCurrency + "\n";
     message += TRANSLATION_LABEL_RISK + ": " + FormatDouble(DoubleToString(OutputRiskMoney)) + " " + AccountCurrency + "\n";
     if (PositionMargin != 0) message += TRANSLATION_TAB_BUTTON_MARGIN + ": " + FormatDouble(DoubleToString(PositionMargin, 2)) + " " + AccountCurrency + "\n";
-    if (sets.StopPriceLevel > 0) message += TRANSLATION_LABEL_STOPPRICE + ": " + DoubleToString(sets.StopPriceLevel, _Digits) + "\n";
+    if (sets.EntryType == StopLimit) message += TRANSLATION_LABEL_STOPPRICE + ": " + DoubleToString(sets.StopPriceLevel, _Digits) + "\n";
     message += TRANSLATION_LABEL_ENTRY + ": " + DoubleToString(sets.EntryLevel, _Digits) + "\n";
     if (!sets.DoNotApplyStopLoss) message += TRANSLATION_LABEL_STOPLOSS + ": " + DoubleToString(sets.StopLossLevel, _Digits) + "\n";
     if ((sets.TakeProfitLevel > 0) && (!sets.DoNotApplyTakeProfit))

@@ -28,7 +28,7 @@
 
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "أخذ الربح"
-#define TRANSLATION_BUTTON_TP "أخذ الربح، بالنقاط"
+#define TRANSLATION_BUTTON_TP "أخذ الربح"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "أضِف مستوى أخذ الربح"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "تعيين TP بناءً على SL"
@@ -110,8 +110,8 @@
 // Risk tab
 #define TRANSLATION_LABEL_INCLUDE_ORDERS "تضمين الأوامر"
 #define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "الكل"
-#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "المعلّقة فقط"
-#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "المفتوحة فقط"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "المعلّقة"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "المفتوحة"
 #define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "التبديل بين الكل، المفتوحة، والمعلّقة."
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "تجاهل الأوامر بدون إيقاف الخسارة"
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "تجاهل الأوامر بدون أخذ الربح"
@@ -124,13 +124,13 @@
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "نسبة المخاطرة إلى العائد للمحفظة المحتملة"
 #define TRANSLATION_LABEL_INCLUDE_SYMBOLS "تضمين الرموز"
 #define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "الكل"
-#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "الحالي فقط"
-#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "الأخرى فقط"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "الحالي"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "الأخرى"
 #define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "التبديل بين الكل، الحالي، والأخرى."
 #define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "تضمين"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "جميع الاتجاهات"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "شراء فقط"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "بيع فقط"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "الكل"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "شراء"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "بيع"
 #define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "التبديل بين الكل، الشراء، والبيع."
 
 // Margin tab
@@ -244,8 +244,6 @@
 #define TRANSLATION_MESSAGE_DELETED_SETTINGS " تم حذف ملف الإعدادات بنجاح."
 #define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "حذف كائنات اللوحة ذات البادئة المُكررة"
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_ATR "فشل في إنشاء مقبض ATR"
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO "يجب أن تكون مستويات الدخول وإيقاف الخسارة مختلفة وغير صفرية."
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT "يجب أن يكون سعر إيقاف الخسارة مختلفًا عن الدخول."
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "تعذر استعادة حجم المزايدة السعرية لـ"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "يبدو أن الأداة المالية لم تعد متوفرة. قد لا تكون العملية الحسابية دقيقة."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "تكوين الرمز خاطئ في خادم التداول – تكلفة وحدة صفرية."

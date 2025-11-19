@@ -28,7 +28,7 @@
 
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "テイクプロフィット"
-#define TRANSLATION_BUTTON_TP "TP (ポイント)"
+#define TRANSLATION_BUTTON_TP "TP"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "テイクプロフィットの水準を追加する"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "SLに基づいてTPを設定する"
@@ -239,8 +239,6 @@
 #define TRANSLATION_MESSAGE_DELETED_SETTINGS "設定ファイルを正常に削除しました。"
 #define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "接頭辞を持つ重複パネルオブジェクトを削除しました"
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_ATR "ATRハンドルを作成できませんでした"
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT_NON_ZERO "エントリーとストップロス水準は異なり、ゼロであってはなりません。"
-#define TRANSLATION_MESSAGE_ENTRY_SL_DIFFERENT "ストップロスはエントリーと異なる必要があります。"
 #define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "のティックサイズを取得できません"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "この銘柄は利用できなくなったようです。計算は正確ではない可能性があります。"
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "取引サーバーでシンボルが誤って設定されています - 単位コストがゼロです。"
