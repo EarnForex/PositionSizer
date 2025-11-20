@@ -8413,7 +8413,11 @@ void DissectHotKeyCombination(const string hotkey, bool &shift_required, bool &c
     else if ((keys[n - 1] == "rightarrow") || (keys[n - 1] == "arrowright")) main_key = 39;
     else if ((keys[n - 1] == "pageup") || (keys[n - 1] == "pgup")) main_key = 33;
     else if ((keys[n - 1] == "pagedown") || (keys[n - 1] == "pgdown") || (keys[n - 1] == "pagedn") || (keys[n - 1] == "pgdn")) main_key = 34;
-    else main_key = (uchar)StringGetCharacter(keys[n - 1], 0);
+    else
+    {
+        if (shift_required) StringToUpper(keys[n - 1]);
+        main_key = (uchar)StringGetCharacter(keys[n - 1], 0);
+    }
 }
 
 void WarnAboutZeroUnitCost()
