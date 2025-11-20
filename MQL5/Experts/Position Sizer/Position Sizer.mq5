@@ -6,8 +6,8 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.12"
-string    Version = "3.12";
+#property version   "3.13"
+string    Version = "3.13";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
