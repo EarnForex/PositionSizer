@@ -1,3 +1,8 @@
+#define DESCRIPTION_LINE_1 "يحسب حجم المركز بناءً على إعدادات المخاطرة في حسابك."
+#define DESCRIPTION_LINE_2 "يسمح بتنفيذ الصفقة اعتمادًا على نتائج العمليات الحسابية.\r\n"
+#define DESCRIPTION_LINE_3 "تحذير: لا يوجد ضمان. يُقدَم هذا المستشار الخبير \"كما هو\". استخدمه على مسؤوليتك الخاصة.\r\n"
+#define DESCRIPTION_LINE_4 "ملاحظة: الضغط على Shift+T سيؤدي إلى فتح صفقة."
+ 
 // Tabs
 #define TRANSLATION_TAB_BUTTON_MAIN "الرئيسي"
 #define TRANSLATION_TAB_BUTTON_RISK "المخاطرة"
@@ -29,6 +34,7 @@
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "أخذ الربح"
 #define TRANSLATION_BUTTON_TP "أخذ الربح"
+#define TRANSLATION_TOOLTIP_TP_MULTIPLIER "مُضاعف هدف الربح (TP) لقيمة إيقاف الخسارة (SL)"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "أضِف مستوى أخذ الربح"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "تعيين TP بناءً على SL"

@@ -1,3 +1,8 @@
+#define DESCRIPTION_LINE_1 "基于风险为您的账户计算头寸规模。"
+#define DESCRIPTION_LINE_2 "允许根据计算结果执行交易。\r\n"
+#define DESCRIPTION_LINE_3 "警告：无担保。此 EA 按\"原样\"提供。您需要自担风险。\r\n"
+#define DESCRIPTION_LINE_4 "注意：按下 Shift+T 后将开仓交易。"
+
 #define TRANSLATION_TAB_BUTTON_MAIN "主选项"
 #define TRANSLATION_TAB_BUTTON_RISK "风险"
 #define TRANSLATION_TAB_BUTTON_MARGIN "保证金"
@@ -24,6 +29,7 @@
 
 #define TRANSLATION_LABEL_TAKEPROFIT "止盈位"
 #define TRANSLATION_BUTTON_TP "止盈位"
+#define TRANSLATION_TOOLTIP_TP_MULTIPLIER "用于止损值的止盈倍数"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "添加止盈位"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "让止盈位基于止损位"

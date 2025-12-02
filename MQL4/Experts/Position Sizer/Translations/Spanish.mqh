@@ -1,3 +1,8 @@
+#define DESCRIPTION_LINE_1 "Calcula el tamaño de la posición basándose en el riesgo para su cuenta."
+#define DESCRIPTION_LINE_2 "Permite la ejecución de operaciones según los resultados del cálculo.\r\n"
+#define DESCRIPTION_LINE_3 "ADVERTENCIA: No hay garantías. Este EA se ofrece \"tal cual\". Úselo bajo su propio riesgo.\r\n"
+#define DESCRIPTION_LINE_4 "Nota: al presionar Shift+T se abrirá una operación."
+
 #define TRANSLATION_TAB_BUTTON_MAIN "Inicio"
 #define TRANSLATION_TAB_BUTTON_RISK "Riesgo"
 #define TRANSLATION_TAB_BUTTON_MARGIN "Margen"
@@ -24,7 +29,7 @@
 
 #define TRANSLATION_LABEL_TAKEPROFIT "Take-profit"
 #define TRANSLATION_BUTTON_TP "TP"
-#define TRANSLATION_TOOLTIP_TP_MULTIPLIER "Multiplicador TP para el valor SL"
+#define TRANSLATION_TOOLTIP_TP_MULTIPLIER "Multiplicador de TP para el valor de SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Añadir nivel take-profit"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "Poner TP basado en SL"
