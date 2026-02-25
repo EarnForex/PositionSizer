@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                TesterSupport.mqh |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 
@@ -82,6 +82,8 @@ void ListenToChartEvents(string panel_id)
                 ((object_name == panel_id + "m_EdtATRMultiplierSL") && (AreDoublesEqual(double_from_text, sets.ATRMultiplierSL, 2))) ||
                 ((object_name == panel_id + "m_EdtATRMultiplierTP") && (AreDoublesEqual(double_from_text, sets.ATRMultiplierTP, 2))) ||
                 ((object_name == panel_id + "m_EdtCustomLeverage") && (AreDoublesEqual(double_from_text, sets.CustomLeverage))) ||
+                // Margin utilization base value is editable only when it's set to Starting Balance.
+                ((sets.MarginUtilizationBase == MUB_STARTING_BALANCE) && (object_name == panel_id + "m_EdtMUBStartingBalance") && (AreDoublesEqual(double_from_stripped_text, sets.MUBStartingBalance))) ||
                 ((object_name == panel_id + "m_EdtMagicNumber") && (text != IntegerToString(sets.MagicNumber))) ||
                 ((object_name == panel_id + "m_EdtExpiry") && (text != IntegerToString(sets.ExpiryMinutes))) ||
                 ((object_name == panel_id + "m_EdtCommentary") && (text != sets.Commentary)) ||
@@ -97,7 +99,10 @@ void ListenToChartEvents(string panel_id)
                 ((object_name == panel_id + "m_EdtMaxNumberOfTradesPerSymbol") && (text != IntegerToString(sets.MaxNumberOfTradesPerSymbol))) ||
                 ((object_name == panel_id + "m_EdtMaxRiskTotal") && (AreDoublesEqual(double_from_text, sets.MaxRiskTotal, 2))) ||
                 ((object_name == panel_id + "m_EdtMaxRiskPerSymbol") && (AreDoublesEqual(double_from_text, sets.MaxRiskPerSymbol, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxRiskPercentage") && (AreDoublesEqual(double_from_text, sets.MaxRiskPercentage, 2)))
+                ((object_name == panel_id + "m_EdtMaxRiskPercentage") && (AreDoublesEqual(double_from_text, sets.MaxRiskPercentage, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPercTotal") && (AreDoublesEqual(double_from_text, sets.MaxMarginPercTotal, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPercPerSymbol") && (AreDoublesEqual(double_from_text, sets.MaxMarginPercPerSymbol, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPerc") && (AreDoublesEqual(double_from_text, sets.MaxMarginPerc, 2)))
             )
             {
                 lparam = ExtDialog.FindControlId(object_name);
@@ -216,6 +221,11 @@ void ListenToChartEvents(string panel_id)
     else if (ProcessRadiogroupStateByChartObjects(panel_id + "m_RgpIncludeDirections", 3, sets.IncludeDirections, ExtDialog.m_RgpIncludeDirections))
     {
         object_name = panel_id + "m_RgpIncludeDirections";
+        need_to_do = true;
+    }
+    else if (ProcessRadiogroupStateByChartObjects(panel_id + "m_RgpMarginUtilizationBase", 3, sets.MarginUtilizationBase, ExtDialog.m_RgpMarginUtilizationBase))
+    {
+        object_name = panel_id + "m_RgpMarginUtilizationBase";
         need_to_do = true;
     }
     if (need_to_do)

@@ -1,13 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                               Position Sizer.mq5 |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.13"
-string    Version = "3.13";
+#property version   "3.14"
+string    Version = "3.14";
 
 #include "Translations\English.mqh"
 //#include "Translations\Arabic.mqh"
@@ -50,6 +50,7 @@ input(name=INPUT_DESCRIPTION_ShowMaxParametersOnTrading) bool ShowMaxParametersO
 input(name=INPUT_DESCRIPTION_ShowFusesOnTrading) bool ShowFusesOnTrading = true; // Show trading "fuses" on Trading tab?
 input(name=INPUT_DESCRIPTION_ShowCheckboxesOnTrading) bool ShowCheckboxesOnTrading = true; // Show checkboxes on Trading tab?
 input(name=INPUT_DESCRIPTION_HideEntryLineOnInstant) bool HideEntryLineOnInstant = false; // Hide Entry line for Instant orders?
+input(name=INPUT_DESCRIPTION_ShowAdditionalMarginSettings) bool ShowAdditionalMarginSettings = false; // Show additional margin settings/info?
 input(name=INPUT_DESCRIPTION_AdditionalTradeButtons) ADDITIONAL_TRADE_BUTTONS AdditionalTradeButtons = ADDITIONAL_TRADE_BUTTONS_NONE; // Additional Trade buttons:
 input group INPUT_GROUP_DESCRIPTION_FONTS
 input(name=INPUT_DESCRIPTION_sl_label_font_color) color sl_label_font_color = clrGreen; // SL Label Color
@@ -103,12 +104,14 @@ input(name=INPUT_DESCRIPTION_DefaultCustomLeverage) double DefaultCustomLeverage
 input(name=INPUT_DESCRIPTION_DefaultMagicNumber) int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultCommentary) string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultCommentAutoSuffix) bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order comment in Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultCommentBalance) bool DefaultCommentBalance = false; // CommentBalance: Add current balance in front of order comment?
 input(name=INPUT_DESCRIPTION_DefaultDisableTradingWhenLinesAreHidden) bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxSlippage) int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxSpread) int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxEntrySLDistance) int DefaultMaxEntrySLDistance = 0; // MaxEntrySLDistance: Maximum entry/SL distance for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMinEntrySLDistance) int DefaultMinEntrySLDistance = 0; // MinEntrySLDistance: Minimum entry/SL distance for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxRiskPercentage) double DefaultMaxRiskPercentage = 0; // MaxRiskPercentage: Maximum risk % for Trading tab.
+input(name=INPUT_DESCRIPTION_DefaultMaxMarginPerc) double DefaultMaxMarginPerc = 0; // MaxMarginPerc: Maximum margin % for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxPositionSizeTotal) double DefaultMaxPositionSizeTotal = 0; // Maximum position size total for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultMaxPositionSizePerSymbol) double DefaultMaxPositionSizePerSymbol = 0; // Maximum position size per symbol for Trading tab.
 input(name=INPUT_DESCRIPTION_DefaultSubtractOPV) bool DefaultSubtractOPV = false; // SubtractOPV: Subtract open positions volume (Trading tab).
@@ -127,8 +130,12 @@ input(name=INPUT_DESCRIPTION_DefaultMaxNumberOfTradesTotal) int DefaultMaxNumber
 input(name=INPUT_DESCRIPTION_DefaultMaxNumberOfTradesPerSymbol) int DefaultMaxNumberOfTradesPerSymbol = 0; // MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit.
 input(name=INPUT_DESCRIPTION_DefaultMaxRiskTotal) double DefaultMaxRiskTotal = 0; // MaxRiskTotal: For the Trading tab. 0 - no limit.
 input(name=INPUT_DESCRIPTION_DefaultMaxRiskPerSymbol) double DefaultMaxRiskPerSymbol = 0; // MaxRiskPerSymbol: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultMaxMarginPercTotal) double DefaultMaxMarginPercTotal = 0; // MaxMarginPercTotal: For the Trading tab. 0 - no limit.
+input(name=INPUT_DESCRIPTION_DefaultMaxMarginPercPerSymbol) double DefaultMaxMarginPercPerSymbol = 0; // MaxMarginPercPerSymbol: For the Trading tab. 0 - no limit.
 input(name=INPUT_DESCRIPTION_DefaultSLDistanceInPoints) bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
 input(name=INPUT_DESCRIPTION_DefaultTPDistanceInPoints) bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
+input(name=INPUT_DESCRIPTION_DefaultMarginUtilizationBase) MARGIN_UTILIZATION_BASE DefaultMarginUtilizationBase = MUB_BALANCE; // Margin utilization base.
+input(name=INPUT_DESCRIPTION_DefaultMUBStartingBalance) double DefaultMUBStartingBalance = 0; // Starting balance for margin utilization base.
 input group INPUT_GROUP_DESCRIPTION_KEYBOARD_SHORTCUTS
 input string ____ = INPUT_DESCRIPTION_____;
 input(name=INPUT_DESCRIPTION_TradeHotKey) string TradeHotKey = "Shift+T"; // TradeHotKey: Execute a trade.
@@ -176,7 +183,7 @@ CPositionSizeCalculator* ExtDialog;
 
 // Global variables:
 bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
-uint LastRecalculationTime = 0;
+ulong LastRecalculationTime = 0;
 bool StopLossLineIsBeingMoved = false;
 bool TakeProfitLineIsBeingMoved[]; // Separate for each TP.
 uchar MainKey_TradeHotKey = 0, MainKey_SwitchOrderTypeHotKey = 0, MainKey_SwitchEntryDirectionHotKey = 0, MainKey_SwitchHideShowLinesHotKey = 0, MainKey_SetStopLossHotKey = 0, MainKey_SetTakeProfitHotKey = 0, MainKey_SetEntryHotKey = 0, MainKey_MinimizeMaximizeHotkey = 0, MainKey_SwitchSLPointsLevelHotKey = 0, MainKey_SwitchTPPointsLevelHotKey = 0;
@@ -346,6 +353,7 @@ int OnInit()
         sets.MaxEntrySLDistance = DefaultMaxEntrySLDistance;
         sets.MinEntrySLDistance = DefaultMinEntrySLDistance;
         sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
+        sets.MaxMarginPerc = DefaultMaxMarginPerc;
         sets.MaxPositionSizeTotal = DefaultMaxPositionSizeTotal;
         sets.MaxPositionSizePerSymbol = DefaultMaxPositionSizePerSymbol;
         if ((sets.MaxPositionSizeTotal < sets.MaxPositionSizePerSymbol) && (sets.MaxPositionSizeTotal != 0)) sets.MaxPositionSizeTotal = sets.MaxPositionSizePerSymbol;
@@ -371,12 +379,17 @@ int OnInit()
         sets.MaxRiskTotal = DefaultMaxRiskTotal;
         sets.MaxRiskPerSymbol = DefaultMaxRiskPerSymbol;
         if ((sets.MaxRiskTotal < sets.MaxRiskPerSymbol) && (sets.MaxRiskTotal != 0)) sets.MaxRiskTotal = sets.MaxRiskPerSymbol;
+        sets.MaxMarginPercTotal = DefaultMaxMarginPercTotal;
+        sets.MaxMarginPercPerSymbol = DefaultMaxMarginPercPerSymbol;
+        if ((sets.MaxMarginPercTotal < sets.MaxMarginPercPerSymbol) && (sets.MaxMarginPercTotal != 0)) sets.MaxMarginPercTotal = sets.MaxMarginPercPerSymbol;
         // Because it is the first load:
         Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
         sets.ShareVolumeMode = Decreasing;
         sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
         sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
         sets.LastAdditionalTPScheme = ADDITIONAL_TP_SCHEME_OUTWARD;
+        sets.MarginUtilizationBase = DefaultMarginUtilizationBase;
+        sets.MUBStartingBalance = DefaultMUBStartingBalance;
         if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
     }
     if (sets.TakeProfitsNumber < 1) // Read an old settings file with absent or bogus TakeProfitNumber parameter
@@ -834,10 +847,14 @@ void OnChartEvent(const int id,
 
     if (id == CHARTEVENT_KEYDOWN)
     {
-        // Get Unicode key value.
-        short key = TranslateKey((int)lparam);
-        // In case of falire, use raw value.
-        if (key == -1) key = (short)lparam;
+        short key = (short)lparam;
+        if (key < 65 || (key > 90 && key < 97) || key > 122) // Not a capital or normal letter.
+        {
+            // Get Unicode key value.
+            key = TranslateKey((int)lparam);
+            // In case of falire, use raw value.
+            if (key == -1) key = (short)lparam;
+        }
 
         // Trade direction:
         if ((MainKey_SwitchEntryDirectionHotKey != 0) && (key == MainKey_SwitchEntryDirectionHotKey)
@@ -1068,9 +1085,9 @@ void OnTimer()
      * Release resource 50ms to prevent freeze
      * when change symbols or close Position Sizer
      * */
-    if (GetTickCount() - LastRecalculationTime < 50) return; 
+    if (GetTickCount64() - LastRecalculationTime < 50) return; 
     ExtDialog.CheckAndRestoreLines(); // Check if any lines should be restored.
-    if (GetTickCount() - LastRecalculationTime < 1000) return; // Do not recalculate on timer if less than 1 second passed.
+    if (GetTickCount64() - LastRecalculationTime < 1000) return; // Do not recalculate on timer if less than 1 second passed.
     ExtDialog.RefreshValues();
     ChartRedraw();
 }

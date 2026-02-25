@@ -137,6 +137,18 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс розмір позиції по маржі"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "У лотах"
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "Поточ."
+#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиція"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "Майб."
+#define TRANSLATION_LABEL_MU_PERC "Використ. маржі"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "Поч. баланс"
+#define TRANSLATION_RGP_MU_BALANCE "Баланс"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "Вільн. мар."
+#define TRANSLATION_LABEL_MU_BASE "Осн."
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "Знач. основи"
+#define TRANSLATION_TOOLTIP_MU_BASE "Основа для розрахунку проценту використання маржі"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "Поточний баланс, початковий баланс (задаєте ви) або вільна маржа"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значення основи для розрахунку проценту використання маржі у валюті рахунку"
 
 
 // Swaps tab
@@ -198,6 +210,10 @@
 #define TRANSLATION_TOOLTIP_EXPIRY "Термін дії у хвилинах для наступного створеного відкладеного ордеру. Мінімум = 10."
 #define TRANSLATION_LABEL_MINUTES "хв."
 #define TRANSLATION_TOOLTIP_MINUTES "Хвилини"
+#define TRANSLATION_LABEL_MAX_MARGIN "Вик. маржі"
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Макс маржа %"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Максимальне використання маржі"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Запобіжник по максимальному використанню маржі"
 
 
 // Chart objects
@@ -322,3 +338,9 @@
 #define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Функція OrderDelete повернула помилку"
 #define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Функція OrderClose повернула помилку"
 #define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Об'єкт не знайдено"
+#define TRANSLATION_MESSAGE_NTAT_MU "використання маржі"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "максимальне використання маржі"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "загальне використання маржі"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "максимальне загальне використання маржі"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "використання маржі по символу"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "максимальне використання маржі по символу"

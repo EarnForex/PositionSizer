@@ -1,11 +1,11 @@
 //+------------------------------------------------------------------+
 //|                                         HorizontalRadioGroup.mqh |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 //+------------------------------------------------------------------+
 //|                             Based on RadioGroup.mqh by MQL5.com. |
-//|                             Copyright 2000-2025, MetaQuotes Ltd. |
+//|                             Copyright 2000-2026, MetaQuotes Ltd. |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
 #include <Controls\WndClient.mqh>

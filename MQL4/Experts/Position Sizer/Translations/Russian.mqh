@@ -137,6 +137,18 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс размер позиции по марже"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "В лотах"
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "Текущ."
+#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиция"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "Будущ."
+#define TRANSLATION_LABEL_MU_PERC "Исп. маржи"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "Нач. баланс"
+#define TRANSLATION_RGP_MU_BALANCE "Баланс"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "Своб. марж."
+#define TRANSLATION_LABEL_MU_BASE "Осн."
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "Основа"
+#define TRANSLATION_TOOLTIP_MU_BASE "Основа для процента использованной маржи"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "Текущий баланс, начальный баланс (задается вами) или свободная маржа"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значение основы в валютных единицах для расчета процента использованной маржи"
 
 
 // Swaps tab
@@ -198,6 +210,10 @@
 #define TRANSLATION_TOOLTIP_EXPIRY "Срок истечения в минутах для следующего созданного отложенного ордера. Минимум = 10."
 #define TRANSLATION_LABEL_MINUTES "мин."
 #define TRANSLATION_TOOLTIP_MINUTES "Минуты"
+#define TRANSLATION_LABEL_MAX_MARGIN "Исп. маржа"
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Макс маржа %"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Максимальный процент использованной маржи"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Предохранитель по максимальному проценту использованной маржи"
 
 
 // Chart objects
@@ -322,3 +338,9 @@
 #define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Функция OrderDelete вернула ошибку"
 #define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Функция OrderClose вернула ошибку"
 #define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Объект не найден"
+#define TRANSLATION_MESSAGE_NTAT_MU "использованная маржа"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "максимальная использованная маржа"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "общая использованная маржа"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "максимальная общая использованная маржа"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "использованная маржа по символу"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "максимальная использованная маржа по символу"

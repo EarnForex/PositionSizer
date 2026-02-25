@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                      Defines.mqh |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #include <Controls\Button.mqh>
@@ -153,6 +153,13 @@ enum INCLUDE_DIRECTIONS
     INCLUDE_DIRECTIONS_SELL, // Sell only
 };
 
+enum MARGIN_UTILIZATION_BASE
+{
+    MUB_BALANCE, // Balance
+    MUB_STARTING_BALANCE, // Starting balance
+    MUB_FREE_MARGIN // Free margin
+};
+
 struct Settings
 {
     ENTRY_TYPE       EntryType;
@@ -190,6 +197,7 @@ struct Settings
     int              MaxEntrySLDistance;
     int              MinEntrySLDistance;
     double           MaxRiskPercentage;
+    double           MaxMarginPerc;
     // For SL/TP distance modes:
     bool             SLDistanceInPoints;
     bool             TPDistanceInPoints;
@@ -212,6 +220,8 @@ struct Settings
     double           MaxPositionSizePerSymbol;
     double           MaxRiskTotal;
     double           MaxRiskPerSymbol;
+    double           MaxMarginPercTotal;
+    double           MaxMarginPercPerSymbol;
     int              ExpiryMinutes;
     // For ATR:
     int              ATRPeriod;
@@ -231,6 +241,8 @@ struct Settings
     VOLUME_SHARE_MODE ShareVolumeMode;
     bool             TemplateChanged;
     ADDITIONAL_TP_SCHEME LastAdditionalTPScheme;
+    MARGIN_UTILIZATION_BASE MarginUtilizationBase;
+    double MUBStartingBalance;
 } sets;
 
 // An object class for a list of panel objects with their names for fields located on a given tab of the panel. There will be one list per tab.

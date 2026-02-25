@@ -1,13 +1,13 @@
 //+------------------------------------------------------------------+
 //|                                               Position Sizer.mq4 |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#property version   "3.13"
-string    Version = "3.13";
+#property version   "3.14"
+string    Version = "3.14";
 #property strict
 
 #include "Translations\English.mqh"
@@ -45,6 +45,7 @@ input bool ShowMaxParametersOnTrading = true; // Show max parameters on Trading 
 input bool ShowFusesOnTrading = true; // Show trading "fuses" on Trading tab?
 input bool ShowCheckboxesOnTrading = true; // Show checkboxes on Trading tab?
 input bool HideEntryLineOnInstant = false; // Hide Entry line for Instant orders?
+input bool ShowAdditionalMarginSettings = false; // Show additional margin settings/info?
 input ADDITIONAL_TRADE_BUTTONS AdditionalTradeButtons = ADDITIONAL_TRADE_BUTTONS_NONE; // Additional Trade buttons:
 input group "Fonts"
 input string ____Fonts = "";
@@ -97,12 +98,14 @@ input double DefaultCustomLeverage = 0; // CustomLeverage: Default custom levera
 input int DefaultMagicNumber = 2022052714; // MagicNumber: Default magic number for Trading tab.
 input string DefaultCommentary = ""; // Commentary: Default order comment for Trading tab.
 input bool DefaultCommentAutoSuffix = false; // AutoSuffix: Automatic suffix for order comment in Trading tab.
+input bool DefaultCommentBalance = false; // CommentBalance: Add current balance in front of order comment?
 input bool DefaultDisableTradingWhenLinesAreHidden = false; // DisableTradingWhenLinesAreHidden: for Trading tab.
 input int DefaultMaxSlippage = 0; // MaxSlippage: Maximum slippage for Trading tab.
 input int DefaultMaxSpread = 0; // MaxSpread: Maximum spread for Trading tab.
 input int DefaultMaxEntrySLDistance = 0; // MaxEntrySLDistance: Maximum entry/SL distance for Trading tab.
 input int DefaultMinEntrySLDistance = 0; // MinEntrySLDistance: Minimum entry/SL distance for Trading tab.
 input double DefaultMaxRiskPercentage = 0; // MaxRiskPercentage: Maximum risk % for Trading tab.
+input double DefaultMaxMarginPerc = 0; // MaxMarginPerc: Maximum margin % for Trading tab.
 input double DefaultMaxPositionSizeTotal = 0; // Maximum position size total for Trading tab.
 input double DefaultMaxPositionSizePerSymbol = 0; // Maximum position size per symbol for Trading tab.
 input bool DefaultSubtractOPV = false; // SubtractOPV: Subtract open positions volume (Trading tab).
@@ -121,8 +124,12 @@ input int DefaultMaxNumberOfTradesTotal = 0; // MaxNumberOfTradesTotal: For the 
 input int DefaultMaxNumberOfTradesPerSymbol = 0; // MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit.
 input double DefaultMaxRiskTotal = 0; // MaxRiskTotal: For the Trading tab. 0 - no limit.
 input double DefaultMaxRiskPerSymbol = 0; // MaxRiskPerSymbol: For the Trading tab. 0 - no limit.
+input double DefaultMaxMarginPercTotal = 0; // MaxMarginPercTotal: For the Trading tab. 0 - no limit.
+input double DefaultMaxMarginPercPerSymbol = 0; // MaxMarginPercPerSymbol: For the Trading tab. 0 - no limit.
 input bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
 input bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
+input MARGIN_UTILIZATION_BASE DefaultMarginUtilizationBase = MUB_BALANCE; // Margin utilization base.
+input double DefaultMUBStartingBalance = 0; // Starting balance for margin utilization base.
 input group "Keyboard shortcuts"
 input string ____Keyboard_Shortcuts = "Case-insensitive hotkey. Supports Ctrl, Shift.";
 input string TradeHotKey = "T"; // TradeHotKey: Execute a trade.
@@ -336,6 +343,7 @@ int OnInit()
         sets.MaxPositionSizeTotal = DefaultMaxPositionSizeTotal;
         sets.MaxPositionSizePerSymbol = DefaultMaxPositionSizePerSymbol;
         sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
+        sets.MaxMarginPerc = DefaultMaxMarginPerc;
         if ((sets.MaxPositionSizeTotal < sets.MaxPositionSizePerSymbol) && (sets.MaxPositionSizeTotal != 0)) sets.MaxPositionSizeTotal = sets.MaxPositionSizePerSymbol;
         sets.StopLoss = 0;
         sets.TakeProfit = 0;
@@ -359,10 +367,15 @@ int OnInit()
         sets.MaxRiskTotal = DefaultMaxRiskTotal;
         sets.MaxRiskPerSymbol = DefaultMaxRiskPerSymbol;
         if ((sets.MaxRiskTotal < sets.MaxRiskPerSymbol) && (sets.MaxRiskTotal != 0)) sets.MaxRiskTotal = sets.MaxRiskPerSymbol;
+        sets.MaxMarginPercTotal = DefaultMaxMarginPercTotal;
+        sets.MaxMarginPercPerSymbol = DefaultMaxMarginPercPerSymbol;
+        if ((sets.MaxMarginPercTotal < sets.MaxMarginPercPerSymbol) && (sets.MaxMarginPercTotal != 0)) sets.MaxMarginPercTotal = sets.MaxMarginPercPerSymbol;
         sets.ShareVolumeMode = Decreasing;
         sets.TemplateChanged = false;
         sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
         sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
+        sets.MarginUtilizationBase = DefaultMarginUtilizationBase;
+        sets.MUBStartingBalance = DefaultMUBStartingBalance;
         if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
         sets.LastAdditionalTPScheme = ADDITIONAL_TP_SCHEME_OUTWARD;
     }
@@ -793,10 +806,14 @@ void OnChartEvent(const int id,
 
     if (id == CHARTEVENT_KEYDOWN)
     {
-        // Get Unicode key value.
-        short key = TranslateKey((int)lparam);
-        // In case of falire, use raw value.
-        if (key == -1) key = (short)lparam;
+        short key = (short)lparam;
+        if (key < 65 || (key > 90 && key < 97) || key > 122) // Not a capital or normal letter.
+        {
+            // Get Unicode key value.
+            key = TranslateKey((int)lparam);
+            // In case of falire, use raw value.
+            if (key == -1) key = (short)lparam;
+        }
 
         // Trade direction:
         if ((MainKey_SwitchEntryDirectionHotKey != 0) && (key == MainKey_SwitchEntryDirectionHotKey)

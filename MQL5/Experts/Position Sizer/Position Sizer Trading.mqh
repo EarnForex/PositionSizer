@@ -1,6 +1,6 @@
 ﻿//+------------------------------------------------------------------+
 //|                                       Position Sizer Trading.mqh |
-//|                                  Copyright © 2025, EarnForex.com |
+//|                                  Copyright © 2026, EarnForex.com |
 //|                                       https://www.earnforex.com/ |
 //+------------------------------------------------------------------+
 
@@ -14,6 +14,8 @@ void Trade()
     CTrade *Trade;
     
     string Commentary = "";
+
+    // Critical checks:
 
     if (!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED))
     {
@@ -59,10 +61,15 @@ void Trade()
         }
     }
 
-    if (sets.Commentary != "") Commentary = sets.Commentary;
+    // Commentary:
+
+    if (DefaultCommentBalance) Commentary += DoubleToString(AccountInfoDouble(ACCOUNT_BALANCE), AccountCurrencyDigits);
+
+    if (sets.Commentary != "") Commentary += sets.Commentary;
 
     if (sets.CommentAutoSuffix) Commentary += IntegerToString((int)TimeLocal());
 
+    // Fuses' checks:
 
     if ((sets.TakeProfitsNumber == 1) || (AccountInfoInteger(ACCOUNT_MARGIN_MODE) == ACCOUNT_MARGIN_MODE_RETAIL_NETTING))
     {
@@ -75,181 +82,260 @@ void Trade()
         TPShare[0] = 100;
     }
 
-    if ((sets.DisableTradingWhenLinesAreHidden) && (!sets.ShowLines))
+    if (ShowFusesOnTrading)
     {
-        Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_LINES);
-        return;
-    }
-
-    if (sets.MaxSpread > 0)
-    {
-        int spread = (int)SymbolInfoInteger(SymbolForTrading, SYMBOL_SPREAD);
-        if (spread > sets.MaxSpread)
+        if ((sets.DisableTradingWhenLinesAreHidden) && (!sets.ShowLines))
         {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_SPREAD + " (", spread, ") > " + TRANSLATION_MESSAGE_MAXIMUM_SPREAD + " (", sets.MaxSpread, ").");
+            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_LINES);
             return;
         }
-    }
-
-    if (sets.MaxEntrySLDistance > 0)
-    {
-        int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point());
-        if (CurrentEntrySLDistance > sets.MaxEntrySLDistance)
+    
+        if (sets.MaxSpread > 0)
         {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") > " + TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE + " (", sets.MaxEntrySLDistance, ").");
-            return;
-        }
-    }
-
-    if (sets.MinEntrySLDistance > 0)
-    {
-        int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point());
-        if (CurrentEntrySLDistance < sets.MinEntrySLDistance)
-        {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") < " + TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE + " (", sets.MinEntrySLDistance, ").");
-            return;
-        }
-    }
-
-    if (sets.MaxRiskPercentage > 0)
-    {
-        double risk_percentage_output = 100; // In case AccSize = 0;
-        if (AccSize != 0)
-        {
-            risk_percentage_output = Round(OutputRiskMoney / AccSize * 100, 2); // Not stored anywhere. Have to recalculate each time.
-        }        
-        if (risk_percentage_output > sets.MaxRiskPercentage)
-        {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_CURRENT_RISK + " (", risk_percentage_output, "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_RISK + " (", sets.MaxRiskPercentage, "%).");
-            return;
-        }
-    }
-
-    if ((sets.MaxNumberOfTradesTotal > 0) || (sets.MaxNumberOfTradesPerSymbol > 0))
-    {
-        int total = PositionsTotal();
-        int cnt = 0, persymbol_cnt = 0;
-        if (AccountInfoInteger(ACCOUNT_MARGIN_MODE) == ACCOUNT_MARGIN_MODE_RETAIL_HEDGING) // Makes sense in a hedging mode.
-        {
-            for (int i = 0; i < total; i++)
+            int spread = (int)SymbolInfoInteger(SymbolForTrading, SYMBOL_SPREAD);
+            if (spread > sets.MaxSpread)
             {
-                if (!PositionSelectByTicket(PositionGetTicket(i))) continue;
-                if ((sets.MagicNumber != 0) && (PositionGetInteger(POSITION_MAGIC) != sets.MagicNumber)) continue;
-                if (PositionGetString(POSITION_SYMBOL) == SymbolForTrading) persymbol_cnt++;
-                cnt++;
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_SPREAD + " (", spread, ") > " + TRANSLATION_MESSAGE_MAXIMUM_SPREAD + " (", sets.MaxSpread, ").");
+                return;
             }
         }
-        else // In netting, it can only count positions on different symbols.
+    
+        if (sets.MaxEntrySLDistance > 0)
         {
-            // Need to remember that it might be so that the current trade won't increase the counter if there is already a position in this symbol. Unless it is a pending order being opened.
-            for (int i = 0; i < total; i++)
+            int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point());
+            if (CurrentEntrySLDistance > sets.MaxEntrySLDistance)
             {
-                if (!PositionSelectByTicket(PositionGetTicket(i))) continue;
-                if ((sets.MagicNumber != 0) && (PositionGetInteger(POSITION_MAGIC) != sets.MagicNumber)) continue;
-                if ((PositionGetString(POSITION_SYMBOL) == SymbolForTrading) && (sets.EntryType == Instant)) continue; // Skip current symbol, because in netting mode, new trade won't create another position, but will rather add/subtract from the existing one.
-                cnt++;
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") > " + TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE + " (", sets.MaxEntrySLDistance, ").");
+                return;
+            }
+        }
+    
+        if (sets.MinEntrySLDistance > 0)
+        {
+            int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point());
+            if (CurrentEntrySLDistance < sets.MinEntrySLDistance)
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") < " + TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE + " (", sets.MinEntrySLDistance, ").");
+                return;
+            }
+        }
+    
+        if (sets.MaxRiskPercentage > 0)
+        {
+            double risk_percentage_output = 100; // In case AccSize = 0;
+            if (AccSize != 0)
+            {
+                risk_percentage_output = Round(OutputRiskMoney / AccSize * 100, 2); // Not stored anywhere. Have to recalculate each time.
+            }
+            if (risk_percentage_output > sets.MaxRiskPercentage)
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_CURRENT_RISK + " (", risk_percentage_output, "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_RISK + " (", sets.MaxRiskPercentage, "%).");
+                return;
             }
         }
         
-        // Count pending orders.
-        total = OrdersTotal();
-        for (int i = 0; i < total; i++)
+        if (ShowAdditionalMarginSettings && sets.MaxMarginPerc > 0)
         {
-            if (!OrderSelect(OrderGetTicket(i))) continue;
-            if ((sets.MagicNumber != 0) && (OrderGetInteger(ORDER_MAGIC) != sets.MagicNumber)) continue;
-            if (OrderGetString(ORDER_SYMBOL) == SymbolForTrading) persymbol_cnt++;
-            cnt++;
-        }
-                
-        if ((cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesTotal) && (sets.MaxNumberOfTradesTotal > 0))
-        {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER + " (", cnt, ") + " + TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION + " (", sets.TakeProfitsNumber, ") > " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_NUMBER_OF_TRADES_ALLOWED + " (", sets.MaxNumberOfTradesTotal, ").");
-            return;
-        }
-        if ((persymbol_cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesPerSymbol) && (sets.MaxNumberOfTradesPerSymbol > 0))
-        {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER + " (", persymbol_cnt, ") + " + TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION + " (", sets.TakeProfitsNumber, ") > " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED + " (", sets.MaxNumberOfTradesPerSymbol, ").");
-            return;
+            if (MarginUtilizedPosition > sets.MaxMarginPerc)
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_MU + " (", DoubleToString(MarginUtilizedPosition, 2), "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_MU + " (", DoubleToString(sets.MaxMarginPerc, 2), "%).");
+                return;
+            }
         }
     }
-    
+
     double PositionSize = OutputPositionSize;
-    if (sets.MaxRiskTotal > 0)
+
+    if (ShowMaxParametersOnTrading)
     {
-        CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL);
-        double risk;
-        if (PortfolioLossMoney != DBL_MAX)
+        if ((sets.MaxNumberOfTradesTotal > 0) || (sets.MaxNumberOfTradesPerSymbol > 0))
         {
-            risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
-            if (risk > sets.MaxRiskTotal)
+            int total = PositionsTotal();
+            int cnt = 0, persymbol_cnt = 0;
+            if (AccountInfoInteger(ACCOUNT_MARGIN_MODE) == ACCOUNT_MARGIN_MODE_RETAIL_HEDGING) // Makes sense in a hedging mode.
             {
-                string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + ").";
-                if (!LessRestrictiveMaxLimits)
+                for (int i = 0; i < total; i++)
                 {
-                    Alert(alert_text);
-                    return;
+                    if (!PositionSelectByTicket(PositionGetTicket(i))) continue;
+                    if ((sets.MagicNumber != 0) && (PositionGetInteger(POSITION_MAGIC) != sets.MagicNumber)) continue;
+                    if (PositionGetString(POSITION_SYMBOL) == SymbolForTrading) persymbol_cnt++;
+                    cnt++;
                 }
-                else
+            }
+            else // In netting, it can only count positions on different symbols.
+            {
+                // Need to remember that it might be so that the current trade won't increase the counter if there is already a position in this symbol. Unless it is a pending order being opened.
+                for (int i = 0; i < total; i++)
                 {
-                    double new_ps = (sets.MaxRiskTotal / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
-                    if (new_ps >= MinLot)
+                    if (!PositionSelectByTicket(PositionGetTicket(i))) continue;
+                    if ((sets.MagicNumber != 0) && (PositionGetInteger(POSITION_MAGIC) != sets.MagicNumber)) continue;
+                    if ((PositionGetString(POSITION_SYMBOL) == SymbolForTrading) && (sets.EntryType == Instant)) continue; // Skip current symbol, because in netting mode, new trade won't create another position, but will rather add/subtract from the existing one.
+                    cnt++;
+                }
+            }
+            
+            // Count pending orders.
+            total = OrdersTotal();
+            for (int i = 0; i < total; i++)
+            {
+                if (!OrderSelect(OrderGetTicket(i))) continue;
+                if ((sets.MagicNumber != 0) && (OrderGetInteger(ORDER_MAGIC) != sets.MagicNumber)) continue;
+                if (OrderGetString(ORDER_SYMBOL) == SymbolForTrading) persymbol_cnt++;
+                cnt++;
+            }
+                    
+            if ((cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesTotal) && (sets.MaxNumberOfTradesTotal > 0))
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER + " (", cnt, ") + " + TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION + " (", sets.TakeProfitsNumber, ") > " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_NUMBER_OF_TRADES_ALLOWED + " (", sets.MaxNumberOfTradesTotal, ").");
+                return;
+            }
+            if ((persymbol_cnt + sets.TakeProfitsNumber > sets.MaxNumberOfTradesPerSymbol) && (sets.MaxNumberOfTradesPerSymbol > 0))
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER + " (", persymbol_cnt, ") + " + TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION + " (", sets.TakeProfitsNumber, ") > " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED + " (", sets.MaxNumberOfTradesPerSymbol, ").");
+                return;
+            }
+        }
+        
+        if (sets.MaxRiskTotal > 0)
+        {
+            CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL);
+            double risk;
+            if (PortfolioLossMoney != DBL_MAX)
+            {
+                risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+                if (risk > sets.MaxRiskTotal)
+                {
+                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + ").";
+                    if (!LessRestrictiveMaxLimits)
                     {
-                        PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                        PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
-                        PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
-                        Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        Alert(alert_text);
+                        return;
                     }
                     else
                     {
-                        Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
-                        return;
+                        double new_ps = (sets.MaxRiskTotal / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
+                        if (new_ps >= MinLot)
+                        {
+                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
+                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        }
+                        else
+                        {
+                            Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
+                            return;
+                        }
                     }
                 }
             }
-        }
-        else
-        {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK + ".");
-            return;
-        }
-    }
-    if (sets.MaxRiskPerSymbol > 0)
-    {
-        CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL);
-        double risk;
-        if (PortfolioLossMoney != DBL_MAX)
-        {
-            risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
-            if (risk > sets.MaxRiskPerSymbol)
+            else
             {
-                string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + ").";
-                if (!LessRestrictiveMaxLimits)
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK + ".");
+                return;
+            }
+        }
+        if (sets.MaxRiskPerSymbol > 0)
+        {
+            CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL);
+            double risk;
+            if (PortfolioLossMoney != DBL_MAX)
+            {
+                risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+                if (risk > sets.MaxRiskPerSymbol)
                 {
-                    Alert(alert_text);
-                    return;
-                }
-                else
-                {
-                    double new_ps = (sets.MaxRiskPerSymbol / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
-                    if (new_ps >= MinLot)
+                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + ").";
+                    if (!LessRestrictiveMaxLimits)
                     {
-                        PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                        PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
-                        PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
-                        Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        Alert(alert_text);
+                        return;
                     }
                     else
                     {
-                        Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
-                        return;
+                        double new_ps = (sets.MaxRiskPerSymbol / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
+                        if (new_ps >= MinLot)
+                        {
+                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
+                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        }
+                        else
+                        {
+                            Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
+                            return;
+                        }
                     }
                 }
             }
+            else
+            {
+                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_INFINITE_PER_SYMBOL_POTENTIAL_RISK + ".");
+                return;
+            }
         }
-        else
+    
+        if (ShowAdditionalMarginSettings)
         {
-            Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_INFINITE_PER_SYMBOL_POTENTIAL_RISK + ".");
-            return;
+            if (sets.MaxMarginPercTotal > 0)
+            {
+                if (MarginUtilizedFuture > sets.MaxMarginPercTotal)
+                {
+                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercTotal, 2) + "%).";
+                    if (!LessRestrictiveMaxLimits)
+                    {
+                        Alert(alert_text);
+                        return;
+                    }
+                    else
+                    {
+                        double new_ps = OutputPositionSize * (sets.MaxMarginPercTotal - MarginUtilizedCurrent) / MarginUtilizedPosition;
+                        if (new_ps >= MinLot)
+                        {
+                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
+                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercTotal, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        }
+                        else
+                        {
+                            Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
+                            return;
+                        }
+                    }
+                }
+            }
+            if (sets.MaxMarginPercPerSymbol > 0)
+            {
+                double margin_utilized_current_symbol = MarginUtilizedCurrentSymbol;
+                double margin_utilized_future_symbol = margin_utilized_current_symbol + MarginUtilizedPosition;
+        
+                if (margin_utilized_future_symbol > sets.MaxMarginPercPerSymbol)
+                {
+                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(margin_utilized_future_symbol, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%).";
+                    if (!LessRestrictiveMaxLimits)
+                    {
+                        Alert(alert_text);
+                        return;
+                    }
+                    else
+                    {
+                        double new_ps = OutputPositionSize * (sets.MaxMarginPercPerSymbol - margin_utilized_current_symbol) / MarginUtilizedPosition;
+                        if (new_ps >= MinLot)
+                        {
+                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
+                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(margin_utilized_future_symbol, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                        }
+                        else
+                        {
+                            Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -953,7 +1039,9 @@ void DrawBELine(ulong ticket, double be_threshold, double be_price)
         ObjectCreate(ChartID(), obj_name, OBJ_LABEL, 0, 0, 0);
         if (sets.ShowLines) ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), obj_name, OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
-        ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, clrNONE);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, be_line_color);
+        ObjectSetInteger(ChartID(), obj_name, OBJPROP_FONTSIZE, font_size - 6); // A smaller label.
+        ObjectSetString(ChartID(), obj_name, OBJPROP_FONT, font_face);
         ObjectSetInteger(ChartID(), obj_name, OBJPROP_SELECTABLE, false);
         ObjectSetInteger(ChartID(), obj_name, OBJPROP_HIDDEN, false);
         ObjectSetInteger(ChartID(), obj_name, OBJPROP_CORNER, CORNER_LEFT_UPPER);
@@ -963,7 +1051,7 @@ void DrawBELine(ulong ticket, double be_threshold, double be_price)
         if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) text += TRANSLATION_MESSAGE_BUY;
         else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) text += TRANSLATION_MESSAGE_SELL;
         text += " #" + IntegerToString(ticket);
-        DrawLineLabel(obj_name, text, be_threshold, be_line_color, false, -6);
+        DrawLineLabel(obj_name, text, be_threshold, false, -6);
     }
 }
 

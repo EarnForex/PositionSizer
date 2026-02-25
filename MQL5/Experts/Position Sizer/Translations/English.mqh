@@ -147,7 +147,18 @@
 #define TRANSLATION_LABEL_SYMBOL "Symbol"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Maximum position size by margin"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "In lots"
-
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "Current"
+#define TRANSLATION_LABEL_MU_PERC_POSITION "Position"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "Future"
+#define TRANSLATION_LABEL_MU_PERC "Margin utilization"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "Start. balance"
+#define TRANSLATION_RGP_MU_BALANCE "Balance"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "Free margin"
+#define TRANSLATION_LABEL_MU_BASE "Base"
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "Base value"
+#define TRANSLATION_TOOLTIP_MU_BASE "Margin utilization base"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "Current balance, starting balance (set by you), or free margin"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "The value of margin utilization base in currency units"
 
 // Swaps tab
 #define TRANSLATION_LABEL_TYPE "Type"
@@ -172,7 +183,6 @@
 #define TRANSLATION_LABEL_BASE_CURRENCY "Base currency"
 #define TRANSLATION_LABEL_MARGIN_CURRENCY "Margin currency"
 #define TRANSLATION_LABEL_PROFIT_CURRENCY "Profit currency"
-
 
 // Trading tab
 #define TRANSLATION_BUTTON_TRADE "Trade"
@@ -212,6 +222,10 @@
 #define TRANSLATION_TOOLTIP_EXPIRY "Expiration time in minutes for the next created pending order. Minimum = 2."
 #define TRANSLATION_LABEL_MINUTES "min."
 #define TRANSLATION_TOOLTIP_MINUTES "Minutes"
+#define TRANSLATION_LABEL_MAX_MARGIN "Margin util."
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Max margin %"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Max margin utilization"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Max margin utilization fuse"
 
 // Chart objects
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LINE "Stop Price (for Stop Limit orders)"
@@ -343,6 +357,12 @@
 #define TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE "Cannot take a smaller trade."
 #define TRANSLATION_MESSAGE_ARE_YOU_SURE "Are you sure you want to close the Position Sizer?"
 #define TRANSLATION_MESSAGE_EXIT "Exit?"
+#define TRANSLATION_MESSAGE_NTAT_MU "margin utilization"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "maximum margin utilization"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "total margin utilization"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "maximum total margin utilization"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "margin utilization per symbol"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "maximum margin utilization per symbol"
 
 // Input parameters
 #define INPUT_GROUP_DESCRIPTION_COMPACTNESS "Compactness"
@@ -359,6 +379,7 @@
 #define INPUT_DESCRIPTION_ShowMaxParametersOnTrading "Show max parameters on Trading tab?"
 #define INPUT_DESCRIPTION_ShowFusesOnTrading "Show trading 'fuses' on Trading tab?"
 #define INPUT_DESCRIPTION_ShowCheckboxesOnTrading "Show checkboxes on Trading tab?"
+#define INPUT_DESCRIPTION_ShowAdditionalMarginSettings "Show additional margin settings/info?"
 #define INPUT_DESCRIPTION_HideEntryLineOnInstant "Hide Entry line for Instant orders?"
 #define INPUT_DESCRIPTION_AdditionalTradeButtons "Additional Trade buttons:"
 #define INPUT_GROUP_DESCRIPTION_FONTS "Fonts"
@@ -413,12 +434,14 @@
 #define INPUT_DESCRIPTION_DefaultMagicNumber "MagicNumber: Default magic number for Trading tab."
 #define INPUT_DESCRIPTION_DefaultCommentary "Commentary: Default order comment for Trading tab."
 #define INPUT_DESCRIPTION_DefaultCommentAutoSuffix "AutoSuffix: Automatic suffix for order comment in Trading tab."
+#define INPUT_DESCRIPTION_DefaultCommentBalance "CommentBalance: Add current balance in front of order comment?"
 #define INPUT_DESCRIPTION_DefaultDisableTradingWhenLinesAreHidden "DisableTradingWhenLinesAreHidden: for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxSlippage "MaxSlippage: Maximum slippage for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxSpread "MaxSpread: Maximum spread for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxEntrySLDistance "MaxEntrySLDistance: Maximum entry/SL distance for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMinEntrySLDistance "MinEntrySLDistance: Minimum entry/SL distance for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxRiskPercentage "MaxRiskPercentage: Maximum risk % for Trading tab."
+#define INPUT_DESCRIPTION_DefaultMaxMarginPerc "MaxMarginPerc: Maximum margin % for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxPositionSizeTotal "Maximum position size total for Trading tab."
 #define INPUT_DESCRIPTION_DefaultMaxPositionSizePerSymbol "Maximum position size per symbol for Trading tab."
 #define INPUT_DESCRIPTION_DefaultSubtractOPV "SubtractOPV: Subtract open positions volume (Trading tab)."
@@ -437,8 +460,12 @@
 #define INPUT_DESCRIPTION_DefaultMaxNumberOfTradesPerSymbol "MaxNumberOfTradesPerSymbol: For the Trading tab. 0 - no limit."
 #define INPUT_DESCRIPTION_DefaultMaxRiskTotal "MaxRiskTotal: For the Trading tab. 0 - no limit."
 #define INPUT_DESCRIPTION_DefaultMaxRiskPerSymbol "MaxRiskPerSymbol: For the Trading tab. 0 - no limit."
+#define INPUT_DESCRIPTION_DefaultMaxMarginPercTotal "MaxMarginPercTotal: For the Trading tab. 0 - no limit."
+#define INPUT_DESCRIPTION_DefaultMaxMarginPercPerSymbol "MaxMarginPercPerSymbol: For the Trading tab. 0 - no limit."
 #define INPUT_DESCRIPTION_DefaultSLDistanceInPoints "SLDistanceInPoints: SL distance in points instead of a level."
 #define INPUT_DESCRIPTION_DefaultTPDistanceInPoints "TPDistanceInPoints: TP distance in points instead of a level."
+#define INPUT_DESCRIPTION_DefaultMarginUtilizationBase "Margin utilization base."
+#define INPUT_DESCRIPTION_DefaultMUBStartingBalance "Starting balance for margin utilization base."
 #define INPUT_GROUP_DESCRIPTION_KEYBOARD_SHORTCUTS "Keyboard Shortcuts"
 #define INPUT_DESCRIPTION_____ "Case-insensitive hotkey. Supports Ctrl, Shift."
 #define INPUT_DESCRIPTION_TradeHotKey "TradeHotKey: Execute a trade."
