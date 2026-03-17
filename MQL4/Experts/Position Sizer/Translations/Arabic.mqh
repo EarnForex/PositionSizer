@@ -143,6 +143,18 @@
 #define TRANSLATION_LABEL_SYMBOL "الرمز"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "الحد الأقصى لحجم المركز بحسب الهامش"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "باللوت"
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "حالي"
+#define TRANSLATION_LABEL_MU_PERC_POSITION "مركز"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "مستقبل"
+#define TRANSLATION_LABEL_MU_PERC "استخدام الهامش"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "رصيد افتتاحي"
+#define TRANSLATION_RGP_MU_BALANCE "الرصيد"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "الهامش الحر"
+#define TRANSLATION_LABEL_MU_BASE "الأساس"
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "قيمة الأساس"
+#define TRANSLATION_TOOLTIP_MU_BASE "أساس استخدام الهامش"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "الرصيد الحالي، رصيد افتتاحي (تحدده أنت)، أو الهامش الحر"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "قيمة أساس استخدام الهامش بوحدات العملة"
 
 
 // Swaps tab
@@ -205,6 +217,10 @@
 #define TRANSLATION_TOOLTIP_EXPIRY "وقت الانتهاء بالدقائق للأمر المعلق التالي الذي تم إنشائه. الحد الأدنى = 10."
 #define TRANSLATION_LABEL_MINUTES "الحد الأدنى."
 #define TRANSLATION_TOOLTIP_MINUTES "دقائق"
+#define TRANSLATION_LABEL_MAX_MARGIN "استخدام الهامش" // util. = utilization.
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "أقصى % للهامش"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "أقصى استخدام للهامش"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "مصهر أقصى استخدام للهامش"
 
 
 // Chart objects
@@ -329,3 +345,9 @@
 #define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "فشل OrderDelete"
 #define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "فشل OrderClose"
 #define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "تعذر العثور على الكائن."
+#define TRANSLATION_MESSAGE_NTAT_MU "استخدام الهامش"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "أقصى استخدام للهامش"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "إجمالي استخدام الهامش"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "الحد الأقصى لإجمالي استخدام الهامش"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "استخدام الهامش لكل رمز"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "الحد الأقصى لاستخدام الهامش لكل رمز"

@@ -126,12 +126,22 @@
 #define TRANSLATION_LABEL_FUTURE_USED_MARGIN "Margen futuro usado"
 #define TRANSLATION_LABEL_FUTURE_FREE_MARGIN "Margen futuro libre"
 #define TRANSLATION_LABEL_CUSTOM_LEVERAGE "Apalanc. person."
-
 #define TRANSLATION_LABEL_DEFAULT "Por defecto"
 #define TRANSLATION_LABEL_SYMBOL "Símbolo" 
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Tamaño de posición máx. por margen"
-
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "En lotes"
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "Actual"
+#define TRANSLATION_LABEL_MU_PERC_POSITION "Posición"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "Futuro"
+#define TRANSLATION_LABEL_MU_PERC "Utilización Margen"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "Balance inicio"
+#define TRANSLATION_RGP_MU_BALANCE "Balance"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "Margen lib."
+#define TRANSLATION_LABEL_MU_BASE "Base"
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "Valor base"
+#define TRANSLATION_TOOLTIP_MU_BASE "Base de utilización del margen"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "Balance actual, balance inicial (establecido por usted) o margen libre"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "El valor de la base de utilización del margen en unidades monetarias"
 
 #define TRANSLATION_LABEL_TYPE "Tipo"
 #define TRANSLATION_LABEL_UNKNOWN "Desconocido"
@@ -196,6 +206,10 @@
 #define TRANSLATION_TOOLTIP_EXPIRY "Tiempo de expiración en minutos para la siguiente orden pendiente creada. Mínimo = 10."
 #define TRANSLATION_LABEL_MINUTES "min."
 #define TRANSLATION_TOOLTIP_MINUTES "Minutos"
+#define TRANSLATION_LABEL_MAX_MARGIN "Util. margen" // util. = utilization.
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Max margen %"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Utilización máxima del margen"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Fusible de utilización de margen máximo"
 
 
 #define TRANSLATION_TOOLTIP_SL_LABEL "Distancia SL, puntos"
@@ -317,3 +331,9 @@
 #define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Fallo en OrderDelete"
 #define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Fallo en OrderClose"
 #define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Objeto no encontrado."
+#define TRANSLATION_MESSAGE_NTAT_MU "Utilización del margen"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "Utilización máxima del margen"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "Utilización total del margen"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "Utilización máxima total del margen"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "Utilización del margen por símbolo"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "Utilización máxima del margen por símbolo"
