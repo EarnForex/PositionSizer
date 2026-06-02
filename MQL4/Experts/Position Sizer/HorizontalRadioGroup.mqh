@@ -21,14 +21,13 @@ class CHorizontalRadioGroup : public CWndClient
 {
 private:
     //--- dependent controls
-    CRadioButton      m_columns[];           // array of the columnobjects
+    CRadioButton      m_columns[];           // array of the column objects
     //--- set up
     int               m_total;               // number of columns
-    long              m_total_width;         // total sum of widthsof all columns
+    long              m_total_width;         // total sum of widths of all columns
     //--- data
     CArrayString      m_strings;             // array of columns
     CArrayLong        m_values;              // array of values
-    CArrayLong        m_widths;              // array of widths
     int               m_current;             // index of current column in array of columns
 
 public:
@@ -48,11 +47,6 @@ public:
     }
     bool              Value(const long value);
     bool              ValueCheck(long value) const;
-    //--- state
-    //--- methods for working with files
-    virtual bool      Save(const int file_handle);
-    virtual bool      Load(const int file_handle);
-
 protected:
     //--- create dependent controls
     bool              CreateButton(const int index, const long item_width);
@@ -75,7 +69,7 @@ EVENT_MAP_END(CWndClient)
 //+------------------------------------------------------------------+
 CHorizontalRadioGroup::CHorizontalRadioGroup() :
     m_total(0),
-    m_total_width(0), // Should be set via 
+    m_total_width(0), // Should be set via CreateButton().
     m_current(CONTROLS_INVALID_INDEX)
 {
 }
@@ -113,7 +107,6 @@ void CHorizontalRadioGroup::Destroy(const int reason)
 //--- clear items
     m_strings.Clear();
     m_values.Clear();
-    m_widths.Clear();
 }
 
 //+------------------------------------------------------------------+
@@ -152,8 +145,6 @@ bool CHorizontalRadioGroup::AddItem(const string item, const long value, const l
         return false;
     if (!m_values.Add(value))
         return false;
-    if (!m_widths.Add(item_width))
-        return false;
 
     m_total++;
 
@@ -187,36 +178,13 @@ bool CHorizontalRadioGroup::ValueCheck(long value) const
     return true;
 }
 
-bool CHorizontalRadioGroup::Save(const int file_handle)
-{
-//--- check
-    if (file_handle == INVALID_HANDLE)
-        return false;
-//---
-    FileWriteLong(file_handle, Value());
-//--- succeed
-    return true;
-}
-
-bool CHorizontalRadioGroup::Load(const int file_handle)
-{
-//--- check
-    if (file_handle == INVALID_HANDLE)
-        return false;
-//---
-    if (!FileIsEnding(file_handle))
-        Value(FileReadLong(file_handle));
-//--- succeed
-    return true;
-}
-
 void CHorizontalRadioGroup::Select(const int index)
 {
 //--- disable the "ON" state
-    if (m_current != -1)
+    if (m_current != CONTROLS_INVALID_INDEX)
         ColumnState(m_current, false);
 //--- enable the "ON" state
-    if (index != -1)
+    if (index != CONTROLS_INVALID_INDEX)
         ColumnState(index, true);
 //--- save value
     m_current = index;

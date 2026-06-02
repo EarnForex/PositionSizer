@@ -66,24 +66,24 @@ void ListenToChartEvents(string panel_id)
             double double_from_stripped_text = StringToDouble(text_stripped);
 
             // The checkbox part has "Button" added to its name.
-            if (((object_name == panel_id + "m_EdtEntryLevel") && (AreDoublesEqual(double_from_text, sets.EntryLevel))) ||
-                ((!sets.SLDistanceInPoints) && (object_name == panel_id + "m_EdtSL") && (AreDoublesEqual(double_from_text, sets.StopLossLevel))) ||
+            if (((object_name == panel_id + "m_EdtEntryLevel") && (AreDoublesDifferent(double_from_text, sets.EntryLevel))) ||
+                ((!sets.SLDistanceInPoints) && (object_name == panel_id + "m_EdtSL") && (AreDoublesDifferent(double_from_text, sets.StopLossLevel))) ||
                 ((sets.SLDistanceInPoints) && (object_name == panel_id + "m_EdtSL") && (text != IntegerToString(sets.StopLoss))) ||
-                ((!sets.TPDistanceInPoints) && (object_name == panel_id + "m_EdtTP") && (AreDoublesEqual(double_from_text, sets.TakeProfitLevel))) ||
+                ((!sets.TPDistanceInPoints) && (object_name == panel_id + "m_EdtTP") && (AreDoublesDifferent(double_from_text, sets.TakeProfitLevel))) ||
                 ((sets.TPDistanceInPoints) && (object_name == panel_id + "m_EdtTP") && (text != IntegerToString(sets.TakeProfit))) ||
                 // Account size is editable only when it's set to Balance. If different from the actual account balance, a custom value has been entered.
-                ((sets.AccountButton == Balance) && (object_name == panel_id + "m_EdtAccount") && (AreDoublesEqual(double_from_stripped_text, AccountBalance() + AdditionalFunds)) && (AreDoublesEqual(double_from_stripped_text, sets.CustomBalance))) ||
-                ((object_name == panel_id + "m_EdtTPMultiplier") && (AreDoublesEqual(double_from_text, sets.TPMultiplier, 6))) ||
-                ((object_name == panel_id + "m_EdtCommissionSize") && (AreDoublesEqual(double_from_text, sets.CommissionPerLot, 3))) ||
-                ((object_name == panel_id + "m_EdtRiskPIn") && (AreDoublesEqual(double_from_text, sets.Risk))) ||
-                ((object_name == panel_id + "m_EdtRiskMIn") && (AreDoublesEqual(double_from_stripped_text, sets.MoneyRisk, 2))) ||
-                ((object_name == panel_id + "m_EdtPosSize") && (AreDoublesEqual(double_from_text, OutputPositionSize, 2))) ||
+                ((sets.AccountButton == Balance) && (object_name == panel_id + "m_EdtAccount") && (AreDoublesDifferent(double_from_stripped_text, AccountBalance() + AdditionalFunds)) && (AreDoublesDifferent(double_from_stripped_text, sets.CustomBalance))) ||
+                ((object_name == panel_id + "m_EdtTPMultiplier") && (AreDoublesDifferent(double_from_text, sets.TPMultiplier, 6))) ||
+                ((object_name == panel_id + "m_EdtCommissionSize") && (AreDoublesDifferent(double_from_text, sets.CommissionPerLot, 3))) ||
+                ((object_name == panel_id + "m_EdtRiskPIn") && (AreDoublesDifferent(double_from_text, sets.Risk))) ||
+                ((object_name == panel_id + "m_EdtRiskMIn") && (AreDoublesDifferent(double_from_stripped_text, sets.MoneyRisk, 2))) ||
+                ((object_name == panel_id + "m_EdtPosSize") && (AreDoublesDifferent(double_from_text, OutputPositionSize, 2))) ||
                 ((object_name == panel_id + "m_EdtATRPeriod") && (text != IntegerToString(sets.ATRPeriod))) ||
-                ((object_name == panel_id + "m_EdtATRMultiplierSL") && (AreDoublesEqual(double_from_text, sets.ATRMultiplierSL, 2))) ||
-                ((object_name == panel_id + "m_EdtATRMultiplierTP") && (AreDoublesEqual(double_from_text, sets.ATRMultiplierTP, 2))) ||
-                ((object_name == panel_id + "m_EdtCustomLeverage") && (AreDoublesEqual(double_from_text, sets.CustomLeverage))) ||
+                ((object_name == panel_id + "m_EdtATRMultiplierSL") && (AreDoublesDifferent(double_from_text, sets.ATRMultiplierSL, 2))) ||
+                ((object_name == panel_id + "m_EdtATRMultiplierTP") && (AreDoublesDifferent(double_from_text, sets.ATRMultiplierTP, 2))) ||
+                ((object_name == panel_id + "m_EdtCustomLeverage") && (AreDoublesDifferent(double_from_text, sets.CustomLeverage))) ||
                 // Margin utilization base value is editable only when it's set to Starting Balance.
-                ((sets.MarginUtilizationBase == MUB_STARTING_BALANCE) && (object_name == panel_id + "m_EdtMUBStartingBalance") && (AreDoublesEqual(double_from_stripped_text, sets.MUBStartingBalance))) ||
+                ((sets.MarginUtilizationBase == MUB_STARTING_BALANCE) && (object_name == panel_id + "m_EdtMUBStartingBalance") && (AreDoublesDifferent(double_from_stripped_text, sets.MUBStartingBalance))) ||
                 ((object_name == panel_id + "m_EdtMagicNumber") && (text != IntegerToString(sets.MagicNumber))) ||
                 ((object_name == panel_id + "m_EdtExpiry") && (text != IntegerToString(sets.ExpiryMinutes))) ||
                 ((object_name == panel_id + "m_EdtCommentary") && (text != sets.Commentary)) ||
@@ -91,18 +91,18 @@ void ListenToChartEvents(string panel_id)
                 ((object_name == panel_id + "m_EdtMaxSpread") && (text != IntegerToString(sets.MaxSpread))) ||
                 ((object_name == panel_id + "m_EdtMaxEntrySLDistance") && (text != IntegerToString(sets.MaxEntrySLDistance))) ||
                 ((object_name == panel_id + "m_EdtMinEntrySLDistance") && (text != IntegerToString(sets.MinEntrySLDistance))) ||
-                ((object_name == panel_id + "m_EdtMaxPositionSizeTotal") && (AreDoublesEqual(double_from_text, sets.MaxPositionSizeTotal, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxPositionSizePerSymbol") && (AreDoublesEqual(double_from_text, sets.MaxPositionSizePerSymbol, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxPositionSizeTotal") && (AreDoublesDifferent(double_from_text, sets.MaxPositionSizeTotal, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxPositionSizePerSymbol") && (AreDoublesDifferent(double_from_text, sets.MaxPositionSizePerSymbol, 2))) ||
                 ((object_name == panel_id + "m_EdtTrailingStopPoints") && (text != IntegerToString(sets.TrailingStopPoints))) ||
                 ((object_name == panel_id + "m_EdtBreakEvenPoints") && (text != IntegerToString(sets.BreakEvenPoints))) ||
                 ((object_name == panel_id + "m_EdtMaxNumberOfTradesTotal") && (text != IntegerToString(sets.MaxNumberOfTradesTotal))) ||
                 ((object_name == panel_id + "m_EdtMaxNumberOfTradesPerSymbol") && (text != IntegerToString(sets.MaxNumberOfTradesPerSymbol))) ||
-                ((object_name == panel_id + "m_EdtMaxRiskTotal") && (AreDoublesEqual(double_from_text, sets.MaxRiskTotal, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxRiskPerSymbol") && (AreDoublesEqual(double_from_text, sets.MaxRiskPerSymbol, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxRiskPercentage") && (AreDoublesEqual(double_from_text, sets.MaxRiskPercentage, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxMarginPercTotal") && (AreDoublesEqual(double_from_text, sets.MaxMarginPercTotal, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxMarginPercPerSymbol") && (AreDoublesEqual(double_from_text, sets.MaxMarginPercPerSymbol, 2))) ||
-                ((object_name == panel_id + "m_EdtMaxMarginPerc") && (AreDoublesEqual(double_from_text, sets.MaxMarginPerc, 2)))
+                ((object_name == panel_id + "m_EdtMaxRiskTotal") && (AreDoublesDifferent(double_from_text, sets.MaxRiskTotal, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxRiskPerSymbol") && (AreDoublesDifferent(double_from_text, sets.MaxRiskPerSymbol, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxRiskPercentage") && (AreDoublesDifferent(double_from_text, sets.MaxRiskPercentage, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPercTotal") && (AreDoublesDifferent(double_from_text, sets.MaxMarginPercTotal, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPercPerSymbol") && (AreDoublesDifferent(double_from_text, sets.MaxMarginPercPerSymbol, 2))) ||
+                ((object_name == panel_id + "m_EdtMaxMarginPerc") && (AreDoublesDifferent(double_from_text, sets.MaxMarginPerc, 2)))
             )
             {
                 lparam = ExtDialog.FindControlId(object_name);
@@ -117,7 +117,7 @@ void ListenToChartEvents(string panel_id)
             if (StringSubstr(object_name, 0, StringLen(panel_id + "m_EdtTradingTPEdit")) == panel_id + "m_EdtTradingTPEdit")
             {
                 int num = (int)StringToInteger(StringSubstr(object_name, StringLen(panel_id + "m_EdtTradingTPEdit"))) - 1;
-                if (AreDoublesEqual(double_from_text, sets.TP[num]))
+                if (AreDoublesDifferent(double_from_text, sets.TP[num]))
                 {
                     OnChartEvent(CHARTEVENT_CUSTOM + ON_END_EDIT, lparam, dparam, object_name);
                     return;
@@ -136,7 +136,7 @@ void ListenToChartEvents(string panel_id)
             {
                 int num = (int)StringToInteger(StringSubstr(object_name, StringLen(panel_id + "m_EdtAdditionalTPEdits"))) - 2; // -2 because, there is no 1st additional TP edit, there is a normal TP edit in its place. So, the chart object numbering starts at 2, which should be translated to 0th array element.
                 
-                if (((!sets.TPDistanceInPoints) && (AreDoublesEqual(double_from_text, sets.TP[num + 1]))) ||
+                if (((!sets.TPDistanceInPoints) && (AreDoublesDifferent(double_from_text, sets.TP[num + 1]))) ||
                     ((sets.TPDistanceInPoints) && (text != IntegerToString((int)MathRound(MathAbs(sets.TP[num + 1] - sets.EntryLevel) / _Point)))))
                 {
                     OnChartEvent(CHARTEVENT_CUSTOM + ON_END_EDIT, lparam, dparam, object_name);
@@ -241,7 +241,7 @@ void ListenToChartEvents(string panel_id)
 
 // Safe double comparison.
 // Returns true if different. False if equal.
-inline bool AreDoublesEqual(double d1, double d2, int precision = 0)
+inline bool AreDoublesDifferent(double d1, double d2, int precision = 0)
 {
     double min_diff = _Point / 2;
     if (precision > 0) min_diff = MathPow(0.1, precision);
@@ -249,7 +249,7 @@ inline bool AreDoublesEqual(double d1, double d2, int precision = 0)
     return true;
 }
 
-// Process the the radiogroup by its name and the number of buttons it has (n).
+// Process the radiogroup by its name and the number of buttons it has (n).
 // return false if chart even isn't necessary, true - if necessary.
 bool ProcessRadiogroupStateByChartObjects(const string name, const int n, const int setting, CHorizontalRadioGroup &rgp)
 {

@@ -231,7 +231,7 @@
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "número atual de ordens por símbolo"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED "número máximo de ordens por símbolo permitido"
 #define TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK "risco total potencial"
-#define TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK "risco total máximo permitido"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK "risco total máximo permitido"
 #define TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK "risco total potencial infinito"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK "risco potencial por símbolo"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK "risco máximo por símbolo permitido"

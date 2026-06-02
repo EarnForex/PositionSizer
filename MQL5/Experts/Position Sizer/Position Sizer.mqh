@@ -385,19 +385,21 @@ bool CPositionSizeCalculator::CheckBoxCreate(CList *list, CCheckBox &Chk, int X1
         bool success = ObjectSetString(ChartID(), m_name + Name + "Button", OBJPROP_BMPFILE, 0, "::Images\\" + CheckboxOnFile);
         if (!success)
         {
-            PrintFormat("Failed to load dark checbkox ON state bitmap: %s. Error code: %d.", "::Images\\" + CheckboxOnFile, GetLastError()); 
+            PrintFormat("Failed to load dark checkbox ON state bitmap: %s. Error code: %d.", "::Images\\" + CheckboxOnFile, GetLastError()); 
         }
         success = ObjectSetString(ChartID(), m_name + Name + "Button", OBJPROP_BMPFILE, 1, "::Images\\" + CheckboxOffFile);
         if (!success)
         {
-            PrintFormat("Failed to load dark checbkox OFF state bitmap: %s. Error code: %d.", "::Images\\" + CheckboxOffFile, GetLastError()); 
+            PrintFormat("Failed to load dark checkbox OFF state bitmap: %s. Error code: %d.", "::Images\\" + CheckboxOffFile, GetLastError()); 
         }
     }
-    CStringForList *obj = new CStringForList;
-    obj.Name = Name;
-    obj.Obj = GetPointer(Chk);
-    list.Add(obj);
-
+    if (list != NULL)
+    {
+        CStringForList *obj = new CStringForList;
+        obj.Name = Name;
+        obj.Obj = GetPointer(Chk);
+        list.Add(obj);
+    }
     return true;
 }
 
@@ -410,11 +412,13 @@ bool CPositionSizeCalculator::EditCreate(CList *list, CEdit &Edt, int X1, int Y1
     if (!Add(Edt))                                                              return false;
     if (!Edt.Text(Text))                                                        return false;
     ObjectSetString(ChartID(), m_name + Name, OBJPROP_TOOLTIP, Tooltip);
-    CStringForList *obj = new CStringForList;
-    obj.Name = Name;
-    obj.Obj = GetPointer(Edt);
-    list.Add(obj);
-
+    if (list != NULL)
+    {
+        CStringForList *obj = new CStringForList;
+        obj.Name = Name;
+        obj.Obj = GetPointer(Edt);
+        list.Add(obj);
+    }
     return true;
 }
 
@@ -427,11 +431,13 @@ bool CPositionSizeCalculator::LabelCreate(CList *list, CLabel &Lbl, int X1, int 
     if (!Add(Lbl))                                                              return false;
     if (!Lbl.Text(Text))                                                        return false;
     ObjectSetString(ChartID(), m_name + Name, OBJPROP_TOOLTIP, Tooltip);
-    CStringForList *obj = new CStringForList;
-    obj.Name = Name;
-    obj.Obj = GetPointer(Lbl);
-    list.Add(obj);
-
+    if (list != NULL)
+    {
+        CStringForList *obj = new CStringForList;
+        obj.Name = Name;
+        obj.Obj = GetPointer(Lbl);
+        list.Add(obj);
+    }
     return true;
 }
 
@@ -463,12 +469,13 @@ bool CPositionSizeCalculator::RadioGroupCreate(CList *list, CHorizontalRadioGrou
             }
         }
     }
-
-    CStringForList *obj = new CStringForList;
-    obj.Name = Name;
-    obj.Obj = GetPointer(Rgp);
-    list.Add(obj);
-
+    if (list != NULL)
+    {
+        CStringForList *obj = new CStringForList;
+        obj.Name = Name;
+        obj.Obj = GetPointer(Rgp);
+        list.Add(obj);
+    }
     return true;
 }
 
@@ -676,7 +683,6 @@ bool CPositionSizeCalculator::CreateObjects()
     y += element_height + v_spacing;
 
     string takeprofit_label_text = TRANSLATION_BUTTON_TP + " x";
-    if (sets.TPDistanceInPoints) takeprofit_label_text = TRANSLATION_BUTTON_TP + " x";
     if (!ButtonCreate(MainTabList, m_BtnTakeProfitsNumberAdd, first_column_start, y, first_column_start + v_spacing * 4 - 1, y + element_height, "m_BtnTakeProfitsNumberAdd", "+", TRANSLATION_TOOLTIP_TAKEPROFIT_ADD))                    return false;
     if (!ButtonCreate(MainTabList, m_BtnTakeProfit, first_column_start + v_spacing * 4, y, first_column_start + v_spacing * 3 + normal_label_width / 2, y + element_height, "m_BtnTakeProfit", takeprofit_label_text, TRANSLATION_TOOLTIP_BUTTON_TP))                    return false;
     if (!EditCreate(MainTabList, m_EdtTPMultiplier, first_column_start + v_spacing * 4 + normal_label_width / 2, y, first_column_start + v_spacing * 3 + normal_label_width, y + element_height, "m_EdtTPMultiplier", DoubleToString(sets.TPMultiplier, CountDecimalPlaces(sets.TPMultiplier)), TRANSLATION_TOOLTIP_TP_MULTIPLIER))                                                                 return false;
@@ -715,7 +721,7 @@ bool CPositionSizeCalculator::CreateObjects()
             if (!LabelCreate(MainTabList, AdditionalTPLabels[i], first_column_start + v_spacing * 4, y, first_column_start + normal_label_width, y + element_height, "m_LblAdditionalTPLabels" + IntegerToString(i + 2), additional_tp_label_beginning + IntegerToString(i + 2) + additional_tp_label_end))                                       return false;
             if (!EditCreate(MainTabList, AdditionalTPEdits[i], second_column_start, y, second_column_start + normal_edit_width, y + element_height, "m_EdtAdditionalTPEdits" + IntegerToString(i + 2), ""))                                               return false;
             if (!ButtonCreate(MainTabList, AdditionalTPButtonsIncrease[i], second_column_start + normal_edit_width + 1, y, second_column_start + normal_edit_width + v_spacing * 4, y + element_height / 2, "m_BtnAdditionalTPButtonsIncrease" + IntegerToString(i + 2), "+", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT))                    return false;
-            if (!ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnAdditionalTPButtonsDecrease" + IntegerToString(i + 2), "-", TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT))                    return false;
+            if (!ButtonCreate(MainTabList, AdditionalTPButtonsDecrease[i], second_column_start + normal_edit_width + 1, y + element_height / 2, second_column_start + normal_edit_width + v_spacing * 4, y + element_height, "m_BtnAdditionalTPButtonsDecrease" + IntegerToString(i + 2), "-", TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE_MULTIPLE + " #" + IntegerToString(i + 2) + " " + TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT))                    return false;
             if (!LabelCreate(MainTabList, AdditionalTPWarnings[i], third_column_start, y, third_column_start + narrow_label_width, y + element_height, "m_LblAdditionalTPWarnings" + IntegerToString(i + 2), ""))                                                 return false;
         }
     }
@@ -1444,13 +1450,9 @@ bool CPositionSizeCalculator::InitObjects()
 
 void CPositionSizeCalculator::InitControlsValues()
 {
-    if ((sets.TPMultiplier < 0.999) || (sets.TPMultiplier > 1.001))
+    if (sets.TPMultiplier < 0.999 || sets.TPMultiplier > 1.001)
     {
-        if (!sets.TPDistanceInPoints)
-        {
-            m_EdtTPMultiplier.Text(DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)));
-        }
-        else m_EdtTPMultiplier.Text(DoubleToString(TP_Multiplier, CountDecimalPlaces(TP_Multiplier)));
+        m_EdtTPMultiplier.Text(DoubleToString(sets.TPMultiplier, CountDecimalPlaces(sets.TPMultiplier)));
     }
 
     if (sets.EntryType == Pending)
@@ -1488,7 +1490,7 @@ void CPositionSizeCalculator::InitControlsValues()
         case Balance:
             m_BtnAccount.Text(TRANSLATION_BUTTON_ACCOUNT_BALANCE);
             // Custom balance.
-            if (CustomBalance > 0) acc_val = CustomBalance;
+            if (sets.CustomBalance > 0) acc_val = sets.CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
             // Account balance editable.
             m_EdtAccount.ReadOnly(false);
@@ -1504,7 +1506,7 @@ void CPositionSizeCalculator::InitControlsValues()
         case Balance_minus_Risk:
             m_BtnAccount.Text(TRANSLATION_BUTTON_BALANCE_MINUS_CPR);
             // Custom balance.
-            if (CustomBalance > 0) acc_val = CustomBalance;
+            if (sets.CustomBalance > 0) acc_val = sets.CustomBalance;
             else acc_val = AccountInfoDouble(ACCOUNT_BALANCE);
             // Account balance uneditable.
             m_EdtAccount.ReadOnly(true);
@@ -1512,10 +1514,10 @@ void CPositionSizeCalculator::InitControlsValues()
             break;
         }
         // Applying additional funds (e.g. bank balance or total net worth, etc.).
-        if (CustomBalance <= 0) acc_val += AdditionalFunds;
+        if (sets.CustomBalance <= 0) acc_val += AdditionalFunds;
         m_EdtAccount.Text(DoubleToString(acc_val, 2));
         // Star to show that it is not original account balance.
-        if ((AdditionalFunds >= 0.01) || (AdditionalFunds <= -0.01) || ((CustomBalance > 0) && (sets.AccountButton != Equity))) m_LblAdditionalFundsAsterisk.Show();
+        if ((AdditionalFunds >= 0.01) || (AdditionalFunds <= -0.01) || ((sets.CustomBalance > 0) && (sets.AccountButton != Equity))) m_LblAdditionalFundsAsterisk.Show();
         else m_LblAdditionalFundsAsterisk.Hide();
     }
 
@@ -3348,7 +3350,7 @@ void CPositionSizeCalculator::OnClickBtnMaxPS()
 // Call the trade function.
 void CPositionSizeCalculator::OnClickBtnTrade()
 {
-    Trade();
+    DoTrade();
 }
 
 // Each TP is calculated to be equally spaced between main TP and Entry.
@@ -3860,7 +3862,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 m_BtnTakeProfitsNumberRemove.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-                m_BtnTakeProfitsNumberRemove.ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                m_BtnTakeProfitsNumberRemove.ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             MainTabList.MoveListElementByName(name, index);
         }
@@ -3889,7 +3891,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (DetectedColorMode)
         {
             AdditionalTPEdits[i].ColorBackground(DARKMODE_EDIT_BG_COLOR);
-            AdditionalTPEdits[i].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+            AdditionalTPEdits[i].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
         }
         MainTabList.MoveListElementByName(name, index + 1);
 
@@ -3898,7 +3900,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (DetectedColorMode)
         {
             AdditionalTPButtonsIncrease[i].ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-            AdditionalTPButtonsIncrease[i].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+            AdditionalTPButtonsIncrease[i].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
         }
         MainTabList.MoveListElementByName(name, index + 2);
 
@@ -3907,7 +3909,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (DetectedColorMode)
         {
             AdditionalTPButtonsDecrease[i].ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-            AdditionalTPButtonsDecrease[i].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+            AdditionalTPButtonsDecrease[i].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
         }
         MainTabList.MoveListElementByName(name, index + 3);
 
@@ -3967,7 +3969,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 m_BtnTPsInward.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-                m_BtnTPsInward.ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                m_BtnTPsInward.ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             TradingTabList.MoveListElementByName(name, index + 1);
 
@@ -3976,7 +3978,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 m_BtnTPsOutward.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-                m_BtnTPsOutward.ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                m_BtnTPsOutward.ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             TradingTabList.MoveListElementByName(name, index + 2);
 
@@ -3985,7 +3987,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 m_BtnTradingTPShare.ColorBackground(DARKMODE_BUTTON_BG_COLOR);
-                m_BtnTradingTPShare.ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                m_BtnTradingTPShare.ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             TradingTabList.MoveListElementByName(name, index + 3);
 
@@ -4008,7 +4010,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 TradingTPEdits[0].ColorBackground(DARKMODE_EDIT_BG_COLOR);
-                TradingTPEdits[0].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                TradingTPEdits[0].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             TradingTabList.MoveListElementByName(name, index + 1);
 
@@ -4018,7 +4020,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
             if (DetectedColorMode)
             {
                 TradingTPShareEdits[0].ColorBackground(DARKMODE_EDIT_BG_COLOR);
-                TradingTPShareEdits[0].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+                TradingTPShareEdits[0].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
             }
             TradingTabList.MoveListElementByName(name, index + 2);
         }
@@ -4058,7 +4060,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (DetectedColorMode)
         {
             TradingTPEdits[sets.TakeProfitsNumber - 1].ColorBackground(DARKMODE_EDIT_BG_COLOR);
-            TradingTPEdits[sets.TakeProfitsNumber - 1].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+            TradingTPEdits[sets.TakeProfitsNumber - 1].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
         }
         TradingTabList.MoveListElementByName(name, index + 1);
 
@@ -4068,7 +4070,7 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberAdd()
         if (DetectedColorMode)
         {
             TradingTPShareEdits[sets.TakeProfitsNumber - 1].ColorBackground(DARKMODE_EDIT_BG_COLOR);
-            TradingTPShareEdits[sets.TakeProfitsNumber - 1].ColorBorder(DARKMODE_CONTROL_BRODER_COLOR);
+            TradingTPShareEdits[sets.TakeProfitsNumber - 1].ColorBorder(DARKMODE_CONTROL_BORDER_COLOR);
         }
         TradingTabList.MoveListElementByName(name, index + 2);
     }
@@ -4212,35 +4214,39 @@ void CPositionSizeCalculator::OnClickBtnTakeProfitsNumberRemove()
     ArrayResize(sets.TP, sets.TakeProfitsNumber);
     ArrayResize(TakeProfitLineIsBeingMoved, sets.TakeProfitsNumber);
     ArrayResize(sets.TPShare, sets.TakeProfitsNumber);
-    if (sets.ShareVolumeMode == Decreasing) // Do the previous method because sets.ShareVolumeMode gets switched over once you click the button.
+    if (sets.TakeProfitsNumber == 1) sets.TPShare[0] = 100;
+    else
     {
-        ArrayInitialize(sets.TPShare, 100 / sets.TakeProfitsNumber);
-    }
-    else if (sets.ShareVolumeMode == Increasing)
-    {
-        sets.TPShare[0] = 50;
-        int remaining_volume = 50;
-        for (int j = 1; j < sets.TakeProfitsNumber; j++)
+        if (sets.ShareVolumeMode == Decreasing) // Do the previous method because sets.ShareVolumeMode gets switched over once you click the button.
         {
-            if (j == sets.TakeProfitsNumber - 1) sets.TPShare[j] = remaining_volume;
-            else sets.TPShare[j] = (int)MathRound((double)remaining_volume / 2.0);
-            remaining_volume -= sets.TPShare[j];
+            ArrayInitialize(sets.TPShare, 100 / sets.TakeProfitsNumber);
         }
-    }
-    else if (sets.ShareVolumeMode == Equal)
-    {
-        sets.TPShare[sets.TakeProfitsNumber - 1] = 50;
-        int remaining_volume = 50;
-        for (int j = sets.TakeProfitsNumber - 2; j >= 0 ; j--)
+        else if (sets.ShareVolumeMode == Increasing)
         {
-            if (j == 0) sets.TPShare[j] = remaining_volume;
-            else sets.TPShare[j] = (int)MathRound((double)remaining_volume / 2.0);
-            remaining_volume -= sets.TPShare[j];
+            sets.TPShare[0] = 50;
+            int remaining_volume = 50;
+            for (int j = 1; j < sets.TakeProfitsNumber; j++)
+            {
+                if (j == sets.TakeProfitsNumber - 1) sets.TPShare[j] = remaining_volume;
+                else sets.TPShare[j] = (int)MathRound((double)remaining_volume / 2.0);
+                remaining_volume -= sets.TPShare[j];
+            }
         }
-    }
-    for (int j = 0; j < sets.TakeProfitsNumber; j++)
-    {
-        TradingTPShareEdits[j].Text(IntegerToString(sets.TPShare[j])); // Display.
+        else if (sets.ShareVolumeMode == Equal)
+        {
+            sets.TPShare[sets.TakeProfitsNumber - 1] = 50;
+            int remaining_volume = 50;
+            for (int j = sets.TakeProfitsNumber - 2; j >= 0 ; j--)
+            {
+                if (j == 0) sets.TPShare[j] = remaining_volume;
+                else sets.TPShare[j] = (int)MathRound((double)remaining_volume / 2.0);
+                remaining_volume -= sets.TPShare[j];
+            }
+        }
+        for (int j = 0; j < sets.TakeProfitsNumber; j++)
+        {
+            TradingTPShareEdits[j].Text(IntegerToString(sets.TPShare[j])); // Display.
+        }
     }
     ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
     ArrayResize(ArrayPositionSize, sets.TakeProfitsNumber);
@@ -4275,7 +4281,7 @@ void CPositionSizeCalculator::OnEndEditEdtSL()
         m_EdtSL.PropFlags(0); // Reset the 'being edited' flag.
         StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
         double new_value = StringToDouble(s);
-        if (new_value == 0) // Not allowed.
+        if (new_value <= 0) // Not allowed.
         {
             m_EdtSL.Text(DoubleToString(sets.StopLossLevel, _Digits)); // Change back.
             return;
@@ -4326,7 +4332,13 @@ void CPositionSizeCalculator::OnEndEditEdtTP()
     StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
     if (!sets.TPDistanceInPoints)
     {
-        sets.TakeProfitLevel = StringToDouble(m_EdtTP.Text());
+        double new_value = StringToDouble(s);
+        if (new_value < 0) // Not allowed.
+        {
+            m_EdtTP.Text(DoubleToString(sets.TakeProfitLevel, _Digits)); // Change back.
+            return;
+        }
+        sets.TakeProfitLevel = new_value;
         // Check and adjust for TickSize granularity.
         if (TickSize > 0) sets.TakeProfitLevel = NormalizeDouble(MathRound(sets.TakeProfitLevel / TickSize) * TickSize, _Digits);
     }
@@ -4580,6 +4592,11 @@ void CPositionSizeCalculator::OnEndEditEdtRiskPIn()
     m_EdtRiskPIn.PropFlags(0); // Reset the 'being edited' flag.
     StringReplace(text, ",", "."); // Replace comma with period for normal double conversion.
     double field_value = StringToDouble(text);
+    if (field_value <= 0)
+    {
+        m_EdtRiskPIn.Text(DoubleToString(sets.Risk, 2));
+        return;
+    }
     sets.UseMoneyInsteadOfPercentage = false;
     sets.RiskFromPositionSize = false;
     if (sets.Risk != field_value)
@@ -4599,6 +4616,11 @@ void CPositionSizeCalculator::OnEndEditEdtRiskMIn()
     if (StringGetCharacter(text, StringLen(text) - 3) == ',') StringSetCharacter(text, StringLen(text) - 3, '.');
     StringReplace(text, ",", "");
     double field_value = StringToDouble(text);
+    if (field_value <= 0)
+    {
+        m_EdtRiskMIn.Text(DoubleToString(sets.MoneyRisk, AccountCurrencyDigits));
+        return;
+    }
     sets.UseMoneyInsteadOfPercentage = true;
     sets.RiskFromPositionSize = false;
     if (sets.MoneyRisk != field_value)
@@ -4618,7 +4640,7 @@ void CPositionSizeCalculator::OnEndEditEdtPosSize()
     if (StringGetCharacter(text, StringLen(text) - 3) == ',') StringSetCharacter(text, StringLen(text) - 3, '.');
     StringReplace(text, ",", "");
     double field_value = StringToDouble(text);
-    if (field_value >= 0)
+    if (field_value > 0)
     {
         if (OutputPositionSize != field_value)
         {
@@ -4828,6 +4850,7 @@ void CPositionSizeCalculator::OnEndEditEdtMagicNumber()
         sets.MagicNumber = -sets.MagicNumber;
         m_EdtMagicNumber.Text(IntegerToString(sets.MagicNumber));
     }
+    Trade.SetExpertMagicNumber(sets.MagicNumber);
 }
 
 void CPositionSizeCalculator::OnEndEditEdtCommentary()
@@ -4843,6 +4866,7 @@ void CPositionSizeCalculator::OnChangeChkDisableTradingWhenLinesAreHidden()
 void CPositionSizeCalculator::OnEndEditEdtMaxSlippage()
 {
     sets.MaxSlippage = (int)StringToInteger(m_EdtMaxSlippage.Text());
+    Trade.SetDeviationInPoints(sets.MaxSlippage);
 }
 
 void CPositionSizeCalculator::OnEndEditEdtMaxSpread()
@@ -5576,7 +5600,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
         {
             int i = (int)StringToInteger(StringSubstr(var_name, 36)); // This TP's number.
             if (i > sets.TakeProfitsNumber - 2) continue; // Cannot accommodate so many.
-            sets.WasSelectedAdditionalTakeProfitLine[i] = StringToInteger(var_content);
+            sets.WasSelectedAdditionalTakeProfitLine[i] = (bool)StringToInteger(var_content);
         }
         else if (var_name == "DoNotApplyStopLoss")
             sets.DoNotApplyStopLoss = (bool)StringToInteger(var_content);
@@ -5647,11 +5671,11 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultATRMultiplierSL")
             {
-                if (StringToDouble(var_content) != DefaultATRMultiplierSL) sets.ATRMultiplierSL = DefaultATRMultiplierSL;
+                if (MathAbs(StringToDouble(var_content) - DefaultATRMultiplierSL) > 0.005) sets.ATRMultiplierSL = DefaultATRMultiplierSL;
             }
             else if (var_name == "Parameter_DefaultATRMultiplierTP")
             {
-                if (StringToDouble(var_content) != DefaultATRMultiplierTP) sets.ATRMultiplierTP = DefaultATRMultiplierTP;
+                if (MathAbs(StringToDouble(var_content) - DefaultATRMultiplierTP) > 0.005) sets.ATRMultiplierTP = DefaultATRMultiplierTP;
             }
             else if (var_name == "Parameter_DefaultATRTimeframe")
             {
@@ -5663,7 +5687,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultCommission")
             {
-                if (StringToDouble(var_content) != DefaultCommission) sets.CommissionPerLot = DefaultCommission;
+                if (MathAbs(StringToDouble(var_content) - DefaultCommission) > MathPow(0.1, CommissionDecimals) / 2) sets.CommissionPerLot = DefaultCommission;
             }
             else if (var_name == "Parameter_DefaultCommissionType")
             {
@@ -5675,24 +5699,24 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_CustomBalance")
             {
-                if (StringToDouble(var_content) != CustomBalance) sets.CustomBalance = CustomBalance;
+                if (MathAbs(StringToDouble(var_content) - CustomBalance) > MathPow(0.1, AccountCurrencyDigits) / 2) sets.CustomBalance = CustomBalance;
             }
             else if (var_name == "Parameter_DefaultRisk")
             {
-                if (StringToDouble(var_content) != DefaultRisk) sets.Risk = DefaultRisk;
+                if (MathAbs(StringToDouble(var_content) - DefaultRisk) > 0.005) sets.Risk = DefaultRisk;
             }
             else if (var_name == "Parameter_DefaultMoneyRisk")
             {
                 if (DefaultMoneyRisk > 0)
                 {
                     sets.UseMoneyInsteadOfPercentage = true; // Should be set to true whenever the DefaultMoneyRisk is non-zero.
-                    if (StringToDouble(var_content) != DefaultMoneyRisk) sets.MoneyRisk = DefaultMoneyRisk;
+                    if (MathAbs(StringToDouble(var_content) - DefaultMoneyRisk) > MathPow(0.1, AccountCurrencyDigits) / 2) sets.MoneyRisk = DefaultMoneyRisk;
                 }
                 else sets.UseMoneyInsteadOfPercentage = false;
             }
             else if (var_name == "Parameter_DefaultPositionSize")
             {
-                if ((StringToDouble(var_content) != DefaultPositionSize))
+                if (MathAbs(StringToDouble(var_content) - DefaultPositionSize) > MathPow(0.1, LotStep_digits) / 2)
                 {
                     if (DefaultPositionSize > 0)
                     {
@@ -5722,6 +5746,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             else if (var_name == "Parameter_DefaultIncludeDirections")
             {
                 if ((INCLUDE_DIRECTIONS)StringToInteger(var_content) != DefaultIncludeDirections) sets.IncludeDirections = DefaultIncludeDirections;
+            }
+            else if (var_name == "Parameter_DefaultCustomLeverage")
+            {
+                if (MathAbs(StringToDouble(var_content) - DefaultCustomLeverage) > 0.005) sets.CustomLeverage = DefaultCustomLeverage;
             }
             else if (var_name == "Parameter_DefaultMagicNumber")
             {
@@ -5757,27 +5785,27 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultMaxRiskPercentage")
             {
-                if (StringToDouble(var_content) != DefaultMaxRiskPercentage) sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxRiskPercentage) > 0.005) sets.MaxRiskPercentage = DefaultMaxRiskPercentage;
             }
             else if (var_name == "Parameter_DefaultMaxMarginPerc")
             {
-                if (StringToDouble(var_content) != DefaultMaxMarginPerc) sets.MaxMarginPerc = DefaultMaxMarginPerc;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxMarginPerc) > 0.005) sets.MaxMarginPerc = DefaultMaxMarginPerc;
             }
             else if (var_name == "Parameter_DefaultMaxMarginPercTotal")
             {
-                if (StringToDouble(var_content) != DefaultMaxMarginPercTotal) sets.MaxMarginPercTotal = DefaultMaxMarginPercTotal;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxMarginPercTotal) > 0.005) sets.MaxMarginPercTotal = DefaultMaxMarginPercTotal;
             }
             else if (var_name == "Parameter_DefaultMaxMarginPercPerSymbol")
             {
-                if (StringToDouble(var_content) != DefaultMaxMarginPercPerSymbol) sets.MaxMarginPercPerSymbol = DefaultMaxMarginPercPerSymbol;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxMarginPercPerSymbol) > 0.005) sets.MaxMarginPercPerSymbol = DefaultMaxMarginPercPerSymbol;
             }
             else if (var_name == "Parameter_DefaultMaxPositionSizeTotal")
             {
-                if (StringToDouble(var_content) != DefaultMaxPositionSizeTotal) sets.MaxPositionSizeTotal = DefaultMaxPositionSizeTotal;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxPositionSizeTotal) > MathPow(0.1, LotStep_digits) / 2) sets.MaxPositionSizeTotal = DefaultMaxPositionSizeTotal;
             }
             else if (var_name == "Parameter_DefaultMaxPositionSizePerSymbol")
             {
-                if (StringToDouble(var_content) != DefaultMaxPositionSizePerSymbol) sets.MaxPositionSizePerSymbol = DefaultMaxPositionSizePerSymbol;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxPositionSizePerSymbol) > MathPow(0.1, LotStep_digits) / 2) sets.MaxPositionSizePerSymbol = DefaultMaxPositionSizePerSymbol;
             }
             else if (var_name == "Parameter_DefaultSubtractOPV")
             {
@@ -5850,11 +5878,11 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultMaxRiskTotal")
             {
-                if (StringToDouble(var_content) != DefaultMaxRiskTotal) sets.MaxRiskTotal = DefaultMaxRiskTotal;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxRiskTotal) > 0.005) sets.MaxRiskTotal = DefaultMaxRiskTotal;
             }
             else if (var_name == "Parameter_DefaultMaxRiskPerSymbol")
             {
-                if (StringToDouble(var_content) != DefaultMaxRiskPerSymbol) sets.MaxRiskPerSymbol = DefaultMaxRiskPerSymbol;
+                if (MathAbs(StringToDouble(var_content) - DefaultMaxRiskPerSymbol) > 0.005) sets.MaxRiskPerSymbol = DefaultMaxRiskPerSymbol;
             }
             else if (var_name == "Parameter_DefaultTakeProfitsNumber")
             {
@@ -5873,7 +5901,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
                     {
                         ArrayResize(sets.TP, sets.TakeProfitsNumber);
                         ArrayResize(sets.TPShare, sets.TakeProfitsNumber);
-                        ArrayInitialize(sets.TP, 0);
+                        for (int i = old_STPN; i < sets.TakeProfitsNumber; i++) // Initialize only new added take-profits. If the new number is lower than the old one, the loop won't run.
+                        {
+                            sets.TP[i] = 0;
+                        }
                         ArrayInitialize(sets.TPShare, 100 / sets.TakeProfitsNumber);
                         ArrayResize(sets.WasSelectedAdditionalTakeProfitLine, sets.TakeProfitsNumber - 1); // -1 because the flag for the main TP is saved elsewhere.
                     }
@@ -5883,15 +5914,15 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultSLDistanceInPoints")
             {
-                if (StringToDouble(var_content) != DefaultSLDistanceInPoints) sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
+                if (StringToInteger(var_content) != DefaultSLDistanceInPoints) sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
             }
             else if (var_name == "Parameter_DefaultTPDistanceInPoints")
             {
-                if (StringToDouble(var_content) != DefaultTPDistanceInPoints) sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
+                if (StringToInteger(var_content) != DefaultTPDistanceInPoints) sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
             }
             else if (var_name == "Parameter_TP_Multiplier")
             {
-                if (StringToDouble(var_content) != TP_Multiplier) sets.TPMultiplier = TP_Multiplier;
+                if (MathAbs(StringToDouble(var_content) - TP_Multiplier) > 0.005) sets.TPMultiplier = TP_Multiplier;
             }
             else if (var_name == "Parameter_DefaultMarginUtilizationBase")
             {
@@ -5899,7 +5930,7 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             }
             else if (var_name == "Parameter_DefaultMUBStartingBalance")
             {
-                if (StringToDouble(var_content) != DefaultMUBStartingBalance) sets.MUBStartingBalance = DefaultMUBStartingBalance;
+                if (MathAbs(StringToDouble(var_content) - DefaultMUBStartingBalance) > MathPow(0.1, AccountCurrencyDigits) / 2) sets.MUBStartingBalance = DefaultMUBStartingBalance;
             }
         }
     }
@@ -5958,6 +5989,7 @@ ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_SELECTED, t
 // Initializes ATR handle for further use.
 void CPositionSizeCalculator::InitATR()
 {
+    if (ATR_handle != INVALID_HANDLE) IndicatorRelease(ATR_handle);
     ATR_handle = iATR(Symbol(), sets.ATRTimeframe, sets.ATRPeriod);
     if (ATR_handle == INVALID_HANDLE) Print(TRANSLATION_MESSAGE_FAILED_TO_CREATE_ATR + ": ", GetLastError());
 }
@@ -6375,11 +6407,11 @@ void CPositionSizeCalculator::SeekAndDestroyDuplicatePanels()
     {
         string object_name = ObjectName(ChartID(), i);
         if (ObjectGetInteger(ChartID(), object_name, OBJPROP_TYPE) != OBJ_LABEL) continue;
-        // Found m_LblSnapEquity object.
+        // Found m_LblPosSize object.
         if (StringSubstr(object_name, StringLen(object_name) - 12) == "m_LblPosSize")
         {
             string prefix = StringSubstr(object_name, 0, StringLen(Name()));
-            // Found m_LblSnapEquity object with prefix different than current.
+            // Found m_LblPosSize object with prefix different than current.
             if (prefix != Name())
             {
                 ObjectsDeleteAll(ChartID(), prefix);
@@ -6760,7 +6792,7 @@ void Initialization()
     }
     else
     {
-        if ((!HideEntryLineOnInstant) || (!sets.EntryType == Instant)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
+        if ((!HideEntryLineOnInstant) || (sets.EntryType != Instant)) ObjectSetInteger(ChartID(), ObjectPrefix + "EntryLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         ObjectSetInteger(ChartID(), ObjectPrefix + "StopLossLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         if (sets.TakeProfitLevel > 0) ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS);
         else ObjectSetInteger(ChartID(), ObjectPrefix + "TakeProfitLine", OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
@@ -6836,14 +6868,14 @@ void Initialization()
     {
     default:
     case Balance:
-        if (CustomBalance > 0) AccSize = sets.CustomBalance;
+        if (sets.CustomBalance > 0) AccSize = sets.CustomBalance;
         else AccSize = AccountInfoDouble(ACCOUNT_BALANCE);
         break;
     case Equity:
         AccSize = AccountInfoDouble(ACCOUNT_EQUITY);
         break;
     case Balance_minus_Risk:
-        if (CustomBalance > 0) AccSize = sets.CustomBalance;
+        if (sets.CustomBalance > 0) AccSize = sets.CustomBalance;
         else AccSize = AccountInfoDouble(ACCOUNT_BALANCE);
         if (PortfolioLossMoney != DBL_MAX) AccSize = AccSize - PortfolioLossMoney;
         break;
@@ -6881,6 +6913,8 @@ void Initialization()
         }
         sets.TemplateChanged = false;
     }
+    Trade.SetDeviationInPoints(sets.MaxSlippage);
+    Trade.SetExpertMagicNumber(sets.MagicNumber);
     ChartRedraw();
 }
 
@@ -7232,7 +7266,10 @@ void CalculateRiskAndPositionSize()
 
     if ((ShowPointValue) || ((UseCommissionToSetTPDistance) && (commission != 0)))
     {
-        OutputPointValue = FormatDouble(DoubleToString(OutputPositionSize * UnitCost * (_Point / TickSize), AccountCurrencyDigits), AccountCurrencyDigits);
+        // Point value can be significantly lower than 0.01.
+        double rounded_point_value = RoundToSignificant(OutputPositionSize * UnitCost * (_Point / TickSize), 2, AccountCurrencyDigits);
+        int dec_places = MathMax(CountDecimalPlaces(rounded_point_value), AccountCurrencyDigits);
+        OutputPointValue = FormatDouble(DoubleToString(rounded_point_value, dec_places), dec_places);
     }
 
     if (StopLoss == 0) return;
@@ -7257,28 +7294,15 @@ void CalculateRiskAndPositionSize()
         if (MathAbs(tTakeProfitLevel - tEntryLevel) < StopLevel) WarningTP = TRANSLATION_LABEL_WARNING_TOO_CLOSE;
     }
 
+    double tp_UnitCost_reward = UnitCost_reward; // To prevent overwriting original UnitCost_reward further.
     if (tTakeProfitLevel > 0)
     {
-        // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
-        if ((AccountCurrency == BaseCurrency) && ((CalcMode == SYMBOL_CALC_MODE_FOREX) || (CalcMode == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
-        {
-            double future_rate = tTakeProfitLevel;
-            double current_rate = 1;
-            if (tStopLossLevel < tEntryLevel)
-            {
-                current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
-            }
-            else if (tStopLossLevel > tEntryLevel)
-            {
-                current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
-            }
-            UnitCost_reward *= (current_rate / future_rate);
-        }
+        tp_UnitCost_reward = UnitCost_reward * FutureRateAdjustment(tTakeProfitLevel);
 
         double PS_Multiplier = 1; // Position size multiplier for multiple TPs. When single TP is used, it is equal 1.
         if (sets.TakeProfitsNumber > 1) PS_Multiplier = (double)sets.TPShare[0] / 100.0; // Use respective position size share.
 
-        MainOutputReward = Round((MathAbs((tTakeProfitLevel - tEntryLevel) * UnitCost_reward / TickSize) - 2 * commission) * ArrayPositionSize[0], AccountCurrencyDigits, RoundDown);
+        MainOutputReward = Round((MathAbs((tTakeProfitLevel - tEntryLevel) * tp_UnitCost_reward / TickSize) - 2 * commission) * ArrayPositionSize[0], AccountCurrencyDigits, RoundDown);
 
         // For zero share, just ignore this level.
         if  ((PS_Multiplier == 0) || (ArrayPositionSize[0] == 0))
@@ -7310,25 +7334,13 @@ void CalculateRiskAndPositionSize()
     for (int i = 1; i < sets.TakeProfitsNumber; i++)
     {
         AdditionalOutputReward[i - 1] = 0;
-        double add_tTakeProfitLevel = Round(ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE), _Digits);
+        double read_add_TP = 0;
+        if (!ObjectGetDouble(ChartID(), ObjectPrefix + "TakeProfitLine" + IntegerToString(i), OBJPROP_PRICE, 0, read_add_TP)) return;
+        double add_tTakeProfitLevel = Round(read_add_TP, _Digits);
         if (add_tTakeProfitLevel > 0)
         {
-            // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
-            if ((AccountCurrency == BaseCurrency) && ((CalcMode == SYMBOL_CALC_MODE_FOREX) || (CalcMode == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE)))
-            {
-                double future_rate = add_tTakeProfitLevel;
-                double current_rate = 1;
-                if (tStopLossLevel < tEntryLevel)
-                {
-                    current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
-                }
-                else if (tStopLossLevel > tEntryLevel)
-                {
-                    current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
-                }
-                UnitCost_reward *= (current_rate / future_rate);
-            }
-            AdditionalOutputReward[i - 1] = Round((MathAbs((add_tTakeProfitLevel - tEntryLevel) * UnitCost_reward / TickSize) - 2 * commission) * ArrayPositionSize[i], AccountCurrencyDigits, RoundDown);
+            tp_UnitCost_reward = UnitCost_reward * FutureRateAdjustment(add_tTakeProfitLevel);
+            AdditionalOutputReward[i - 1] = Round((MathAbs((add_tTakeProfitLevel - tEntryLevel) * tp_UnitCost_reward / TickSize) - 2 * commission) * ArrayPositionSize[i], AccountCurrencyDigits, RoundDown);
             // For zero share, just ignore this level.
             if ((sets.TPShare[i] == 0) || (ArrayPositionSize[i] == 0))
             {
@@ -7388,6 +7400,26 @@ void CalculateRiskAndPositionSize()
         CalculateMargin();
         if (ShowAdditionalMarginSettings) CalculateMarginUtilization();
     }
+}
+
+// Calculate future-rate-adjusted multiplier for reward unit cost.
+double FutureRateAdjustment(double future_rate)
+{
+    // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
+    if (AccountCurrency == BaseCurrency && (CalcMode == SYMBOL_CALC_MODE_FOREX || CalcMode == SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE))
+    {
+        double current_rate = 1;
+        if (tStopLossLevel < tEntryLevel)
+        {
+            current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_ASK);
+        }
+        else if (tStopLossLevel > tEntryLevel)
+        {
+            current_rate = SymbolInfoDouble(SymbolForTrading, SYMBOL_BID);
+        }
+        if (future_rate != 0) return (current_rate / future_rate);
+    }
+    return 1;
 }
 
 //+------------------------------------------------------------------+
@@ -7540,7 +7572,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
                             future_rate = current_rate + PointsLoss;
                         }
-                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
+                        if (MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - PointsLoss) < SymbolInfoDouble(Symbol_order, SYMBOL_POINT) / 2) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting. We can safely assume that if this currency pair reaches zero, our loss becomes incalculateable. This only works for Forex pairs (the future rate is known).
                         else UnitCost *= (current_rate / future_rate);
                     }
                     if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PointsLoss * UnitCost / TickSize_local;
@@ -7594,7 +7626,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                             current_rate = SymbolInfoDouble(Symbol_order, SYMBOL_BID);
                             future_rate = current_rate - PointsReward;
                         }
-                        if (OrderGetDouble(ORDER_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
+                        if (MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - PointsReward) < SymbolInfoDouble(Symbol_order, SYMBOL_POINT) / 2) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting. We can safely assume that if this currency pair reaches zero, our reward becomes incalculateable. This only works for Forex pairs (the future rate is known).
                         else UnitCost *= (current_rate / future_rate);
                     }
                     if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += OrderGetDouble(ORDER_VOLUME_CURRENT) * PointsReward * UnitCost / TickSize_local;
@@ -7696,7 +7728,6 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                         string symbol_profit_currency = SymbolInfoString(Symbol_position, SYMBOL_CURRENCY_PROFIT);
                         if (symbol_profit_currency != AccountCurrency)
                         {
-                            ENUM_POSITION_TYPE dir = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
                             double CCC = CalculateAdjustment(Loss, symbol_profit_currency, AccountCurrency, Symbol_position);
                             // Adjust the unit cost.
                             UnitCost *= CCC;
@@ -7720,7 +7751,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                             current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
                             future_rate = current_rate + PointsLoss;
                         }
-                        if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsLoss) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting.
+                        if (MathAbs(PositionGetDouble(POSITION_PRICE_OPEN) - PointsLoss) < SymbolInfoDouble(Symbol_position, SYMBOL_POINT) / 2) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting. We can safely assume that if this currency pair reaches zero, our loss becomes incalculateable. This only works for Forex pairs (the future rate is known).
                         else UnitCost *= (current_rate / future_rate);
                     }
                     if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += PositionGetDouble(POSITION_VOLUME) * PointsLoss * UnitCost / TickSize_local - PositionGetDouble(POSITION_SWAP);
@@ -7765,7 +7796,7 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
                             current_rate = SymbolInfoDouble(Symbol_position, SYMBOL_BID);
                             future_rate = current_rate - PointsReward;
                         }
-                        if (PositionGetDouble(POSITION_PRICE_OPEN) == PointsReward) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting.
+                        if (MathAbs(PositionGetDouble(POSITION_PRICE_OPEN) - PointsReward) < SymbolInfoDouble(Symbol_position, SYMBOL_POINT) / 2) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting. We can safely assume that if this currency pair reaches zero, our reward becomes incalculateable. This only works for Forex pairs (the future rate is known).
                         else UnitCost *= (current_rate / future_rate);
                     }
                     if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += PositionGetDouble(POSITION_VOLUME) * PointsReward * UnitCost / TickSize_local + PositionGetDouble(POSITION_SWAP);
@@ -8035,7 +8066,7 @@ void CalculateMargin()
                 }
             }
             // There is a position to hedge and new position is in opposite direction.
-            if ((volume > 0) && (type != PositionDirection))
+            if (volume > 0 && type != PositionDirection && LotStep > 0) // Prevents infinite loop.
             {
                 double calculated_volume, margin_rate_to_use;
                 if (OutputPositionSize <= volume) calculated_volume = OutputPositionSize * (HedgedRatio - 1);
@@ -8552,11 +8583,11 @@ void GetSwapData()
         }
 
         // Percentage per 360 days.
-        if (swap_long > 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calcution.
-        else if (swap_long < 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calcution.
+        if (swap_long > 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calculation.
+        else if (swap_long < 0) swap_long_1_lot = swap_long * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calculation.
         else swap_long_1_lot = 0;
-        if (swap_short > 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calcution.
-        else if (swap_short < 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calcution.
+        if (swap_short > 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_profit / 100 / 360; // Positive swap - point value based profit calculation.
+        else if (swap_short < 0) swap_short_1_lot = swap_short * symbol_cost_1_lot_loss / 100 / 360; // Negative swap - point value based loss calculation.
         else swap_short_1_lot = 0;
         // Stupid fix for strange cases when swap is given not in percentage points but in coefficient (?).
         if (MathAbs(swap_long) < 0.1)
@@ -8848,6 +8879,24 @@ void DissectHotKeyCombination(const string hotkey, bool &shift_required, bool &c
     }
 }
 
+// Parse a hotkey combination string (e.g. "Shift+S") into the given HotkeyDef. Empty string disables the hotkey.
+void SetupHotkey(const string combo, HotkeyDef &hk)
+{
+    if (combo != "") DissectHotKeyCombination(combo, hk.shift_required, hk.ctrl_required, hk.main_key);
+    else hk.main_key = 0;
+}
+
+// Returns true if 'key' matches the hotkey AND the Ctrl/Shift modifier state matches exactly what the hotkey requires.
+bool HotkeyPressed(const HotkeyDef &hk, const short key)
+{
+    if (hk.main_key == 0) return false; // Hotkey disabled.
+    if (key != (short)hk.main_key) return false;
+    // TERMINAL_KEYSTATE returns a negative value when the key is currently pressed.
+    bool shift_pressed = (TerminalInfoInteger(TERMINAL_KEYSTATE_SHIFT) < 0);
+    bool ctrl_pressed  = (TerminalInfoInteger(TERMINAL_KEYSTATE_CONTROL) < 0);
+    return ((shift_pressed == hk.shift_required) && (ctrl_pressed == hk.ctrl_required));
+}
+
 void WarnAboutZeroUnitCost()
 {
     if (WarnedAboutZeroUnitCost == 1) // Issue the actual alert only after the first dry run, to avoid sending an alert when symbol data is still loading.
@@ -8921,7 +8970,7 @@ string WeekdayToString(int weekday)
     return TRANSLATION_MESSAGE_ERROR;
 }
 
-// Calculate adjusted position size shares for use in Position Sizer.mqh and Position Sizer Trading.mhq.
+// Calculate adjusted position size shares for use in Position Sizer.mqh and Position Sizer Trading.mqh.
 void PositionSizeToArray(double ps)
 {
     if (sets.TakeProfitsNumber > 1)
@@ -8937,14 +8986,17 @@ void PositionSizeToArray(double ps)
             ArrayPositionSize[i] = position_size;
         }
         // Distribute remaining position size if/while there is a remainder to distribute.
-        while (ps - AccumulatedPositionSize > 0) 
+        if (LotStep > 0) // Prevents infinite loop.
         {
-            for (int i = 0; i < sets.TakeProfitsNumber; i++)
+            while (ps - AccumulatedPositionSize > 0) 
             {
-                ArrayPositionSize[i] = NormalizeDouble(ArrayPositionSize[i] + LotStep, LotStep_digits);
-                AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + LotStep, LotStep_digits);
-                if (AccumulatedPositionSize >= ps) break;
-            }            
+                for (int i = 0; i < sets.TakeProfitsNumber; i++)
+                {
+                    ArrayPositionSize[i] = NormalizeDouble(ArrayPositionSize[i] + LotStep, LotStep_digits);
+                    AccumulatedPositionSize = NormalizeDouble(AccumulatedPositionSize + LotStep, LotStep_digits);
+                    if (AccumulatedPositionSize >= ps) break;
+                }            
+            }
         }
     }
     else ArrayPositionSize[0] = ps;
@@ -8959,5 +9011,28 @@ double AdjustPositionSizeByMinMaxStep(double ps)
     if (MathAbs(MathRound(steps) - steps) < 0.00000001) steps = MathRound(steps);
     if (MathFloor(steps) < steps) ps = MathFloor(steps) * LotStep;
     return ps;
+}
+
+//+------------------------------------------------------------------+
+//| Rounds a value to N significant figures (default 2).             |
+//| Supports minimum decimal places for rounding.                    |
+//+------------------------------------------------------------------+
+double RoundToSignificant(double value, int digits = 2, int min_decimals = 2)
+{
+    if (value == 0.0 || digits <= 0) return 0;
+
+    double abs_value = MathAbs(value);
+    int power = (int)MathFloor(MathLog10(abs_value)); // Power of the 1st significant digit.
+    
+    // Guard against Log10 floating-point error near exact powers of ten.
+    if      (abs_value >= MathPow(10.0, power + 1)) power++;
+    else if (abs_value <  MathPow(10.0, power))     power--;
+
+    int decimals = digits - 1 - power; // Decimal places from significant figure rounding.
+    if (decimals < min_decimals) // Enforce the floor.
+    decimals = min_decimals;
+
+    double scale = MathPow(10.0, decimals);
+    return(MathRound(value * scale) / scale);
 }
 //+------------------------------------------------------------------+

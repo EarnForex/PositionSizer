@@ -282,7 +282,7 @@
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "поточна кількість угод по символу"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED "максимально припустима кількість угод по символу"
 #define TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK "загальний потенційний ризик"
-#define TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK "максимально припустимий загальний ризик"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK "максимально припустимий загальний ризик"
 #define TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK "нескінченний загальний потенційний ризик"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK "потенційний ризик по символу"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK "максимально припустимий ризик по символу"
@@ -363,6 +363,7 @@
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "максимальне загальне використання маржі"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "використання маржі по символу"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "максимальне використання маржі по символу"
+#define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "Не вдалося добавити стоп-лосс/тейк-профіт до відкритої позиції!"
 
 // Input parameters
 #define INPUT_GROUP_DESCRIPTION_COMPACTNESS "Компактність"

@@ -1,5 +1,5 @@
 #define DESCRIPTION_LINE_1 "Calculates risk-based position size for your account."
-#define DESCRIPTION_LINE_2 "Allows trade execution based the calculation results.\r\n"
+#define DESCRIPTION_LINE_2 "Allows trade execution based on the calculation results.\r\n"
 #define DESCRIPTION_LINE_3 "WARNING: No warranty. This EA is offered \"as is\". Use at your own risk.\r\n"
 #define DESCRIPTION_LINE_4 "Note: Pressing Shift+T will open a trade."
 
@@ -282,7 +282,7 @@
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "current # of trades per symbol"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED "maximum number of trades per symbol allowed"
 #define TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK "total potential risk"
-#define TRANSLATION_MESSAGE_MAXIUMUM_TOTAL_RISK "maximum total risk allowed"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK "maximum total risk allowed"
 #define TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK "infinite total potential risk"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK "potential risk per symbol"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK "maximum risk per symbol allowed"
@@ -295,7 +295,7 @@
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_BUY_VOLUME "Found existing buy volume"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_SELL_VOLUME "Found existing sell volume"
 #define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE "Adjusted position size"
-#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Adjusted position size is less or equal zero. Not executing any trade."
+#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "Adjusted position size is less than or equal to zero. Not executing any trade."
 #define TRANSLATION_MESSAGE_NTAT_TOTAL_VOLUME "current total volume"
 #define TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME "new position volume"
 #define TRANSLATION_MESSAGE_NTAT_MAXIMUM_TOTAL_VOLUME "maximum total volume allowed"
@@ -363,6 +363,7 @@
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "maximum total margin utilization"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "margin utilization per symbol"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "maximum margin utilization per symbol"
+#define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "Failed to place stop-loss/take-profit on the opened position!"
 
 // Input parameters
 #define INPUT_GROUP_DESCRIPTION_COMPACTNESS "Compactness"
@@ -507,4 +508,4 @@
 #define INPUT_DESCRIPTION_LongButtonColor "Long Button Color"
 #define INPUT_DESCRIPTION_ShortButtonColor "Short Button Color"
 #define INPUT_DESCRIPTION_TradeButtonColor "Trade Button Color"
-#define INPUT_DESCRIPTION_DoNotDeleteLinesLabels "Do Not Delete Lines/Labels on on deinitialization?"
+#define INPUT_DESCRIPTION_DoNotDeleteLinesLabels "Do Not Delete Lines/Labels on deinitialization?"

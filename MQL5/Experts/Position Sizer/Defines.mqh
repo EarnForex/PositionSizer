@@ -34,7 +34,7 @@ color CONTROLS_BUTTON_COLOR_ENABLE  = C'200,200,200';
 color CONTROLS_BUTTON_COLOR_DISABLE = C'224,224,224';
 
 color DARKMODE_BG_DARK_COLOR = 0x444444;
-color DARKMODE_CONTROL_BRODER_COLOR = 0x888888;
+color DARKMODE_CONTROL_BORDER_COLOR = 0x888888;
 color DARKMODE_MAIN_AREA_BORDER_COLOR = 0x333333;
 color DARKMODE_MAIN_AREA_BG_COLOR = 0x666666;
 color DARKMODE_EDIT_BG_COLOR = 0xAAAAAA;
@@ -44,6 +44,30 @@ color DARKMODE_TEXT_COLOR = 0x000000;
 #define MULTIPLIER_VALUE_CONTROL 10
 #define MULTIPLIER_VALUE_SHIFT 100
 #define MULTIPLIER_VALUE_CONTROL_SHIFT 1000
+
+// Hotkeys. Each configurable hotkey is parsed once (in OnInit) into a HotkeyDef and later matched in OnChartEvent().
+enum HOTKEY_ID
+{
+    HK_Trade,
+    HK_SwitchOrderType,
+    HK_SwitchEntryDirection,
+    HK_SwitchHideShowLines,
+    HK_SetStopLoss,
+    HK_SetTakeProfit,
+    HK_SetEntry,
+    HK_MinimizeMaximize,
+    HK_SwitchSLPointsLevel,
+    HK_SwitchTPPointsLevel,
+    HK_COUNT // Number of hotkeys - keep last.
+};
+
+struct HotkeyDef
+{
+    uchar main_key;      // 0 = disabled.
+    bool  ctrl_required;
+    bool  shift_required;
+    HotkeyDef() { main_key = 0; ctrl_required = false; shift_required = false; }
+};
 
 enum ENTRY_TYPE
 {
