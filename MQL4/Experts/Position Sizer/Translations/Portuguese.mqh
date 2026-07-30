@@ -1,15 +1,20 @@
-// Guias
+#define DESCRIPTION_LINE_1 "Calcula o tamanho da ordem com base no risco para a sua conta."
+#define DESCRIPTION_LINE_2 "Permite a execução de ordens com base nos resultados dos cálculos.\\r\\n"
+#define DESCRIPTION_LINE_3 "AVISO: Sem garantia. Este EA é oferecido \\\"como está\\\". Use por sua própria conta e risco.\\r\\n"
+#define DESCRIPTION_LINE_4 "Nota: Pressionar Shift+T abrirá uma ordem."
+
+// Tabs
 #define TRANSLATION_TAB_BUTTON_MAIN "Geral"
 #define TRANSLATION_TAB_BUTTON_RISK "Risco"
 #define TRANSLATION_TAB_BUTTON_MARGIN "Margem"
 #define TRANSLATION_TAB_BUTTON_SWAPS "Swaps"
 #define TRANSLATION_TAB_BUTTON_TRADING "Ordem"
 
-// Legenda
+// Caption
 #define TRANSLATION_LABEL_SPREAD "Spread"
 
-// Guia Principal
-// Entrada
+// Main tab
+// Entry
 #define TRANSLATION_LABEL_ENTRY "Entrada"
 #define TRANSLATION_BUTTON_LONG "Comprar"
 #define TRANSLATION_BUTTON_SHORT "Vender"
@@ -29,12 +34,16 @@
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "Take-profit"
 #define TRANSLATION_BUTTON_TP "TP"
+#define TRANSLATION_TOOLTIP_TP_MULTIPLIER "Multiplicador de TP com base no valor do SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "Adicionar um nível de take-profit"
 #define TRANSLATION_TOOLTIP_BUTTON_TP "Definir TP com base no SL"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_INCREASE "Aumentar o Take-profit em 1 ponto"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE "Diminuir o Take-profit em 1 ponto"
+
+#define TRANSLATION_CHECKBOX_TPLOCKEDONSL "Travar"
+#define TRANSLATION_TOOLTIP_CHECKBOX_TPLOCKEDONSL "Travar a distância do take-profit na distância do stop-loss usando o multiplicador informado?"
 
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_DISTANCE "TP"
 #define TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS "pontos"
@@ -45,11 +54,11 @@
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_DECREASE_MULTIPLE "Diminuir Take-profit"
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_BY_ONE_POINT "em 1 ponto"
 
-// Opções ATR
+// ATR options
 #define TRANSLATION_LABEL_ATR_PERIOD "Período ATR"
 #define TRANSLATION_BUTTON_ATR_PERIOD_CURRENT "ATUAL"
-#define TRANSLATION_LABEL_ATR_SL_MULTIPLIER "Multiplicador SL ATR"
-#define TRANSLATION_LABEL_ATR_TP_MULTIPLIER "Multiplicador TP ATR"
+#define TRANSLATION_LABEL_ATR_SL_MULTIPLIER "Multiplicador SL"
+#define TRANSLATION_LABEL_ATR_TP_MULTIPLIER "Multiplicador TP"
 
 #define TRANSLATION_CHECKBOX_ATR_SA "SA"
 #define TRANSLATION_TOOLTIP_ATR_SA_SL "Aplicar ajuste de spread ao Stop-loss"
@@ -58,22 +67,22 @@
 #define TRANSLATION_LABEL_ATR_TIMEFRAME "Intervalo ATR"
 #define TRANSLATION_LABEL_ATR_VALUE "ATR"
 
-// Tipo de Ordem
+// Order type
 #define TRANSLATION_LABEL_ORDER_TYPE "Tipo de Ordem"
 #define TRANSLATION_BUTTON_ORDER_TYPE_INSTANT "Mercado"
 #define TRANSLATION_BUTTON_ORDER_TYPE_PENDING "Pendente"
 #define TRANSLATION_TOOLTIP_ORDER_TYPE "Alternar entre Mercado e Pendente"
 
-// Esconder/Mostrar Linhas
+// Hide/show lines
 #define TRANSLATION_BUTTON_HIDE_LINES "Esconder"
 #define TRANSLATION_BUTTON_SHOW_LINES "Mostrar"
 
-// Comissão
+// Commission
 #define TRANSLATION_LABEL_COMMISSION "Comissão (unidirecional) por lote"
 #define TRANSLATION_TOOLTIP_COMMISSION "Em moeda da conta ou %, por 1 lote padrão"
 #define TRANSLATION_TOOLTIP_COMMISSION_TYPE "Clique para alternar"
 
-// Tamanho da Conta
+// Account size
 #define TRANSLATION_BUTTON_ACCOUNT_BALANCE "Saldo da Conta"
 #define TRANSLATION_BUTTON_ACCOUNT_EQUITY "Capital Líquido da Conta"
 #define TRANSLATION_BUTTON_BALANCE_MINUS_CPR "Saldo-Risco Atual"
@@ -82,7 +91,7 @@
 #define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_ADD "fundos adicionais"
 #define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_SUB "fundos subtraídos"
 
-// Cálculos
+// Calculations
 #define TRANSLATION_LABEL_INPUT "Entrada"
 #define TRANSLATION_LABEL_RESULT "Resultado"
 #define TRANSLATION_LABEL_RISK "Risco"
@@ -96,9 +105,24 @@
 #define TRANSLATION_TOOLTIP_RESULT "Os campos nesta coluna levam em conta as limitações da corretora"
 
 
-// Guia Risco
-#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar Ordens sem Stop-loss"
-#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar Ordens sem Take-profit"
+// Risk tab
+#define TRANSLATION_LABEL_INCLUDE_ORDERS "Incluir ordens"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_ALL "Todas"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_PENDING "Pendentes"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_OPEN "Abertas"
+#define TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP "Alternar entre Todas, Abertas e Pendentes."
+#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_SL "Ignorar ordens sem Stop-loss"
+#define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "Ignorar ordens sem Take-profit"
+#define TRANSLATION_LABEL_INCLUDE_SYMBOLS "Incluir ativos"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "Todos"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "Atual"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "Outros"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "Alternar entre Todos, Atual e Outros."
+#define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "Incluir"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "Todas"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "Compra"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "Venda"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "Alternar entre Todas, Compra e Venda."
 #define TRANSLATION_LABEL_LOTS "Lotes"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "Carteira Atual"
 #define TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO "Negociações que estão atualmente abertas"
@@ -107,7 +131,7 @@
 #define TRANSLATION_LABEL_CRRR_TOOLTIP "Razão de risco-recompensa da carteira atual"
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "Razão de risco-recompensa da carteira potencial"
 
-// Guia Margem
+// Margin tab
 #define TRANSLATION_LABEL_POSITION_MARGIN "Margem da Ordem"
 #define TRANSLATION_LABEL_FUTURE_USED_MARGIN "Margem Utili. Futura"
 #define TRANSLATION_LABEL_FUTURE_FREE_MARGIN "Margem Livre Futura"
@@ -116,9 +140,20 @@
 #define TRANSLATION_LABEL_SYMBOL "Ativo"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Tam. Máx. Ord. por Margem"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "Em lotes"
+#define TRANSLATION_LABEL_MU_PERC_CURRENT "Atual"
+#define TRANSLATION_LABEL_MU_PERC_POSITION "Ordem"
+#define TRANSLATION_LABEL_MU_PERC_FUTURE "Futura"
+#define TRANSLATION_LABEL_MU_PERC "Utilização de margem"
+#define TRANSLATION_RGP_MU_STARTING_BALANCE "Saldo inicial"
+#define TRANSLATION_RGP_MU_BALANCE "Saldo"
+#define TRANSLATION_RGP_MU_FREE_MARGIN "Margem livre"
+#define TRANSLATION_LABEL_MU_BASE "Base"
+#define TRANSLATION_LABEL_MU_BASE_CURRENCY "Valor base"
+#define TRANSLATION_TOOLTIP_MU_BASE "Base da utilização de margem"
+#define TRANSLATION_TOOLTIP_MU_BASE_RGP "Saldo atual, saldo inicial (definido por você) ou margem livre"
+#define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "O valor da base de utilização de margem em unidades da moeda"
 
-
-// Guia Swaps
+// Swaps tab
 #define TRANSLATION_LABEL_TYPE "Tipo"
 #define TRANSLATION_LABEL_UNKNOWN "Desconhecido"
 #define TRANSLATION_LABEL_INTEREST "Juros"
@@ -140,7 +175,7 @@
 #define TRANSLATION_LABEL_PROFIT_CURRENCY "Moeda do lucro"
 
 
-// Guia Trading
+// Trading tab
 #define TRANSLATION_BUTTON_TRADE "Ordem"
 #define TRANSLATION_LABEL_TRAILING_STOP "Trailing Stop"
 #define TRANSLATION_LABEL_BREAKEVEN "Breakeven"
@@ -175,26 +210,30 @@
 #define TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION "Pedir confirmação"
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "O EA pedirá confirmação antes de abrir uma ordem."
 #define TRANSLATION_LABEL_EXPIRY "Expiração"
-#define TRANSLATION_TOOLTIP_EXPIRY "Tempo de expiração em minutos para a próxima ordem pendente criada. Mínimo = 2."
+#define TRANSLATION_TOOLTIP_EXPIRY "Tempo de expiração em minutos para a próxima ordem pendente criada. Mínimo = 10."
 #define TRANSLATION_LABEL_MINUTES "min."
 #define TRANSLATION_TOOLTIP_MINUTES "Minutos"
+#define TRANSLATION_LABEL_MAX_MARGIN "Util. margem"
+#define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Margem máx. %"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Utilização máxima de margem"
+#define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Fusível de utilização máxima de margem"
 
-// Objetos do Gráfico
+// Chart objects
 #define TRANSLATION_TOOLTIP_SL_LABEL "Distância SL, pontos"
 #define TRANSLATION_TOOLTIP_TP_LABEL "Distância TP, pontos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "Distância da Entrada, pontos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamanho da Ordem, lotes"
-#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Clique para abrir uma ordem."
+#define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Clique para abrir uma ordem/posição."
 #define TRANSLATION_CLOSE_BUTTON "Fechar"
 
-// Avisos
+// Warnings
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "Muito próximo!"
 #define TRANSLATION_LABEL_WARNING_WRONG_VALUE "Valor incorreto!"
 #define TRANSLATION_LABEL_WARNING_INVALID_TP "TP inválido"
 #define TRANSLATION_TOOLTIP_WARNING_PS "Maior que o tamanho máximo de ordem por margem!"
 
 
-// Mensagens
+// Messages
 #define TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE "O Stop Loss deve ser positivo."
 #define TRANSLATION_MESSAGE_TRYING_TO_SAVE_FILE "Tentando salvar as configurações no arquivo"
 #define TRANSLATION_MESSAGE_FAILED_TO_OPEN_FOR_WRITING "Falha ao abrir o arquivo para escrita"
@@ -209,11 +248,11 @@
 #define TRANSLATION_MESSAGE_FAILED_TO_DELETE_FILE "Falha ao excluir o arquivo"
 #define TRANSLATION_MESSAGE_DELETED_SETTINGS "Arquivo de configurações excluído com sucesso."
 #define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "Objetos de painel duplicados excluídos com o prefixo"
-#define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "Não é possível obter o tamanho do tick para"
+#define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "Não é possível obter o tamanho do tick para "
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "Parece que o instrumento não está mais disponível. O cálculo pode não ser preciso."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "Símbolo mal configurado no servidor de trading - custo unitário zero."
 #define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_1 "A negociação automática está desativada nas opções da plataforma! Por favor, habilite-a em Ferramentas->Opções->Expert Advisors."
-#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_2 "A negociação automática está desativada nas configurações do Position Sizer! Por favor, marque a caixa Permitir Negociação Automática na aba Comum."
+#define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_2 "A negociação ao vivo está desativada nas configurações do Position Sizer! Por favor, marque a caixa Permitir Negociação ao Vivo na aba Comum."
 #define TRANSLATION_MESSAGE_STOPLOSS_PROBLEM "Problema com o Stop Loss"
 #define TRANSLATION_MESSAGE_WRONG_POSITION_SIZE_VALUE "Valor de tamanho de ordem incorreto!"
 #define TRANSLATION_MESSAGE_MULTIPLE_TP_VOLUME_SHARE_SUM "Soma de volume de múltiplos TP"
@@ -223,32 +262,32 @@
 #define TRANSLATION_MESSAGE_NTAT_SPREAD "spread atual"
 #define TRANSLATION_MESSAGE_MAXIMUM_SPREAD "spread máximo"
 #define TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE "distância atual de Entrada/SL"
-#define TRANSLATION_MESSAGE_NTAT_CURRENT_RISK "risco atual"
+#define TRANSLATION_MESSAGE_NTAT_CURRENT_RISK "risco atual resultante"
 #define TRANSLATION_MESSAGE_NTAT_MAX_RISK "risco máximo"
-#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual # total de ordens"
+#define TRANSLATION_MESSAGE_NTAT_TOTAL_NUMBER "número atual total de ordens"
 #define TRANSLATION_MESSAGE_NUMBER_OF_TRADES_IN_EXECUTION "número de ordens em execução"
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_NUMBER_OF_TRADES_ALLOWED "número máximo total de ordens permitido"
-#define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "número atual de ordens por símbolo"
-#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED "número máximo de ordens por símbolo permitido"
+#define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_NUMBER "número atual de ordens por ativo"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_NUMBER_OF_TRADES_ALLOWED "número máximo de ordens por ativo permitido"
 #define TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK "risco total potencial"
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK "risco total máximo permitido"
 #define TRANSLATION_MESSAGE_INFINITE_TOTAL_POTENTIAL_RISK "risco total potencial infinito"
-#define TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK "risco potencial por símbolo"
-#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK "risco máximo por símbolo permitido"
-#define TRANSLATION_MESSAGE_INFINITE_PER_SYMBOL_POTENTIAL_RISK "risco potencial por símbolo infinito"
-#define TRANSLATION_MESSAGE_IGNORE_MARKET_EXECUTION_MODE_WARNING ", mas IgnoreMarketExecutionMode = true. Altere para falso se as ordens não estiverem sendo executadas."
+#define TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK "risco potencial por ativo"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK "risco máximo por ativo permitido"
+#define TRANSLATION_MESSAGE_INFINITE_PER_SYMBOL_POTENTIAL_RISK "risco potencial por ativo infinito"
+#define TRANSLATION_MESSAGE_IGNORE_MARKET_EXECUTION_MODE_WARNING ", mas IgnoreMarketExecutionMode = true. Altere para false se as ordens não estiverem sendo executadas."
 #define TRANSLATION_MESSAGE_EXECUTION_MODE "Modo de Execução"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_BUY_VOLUME "Encontrado volume de compra existente"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_SELL_VOLUME "Encontrado volume de venda existente"
 #define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE "Tamanho de ordem ajustado"
-#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "O tamanho de ordem ajustado é menor que zero. Nenhuma ordem será executada."
+#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "O tamanho de ordem ajustado é menor ou igual a zero. Nenhuma ordem será executada."
 #define TRANSLATION_MESSAGE_NTAT_TOTAL_VOLUME "volume total atual"
 #define TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME "novo volume de ordem"
 #define TRANSLATION_MESSAGE_NTAT_MAXIMUM_TOTAL_VOLUME "volume total máximo permitido"
-#define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_VOLUME "volume atual por símbolo"
-#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_PER_SYMBOL_VOLUME "volume máximo permitido por símbolo"
-#define TRANSLATION_MESSAGE_BROKER_MINIMUM "tamanho de ordem mínimo do broker. Nenhuma ordem será executada."
-#define TRANSLATION_MESSAGE_BROKER_MAXIMUM "tamanho de ordem máximo do broker. Reduzindo-o."
+#define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_VOLUME "volume atual por ativo"
+#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_PER_SYMBOL_VOLUME "volume máximo permitido por ativo"
+#define TRANSLATION_MESSAGE_BROKER_MINIMUM "tamanho de ordem mínimo da corretora. Nenhuma ordem será executada."
+#define TRANSLATION_MESSAGE_BROKER_MAXIMUM "tamanho de ordem máximo da corretora. Reduzindo-o."
 #define TRANSLATION_MESSAGE_ERROR_SENDING_ORDER "Erro ao enviar a ordem"
 #define TRANSLATION_MESSAGE_ORDER_EXECUTED "Ordem executada."
 #define TRANSLATION_MESSAGE_TICKET "Ticket"
@@ -273,8 +312,8 @@
 #define TRANSLATION_MESSAGE_BE_FOR "Breakeven para "
 #define TRANSLATION_MESSAGE_ERROR_SETTING_TIMER "Erro ao configurar o temporizador"
 #define TRANSLATION_MESSAGE_FAILED_DELETE_INI "Falha ao excluir o arquivo .ini do painel de PS"
-#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "A duração mínima de expiração é de 2 minutos."
-#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "'Não aplicar Stop Losss' está marcada."
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "A duração mínima de expiração é de 10 minutos."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "'Não aplicar Stop Loss' está marcada."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "'Não aplicar Take Profit' está marcada."
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Falha ao criar um botão externo."
 #define TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE "Realizando uma ordem menor"
@@ -286,17 +325,24 @@
 #define TRANSLATION_MESSAGE_ACCOUNT_CURRENCY "Moeda da conta"
 #define TRANSLATION_MESSAGE_TRYING_TO_FIND "Tentando encontrar uma possível combinação de dois símbolos."
 #define TRANSLATION_MESSAGE_CONVERTING_VIA "Convertendo via"
-#define TRANSLATION_MESSAGE_ADJUSTMENT_CALCULATION_CRITICAL_FAILURE "Falha crítica no cálculo de ajuste. Falhou nos métodos de conversão simples e de dois pares."
-#define TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR "Erro. Não foi possível detectar o par de moedas adequado para o cálculo de ajuste de 2 pares."
+#define TRANSLATION_MESSAGE_ADJUSTMENT_CALCULATION_CRITICAL_FAILURE "Falha crítica no cálculo de ajuste. Falharam os métodos de conversão simples e de dois pares."
+#define TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR "Erro. Não foi possível detectar o par de moedas adequado para o cálculo de ajuste com 2 pares."
 #define TRANSLATION_MESSAGE_CROSS_CURRENCY "Moeda cruzada"
 #define TRANSLATION_MESSAGE_CHARTS_PAIR_CURRENCY "Moeda do par do gráfico"
 #define TRANSLATION_MESSAGE_INFINITY "Infinito"
 #define TRANSLATION_MESSAGE_EXECUTION_FAILED "Falha na execução."
 #define TRANSLATION_MESSAGE_FAILED_TO_FIND_ORDER "Falha ao encontrar a ordem para aplicar SL/TP."
 #define TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER "Erro ao modificar a ordem"
-#define TRANSLATION_MESSAGE_ORDERSELECT_FAILED "Falha ao selecionar a ordem"
-#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_BUY "Falha ao definir o trailing stop para a ordem de compra"
-#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_SELL "Falha ao definir o trailing stop para a ordem de venda"
-#define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Falha ao deletar a ordem"
-#define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Falha ao fechar a ordem"
+#define TRANSLATION_MESSAGE_ORDERSELECT_FAILED "Falha em OrderSelect"
+#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_BUY "Falha ao definir trailing stop para ordem de Compra"
+#define TRANSLATION_MESSAGE_FAILED_TO_SET_TRAILING_STOP_FOR_SELL "Falha ao definir trailing stop para ordem de Venda"
+#define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Falha em OrderDelete"
+#define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Falha em OrderClose"
 #define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Objeto não encontrado."
+#define TRANSLATION_MESSAGE_NTAT_MU "utilização de margem"
+#define TRANSLATION_MESSAGE_NTAT_MAX_MU "utilização máxima de margem"
+#define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "utilização total de margem"
+#define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "utilização total máxima de margem"
+#define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "utilização de margem por ativo"
+#define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "utilização máxima de margem por ativo"
+#define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "Falha ao colocar stop-loss/take-profit na ordem aberta!"
