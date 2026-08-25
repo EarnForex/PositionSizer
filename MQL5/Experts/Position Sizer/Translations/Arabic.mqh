@@ -241,6 +241,7 @@
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "مسافة سعر الإيقاف، نقاط"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "حجم المركز، لوت"
 #define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "انقر لفتح أمر/مركز."
+#define TRANSLATION_CLOSE_BUTTON "إغلاق"
 
 
 // Warnings
@@ -364,6 +365,10 @@
 #define TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE "لا يمكن تنفيذ صفقة أصغر."
 #define TRANSLATION_MESSAGE_ARE_YOU_SURE "هل أنت متأكد من أنك تريد إغلاق Position Sizer؟"
 #define TRANSLATION_MESSAGE_EXIT "الخروج؟"
+#define TRANSLATION_MESSAGE_ORDERSELECT_FAILED "فشل OrderSelect"
+#define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "فشل OrderDelete"
+#define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "فشل PositionClose"
+#define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "تعذر العثور على الكائن."
 #define TRANSLATION_MESSAGE_NTAT_MU "استخدام الهامش"
 #define TRANSLATION_MESSAGE_NTAT_MAX_MU "أقصى استخدام للهامش"
 #define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "إجمالي استخدام الهامش"
@@ -506,7 +511,7 @@
 #define INPUT_DESCRIPTION_MarketModeApplySLTPAfterAllTradesExecuted "وضع السوق: تطبيق SL/TP بعد تنفيذ جميع الصفقات."
 #define INPUT_DESCRIPTION_DarkMode "DarkMode: تفعيل الوضع الداكن لتقليل السطوع."
 #define INPUT_DESCRIPTION_AutoDetectDarkMode "AutoDetectDarkMode: اكتشاف تلقائي للوضع الداكن/الفاتح."
-#define INPUT_DESCRIPTION_SettingsFile "SettingsFile: ملف إعدادات مخصص من ‎\Files\PS_Settings\ "
+#define INPUT_DESCRIPTION_SettingsFile "SettingsFile: ملف إعدادات مخصص من \\Files\\PS_Settings\\ "
 #define INPUT_DESCRIPTION_PrefillAdditionalTPsBasedOnMain "تعبئة أهداف TP الإضافية بناء على قيم Main؟"
 #define INPUT_DESCRIPTION_AskBeforeClosing "طلب تأكيد قبل إغلاق اللوحة؟"
 #define INPUT_DESCRIPTION_CapMaxPositionSizeBasedOnMargin "تقييد حجم المركز بناءً على الهامش المتاح؟"

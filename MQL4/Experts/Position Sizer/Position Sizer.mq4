@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
-#define VERSION     "3.15"
+#define VERSION     "3.16"
 #property icon      "EF-Icon-64x64px.ico"
 #property version VERSION
 #property strict
@@ -37,6 +37,7 @@ input bool ShowAdditionalTPLabel = false; // ShowAdditionalTPLabel: Show TP $/% 
 input bool ShowAdditionalEntryLabel = false; // ShowAdditionalEntryLabel: Show Position Size label?
 input bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
 input bool HideAccSize = false; // HideAccSize: Hide account size?
+input bool HideMoneyAndPointsValues = false; // HideMoneyAndPointsValues: Hide money and points values?
 input bool ShowPointValue = false; // ShowPointValue: Show point value?
 input bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
 input bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
@@ -81,8 +82,8 @@ input int DefaultATRPeriod = 14; // ATRPeriod: Default ATR period.
 input double DefaultATRMultiplierSL = 0; // ATRMultiplierSL: Default ATR multiplier for SL.
 input double DefaultATRMultiplierTP = 0; // ATRMultiplierTP: Default ATR multiplier for TP.
 input ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Default timeframe for ATR.
-input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
-input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
+input bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value.
+input bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value.
 input double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
 input COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommissionType: Default commission type.
 input ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
@@ -170,6 +171,7 @@ input color LongButtonColor = CONTROLS_BUTTON_COLOR_BG; // Long Button Color
 input color ShortButtonColor = CONTROLS_BUTTON_COLOR_BG; // Short Button Color
 input color TradeButtonColor = CONTROLS_BUTTON_COLOR_BG; // Trade Button Color
 input bool DoNotDeleteLinesLabels = false; // Do Not Delete Lines/Labels on deinitialization?
+input bool ConvertToPendingIfMaxMinEntrySLFails = false; // Convert instant to pending if Max/Min Entry/SL distance fails?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -906,6 +908,7 @@ void OnChartEvent(const int id,
                 sets.SLDistanceInPoints = true; // If was in level, set to points.
                 sets.StopLoss = (int)MathRound(MathAbs(sets.StopLossLevel - sets.EntryLevel) / _Point);
             }
+            ExtDialog.UpdateSLLabelText(); // The label's (or button's) text differs between the level and points modes.
             ExtDialog.RefreshValues();
         }
         // Switch TP between points and level:

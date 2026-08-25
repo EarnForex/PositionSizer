@@ -24,7 +24,11 @@ void ListenToChartEvents(string panel_id)
         string object_name = ObjectName(0, i, -1, OBJ_BUTTON);
         // Looking for 12345m_BtnABCDE object names.
         if (StringSubstr(object_name, 0, panel_id_length + 2) != panel_id + "m_") continue;
-        
+        // Skip buttons from outside the panel. Otherwise, they'll get processed twice.
+        if (StringFind(object_name, "m_BtnOutsideClose") >= 0) continue;
+        if (StringFind(object_name, "m_BtnOutsideCloseButtonsSwitchButton") >= 0) continue;
+        if (StringFind(object_name, "m_OutsideTradeButton") >= 0) continue;
+
         if ((bool)ObjectGetInteger(0, object_name, OBJPROP_STATE) == true) // Pressed button.
         {
             lparam = ExtDialog.FindControlId(object_name);
@@ -54,7 +58,9 @@ void ListenToChartEvents(string panel_id)
         if (StringSubstr(object_name, 0, panel_id_length + 5) == panel_id + "m_Edt")
         {
 
-            string text = StringTrimRight(StringTrimLeft(ObjectGetString(0, object_name, OBJPROP_TEXT)));
+            string text = ObjectGetString(0, object_name, OBJPROP_TEXT);
+            StringTrimLeft(text);
+            StringTrimRight(text);
             double double_from_text = StringToDouble(text);
 
             // Prepare the same for the balance/commission fields. Need to strip it out of formatting:
@@ -71,8 +77,10 @@ void ListenToChartEvents(string panel_id)
                 ((sets.SLDistanceInPoints) && (object_name == panel_id + "m_EdtSL") && (text != IntegerToString(sets.StopLoss))) ||
                 ((!sets.TPDistanceInPoints) && (object_name == panel_id + "m_EdtTP") && (AreDoublesDifferent(double_from_text, sets.TakeProfitLevel))) ||
                 ((sets.TPDistanceInPoints) && (object_name == panel_id + "m_EdtTP") && (text != IntegerToString(sets.TakeProfit))) ||
+                ((sets.EntryType == StopLimit) && (!sets.StopLimitDistanceInPoints) && (object_name == panel_id + "m_EdtStopPrice") && (AreDoublesDifferent(double_from_text, sets.StopPriceLevel))) ||
+                ((sets.EntryType == StopLimit) && (sets.StopLimitDistanceInPoints) && (object_name == panel_id + "m_EdtStopPrice") && (text != IntegerToString(sets.StopLimit))) ||
                 // Account size is editable only when it's set to Balance. If different from the actual account balance, a custom value has been entered.
-                ((sets.AccountButton == Balance) && (object_name == panel_id + "m_EdtAccount") && (AreDoublesDifferent(double_from_stripped_text, AccountBalance() + AdditionalFunds)) && (AreDoublesDifferent(double_from_stripped_text, sets.CustomBalance))) ||
+                ((sets.AccountButton == Balance) && (object_name == panel_id + "m_EdtAccount") && (AreDoublesDifferent(double_from_stripped_text, AccountInfoDouble(ACCOUNT_BALANCE) + AdditionalFunds)) && (AreDoublesDifferent(double_from_stripped_text, sets.CustomBalance))) ||
                 ((object_name == panel_id + "m_EdtTPMultiplier") && (AreDoublesDifferent(double_from_text, sets.TPMultiplier, 6))) ||
                 ((object_name == panel_id + "m_EdtCommissionSize") && (AreDoublesDifferent(double_from_text, sets.CommissionPerLot, 3))) ||
                 ((object_name == panel_id + "m_EdtRiskPIn") && (AreDoublesDifferent(double_from_text, sets.Risk))) ||
@@ -239,7 +247,7 @@ void ListenToChartEvents(string panel_id)
 
 // Safe double comparison.
 // Returns true if different. False if equal.
-inline bool AreDoublesDifferent(double d1, double d2, int precision = 0)
+bool AreDoublesDifferent(double d1, double d2, int precision = 0)
 {
     double min_diff = _Point / 2;
     if (precision > 0) min_diff = MathPow(0.1, precision);

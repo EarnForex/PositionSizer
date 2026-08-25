@@ -64,6 +64,13 @@ void Trade()
         TPShare[0] = 100;
     }
 
+    if (sets.SpreadAdjustmentTP)
+    {
+        // Apply spread adjustment to the take-profits (falls back to the base level when the adjusted distance isn't positive):
+        for (int j = 0; j < sets.TakeProfitsNumber; j++)
+            TP[j] = RealTakeProfitLevelFromBase(TP[j]);
+    }
+
     // Commentary:
 
     if (DefaultCommentBalance) Commentary += DoubleToString(AccountInfoDouble(ACCOUNT_BALANCE), 2);
@@ -101,6 +108,11 @@ void Trade()
             int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point);
             if (CurrentEntrySLDistance > sets.MaxEntrySLDistance)
             {
+                if (ConvertToPendingIfMaxMinEntrySLFails && sets.EntryType == Instant && sets.StopLossLevel > 0)
+                {
+                    ConvertToPendingAndTrade(sets.MaxEntrySLDistance, true);
+                    return;
+                }
                 Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") > " + TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE + " (", sets.MaxEntrySLDistance, ").");
                 return;
             }
@@ -111,6 +123,11 @@ void Trade()
             int CurrentEntrySLDistance = (int)(MathAbs(sets.StopLossLevel - sets.EntryLevel) / Point);
             if (CurrentEntrySLDistance < sets.MinEntrySLDistance)
             {
+                if (ConvertToPendingIfMaxMinEntrySLFails && sets.EntryType == Instant && sets.StopLossLevel > 0)
+                {
+                    ConvertToPendingAndTrade(sets.MinEntrySLDistance, false);
+                    return;
+                }
                 Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_ENTRY_SL_DISTANCE + " (", CurrentEntrySLDistance, ") < " + TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE + " (", sets.MinEntrySLDistance, ").");
                 return;
             }
@@ -150,12 +167,32 @@ void Trade()
             }
         }
 
-        if (ShowAdditionalMarginSettings && sets.MaxMarginPerc > 0)
+        if (ShowAdditionalMarginSettings && sets.MaxMarginPerc > 0 && sets.EntryType == Instant)
         {
             if (MarginUtilizedPosition > sets.MaxMarginPerc)
             {
-                Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_MU + " (", DoubleToString(MarginUtilizedPosition, 2), "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_MU + " (", DoubleToString(sets.MaxMarginPerc, 2), "%).");
-                return;
+                string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_MU + " (" + DoubleToString(MarginUtilizedPosition, 2) + "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_MU + " (" + DoubleToString(sets.MaxMarginPerc, 2) + "%).";
+                if (!LessRestrictiveMaxLimits)
+                {
+                    Alert(alert_text);
+                    return;
+                }
+                else
+                {
+                    double new_ps = OutputPositionSize * sets.MaxMarginPerc / MarginUtilizedPosition;
+                    if (new_ps >= MinLot)
+                    {
+                        PositionSize = Round(new_ps, LotStep_digits, RoundDown);
+                        PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                        PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
+                        Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_MU + " (" + DoubleToString(MarginUtilizedPosition, 2) + "%) > " + TRANSLATION_MESSAGE_NTAT_MAX_MU + " (" + DoubleToString(sets.MaxMarginPerc, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                    }
+                    else
+                    {
+                        Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
+                        return;
+                    }
+                }
             }
         }
     }
@@ -358,7 +395,7 @@ void Trade()
                 return;
             }
         }
-        if (ShowAdditionalMarginSettings)
+        if (ShowAdditionalMarginSettings && sets.EntryType == Instant)
         {
             if (sets.MaxMarginPercTotal > 0)
             {
@@ -471,10 +508,10 @@ void Trade()
         message += TRANSLATION_LABEL_RISK + ": " + FormatDouble(DoubleToString(OutputRiskMoney)) + " " + account_currency + "\n";
         if (PositionMargin != 0) message += TRANSLATION_TAB_BUTTON_MARGIN + ": " + FormatDouble(DoubleToString(PositionMargin, 2)) + " " + account_currency + "\n";
         message += TRANSLATION_LABEL_ENTRY + ": " + DoubleToString(sets.EntryLevel, _Digits) + "\n";
-        if (!sets.DoNotApplyStopLoss) message += TRANSLATION_LABEL_STOPLOSS + ": " + DoubleToString(sets.StopLossLevel, _Digits) + "\n";
+        if (!sets.DoNotApplyStopLoss) message += TRANSLATION_LABEL_STOPLOSS + ": " + DoubleToString(RealStopLossLevelFromBase(sets.StopLossLevel), _Digits) + "\n";
         if ((sets.TakeProfitLevel > 0) && (!sets.DoNotApplyTakeProfit))
         {
-            message += TRANSLATION_LABEL_TAKEPROFIT + ": " + DoubleToString(sets.TakeProfitLevel, _Digits);
+            message += TRANSLATION_LABEL_TAKEPROFIT + ": " + DoubleToString(RealTakeProfitLevelFromBase(sets.TakeProfitLevel), _Digits);
             if (sets.TakeProfitsNumber > 1) message += " (" + TRANSLATION_MESSAGE_MULTIPLE + ")";
             message += "\n";
         }
@@ -527,7 +564,7 @@ void Trade()
     for (int j = 0; j < sets.TakeProfitsNumber; j++)
     {
         if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
-        double order_sl = sets.StopLossLevel;
+        double order_sl = RealStopLossLevelFromBase(sets.StopLossLevel); // Spread-adjusted when SA-SL is on.
         double sl = order_sl;
         double order_tp = NormalizeDouble(TP[j], _Digits);
         double tp = order_tp;
@@ -730,6 +767,12 @@ void DoBreakEven()
             string obj_name = ObjectName(ChartID(), i, -1, OBJ_HLINE);
             if (StringFind(obj_name, ObjectPrefix + "BE") == -1) continue; // Skip all other horizontal lines.
             int ticket = (int)StringToInteger(StringSubstr(obj_name, StringLen(ObjectPrefix + "BE")));
+            if (sets.BreakEvenPoints == 0) // If BE was turned off.
+            {
+                ObjectDelete(ChartID(), obj_name); // Delete the line.
+                if (ShowMainLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
+                continue; // No need to check the position.
+            }
             if (!OrderSelect(ticket, SELECT_BY_TICKET)) // No longer exists.
             {
                 ObjectDelete(ChartID(), obj_name); // Delete the line.
@@ -886,5 +929,105 @@ int CountPlannedOrders()
         }
     }
     return count;
+}
+
+// Converts an instant (market) order that failed the Max/Min Entry/SL distance fuse into a pending order.
+// Executes it via the normal pending order path (recursive DoTrade call).
+// The new entry is set at the current stop-loss level +/- the failed fuse's distance; SL and TP remain at their current levels.
+// The position size is recalculated based on the changed SL distance to keep the configured risk.
+// The recalculated size is used only for this execution and is never written to the panel.
+void ConvertToPendingAndTrade(const int distance_points, const bool max_fuse)
+{
+    double new_entry;
+    if (sets.TradeDirection == Long) new_entry = sets.StopLossLevel + distance_points * _Point;
+    else new_entry = sets.StopLossLevel - distance_points * _Point;
+
+    // Check and adjust for TickSize granularity.
+    if (TickSize > 0)
+    {
+        new_entry = NormalizeDouble(MathRound(new_entry / TickSize) * TickSize, _Digits);
+        // If the tick-size rounding pushed the entry across the fuse boundary, nudge it one tick back into compliance:
+        int effective_distance = (int)MathRound(MathAbs(new_entry - sets.StopLossLevel) / _Point);
+        if (max_fuse && effective_distance > distance_points)
+        {
+            if (sets.TradeDirection == Long) new_entry = NormalizeDouble(new_entry - TickSize, _Digits);
+            else new_entry = NormalizeDouble(new_entry + TickSize, _Digits);
+        }
+        else if (!max_fuse && effective_distance < distance_points)
+        {
+            if (sets.TradeDirection == Long) new_entry = NormalizeDouble(new_entry + TickSize, _Digits);
+            else new_entry = NormalizeDouble(new_entry - TickSize, _Digits);
+        }
+    }
+    else new_entry = NormalizeDouble(new_entry, _Digits);
+
+    if (new_entry <= 0)
+    {
+        Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_INVALID + "(" + DoubleToString(new_entry, _Digits) + ").");
+        return;
+    }
+
+    // The resulting pending order's entry has to comply with the broker's stops level requirements:
+    RefreshRates();
+    double stops_level = MarketInfo(Symbol(), MODE_STOPLEVEL) * _Point;
+    double market_price;
+    if (sets.TradeDirection == Long) market_price = Ask;
+    else market_price = Bid;
+    if (MathAbs(market_price - new_entry) < stops_level)
+    {
+        Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_CLOSE + " " + TRANSLATION_MESSAGE_NTAT_NEW_ENTRY_PRICE + " " + DoubleToString(new_entry, _Digits) + ". " + TRANSLATION_MESSAGE_NTAT_MARKET_PRICE + " " + DoubleToString(market_price, _Digits) + ". " + TRANSLATION_MESSAGE_NTAT_STOPS_LEVEL + " " + IntegerToString((int)MarketInfo(Symbol(), MODE_STOPLEVEL)) + " " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS + ".");
+        return;
+    }
+
+    // Recalculate the position size based on the changed SL distance, keeping the configured risk.
+    // The per-lot risk is derived from the panel's current outputs, so the result matches the panel's own sizing formula.
+    double d_old = RealStopLossDistance(MathAbs(sets.EntryLevel - sets.StopLossLevel)); // The SL distance the current calculation is based on.
+    double d_new = RealStopLossDistance(distance_points * _Point); // The converted order's SL distance (both include the spread adjustment when enabled).
+    double commission = CalculateCommission();
+    double new_size = 0;
+    double per_lot_risk_old = 0;
+    if (OutputPositionSize > 0) per_lot_risk_old = OutputRiskMoney / OutputPositionSize; // = d_old * UnitCost / TickSize + 2 * commission.
+    if (d_old > 0 && d_new > 0 && per_lot_risk_old - 2 * commission > 0)
+    {
+        double per_lot_risk_new = (per_lot_risk_old - 2 * commission) * d_new / d_old + 2 * commission;
+        new_size = RiskMoney / per_lot_risk_new;
+    }
+    else if (d_new > 0) new_size = OutputPositionSize * d_old / d_new; // Fallback: simple inverse scaling.
+    if (LotStep != 0)
+    {
+        double steps = new_size / LotStep;
+        if (MathFloor(steps) < steps) new_size = MathFloor(steps) * LotStep;
+    }
+
+    if (new_size < MinLot)
+    {
+        Alert(TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " (" + TRANSLATION_MESSAGE_NTAT_MINIMUM_ENTRY_SL_DISTANCE_NOT_REACHED + "): " + TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME + " (" + DoubleToString(new_size, LotStep_digits) + ") < " + TRANSLATION_MESSAGE_BROKER_MINIMUM);
+        return;
+    }
+
+    if (max_fuse) Alert(TRANSLATION_MESSAGE_NTAT_MAXIMUM_ENTRY_SL_DISTANCE_EXCEEDED + " - " + TRANSLATION_MESSAGE_NTAT_REPLACING_MARKET_PENDING + " (" + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(new_entry, _Digits) + "). " + TRANSLATION_MESSAGE_NTAT_POSITION_SIZE_RECALCULATED + ": " + DoubleToString(OutputPositionSize, LotStep_digits) + " -> " + DoubleToString(new_size, LotStep_digits) + ".");
+    else Alert(TRANSLATION_MESSAGE_NTAT_MINIMUM_ENTRY_SL_DISTANCE_NOT_REACHED + " - " + TRANSLATION_MESSAGE_NTAT_REPLACING_MARKET_PENDING + " (" + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(new_entry, _Digits) + "). " + TRANSLATION_MESSAGE_NTAT_POSITION_SIZE_RECALCULATED + ": " + DoubleToString(OutputPositionSize, LotStep_digits) + " -> " + DoubleToString(new_size, LotStep_digits) + ".");
+
+    // Execute via the normal pending-order path with temporarily overridden entry parameters and position size.
+    // The overridden values are restored right after the execution and are never displayed on the panel.
+    // No recursion is possible: the nested call runs with EntryType == Pending, and the conversion only triggers for Instant.
+    ENTRY_TYPE prev_entry_type = sets.EntryType;
+    double prev_entry_level = sets.EntryLevel;
+    double prev_output_position_size = OutputPositionSize;
+    double prev_array_position_size[];
+    ArrayCopy(prev_array_position_size, ArrayPositionSize);
+    sets.EntryType = Pending;
+    sets.EntryLevel = new_entry;
+    OutputPositionSize = new_size;
+
+    PositionSizeToArray(OutputPositionSize); // Distribute the new position size across the take-profits.
+
+    Trade();
+
+    sets.EntryType = prev_entry_type;
+    sets.EntryLevel = prev_entry_level;
+    OutputPositionSize = prev_output_position_size;
+    ArrayCopy(ArrayPositionSize, prev_array_position_size);
+    ArrayResize(ArrayPositionSize, ArraySize(prev_array_position_size));
 }
 //+------------------------------------------------------------------+

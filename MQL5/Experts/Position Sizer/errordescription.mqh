@@ -44,6 +44,17 @@ string TradeServerReturnCodeDescription(int return_code)
       case TRADE_RETCODE_ONLY_REAL:          return("Operation is allowed only for live accounts");
       case TRADE_RETCODE_LIMIT_ORDERS:       return("The number of pending orders has reached the limit");
       case TRADE_RETCODE_LIMIT_VOLUME:       return("The volume of orders and positions for the symbol has reached the limit");
+      case TRADE_RETCODE_INVALID_ORDER:        return("Incorrect or prohibited order type");
+      case TRADE_RETCODE_POSITION_CLOSED:      return("Position with the specified POSITION_IDENTIFIER has already been closed");
+      case TRADE_RETCODE_INVALID_CLOSE_VOLUME: return("A close volume exceeds the current position volume");
+      case TRADE_RETCODE_CLOSE_ORDER_EXIST:    return("A close order already exists for a specified position");
+      case TRADE_RETCODE_LIMIT_POSITIONS:      return("The number of open positions simultaneously present on an account can be limited by the server settings");
+      case TRADE_RETCODE_REJECT_CANCEL:        return("The pending order activation request is rejected, the order is canceled");
+      case TRADE_RETCODE_LONG_ONLY:            return("The request is rejected, because the \"Only long positions are allowed\" rule is set for the symbol (POSITION_TYPE_BUY)");
+      case TRADE_RETCODE_SHORT_ONLY:           return("The request is rejected, because the \"Only short positions are allowed\" rule is set for the symbol (POSITION_TYPE_SELL)");
+      case TRADE_RETCODE_CLOSE_ONLY:           return("The request is rejected, because the \"Only position closing is allowed\" rule is set for the symbol");
+      case TRADE_RETCODE_FIFO_CLOSE:           return("The request is rejected, because \"Position closing is allowed only by FIFO rule\" flag is set for the trading account (ACCOUNT_FIFO_CLOSE=true)");
+      case TRADE_RETCODE_HEDGE_PROHIBITED:     return("The request is rejected, because the \"Opposite positions on a single symbol are disabled\" rule is set for the trading account"); 
      }
 //---
    return("Invalid return code of the trade server");

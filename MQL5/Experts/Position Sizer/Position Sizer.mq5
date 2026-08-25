@@ -6,7 +6,7 @@
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
 #property icon      "EF-Icon-64x64px.ico"
-#define VERSION "3.15"
+#define VERSION "3.16"
 #property version VERSION
 
 #include "Translations\English.mqh"
@@ -26,6 +26,7 @@
 
 #include "Position Sizer.mqh"
 #include "Position Sizer Trading.mqh"
+#include "TesterSupport.mqh"
 
 // Default values for settings:
 double EntryLevel = 0;
@@ -42,6 +43,7 @@ input(name=INPUT_DESCRIPTION_ShowAdditionalTPLabel) bool ShowAdditionalTPLabel =
 input(name=INPUT_DESCRIPTION_ShowAdditionalEntryLabel) bool ShowAdditionalEntryLabel = false; // ShowAdditionalEntryLabel: Show Position Size label?
 input(name=INPUT_DESCRIPTION_DrawTextAsBackground) bool DrawTextAsBackground = false; // DrawTextAsBackground: Draw label objects as background?
 input(name=INPUT_DESCRIPTION_HideAccSize) bool HideAccSize = false; // HideAccSize: Hide account size?
+input(name=INPUT_DESCRIPTION_HideMoneyAndPointsValues) bool HideMoneyAndPointsValues = false; // HideMoneyAndPointsValues: Hide money and points values?
 input(name=INPUT_DESCRIPTION_ShowPointValue) bool ShowPointValue = false; // ShowPointValue: Show point value?
 input(name=INPUT_DESCRIPTION_ShowMaxPSButton) bool ShowMaxPSButton = false; // ShowMaxPSButton: Show Max Position Size button?
 input(name=INPUT_DESCRIPTION_StartPanelMinimized) bool StartPanelMinimized = false; // StartPanelMinimized: Start the panel minimized?
@@ -79,6 +81,7 @@ input group INPUT_GROUP_DESCRIPTION_DEFAULTS
 input(name=INPUT_DESCRIPTION_DefaultTradeDirection) TRADE_DIRECTION DefaultTradeDirection = Long; // TradeDirection: Default trade direction.
 input(name=INPUT_DESCRIPTION_DefaultSL) int DefaultSL = 0; // SL: Default stop-loss value, in points.
 input(name=INPUT_DESCRIPTION_DefaultTP) int DefaultTP = 0; // TP: Default take-profit value, in points.
+input(name=INPUT_DESCRIPTION_DefaultStopLimitDistance) int DefaultStopLimitDistance = 0; // Default stop-limit price distance, in points.
 input(name=INPUT_DESCRIPTION_DefaultTakeProfitsNumber) int DefaultTakeProfitsNumber = 1; // TakeProfitsNumber: More than 1 target to split trades.
 input(name=INPUT_DESCRIPTION_DefaultEntryType) ENTRY_TYPE DefaultEntryType = Instant; // EntryType: Instant, Pending, or StopLimit.
 input(name=INPUT_DESCRIPTION_DefaultShowLines) bool DefaultShowLines = true; // ShowLines: Show the lines by default?
@@ -87,10 +90,11 @@ input(name=INPUT_DESCRIPTION_DefaultATRPeriod) int DefaultATRPeriod = 14; // ATR
 input(name=INPUT_DESCRIPTION_DefaultATRMultiplierSL) double DefaultATRMultiplierSL = 0; // ATRMultiplierSL: Default ATR multiplier for SL.
 input(name=INPUT_DESCRIPTION_DefaultATRMultiplierTP) double DefaultATRMultiplierTP = 0; // ATRMultiplierTP: Default ATR multiplier for TP.
 input(name=INPUT_DESCRIPTION_DefaultATRTimeframe) ENUM_TIMEFRAMES DefaultATRTimeframe = PERIOD_CURRENT; // ATRTimeframe: Default timeframe for ATR.
-input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentSL) bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value in ATR mode.
-input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentTP) bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value in ATR mode.
+input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentSL) bool DefaultSpreadAdjustmentSL = false; // SpreadAdjustmentSL: Adjust SL by Spread value.
+input(name=INPUT_DESCRIPTION_DefaultSpreadAdjustmentTP) bool DefaultSpreadAdjustmentTP = false; // SpreadAdjustmentTP: Adjust TP by Spread value.
 input(name=INPUT_DESCRIPTION_DefaultCommission) double DefaultCommission = 0; // Commission: Default one-way commission per 1 lot.
 input(name=INPUT_DESCRIPTION_DefaultCommissionType) COMMISSION_TYPE DefaultCommissionType = COMMISSION_CURRENCY; // CommissionType: Default commission type.
+input(name=INPUT_DESCRIPTION_AutoCommission) bool AutoCommission = true; // AutoCommission: Get commission rules from the broker's server?
 input(name=INPUT_DESCRIPTION_DefaultAccountButton) ACCOUNT_BUTTON DefaultAccountButton = Balance; // AccountButton: Balance/Equity/Balance-CPR
 input(name=INPUT_DESCRIPTION_DefaultRisk) double DefaultRisk = 1; // Risk: Initial risk tolerance in percentage points
 input(name=INPUT_DESCRIPTION_DefaultMoneyRisk) double DefaultMoneyRisk = 0; // MoneyRisk: If > 0, money risk tolerance in currency.
@@ -134,6 +138,7 @@ input(name=INPUT_DESCRIPTION_DefaultMaxMarginPercTotal) double DefaultMaxMarginP
 input(name=INPUT_DESCRIPTION_DefaultMaxMarginPercPerSymbol) double DefaultMaxMarginPercPerSymbol = 0; // MaxMarginPercPerSymbol: For the Trading tab. 0 - no limit.
 input(name=INPUT_DESCRIPTION_DefaultSLDistanceInPoints) bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance in points instead of a level.
 input(name=INPUT_DESCRIPTION_DefaultTPDistanceInPoints) bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
+input(name=INPUT_DESCRIPTION_DefaultStopLimitDistanceInPoints) bool DefaultStopLimitDistanceInPoints = false; // StopLimitDistanceInPoints: Stop-limit price distance in points.
 input(name=INPUT_DESCRIPTION_DefaultMarginUtilizationBase) MARGIN_UTILIZATION_BASE DefaultMarginUtilizationBase = MUB_BALANCE; // Margin utilization base.
 input(name=INPUT_DESCRIPTION_DefaultMUBStartingBalance) double DefaultMUBStartingBalance = 0; // Starting balance for margin utilization base.
 input group INPUT_GROUP_DESCRIPTION_KEYBOARD_SHORTCUTS
@@ -148,6 +153,7 @@ input(name=INPUT_DESCRIPTION_SetEntryHotKey) string SetEntryHotKey = "E"; // Set
 input(name=INPUT_DESCRIPTION_MinimizeMaximizeHotkey) string MinimizeMaximizeHotkey = "`"; // MinimizeMaximizeHotkey: Minimize/maximize the panel.
 input(name=INPUT_DESCRIPTION_SwitchSLPointsLevelHotKey) string SwitchSLPointsLevelHotKey = "Shift+S"; // SwitchSLPointsLevelHotKey: Switch SL between points and level.
 input(name=INPUT_DESCRIPTION_SwitchTPPointsLevelHotKey) string SwitchTPPointsLevelHotKey = "Shift+P"; // SwitchTPPointsLevelHotKey: Switch TP between points and level.
+input(name=INPUT_DESCRIPTION_SwitchStopLimitPointsLevelHotKey) string SwitchStopLimitPointsLevelHotKey = "Shift+L"; // SwitchStopLimitPointsLevelHotKey: Switch stop-limit price between points and level.
 input group INPUT_GROUP_DESCRIPTION_MISCELLANEOUS
 input(name=INPUT_DESCRIPTION_TP_Multiplier) double TP_Multiplier = 1; // TP Multiplier for SL value (for take-profit button).
 input(name=INPUT_DESCRIPTION_UseCommissionToSetTPDistance) bool UseCommissionToSetTPDistance = false; // UseCommissionToSetTPDistance: For TP button.
@@ -178,6 +184,7 @@ input(name=INPUT_DESCRIPTION_LongButtonColor) color LongButtonColor = CONTROLS_B
 input(name=INPUT_DESCRIPTION_ShortButtonColor) color ShortButtonColor = CONTROLS_BUTTON_COLOR_BG; // Short Button Color
 input(name=INPUT_DESCRIPTION_TradeButtonColor) color TradeButtonColor = CONTROLS_BUTTON_COLOR_BG; // Trade Button Color
 input(name=INPUT_DESCRIPTION_DoNotDeleteLinesLabels) bool DoNotDeleteLinesLabels = false; // Do Not Delete Lines/Labels on deinitialization?
+input(name=INPUT_DESCRIPTION_ConvertToPendingIfMaxMinEntrySLFails) bool ConvertToPendingIfMaxMinEntrySLFails = false; // Convert instant to pending if Max/Min Entry/SL distance fails?
 
 CPositionSizeCalculator* ExtDialog;
 
@@ -186,6 +193,7 @@ bool Dont_Move_the_Panel_to_Default_Corner_X_Y = true;
 ulong LastRecalculationTime = 0;
 bool StopLossLineIsBeingMoved = false;
 bool TakeProfitLineIsBeingMoved[]; // Separate for each TP.
+bool StopPriceLineIsBeingMoved = false;
 bool AdditionalTPLineMoved = false;
 int DeinitializationReason = -1;
 string OldSymbol = "";
@@ -357,6 +365,7 @@ int OnInit()
         if ((sets.MaxPositionSizeTotal < sets.MaxPositionSizePerSymbol) && (sets.MaxPositionSizeTotal != 0)) sets.MaxPositionSizeTotal = sets.MaxPositionSizePerSymbol;
         sets.StopLoss = 0;
         sets.TakeProfit = 0;
+        sets.StopLimit = 0;
         sets.SubtractPendingOrders = DefaultSubtractPOV;
         sets.SubtractPositions = DefaultSubtractOPV;
         sets.DoNotApplyStopLoss = DefaultDoNotApplyStopLoss;
@@ -385,6 +394,7 @@ int OnInit()
         sets.ShareVolumeMode = Decreasing;
         sets.SLDistanceInPoints = DefaultSLDistanceInPoints;
         sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
+        sets.StopLimitDistanceInPoints = DefaultStopLimitDistanceInPoints;
         sets.LastAdditionalTPScheme = ADDITIONAL_TP_SCHEME_OUTWARD;
         sets.MarginUtilizationBase = DefaultMarginUtilizationBase;
         sets.MUBStartingBalance = DefaultMUBStartingBalance;
@@ -423,6 +433,7 @@ int OnInit()
         SetupHotkey(SetEntryHotKey,             Hotkeys[HK_SetEntry]);
         SetupHotkey(SwitchSLPointsLevelHotKey,  Hotkeys[HK_SwitchSLPointsLevel]);
         SetupHotkey(SwitchTPPointsLevelHotKey,  Hotkeys[HK_SwitchTPPointsLevel]);
+        SetupHotkey(SwitchStopLimitPointsLevelHotKey, Hotkeys[HK_SwitchStopLimitPointsLevel]);
         SetupHotkey(MinimizeMaximizeHotkey,     Hotkeys[HK_MinimizeMaximize]);
     }
     else if (OldSymbol != _Symbol)
@@ -439,6 +450,7 @@ int OnInit()
                 sets.TP[i] = 0;
             }
             sets.StopPriceLevel = 0;
+            sets.StopLimit = 0;
             Dont_Move_the_Panel_to_Default_Corner_X_Y = false;
         }
     }    
@@ -525,8 +537,11 @@ int OnInit()
         ExtDialog.ChartEvent(CHARTEVENT_CHART_CHANGE, lparam, dparam, sparam);
     }
 
-    if (!EventSetTimer(1)) Print(TRANSLATION_MESSAGE_ERROR_SETTING_TIMER + ": ", GetLastError());
-    
+    if (!(bool)MQLInfoInteger(MQL_VISUAL_MODE))
+    {
+        if (!EventSetTimer(1)) Print(TRANSLATION_MESSAGE_ERROR_SETTING_TIMER + ": ", GetLastError());
+    }
+
     if (ShowATROptions) ExtDialog.InitATR();
 
     if (DetectedColorMode)
@@ -659,6 +674,13 @@ void OnDeinit(const int reason)
 
 void OnTick()
 {
+    // Strategy Tester (visual mode) support:
+    if ((bool)MQLInfoInteger(MQL_VISUAL_MODE))
+    {
+        ListenToChartEvents(ExtDialog.Name()); // Synthesizes panel events from the raw chart objects because the tester doesn't deliver them.
+        ExtDialog.UpdateStrategyTesterTrades(); // Updates the outside Close buttons and removes those of the trades that no longer exist.
+    }
+
     ExtDialog.RefreshValues();
 
     if (sets.TrailingStopPoints > 0) DoTrailingStop();
@@ -683,6 +705,15 @@ void OnChartEvent(const int id,
                     StopLossLineIsBeingMoved = true;
                 }
                 else StopLossLineIsBeingMoved = false;
+            }
+            if ((sets.StopLimitDistanceInPoints) && (sets.EntryType == StopLimit))
+            {
+                double current_sp_line_price = NormalizeDouble(ObjectGetDouble(ChartID(), ObjectPrefix + "StopPriceLine", OBJPROP_PRICE, 0), _Digits);
+                if (MathAbs(current_sp_line_price - tStopPriceLevel) > _Point / 2.0) // != for doubles.
+                {
+                    StopPriceLineIsBeingMoved = true;
+                }
+                else StopPriceLineIsBeingMoved = false;
             }
             if ((sets.TPDistanceInPoints) || ((ShowATROptions) && (sets.ATRMultiplierTP > 0)))
             {
@@ -715,6 +746,21 @@ void OnChartEvent(const int id,
     // Clicks on objects that cannot be processed via the class Event Map.
     if (id == CHARTEVENT_OBJECT_CLICK) 
     {
+        // Strategy Tester (visual mode) support - the outside Close buttons and their corner switch:
+        if ((bool)MQLInfoInteger(MQL_VISUAL_MODE))
+        {
+            if (StringFind(sparam, "m_BtnOutsideCloseButtonsSwitchButton") >= 0)
+            {
+                ExtDialog.ProcessOutsideCloseButtonsSwitchClick();
+                return;
+            }
+            else if (StringFind(sparam, "m_BtnOutsideClose") >= 0)
+            {
+                int start_pos = StringFind(sparam, "m_BtnOutsideClose") + StringLen("m_BtnOutsideClose");
+                ExtDialog.ProcessOutsideCloseButtonClick((ulong)StringToInteger(StringSubstr(sparam, start_pos)));
+                return;
+            }
+        }
         // This cannot be done using the panel's event handler because the outside trade button isn't added to its list of controls.
         if (sparam == ExtDialog.Name() + "m_OutsideTradeButton")
         {
@@ -764,6 +810,7 @@ void OnChartEvent(const int id,
     if (id == CHARTEVENT_CLICK) // Avoid "sticking" of xxxLineIsBeingMoved variables.
     {
         StopLossLineIsBeingMoved = false;
+        StopPriceLineIsBeingMoved = false;
         ArrayInitialize(TakeProfitLineIsBeingMoved, false);
     }
 
@@ -952,6 +999,7 @@ void OnChartEvent(const int id,
                 sets.SLDistanceInPoints = true; // If was in level, set to points.
                 sets.StopLoss = (int)MathRound(MathAbs(sets.StopLossLevel - sets.EntryLevel) / _Point);
             }
+            ExtDialog.UpdateSLLabelText(); // The label's (or button's) text differs between the level and points modes.
             ExtDialog.RefreshValues();
         }
         // Switch TP between points and level:
@@ -976,6 +1024,17 @@ void OnChartEvent(const int id,
             }
             ExtDialog.RefreshValues();
         }
+        // Switch stop-limit price between points and level:
+        else if (HotkeyPressed(Hotkeys[HK_SwitchStopLimitPointsLevel], key))
+        {
+            if (sets.StopLimitDistanceInPoints) sets.StopLimitDistanceInPoints = false; // If was in points, set to level.
+            else
+            {
+                sets.StopLimitDistanceInPoints = true; // If was in level, set to points.
+                sets.StopLimit = (int)MathRound(MathAbs(sets.StopPriceLevel - sets.EntryLevel) / _Point);
+            }
+            ExtDialog.RefreshValues();
+        }
     }
 
     // Call Panel's event handler only if it is not a CHARTEVENT_CHART_CHANGE - workaround for minimization bug on chart switch.
@@ -992,10 +1051,11 @@ void OnChartEvent(const int id,
         if (id == CHARTEVENT_OBJECT_DRAG)
         {
             // Moving lines when fixed SL/TP distance is enabled. Should set a new fixed SL/TP distance.
-            if ((sets.SLDistanceInPoints) || (sets.TPDistanceInPoints) || (ShowATROptions))
+            if ((sets.SLDistanceInPoints) || (sets.TPDistanceInPoints) || (sets.StopLimitDistanceInPoints) || (ShowATROptions))
             {
                 if (sparam == ObjectPrefix + "StopLossLine") ExtDialog.UpdateFixedSL();
                 else if (sparam == ObjectPrefix + "TakeProfitLine") ExtDialog.UpdateFixedTP();
+                else if ((sets.StopLimitDistanceInPoints) && (sparam == ObjectPrefix + "StopPriceLine")) ExtDialog.UpdateFixedStopLimit();
                 else if ((sets.TakeProfitsNumber > 1) && (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1))
                 {
                     int len = StringLen(ObjectPrefix + "TakeProfitLine");
@@ -1011,6 +1071,7 @@ void OnChartEvent(const int id,
         }
 
         if (sparam == ObjectPrefix + "StopLossLine") StopLossLineIsBeingMoved = false; // In any case ending moving state for the stop-loss line.
+        if (sparam == ObjectPrefix + "StopPriceLine") StopPriceLineIsBeingMoved = false; // In any case ending moving state for the stop price line.
         if (StringFind(sparam, ObjectPrefix + "TakeProfitLine") != -1) ArrayInitialize(TakeProfitLineIsBeingMoved, false); // In any case ending moving state for the take-profit line.
 
         if (id == CHARTEVENT_CHART_CHANGE) ChartWidth = ChartGetInteger(0, CHART_WIDTH_IN_PIXELS);

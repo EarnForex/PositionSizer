@@ -40,6 +40,11 @@ color DARKMODE_MAIN_AREA_BG_COLOR = 0x666666;
 color DARKMODE_EDIT_BG_COLOR = 0xAAAAAA;
 color DARKMODE_BUTTON_BG_COLOR = 0xA19999;
 color DARKMODE_TEXT_COLOR = 0x000000;
+color SA_BUTTON_ON_COLOR = C'124,196,127'; // Spread Adjustment button in its pressed (on) state.
+color SA_BUTTON_ON_BORDER_COLOR = C'76,175,80';
+color DARKMODE_SA_BUTTON_ON_COLOR = C'94,158,100';
+color DARKMODE_SA_BUTTON_ON_BORDER_COLOR = C'76,132,82';
+color SA_ADJUSTED_TEXT_COLOR = clrGreen; // Text color of the spread-adjusted value fields.
 
 #define MULTIPLIER_VALUE_CONTROL 10
 #define MULTIPLIER_VALUE_SHIFT 100
@@ -58,6 +63,7 @@ enum HOTKEY_ID
     HK_MinimizeMaximize,
     HK_SwitchSLPointsLevel,
     HK_SwitchTPPointsLevel,
+    HK_SwitchStopLimitPointsLevel,
     HK_COUNT // Number of hotkeys - keep last.
 };
 
@@ -228,8 +234,10 @@ struct Settings
     // For SL/TP distance modes:
     bool SLDistanceInPoints;
     bool TPDistanceInPoints;
+    bool StopLimitDistanceInPoints;
     int StopLoss;
     int TakeProfit;
+    int StopLimit;
     // Only for SL distance mode:
     TRADE_DIRECTION TradeDirection;
     // For Trading only:

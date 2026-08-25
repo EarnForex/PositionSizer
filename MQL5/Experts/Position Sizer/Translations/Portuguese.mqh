@@ -236,6 +236,7 @@
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LABEL "Distância do Stop, pontos"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "Tamanho da Ordem, lotes"
 #define TRANSLATION_TOOLTIP_OUTSIDE_TRADE_BUTTON "Clique para abrir uma ordem/posição."
+#define TRANSLATION_CLOSE_BUTTON "Fechar"
 
 // Avisos
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "Muito próximo!"
@@ -358,6 +359,10 @@
 #define TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE "Não é possível realizar uma ordem menor."
 #define TRANSLATION_MESSAGE_ARE_YOU_SURE "Você tem certeza que deseja fechar o Position Sizer?"
 #define TRANSLATION_MESSAGE_EXIT "Sair?"
+#define TRANSLATION_MESSAGE_ORDERSELECT_FAILED "Falha em OrderSelect"
+#define TRANSLATION_MESSAGE_ORDERDELETE_FAILED "Falha em OrderDelete"
+#define TRANSLATION_MESSAGE_ORDERCLOSE_FAILED "Falha em PositionClose"
+#define TRANSLATION_MESSAGE_OBJECT_NOT_FOUND "Objeto não encontrado."
 #define TRANSLATION_MESSAGE_NTAT_MU "utilização de margem"
 #define TRANSLATION_MESSAGE_NTAT_MAX_MU "utilização máxima de margem"
 #define TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION "utilização total de margem"
