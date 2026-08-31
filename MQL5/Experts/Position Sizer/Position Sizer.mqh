@@ -9003,10 +9003,9 @@ double CalculateMarginByVolume(double existing_volume, double existing_open_pric
     double CurrencyCorrectionCoefficient_existing = 1;
     if (AccountCurrency != MarginCurrency)
     {
-        MqlTick tick;
-        SymbolInfoTick(SymbolForTrading, tick);
-        // This yields inaccurate margin of existing position, but it is the best we can get so far.
-        CurrencyCorrectionCoefficient_existing = (tick.bid != 0) ?  (1 / tick.bid) : -1;
+        // The same conversion as the one used for the new position's margin - keeps the current and the position margin utilization consistent.
+        CurrencyCorrectionCoefficient_existing = CalculateAdjustment(Loss, MarginCurrency, AccountCurrency, SymbolForTrading);
+        if (CurrencyCorrectionCoefficient_existing == 0) CurrencyCorrectionCoefficient_existing = 1; // Couldn't calculate the correction coefficient due to the lack of the required currency pair.
     }
     ExistingPositionMargin *= CurrencyCorrectionCoefficient_existing;
     if ((InitialMargin > MaintenanceMargin) || (initial_margin_rate > maintenance_margin_rate))
@@ -9044,6 +9043,7 @@ void CalculateMarginUtilization()
     }
     else
     {
+        MarginUtilizedCurrent = AccountInfoDouble(ACCOUNT_MARGIN) / mu_base * 100;
         if (sets.EntryType == Instant)
         {
             MarginUtilizedPosition = PositionMargin / mu_base * 100;
