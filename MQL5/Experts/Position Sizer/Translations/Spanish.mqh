@@ -363,6 +363,7 @@
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "Utilización máxima total del margen"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "Utilización del margen por símbolo"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "Utilización máxima del margen por símbolo"
+#define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "¡No se ha podido establecer el stop-loss/take-profit en la posición abierta!"
 
 // Parámetros de entrada
 #define INPUT_GROUP_DESCRIPTION_COMPACTNESS "Compacidad"
