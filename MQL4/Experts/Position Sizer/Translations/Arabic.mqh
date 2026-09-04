@@ -349,3 +349,4 @@
 #define TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION "الحد الأقصى لإجمالي استخدام الهامش"
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "استخدام الهامش لكل رمز"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "الحد الأقصى لاستخدام الهامش لكل رمز"
+#define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "فشل وضع أمر إيقاف الخسارة/جني الربح على الصفقة المفتوحة!"
