@@ -6508,6 +6508,7 @@ void CPositionSizeCalculator::UpdateSLLabelText()
     if (sets.SLDistanceInPoints) stoploss_label_text = TRANSLATION_BUTTON_SL + ":";
     if (DefaultSL > 0) m_BtnStopLoss.Text(stoploss_label_text); // Button is used instead of a label to quickly set SL.
     else m_LblSL.Text(stoploss_label_text);
+    m_EdtSL.PropFlags(0);
 }
 
 // Updates the SA buttons' colors and the spread-adjusted SL/TP fields (visibility, sizes, and values) according to the current settings.
