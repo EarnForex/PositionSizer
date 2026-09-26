@@ -1,7 +1,8 @@
 #define DESCRIPTION_LINE_1 "Calcula o tamanho da ordem com base no risco para a sua conta."
-#define DESCRIPTION_LINE_2 "Permite a execução de ordens com base nos resultados dos cálculos.\\r\\n"
-#define DESCRIPTION_LINE_3 "AVISO: Sem garantia. Este EA é oferecido \\\"como está\\\". Use por sua própria conta e risco.\\r\\n"
+#define DESCRIPTION_LINE_2 "Permite a execução de ordens com base nos resultados dos cálculos.\r\n"
+#define DESCRIPTION_LINE_3 "AVISO: Sem garantia. Este EA é oferecido \"como está\". Use por sua própria conta e risco.\r\n"
 #define DESCRIPTION_LINE_4 "Nota: Pressionar Shift+T abrirá uma ordem."
+#define DESCRIPTION_LINE_5 "\r\nTradução PT-BR completa por Matheus Sevaroli — https://www.youtube.com/@matheussevaroli4209"
 
 // Tabs
 #define TRANSLATION_TAB_BUTTON_MAIN "Geral"
@@ -346,3 +347,12 @@
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "utilização de margem por ativo"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "utilização máxima de margem por ativo"
 #define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "Falha ao colocar stop-loss/take-profit na ordem aberta!"
+#define TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_INVALID "a entrada da ordem pendente convertida é inválida"
+#define TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_CLOSE "a entrada da ordem pendente convertida está perto demais do preço atual de mercado."
+#define TRANSLATION_MESSAGE_NTAT_NEW_ENTRY_PRICE "Nova entrada:"
+#define TRANSLATION_MESSAGE_NTAT_MARKET_PRICE "Preço de mercado:"
+#define TRANSLATION_MESSAGE_NTAT_STOPS_LEVEL "Nível de stops:"
+#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_ENTRY_SL_DISTANCE_EXCEEDED "Distância máxima de Entrada/SL excedida"
+#define TRANSLATION_MESSAGE_NTAT_MINIMUM_ENTRY_SL_DISTANCE_NOT_REACHED "Distância mínima de Entrada/SL não atingida"
+#define TRANSLATION_MESSAGE_NTAT_REPLACING_MARKET_PENDING "substituindo a ordem a mercado por uma ordem pendente"
+#define TRANSLATION_MESSAGE_NTAT_POSITION_SIZE_RECALCULATED "O tamanho da ordem foi recalculado com base na nova distância do SL"
