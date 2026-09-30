@@ -495,6 +495,7 @@
 #define INPUT_DESCRIPTION_SwitchHideShowLinesHotKey "SwitchHideShowLinesHotKey: Switch Hide/Show lines."
 #define INPUT_DESCRIPTION_SetStopLossHotKey "SetStopLossHotKey: Set SL to where mouse pointer is."
 #define INPUT_DESCRIPTION_SetTakeProfitHotKey "SetTakeProfitHotKey: Set TP to where mouse pointer is."
+#define INPUT_DESCRIPTION_ClearTPLevelsHotKey "ClearTPLevelsHotKey: Remove all TP levels"
 #define INPUT_DESCRIPTION_SetEntryHotKey "SetEntryHotKey: Set Entry to where mouse pointer is."
 #define INPUT_DESCRIPTION_MinimizeMaximizeHotkey "MinimizeMaximizeHotkey: Minimize/maximize the panel."
 #define INPUT_DESCRIPTION_SwitchSLPointsLevelHotKey "SwitchSLPointsLevelHotKey: Switch SL between points and level."

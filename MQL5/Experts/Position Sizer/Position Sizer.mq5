@@ -149,6 +149,7 @@ input(name=INPUT_DESCRIPTION_SwitchEntryDirectionHotKey) string SwitchEntryDirec
 input(name=INPUT_DESCRIPTION_SwitchHideShowLinesHotKey) string SwitchHideShowLinesHotKey = "H"; // SwitchHideShowLinesHotKey: Switch Hide/Show lines.
 input(name=INPUT_DESCRIPTION_SetStopLossHotKey) string SetStopLossHotKey = "S"; // SetStopLossHotKey: Set SL to where mouse pointer is.
 input(name=INPUT_DESCRIPTION_SetTakeProfitHotKey) string SetTakeProfitHotKey = "P"; // SetTakeProfitHotKey: Set TP to where mouse pointer is.
+input(name=INPUT_DESCRIPTION_ClearTPLevelsHotKey) string ClearTPLevelsHotKey = "C"; // ClearTPLevelsHotKey: Remove all TP levels.
 input(name=INPUT_DESCRIPTION_SetEntryHotKey) string SetEntryHotKey = "E"; // SetEntryHotKey: Set Entry to where mouse pointer is.
 input(name=INPUT_DESCRIPTION_MinimizeMaximizeHotkey) string MinimizeMaximizeHotkey = "`"; // MinimizeMaximizeHotkey: Minimize/maximize the panel.
 input(name=INPUT_DESCRIPTION_SwitchSLPointsLevelHotKey) string SwitchSLPointsLevelHotKey = "Shift+S"; // SwitchSLPointsLevelHotKey: Switch SL between points and level.
@@ -433,6 +434,7 @@ int OnInit()
         SetupHotkey(SetEntryHotKey,             Hotkeys[HK_SetEntry]);
         SetupHotkey(SwitchSLPointsLevelHotKey,  Hotkeys[HK_SwitchSLPointsLevel]);
         SetupHotkey(SwitchTPPointsLevelHotKey,  Hotkeys[HK_SwitchTPPointsLevel]);
+        SetupHotkey(ClearTPLevelsHotKey,        Hotkeys[HK_ClearTPLevels]);
         SetupHotkey(SwitchStopLimitPointsLevelHotKey, Hotkeys[HK_SwitchStopLimitPointsLevel]);
         SetupHotkey(MinimizeMaximizeHotkey,     Hotkeys[HK_MinimizeMaximize]);
     }
@@ -1034,6 +1036,10 @@ void OnChartEvent(const int id,
                 sets.StopLimit = (int)MathRound(MathAbs(sets.StopPriceLevel - sets.EntryLevel) / _Point);
             }
             ExtDialog.RefreshValues();
+        }
+        else if (HotkeyPressed(Hotkeys[HK_ClearTPLevels], key))
+        {
+            ExtDialog.ClearTPLevels();
         }
     }
 

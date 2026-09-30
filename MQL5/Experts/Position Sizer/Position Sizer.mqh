@@ -82,6 +82,7 @@ public:
     virtual void     IniFileLoad() {if (FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
     virtual void     EmulateMinMaxClick();
     virtual void     ResetChkTPLockedOnSL();
+            void     ClearTPLevels();
             void     UpdateSLLabelText();
             void     UpdateSpreadAdjustmentDisplay();
             void     OnClickBtnTakeProfitsNumberAdd();
@@ -7087,6 +7088,16 @@ void CPositionSizeCalculator::ProcessOutsideCloseButtonsSwitchClick()
         OutsideCloseButtons[i].Y_Distance(OutsideCloseButtons[i].Y_Distance() - Y_Offset);
     }
     OutsideCloseButtonsSwitchButton.Corner(OutsideCloseButtonsCorner);
+}
+
+void CPositionSizeCalculator::ClearTPLevels()
+{
+    while (sets.TakeProfitsNumber > 1)
+        OnClickBtnTakeProfitsNumberRemove();
+    ResetChkTPLockedOnSL();
+    sets.TPLockedOnSL = false;
+    m_EdtTP.Text("0");
+    OnEndEditEdtTP();
 }
 
 //+------------------------------------------------+
