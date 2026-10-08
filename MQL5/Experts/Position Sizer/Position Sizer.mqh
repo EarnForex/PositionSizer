@@ -2341,7 +2341,6 @@ void CPositionSizeCalculator::CalculateSettingsBasedOnLines()
             {
                 if (sets.TP[i] != 0) // With zero points TP, keep the TP lines at zero level - as with the main TP level.
                 {
-
                     if (sets.TradeDirection == Long) sets.TP[i] = NormalizeDouble(sets.EntryLevel + StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
                     else sets.TP[i] = NormalizeDouble(sets.EntryLevel - StringToDouble(AdditionalTPEdits[i - 1].Text()) * _Point, _Digits);
                 }
@@ -4417,11 +4416,11 @@ void CPositionSizeCalculator::OnEndEditEdtEntryLevel()
 
 void CPositionSizeCalculator::OnEndEditEdtSL()
 {
-    string s = m_EdtSL.Text();
     m_EdtSL.PropFlags(0); // Reset the 'being edited' flag.
-    StringReplace(s, ",", "."); // Replace comma with period for normal double conversion.
     if (!sets.SLDistanceInPoints)
     {
+        string s = m_EdtSL.Text();
+        StringReplace(s, ",", "."); // Replace comma with period for normal double conversion. 
         double new_value = StringToDouble(s);
         if (new_value <= 0) // Not allowed.
         {

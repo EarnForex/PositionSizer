@@ -61,13 +61,6 @@ void DoTrade()
         }
     }
 
-    if (sets.SpreadAdjustmentTP)
-    {
-        // Apply spread adjustment to the take-profits (falls back to the base level when the adjusted distance isn't positive):
-        for (int j = 0; j < sets.TakeProfitsNumber; j++)
-            TP[j] = RealTakeProfitLevelFromBase(TP[j]);
-    }
-
     // Commentary:
 
     if (DefaultCommentBalance) Commentary += DoubleToString(AccountInfoDouble(ACCOUNT_BALANCE), AccountCurrencyDigits);
@@ -87,6 +80,13 @@ void DoTrade()
         // No multiple TPs, use single TP for 100% of volume.
         TP[0] = sets.TakeProfitLevel;
         TPShare[0] = 100;
+    }
+
+    if (sets.SpreadAdjustmentTP)
+    {
+        // Apply spread adjustment to the take-profits (falls back to the base level when the adjusted distance isn't positive):
+        for (int j = 0; j < sets.TakeProfitsNumber; j++)
+            TP[j] = RealTakeProfitLevelFromBase(TP[j]);
     }
 
     double PositionSize = OutputPositionSize;
@@ -517,7 +517,7 @@ void DoTrade()
             if (ArrayPositionSize[j] == 0) continue; // Calculated PS < broker's minimum.
             double tp = NormalizeDouble(TP[j], (int)SymbolInfoInteger(SymbolForTrading, SYMBOL_DIGITS));
             double position_size = NormalizeDouble(ArrayPositionSize[j], LotStep_digits);
-            double sl = sets.StopLossLevel;
+            double sl = RealStopLossLevelFromBase(sets.StopLossLevel); // Spread-adjusted when SA-SL is on.
 
             if (sets.DoNotApplyStopLoss) sl = 0;
             if (sets.DoNotApplyTakeProfit) tp = 0;
