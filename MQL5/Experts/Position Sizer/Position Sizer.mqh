@@ -2545,13 +2545,16 @@ void CPositionSizeCalculator::ShowMain()
     }
     if (sets.TakeProfitsNumber > 1)
     {
-        for (int i = 0; i < sets.TakeProfitsNumber - 1; i++)
+        if (ArraySize(AdditionalTPEdits) >= sets.TakeProfitsNumber - 1) // Prevents an array out of range error due to changes introduced in MT5 Build 6193+.
         {
-            AdditionalTPEdits[i].Show();
-            AdditionalTPLabels[i].Show();
-            AdditionalTPButtonsIncrease[i].Show();
-            AdditionalTPButtonsDecrease[i].Show();
-            AdditionalTPWarnings[i].Show();
+            for (int i = 0; i < sets.TakeProfitsNumber - 1; i++)
+            {
+                AdditionalTPEdits[i].Show();
+                AdditionalTPLabels[i].Show();
+                AdditionalTPButtonsIncrease[i].Show();
+                AdditionalTPButtonsDecrease[i].Show();
+                AdditionalTPWarnings[i].Show();
+            }
         }
     }
     if (ShowATROptions)
