@@ -8091,7 +8091,15 @@ void CalculateRiskAndPositionSize()
 
     double PS_Multiplier = 1; // Position size multiplier for multiple TPs. When single TP is used, it is equal 1.
     if (sets.TakeProfitsNumber > 1) PS_Multiplier = (double)sets.TPShare[0] / 100.0; // Use respective position size share.
-    InputReward = DoubleToString(Round(RiskMoney * PS_Multiplier * MathAbs(RealTakeProfitLevelFromBase(tTakeProfitLevel) - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
+    // The Input column shows the reward implied by the input risk money and the TP/SL ratio - before
+    // the commission, which the Result column deducts on its own. RiskMoney already contains the
+    // round-turn commission (2 * commission per lot was added when the position size was derived from
+    // it), so it has to be taken out of the base here; otherwise the Input reward is overstated by
+    // 2 * commission * position size * TP/SL ratio.
+    double risk_per_lot = StopLoss * UnitCost / TickSize;
+    double input_reward_base = RiskMoney;
+    if (risk_per_lot + 2 * commission > 0) input_reward_base = RiskMoney * risk_per_lot / (risk_per_lot + 2 * commission);
+    InputReward = DoubleToString(Round(input_reward_base * PS_Multiplier * MathAbs(RealTakeProfitLevelFromBase(tTakeProfitLevel) - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
 
     // Panel's fields start the same as for the main TP.
     OutputReward = MainOutputReward;
@@ -8109,7 +8117,7 @@ void CalculateRiskAndPositionSize()
             if ((AdditionalOutputRR[i - 1] == TRANSLATION_LABEL_WARNING_INVALID_TP) || (MainOutputRR == TRANSLATION_LABEL_WARNING_INVALID_TP)) OutputRR = TRANSLATION_LABEL_WARNING_INVALID_TP; // At least one Invalid TP means that total RR is also invalid.
             if ((OutputPositionSize > 0) && (ArrayPositionSize[i] > 0)) TotalOutputRisk += (OutputRiskMoney / OutputPositionSize * ArrayPositionSize[i]);
             TotalInputRisk += (RiskMoney * (double)sets.TPShare[i] / 100.0);
-            if (sets.TP[i] > 0) InputReward = DoubleToString(StringToDouble(InputReward) + Round(RiskMoney * (double)sets.TPShare[i] / 100.0 * MathAbs(RealTakeProfitLevelFromBase(sets.TP[i]) - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
+            if (sets.TP[i] > 0) InputReward = DoubleToString(StringToDouble(InputReward) + Round(input_reward_base * (double)sets.TPShare[i] / 100.0 * MathAbs(RealTakeProfitLevelFromBase(sets.TP[i]) - tEntryLevel) / StopLoss, AccountCurrencyDigits, RoundDown), AccountCurrencyDigits);
         }
         if ((OutputRR != TRANSLATION_LABEL_WARNING_INVALID_TP) && (OutputRR != TRANSLATION_LABEL_WARNING_TOO_CLOSE))
         {
