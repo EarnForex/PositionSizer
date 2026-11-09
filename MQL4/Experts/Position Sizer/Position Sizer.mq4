@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "EarnForex.com"
 #property link      "https://www.earnforex.com/metatrader-expert-advisors/Position-Sizer/"
-#define VERSION     "3.16"
+#define VERSION     "3.17"
 #property icon      "EF-Icon-64x64px.ico"
 #property version VERSION
 #property strict
@@ -26,6 +26,8 @@
 #property description DESCRIPTION_LINE_4
 
 #include "Position Sizer.mqh"
+#include "PortfolioRisk.mqh"
+#include "PortfolioMargin.mqh"
 #include "Position Sizer Trading.mqh"
 #include "TesterSupport.mqh"
 
@@ -131,6 +133,7 @@ input bool DefaultSLDistanceInPoints = false; // SLDistanceInPoints: SL distance
 input bool DefaultTPDistanceInPoints = false; // TPDistanceInPoints: TP distance in points instead of a level.
 input MARGIN_UTILIZATION_BASE DefaultMarginUtilizationBase = MUB_BALANCE; // Margin utilization base.
 input double DefaultMUBStartingBalance = 0; // Starting balance for margin utilization base.
+input bool DefaultShowCostsPanel = false; // ShowCostsPanel: Show the Costs side panel by default?
 input group "Keyboard shortcuts"
 input string ____Keyboard_Shortcuts = "Case-insensitive hotkey. Supports Ctrl, Shift.";
 input string TradeHotKey = "T"; // TradeHotKey: Execute a trade.
@@ -143,6 +146,7 @@ input string SetEntryHotKey = "E"; // SetEntryHotKey: Set Entry to where mouse p
 input string MinimizeMaximizeHotkey = "`"; // MinimizeMaximizeHotkey: Minimize/maximize the panel.
 input string SwitchSLPointsLevelHotKey = "Shift+S"; // SwitchSLPointsLevelHotKey: Switch SL between points and level.
 input string SwitchTPPointsLevelHotKey = "Shift+P"; // SwitchTPPointsLevelHotKey: Switch TP between points and level.
+input string SwitchCostsPanelHotKey = "Shift+C"; // SwitchCostsPanelHotKey: Show/hide the Costs side panel.
 input group "Miscellaneous"
 input string ____Miscellaneous = "";
 input double TP_Multiplier = 1; // TP Multiplier for SL value (for take-profit button).
@@ -376,6 +380,7 @@ int OnInit()
         sets.TPDistanceInPoints = DefaultTPDistanceInPoints;
         sets.MarginUtilizationBase = DefaultMarginUtilizationBase;
         sets.MUBStartingBalance = DefaultMUBStartingBalance;
+        sets.ShowCostsPanel = DefaultShowCostsPanel;
         if (DeinitializationReason == REASON_CHARTCHANGE) is_InitControlsValues_required = true;
         sets.LastAdditionalTPScheme = ADDITIONAL_TP_SCHEME_OUTWARD;
     }
@@ -412,6 +417,7 @@ int OnInit()
         SetupHotkey(SwitchSLPointsLevelHotKey,  Hotkeys[HK_SwitchSLPointsLevel]);
         SetupHotkey(SwitchTPPointsLevelHotKey,  Hotkeys[HK_SwitchTPPointsLevel]);
         SetupHotkey(MinimizeMaximizeHotkey,     Hotkeys[HK_MinimizeMaximize]);
+        SetupHotkey(SwitchCostsPanelHotKey,     Hotkeys[HK_SwitchCostsPanel]);
     }
     else if (OldSymbol != _Symbol)
     {
@@ -550,6 +556,22 @@ int OnInit()
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, TradeButtonColorAdjusted);
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_BORDER_COLOR, DARKMODE_CONTROL_BORDER_COLOR);
             }
+            else if (obj_name == ExtDialog.Name() + "m_BtnCosts") // The Costs side panel's button - pressed while the side panel is shown.
+            {
+                if (sets.ShowCostsPanel) ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, CONTROLS_BUTTON_COLOR_ENABLE);
+                else ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, CONTROLS_BUTTON_COLOR_DISABLE);
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_BORDER_COLOR, DARKMODE_CONTROL_BORDER_COLOR);
+            }
+            else if (obj_name == ExtDialog.Name() + "m_PnlCostsBack") // The Costs side panel's frame - same as the panel's.
+            {
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, DARKMODE_BG_DARK_COLOR);
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, DARKMODE_TEXT_COLOR);
+            }
+            else if (obj_name == ExtDialog.Name() + "m_PnlCostsClient") // The Costs side panel's client area - same as the panel's.
+            {
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_COLOR, DARKMODE_MAIN_AREA_BORDER_COLOR);
+                ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, DARKMODE_MAIN_AREA_BG_COLOR);
+            }
             else if (StringSubstr(obj_name, 0, StringLen(ExtDialog.Name() + "m_Edt")) == ExtDialog.Name() + "m_Edt")
             {
                 ObjectSetInteger(ChartID(), obj_name, OBJPROP_BGCOLOR, DARKMODE_EDIT_BG_COLOR);
@@ -583,6 +605,8 @@ int OnInit()
     
     // If symbol change with a reset was enacted.
     if (is_InitControlsValues_required) ExtDialog.InitControlsValues();
+
+    ChartSetInteger(ChartID(), CHART_EVENT_MOUSE_MOVE, true); // Position Sizer needs mouse move events. Some other indicator may disable them. Make sure they are enabled.
 
     return INIT_SUCCEEDED;
 }
@@ -932,6 +956,11 @@ void OnChartEvent(const int id,
                 }
             }
             ExtDialog.RefreshValues();
+        }
+        // Show/hide the Costs side panel:
+        else if (HotkeyPressed(Hotkeys[HK_SwitchCostsPanel], key))
+        {
+            ExtDialog.SwitchCostsPanel();
         }
     }
 

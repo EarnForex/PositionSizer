@@ -137,10 +137,6 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс размер позиции по марже"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "В лотах"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "Текущ."
-#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиция"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "Будущ."
-#define TRANSLATION_LABEL_MU_PERC "Исп. маржи"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "Нач. баланс"
 #define TRANSLATION_RGP_MU_BALANCE "Баланс"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "Своб. марж."
@@ -149,6 +145,9 @@
 #define TRANSLATION_TOOLTIP_MU_BASE "Основа для процента использованной маржи"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "Текущий баланс, начальный баланс (задается вами) или свободная маржа"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значение основы в валютных единицах для расчета процента использованной маржи"
+#define TRANSLATION_LABEL_PLANNED_POSITION "Позиция в расчете"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "Позиция в расчете (с учетом заданного плеча). Отложенный ордер начнет использовать маржу только после срабатывания."
+#define TRANSLATION_TOOLTIP_MU_PERC "Использование маржи"
 
 
 // Swaps tab
@@ -176,6 +175,7 @@
 #define TRANSLATION_BUTTON_TRADE "Откр."
 #define TRANSLATION_LABEL_TRAILING_STOP "Трейлинг"
 #define TRANSLATION_LABEL_BREAKEVEN "Безубыток"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "Положительное значение для безубытка по СЛ, отрицательное - по ТП."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "Мэджик"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "Комментарий"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "Автосуф."
@@ -214,6 +214,24 @@
 #define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Макс маржа %"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Максимальный процент использованной маржи"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Предохранитель по максимальному проценту использованной маржи"
+
+
+// Costs side panel
+#define TRANSLATION_BUTTON_COSTS "Расх."
+#define TRANSLATION_LABEL_TOTAL_COSTS "Общ. расходы"
+#define TRANSLATION_LABEL_COSTS_PER_LOT "За лот"
+#define TRANSLATION_LABEL_COSTS_PER_PS "За РП"
+#define TRANSLATION_LABEL_COSTS_COMMISSION "Комиссия"
+#define TRANSLATION_LABEL_COSTS_OF_REWARD "Общ. расходы в % от Прибыли"
+#define TRANSLATION_LABEL_COSTS_OF_RISK "Общ. расходы в % от Риска"
+#define TRANSLATION_LABEL_COSTS_OF_MARGIN "Общ. расходы в % от Маржи"
+#define TRANSLATION_LABEL_COSTS_OF_ACCOUNT "Общ. расходы в % от Размера счета"
+#define TRANSLATION_TOOLTIP_COSTS "Показать/спрятать торговые расходы по планируемой позиции: спред и комиссия в оба конца."
+#define TRANSLATION_TOOLTIP_COSTS_COMMISSION "Общая (открытие + закрытие) комиссия"
+#define TRANSLATION_TOOLTIP_COSTS_OF_REWARD "Общие расходы по позиции в процентах от ее потенциальной прибыли (Основная вкладка)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_RISK "Общие расходы по позиции в процентах от ее потенциального риска (Основная вкладка)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_MARGIN "Общие расходы по позиции в процентах от ее маржи (вкладка Маржи)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT "Общие расходы по позиции в процентах от выбранной метрики размера счета (Основная вкладка)"
 
 
 // Chart objects
@@ -306,6 +324,7 @@
 #define TRANSLATION_MESSAGE_TSL_APPLIED "Трейлинг-стоп добавлен к позиции"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM "Стоп-лосс передвинут с"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_TO "на"
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "Тейк-профит передвинут с"
 #define TRANSLATION_MESSAGE_BE_APPLIED "Безубыток применен к позиции"
 #define TRANSLATION_MESSAGE_BE_FOR "Безубыток для "
 #define TRANSLATION_MESSAGE_ERROR_SETTING_TIMER "Ошибка установки таймера"
@@ -313,7 +332,6 @@
 #define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "Минимальный срок действия отложенного ордера - 2 минуты."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "Отмечен чекбокс 'Не примен. стоп-лосс'."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "Отмечен чекбокс 'Не примен. тейк-профит'."
-#define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Ошибка при создании внешней кнопки."
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "Ошибка при создании внешней кнопки."
 #define TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE "Открытие сделки меньшего размера"
 #define TRANSLATION_MESSAGE_NEW_POSITION_SIZE "Новый размер позиции"

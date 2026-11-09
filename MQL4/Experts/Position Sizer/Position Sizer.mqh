@@ -16,10 +16,11 @@ string PanelCaptionBase = "";
 class CPositionSizeCalculator : public CAppDialog
 {
 private:
-    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnSpreadAdjustmentSL, m_BtnSpreadAdjustmentTP;
+    CButton          m_BtnTabMain, m_BtnTabRisk, m_BtnTabMargin, m_BtnTabSwaps, m_BtnTabTrading, m_BtnOrderType, m_BtnAccount, m_BtnLines, m_BtnStopLoss, m_BtnTakeProfit, m_BtnEntry, m_BtnATRTimeframe, m_BtnCommissionType, m_BtnMaxPS, m_BtnTrade, m_BtnTPsInward, m_BtnTPsOutward, m_BtnTradingTPShare, m_BtnQuickRisk1, m_BtnQuickRisk2, m_BtnEntryIncrease, m_BtnEntryDecrease, m_BtnStopLossIncrease, m_BtnStopLossDecrease, m_BtnTakeProfitIncrease, m_BtnTakeProfitDecrease, m_BtnTakeProfitsNumberAdd, m_BtnTakeProfitsNumberRemove, m_BtnMainTrade, m_BtnSpreadAdjustmentSL, m_BtnSpreadAdjustmentTP, m_BtnCosts;
     CCheckBox        m_ChkIgnoreOrdersWithoutSL, m_ChkIgnoreOrdersWithoutTP, m_ChkDisableTradingWhenLinesAreHidden, m_ChkSubtractPositions, m_ChkSubtractPendingOrders, m_ChkDoNotApplyStopLoss, m_ChkDoNotApplyTakeProfit, m_ChkAskForConfirmation, m_ChkCommentAutoSuffix, m_ChkTPLockedOnSL;
-    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtSLAdjusted, m_EdtTP, m_EdtTPAdjusted, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage, m_EdtTPMultiplier, m_EdtMarginUtilizedCurrent, m_EdtMarginUtilizedPosition, m_EdtMarginUtilizedFuture, m_EdtMUBStartingBalance, m_EdtMaxMarginPercTotal, m_EdtMaxMarginPercPerSymbol, m_EdtMaxMarginPerc;
-    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIncludeOrders, m_LblIncludeSymbols, m_LblIncludeDirections, m_LblMarginUtilizedPerc, m_LblMarginUtilizedPercCurrent, m_LblMarginUtilizedPercPosition, m_LblMarginUtilizedPercFuture, m_LblMarginUtilizedBase, m_LblMarginUtilizedBaseCurrency, m_LblMaxMarginPerc, m_LblMaxMarginPercTotal, m_LblMaxMarginPercPerSymbol, m_LblMaxMarginPercFuse;
+    CEdit            m_EdtEntryLevel, m_EdtSL, m_EdtSLAdjusted, m_EdtTP, m_EdtTPAdjusted, m_EdtAccount, m_EdtCommissionSize, m_EdtRiskPIn, m_EdtRiskPRes, m_EdtRiskMIn, m_EdtRiskMRes, m_EdtReward1, m_EdtReward2, m_EdtRR1, m_EdtRR2, m_EdtPosSize, m_EdtPointValue, m_EdtATRPeriod, m_EdtATRMultiplierSL, m_EdtATRMultiplierTP, m_EdtCurRiskM, m_EdtCurRiskP, m_EdtPotRiskM, m_EdtPotRiskP, m_EdtCurProfitM, m_EdtCurProfitP, m_EdtPotProfitM, m_EdtPotProfitP, m_EdtCurL, m_EdtPotL, m_EdtCurrentRRR, m_EdtPotentialRRR, m_EdtPosMargin, m_EdtUsedMargin, m_EdtFreeMargin, m_EdtCustomLeverage, m_EdtMaxPositionSizeByMargin, m_EdtSwapsType, m_EdtSwapsTripleDay, m_EdtSwapsNominalLong, m_EdtSwapsNominalShort, m_EdtSwapsDailyLongLot, m_EdtSwapsDailyShortLot, m_EdtSwapsDailyLongPS, m_EdtSwapsDailyShortPS, m_EdtSwapsYearlyLongLot, m_EdtSwapsYearlyShortLot, m_EdtSwapsYearlyLongPS, m_EdtSwapsYearlyShortPS, m_EdtMagicNumber, m_EdtExpiry, m_EdtCommentary, m_EdtMaxSlippage, m_EdtMaxSpread, m_EdtMaxEntrySLDistance, m_EdtMinEntrySLDistance, m_EdtTrailingStopPoints, m_EdtBreakEvenPoints, m_EdtMaxNumberOfTradesTotal, m_EdtMaxNumberOfTradesPerSymbol, m_EdtMaxPositionSizeTotal, m_EdtMaxPositionSizePerSymbol, m_EdtMaxRiskTotal, m_EdtMaxRiskPerSymbol, m_EdtMaxRiskPercentage, m_EdtTPMultiplier, m_EdtCurMarginM, m_EdtCurMarginP, m_EdtPotMarginM, m_EdtPotMarginP, m_EdtPlannedMarginM, m_EdtPlannedMarginP, m_EdtMUBStartingBalance, m_EdtMaxMarginPercTotal, m_EdtMaxMarginPercPerSymbol, m_EdtMaxMarginPerc, m_EdtCostsSpreadPoints, m_EdtCostsSpreadLot, m_EdtCostsSpreadPS, m_EdtCostsCommissionLot, m_EdtCostsCommissionPS, m_EdtCostsTotalLot, m_EdtCostsTotalPS, m_EdtCostsOfReward, m_EdtCostsOfRisk, m_EdtCostsOfMargin, m_EdtCostsOfAccount;
+    CLabel           m_LblEntryLevel, m_LblEntryWarning, m_LblSL, m_LblSLWarning, m_LblOrderType, m_LblCommissionSize, m_LblAdditionalFundsAsterisk, m_LblInput, m_LblResult, m_LblRisk, m_LblRiskM, m_LblReward, m_LblRR, m_LblPosSize, m_LblPointValue, m_LblATRPeriod, m_LblATRMultiplierSL, m_LblATRMultiplierTP, m_LblATRValue, m_LblATRTimeframe, m_LblCurrentRiskMoney, m_LblCurrentRiskPerc, m_LblCurrentProfitMoney, m_LblCurrentProfitPerc, m_LblPotentialRiskMoney, m_LblPotentialRiskPerc, m_LblPotentialProfitMoney, m_LblPotentialProfitPerc, m_LblCurrentLots, m_LblCurrentRRR, m_LblPotentialLots, m_LblPotentialRRR, m_LblCurrentPortfolio, m_LblPotentialPortfolio, m_LblPosMargin, m_LblUsedMargin, m_LblFreeMargin, m_LblCustomLeverage, m_LblAccLeverage, m_LblSymbolLeverage, m_LblMaxPositionSizeByMargin, m_LblSwapsType, m_LblSwapsTripleDay, m_LblSwapsLong, m_LblSwapsShort, m_LblSwapsNominal, m_LblSwapsDaily, m_LblSwapsYearly, m_LblSwapsPerLotDaily, m_LblSwapsPerPSDaily, m_LblSwapsPerLotYearly, m_LblSwapsPerPSYearly, m_LblMagicNumber, m_LblExpiry, m_LblMinutes, m_LblCommentary, m_LblTradingPoints, m_LblMaxSlippage, m_LblMaxSpread, m_LblMaxEntrySLDistance, m_LblMinEntrySLDistance, m_LblTradingLots, m_LblURL, m_LblTradingTP, m_LblTrailingStop, m_LblBreakEven, m_LblMaxNumberOfTrades, m_LblMaxNumberOfTradesTotal, m_LblMaxNumberOfTradesPerSymbol, m_LblMaxPositionSize, m_LblMaxPositionSizeTotal, m_LblMaxPositionSizePerSymbol, m_LblMaxRisk, m_LblMaxRiskTotal, m_LblMaxRiskPerSymbol, m_LblMaxRiskPercentage, m_LblIncludeOrders, m_LblIncludeSymbols, m_LblIncludeDirections, m_LblIncludeOrdersMargin, m_LblIncludeSymbolsMargin, m_LblIncludeDirectionsMargin, m_LblMarginMoney, m_LblMarginPerc, m_LblCurrentPortfolioMargin, m_LblPotentialPortfolioMargin, m_LblPlannedPositionMargin, m_LblMarginUtilizedBase, m_LblMarginUtilizedBaseCurrency, m_LblMaxMarginPerc, m_LblMaxMarginPercTotal, m_LblMaxMarginPercPerSymbol, m_LblMaxMarginPercFuse, m_LblCostsPerLot, m_LblCostsPerPS, m_LblCostsSpreadPoints, m_LblCostsSpread, m_LblCostsCommission, m_LblCostsTotal, m_LblCostsOfReward, m_LblCostsOfRisk, m_LblCostsOfMargin, m_LblCostsOfAccount;
+    CPanel           m_PnlCostsBorder, m_PnlCostsBack, m_PnlCostsClient; // The Costs side panel's light outer border, frame, and client area.
 
     string           m_FileName;
     double           m_DPIScale;
@@ -32,7 +33,7 @@ private:
     CLabel           AdditionalTPLabels[], AdditionalTPWarnings[];
     CButton          AdditionalTPButtonsIncrease[], AdditionalTPButtonsDecrease[];
     // Store ordered and named panel objects arranged by tabs.
-    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList, *PersistentList; // PersisntentList is used for Strategy Tester event tracking only.
+    CPanelList       *MainTabList, *RiskTabList, *MarginTabList, *SwapsTabList, *TradingTabList, *PersistentList, *CostsPanelList; // PersisntentList is used for Strategy Tester event tracking only. CostsPanelList - the Costs side panel.
     
     // Some of the panel measurement parameters are used by more than one method:
     int              first_column_start, normal_label_width, normal_edit_width, second_column_start, element_height, third_column_start, narrow_label_width, v_spacing, multi_tp_column_start,
@@ -78,6 +79,7 @@ public:
     virtual bool     IsMinimized() {return m_minimized;}
     virtual void     IniFileLoad() {if (FileIsExist(ExtDialog.IniFileName() + ExtDialog.IniFileExt())) CAppDialog::IniFileLoad(); InitObjects();} // Need to init objects after ini file load.
     virtual void     EmulateMinMaxClick();
+    void             SwitchCostsPanel(); // Shows or hides the Costs side panel - the Costs button and its hotkey.
     virtual void     ResetChkTPLockedOnSL();
             void     UpdateSLLabelText();
             void     UpdateSpreadAdjustmentDisplay();
@@ -98,7 +100,7 @@ public:
             void     InitControlsValues();
             CEdit    AdditionalTPEdits[];
           CButton    m_OutsideTradeButton;
-CHorizontalRadioGroup m_RgpIncludeOrders, m_RgpIncludeSymbols, m_RgpIncludeDirections, m_RgpMarginUtilizationBase; // Need these to be public to access them from tester's ListenToChartEvents.
+CHorizontalRadioGroup m_RgpIncludeOrders, m_RgpIncludeSymbols, m_RgpIncludeDirections, m_RgpMarginUtilizationBase, m_RgpIncludeOrdersMargin, m_RgpIncludeSymbolsMargin, m_RgpIncludeDirectionsMargin; // Need these to be public to access them from tester's ListenToChartEvents. The *Margin groups mirror the Risk tab's ones on the Margin tab.
             void     MoveOutsideTradeButton();
             long     FindControlId(string); // For Strategy Tester support.
             long     FindControlIdInList(string, CPanelList*);
@@ -126,6 +128,11 @@ private:
     virtual void     HideMargin();
     virtual void     HideSwaps();
     virtual void     HideTrading();
+    virtual void     ShowCostsPanel();
+    virtual void     HideCostsPanel();
+    void             UpdateCostsButton();
+    void             MoveCostsPanel(const int bottom);
+    void             UpdateCostsPanelLayout();
 
     virtual bool     CreateObjects();
     // Arranges panel objects on the panel.
@@ -166,12 +173,16 @@ private:
     void OnEndEditATRMultiplierTP();
     void OnClickBtnSpreadAdjustmentSL();
     void OnClickBtnSpreadAdjustmentTP();
+    void OnClickBtnCosts();
     void OnChangeRgpIncludeOrders();
     void OnChangeChkIgnoreOrdersWithoutSL();
     void OnChangeChkIgnoreOrdersWithoutTP();
     void OnChangeRgpIncludeSymbols();
     void OnChangeRgpIncludeDirections();
     void OnEndEditEdtCustomLeverage();
+    void OnChangeRgpIncludeOrdersMargin();
+    void OnChangeRgpIncludeSymbolsMargin();
+    void OnChangeRgpIncludeDirectionsMargin();
     void OnChangeRgpMarginUtilizationBase();
     void OnEndEditEdtMUBStartingBalance();
     void OnEndEditEdtMagicNumber();
@@ -243,6 +254,7 @@ ON_EVENT(ON_END_EDIT, m_EdtATRMultiplierSL, OnEndEditATRMultiplierSL)
 ON_EVENT(ON_END_EDIT, m_EdtATRMultiplierTP, OnEndEditATRMultiplierTP)
 ON_EVENT(ON_CLICK, m_BtnSpreadAdjustmentSL, OnClickBtnSpreadAdjustmentSL)
 ON_EVENT(ON_CLICK, m_BtnSpreadAdjustmentTP, OnClickBtnSpreadAdjustmentTP)
+ON_EVENT(ON_CLICK, m_BtnCosts, OnClickBtnCosts)
 ON_EVENT(ON_CHANGE, m_RgpIncludeOrders, OnChangeRgpIncludeOrders)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutSL, OnChangeChkIgnoreOrdersWithoutSL)
 ON_EVENT(ON_CHANGE, m_ChkIgnoreOrdersWithoutTP, OnChangeChkIgnoreOrdersWithoutTP)
@@ -251,6 +263,9 @@ ON_EVENT(ON_CHANGE, m_RgpIncludeDirections, OnChangeRgpIncludeDirections)
 ON_EVENT(ON_END_EDIT, m_EdtCustomLeverage, OnEndEditEdtCustomLeverage)
 if (ShowAdditionalMarginSettings) 
 {
+ON_EVENT(ON_CHANGE, m_RgpIncludeOrdersMargin, OnChangeRgpIncludeOrdersMargin)
+ON_EVENT(ON_CHANGE, m_RgpIncludeSymbolsMargin, OnChangeRgpIncludeSymbolsMargin)
+ON_EVENT(ON_CHANGE, m_RgpIncludeDirectionsMargin, OnChangeRgpIncludeDirectionsMargin)
 ON_EVENT(ON_CHANGE, m_RgpMarginUtilizationBase, OnChangeRgpMarginUtilizationBase)
 ON_EVENT(ON_END_EDIT, m_EdtMUBStartingBalance, OnEndEditEdtMUBStartingBalance)
 }
@@ -324,6 +339,7 @@ CPositionSizeCalculator::~CPositionSizeCalculator(void)
     delete SwapsTabList;
     delete TradingTabList;
     delete PersistentList;
+    delete CostsPanelList;
 }
 
 // Updates filename used for settings storage.
@@ -598,6 +614,7 @@ bool CPositionSizeCalculator::CreateObjects()
     SwapsTabList = new CPanelList;
     if (!ButtonCreate(PersistentList, m_BtnTabTrading, tab_button_start + tab_button_width * 4 + tab_button_spacing * 4, y, tab_button_start + tab_button_width * 5 + tab_button_spacing * 4, y + element_height, "m_BtnTabTrading", TRANSLATION_TAB_BUTTON_TRADING))                                                                                                                                                                 return false;
     TradingTabList = new CPanelList;
+    CostsPanelList = new CPanelList;
 
 // Main
 
@@ -834,6 +851,13 @@ bool CPositionSizeCalculator::CreateObjects()
     m_LblURL.FontSize(8);
     m_LblURL.Color(C'0,115,66'); // Green
 
+    // The Costs side panel's button - on the same row as the URL, right-aligned with the Position size edit. Visible on all tabs.
+    int costs_button_width = (int)MathRound(60 * m_DPIScale);
+    int costs_button_raise = (int)MathRound(2 * m_DPIScale); // Sits a little higher than the SA buttons do in their rows.
+    int costs_button_end = Left() + Width() - ClientAreaLeft() - (v_spacing + v_spacing / 2 + costs_button_raise); // As far from the panel's right edge as its bottom is from the panel's bottom edge.
+    if (!ButtonCreate(PersistentList, m_BtnCosts, costs_button_end - costs_button_width, y + v_spacing / 2 - costs_button_raise, costs_button_end, y + element_height - v_spacing / 2 - costs_button_raise, "m_BtnCosts", TRANSLATION_BUTTON_COSTS + " >>", TRANSLATION_TOOLTIP_COSTS))                                                                                                                                               return false;
+    m_BtnCosts.FontSize(8);
+
 // Portfolio Risk
 
     // Reset
@@ -983,24 +1007,56 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (ShowAdditionalMarginSettings)
     {
+        // Portfolio margin. The three radio groups mirror the Risk tab's ones - both sets switch the same settings.
         y += element_height + v_spacing;
-    
-        if (!LabelCreate(MarginTabList, m_LblMarginUtilizedPercCurrent, second_margin_column_start, y, second_margin_column_start + risk_lot_edit, y + element_height, "m_LblMarginUtilizedPercCurrent", TRANSLATION_LABEL_MU_PERC_CURRENT))                                                                                                                                                                                          return false;
-        if (!LabelCreate(MarginTabList, m_LblMarginUtilizedPercPosition, second_margin_column_start + risk_lot_edit + h_spacing, y, second_margin_column_start + 2 * risk_lot_edit + h_spacing, y + element_height, "m_LblMarginUtilizedPercPosition", TRANSLATION_LABEL_MU_PERC_POSITION))                                                                                                                                           return false;
-        if (!LabelCreate(MarginTabList, m_LblMarginUtilizedPercFuture, second_margin_column_start + 2 * risk_lot_edit + 2 * h_spacing, y, second_margin_column_start + 3 * risk_lot_edit + 2 * h_spacing, y + element_height, "m_LblMarginUtilizedPercFuture", TRANSLATION_LABEL_MU_PERC_FUTURE))                                                                                                                                     return false;
-    
+
+        if (!LabelCreate(MarginTabList, m_LblIncludeOrdersMargin, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeOrdersMargin", TRANSLATION_LABEL_INCLUDE_ORDERS, TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP))                                                                                                                                                                 return false;
+        if (!RadioGroupCreate(MarginTabList, m_RgpIncludeOrdersMargin, first_column_start + include_symbols_button_width + v_spacing, y, fourth_risk_column_start + risk_lot_edit, y + element_height, "m_RgpIncludeOrdersMargin", m_RgpIncludeOrders_Text, m_RgpIncludeOrders_Width, TRANSLATION_BUTTON_INCLUDE_ORDERS_TOOLTIP))                                                                                                     return false;
+
         y += element_height + v_spacing;
-    
-        if (!LabelCreate(MarginTabList, m_LblMarginUtilizedPerc, first_column_start, y, first_column_start + normal_label_width, y + element_height, "m_LblMarginUtilizedPerc", TRANSLATION_LABEL_MU_PERC + ", %"))                                                                                                                                                                                                                   return false;
-        if (!EditCreate(MarginTabList, m_EdtMarginUtilizedCurrent, second_margin_column_start, y, second_margin_column_start + risk_lot_edit, y + element_height, "m_EdtMarginUtilizedCurrent", ""))                                                                                                                                                                                                                                  return false;
-        m_EdtMarginUtilizedCurrent.ReadOnly(true);
-        m_EdtMarginUtilizedCurrent.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
-        if (!EditCreate(MarginTabList, m_EdtMarginUtilizedPosition, second_margin_column_start + risk_lot_edit + h_spacing, y, second_margin_column_start + 2 * risk_lot_edit + h_spacing, y + element_height, "m_EdtMarginUtilizedPosition", ""))                                                                                                                                                                                    return false;
-        m_EdtMarginUtilizedPosition.ReadOnly(true);
-        m_EdtMarginUtilizedPosition.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
-        if (!EditCreate(MarginTabList, m_EdtMarginUtilizedFuture, second_margin_column_start + 2 * risk_lot_edit + 2 * h_spacing, y, second_margin_column_start + 3 * risk_lot_edit + 2 * h_spacing, y + element_height, "m_EdtMarginUtilizedFuture", ""))                                                                                                                                                                            return false;
-        m_EdtMarginUtilizedFuture.ReadOnly(true);
-        m_EdtMarginUtilizedFuture.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+        if (!LabelCreate(MarginTabList, m_LblIncludeSymbolsMargin, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeSymbolsMargin", TRANSLATION_LABEL_INCLUDE_SYMBOLS, TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP))                                                                                                                                                             return false;
+        if (!RadioGroupCreate(MarginTabList, m_RgpIncludeSymbolsMargin, first_column_start + include_symbols_button_width + v_spacing, y, fourth_risk_column_start + risk_lot_edit, y + element_height, "m_RgpIncludeSymbolsMargin", m_RgpIncludeSymbols_Text, m_RgpIncludeSymbols_Width, TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP))                                                                                                return false;
+
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(MarginTabList, m_LblIncludeDirectionsMargin, first_column_start, y, first_column_start + include_symbols_button_width, y + element_height, "m_LblIncludeDirectionsMargin", TRANSLATION_LABEL_INCLUDE_DIRECTIONS, TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP))                                                                                                                                                 return false;
+        if (!RadioGroupCreate(MarginTabList, m_RgpIncludeDirectionsMargin, first_column_start + include_symbols_button_width + v_spacing, y, fourth_risk_column_start + risk_lot_edit, y + element_height, "m_RgpIncludeDirectionsMargin", m_RgpIncludeDirections_Text, m_RgpIncludeDirections_Width, TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP))                                                                                 return false;
+
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(MarginTabList, m_LblMarginMoney, second_risk_column_start, y, second_risk_column_start + narrow_label_width, y + element_height, "m_LblMarginMoney", TRANSLATION_TAB_BUTTON_MARGIN + " $", TRANSLATION_TOOLTIP_MU_PERC))                                                                                                                                                                                                                       return false;
+        if (!LabelCreate(MarginTabList, m_LblMarginPerc, third_risk_column_start, y, third_risk_column_start + narrowest_label_width, y + element_height, "m_LblMarginPerc", TRANSLATION_TAB_BUTTON_MARGIN + " %", TRANSLATION_TOOLTIP_MU_PERC))                                                                                                                                                                                                                        return false;
+
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(MarginTabList, m_LblCurrentPortfolioMargin, first_column_start, y, second_risk_column_start, y + element_height, "m_LblCurrentPortfolioMargin", TRANSLATION_LABEL_CURRENT_PORTFOLIO + ":", TRANSLATION_TOOLTIP_CURRENT_PORTFOLIO))                                                                                                                                                                           return false;
+        if (!EditCreate(MarginTabList, m_EdtCurMarginM, second_risk_column_start, y, second_risk_column_start + normal_edit_width, y + element_height, "m_EdtCurMarginM", ""))                                                                                                                                                                                                                                                        return false;
+        m_EdtCurMarginM.ReadOnly(true);
+        m_EdtCurMarginM.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+        if (!EditCreate(MarginTabList, m_EdtCurMarginP, third_risk_column_start, y, third_risk_column_start + risk_perc_edit_width, y + element_height, "m_EdtCurMarginP", ""))                                                                                                                                                                                                                                                       return false;
+        m_EdtCurMarginP.ReadOnly(true);
+        m_EdtCurMarginP.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(MarginTabList, m_LblPotentialPortfolioMargin, first_column_start, y, second_risk_column_start, y + element_height, "m_LblPotentialPortfolioMargin", TRANSLATION_LABEL_POTENTIAL_PORTFOLIO + ":", TRANSLATION_TOOLTIP_POTENTIAL_PORTFOLIO))                                                                                                                                                                   return false;
+        if (!EditCreate(MarginTabList, m_EdtPotMarginM, second_risk_column_start, y, second_risk_column_start + normal_edit_width, y + element_height, "m_EdtPotMarginM", ""))                                                                                                                                                                                                                                                        return false;
+        m_EdtPotMarginM.ReadOnly(true);
+        m_EdtPotMarginM.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+        if (!EditCreate(MarginTabList, m_EdtPotMarginP, third_risk_column_start, y, third_risk_column_start + risk_perc_edit_width, y + element_height, "m_EdtPotMarginP", ""))                                                                                                                                                                                                                                                       return false;
+        m_EdtPotMarginP.ReadOnly(true);
+        m_EdtPotMarginP.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+        y += element_height + v_spacing;
+
+        if (!LabelCreate(MarginTabList, m_LblPlannedPositionMargin, first_column_start, y, second_risk_column_start, y + element_height, "m_LblPlannedPositionMargin", TRANSLATION_LABEL_PLANNED_POSITION + ":", TRANSLATION_TOOLTIP_PLANNED_POSITION))                                                                                                                                                                               return false;
+        if (!EditCreate(MarginTabList, m_EdtPlannedMarginM, second_risk_column_start, y, second_risk_column_start + normal_edit_width, y + element_height, "m_EdtPlannedMarginM", "", TRANSLATION_TOOLTIP_PLANNED_POSITION))                                                                                                                                                                                                         return false;
+        m_EdtPlannedMarginM.ReadOnly(true);
+        m_EdtPlannedMarginM.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+        if (!EditCreate(MarginTabList, m_EdtPlannedMarginP, third_risk_column_start, y, third_risk_column_start + risk_perc_edit_width, y + element_height, "m_EdtPlannedMarginP", "", TRANSLATION_TOOLTIP_PLANNED_POSITION))                                                                                                                                                                                                        return false;
+        m_EdtPlannedMarginP.ReadOnly(true);
+        m_EdtPlannedMarginP.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
     
         y += element_height + v_spacing;
 
@@ -1098,8 +1154,8 @@ bool CPositionSizeCalculator::CreateObjects()
     m_BtnTrade.ColorBackground(TradeButtonColorAdjusted);
     if (!LabelCreate(TradingTabList, m_LblTrailingStop, first_column_start + tab_button_width + v_spacing * 2, y, first_column_start + v_spacing + tab_button_width + normal_edit_width, y + element_height, "m_LblTrailingStop", TRANSLATION_LABEL_TRAILING_STOP + ":"))                                                                                                                                                             return false;
     if (!EditCreate(TradingTabList, m_EdtTrailingStopPoints, first_column_start + v_spacing * 2 + tab_button_width + normal_edit_width, y, first_column_start + v_spacing * 2 + tab_button_width * 2 + normal_edit_width, y + element_height, "m_EdtTrailingStopPoints", "0"))                                                                                                                                                        return false;
-    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":"))                                                                                                                   return false;
-    if (!EditCreate(TradingTabList, m_EdtBreakEvenPoints, first_column_start + v_spacing * 4 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y, first_column_start + v_spacing * 4 + tab_button_width * 3 + normal_edit_width + narrow_edit_width, y + element_height, "m_EdtBreakEvenPoints", "0"))                                                                                                                  return false;
+    if (!LabelCreate(TradingTabList, m_LblBreakEven, first_column_start + v_spacing * 5 + tab_button_width * 2 + normal_edit_width, y, first_column_start + v_spacing * 3 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y + element_height, "m_LblBreakEven", TRANSLATION_LABEL_BREAKEVEN + ":", TRANSLATION_TOOLTIP_BREAKEVEN))                                                                                                                   return false;
+    if (!EditCreate(TradingTabList, m_EdtBreakEvenPoints, first_column_start + v_spacing * 4 + tab_button_width * 2 + normal_edit_width + narrow_edit_width, y, first_column_start + v_spacing * 4 + tab_button_width * 3 + normal_edit_width + narrow_edit_width, y + element_height, "m_EdtBreakEvenPoints", "0", TRANSLATION_TOOLTIP_BREAKEVEN))                                                                                                                  return false;
 
     y += element_height + v_spacing;
 
@@ -1242,6 +1298,117 @@ bool CPositionSizeCalculator::CreateObjects()
 
     if (!CheckBoxCreate(TradingTabList, m_ChkAskForConfirmation, first_column_start, y, panel_end, y + element_height, "m_ChkAskForConfirmation", TRANSLATION_CHECKBOX_ASK_FOR_CONFIRMATION, TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION))                                                                                                                                                                                               return false;
 
+// Costs side panel
+
+    // Attached to the panel's right edge, bottom to bottom. Its controls belong to the same dialog, so they move with the panel and get hidden
+    // with it when it is minimized; the Costs button shows and hides them. The coordinates are relative to the client area, like all the other controls.
+    int costs_gap = -(CONTROLS_BORDER_WIDTH + 1); // Over the panel's light outer border and onto its frame line - the frames merge.
+    int costs_lift = CONTROLS_BORDER_WIDTH; // The side panel's bottom frame line is level with the panel's, its light border below it level with the panel's.
+    int costs_frame_off = (int)MathRound(2 * m_DPIScale); // The frame around the side panel's client area - thinner than the dialog's.
+    int costs_label_width = (int)MathRound(100 * m_DPIScale);
+    int costs_client_width = first_column_start * 2 + costs_label_width + h_spacing * 2 + normal_edit_width * 2;
+    int costs_rows = 9;
+    int costs_client_height = (int)MathRound(8 * m_DPIScale) * 2 + element_height * costs_rows + v_spacing * (costs_rows - 1);
+    int costs_frame_width = costs_frame_off * 2 + costs_client_width;
+    int costs_frame_height = costs_frame_off * 2 + costs_client_height;
+    int costs_frame_x = Left() + Width() + costs_gap - ClientAreaLeft();
+    int costs_frame_y = Top() + Height() - costs_lift - costs_frame_height - ClientAreaTop(); // MoveCostsPanel() keeps it at the bottom when the panel's height changes.
+    int costs_client_x = costs_frame_x + costs_frame_off;
+    int costs_client_y = costs_frame_y + costs_frame_off;
+
+    // The light outer border (the dialog has one too), the frame, and the client area - in the dialog's colors. Created first to stay behind the
+    // controls. The border shows on three sides only: its left edge is under the frame, where the side panel merges with the panel.
+    if (!m_PnlCostsBorder.Create(m_chart_id, m_name + "m_PnlCostsBorder", m_subwin, costs_frame_x, costs_frame_y - CONTROLS_BORDER_WIDTH, costs_frame_x + costs_frame_width + CONTROLS_BORDER_WIDTH, costs_frame_y + costs_frame_height + CONTROLS_BORDER_WIDTH))                                                                                                                                                                     return false;
+    if (!Add(m_PnlCostsBorder))                                                                                                                                                                                                                                                                                                                                                                                                       return false;
+    m_PnlCostsBorder.ColorBackground(CONTROLS_DIALOG_COLOR_BG);
+    m_PnlCostsBorder.ColorBorder(CONTROLS_DIALOG_COLOR_BORDER_LIGHT);
+    CostsPanelList.CreateListElementByName(m_PnlCostsBorder, "m_PnlCostsBorder");
+    if (!m_PnlCostsBack.Create(m_chart_id, m_name + "m_PnlCostsBack", m_subwin, costs_frame_x, costs_frame_y, costs_frame_x + costs_frame_width, costs_frame_y + costs_frame_height))                                                                                                                                                                                                                                                 return false;
+    if (!Add(m_PnlCostsBack))                                                                                                                                                                                                                                                                                                                                                                                                         return false;
+    m_PnlCostsBack.ColorBackground(CONTROLS_DIALOG_COLOR_BG);
+    m_PnlCostsBack.ColorBorder(CONTROLS_DIALOG_COLOR_BORDER_DARK);
+    CostsPanelList.CreateListElementByName(m_PnlCostsBack, "m_PnlCostsBack");
+    if (!m_PnlCostsClient.Create(m_chart_id, m_name + "m_PnlCostsClient", m_subwin, costs_client_x, costs_client_y, costs_client_x + costs_client_width, costs_client_y + costs_client_height))                                                                                                                                                                                                                                       return false;
+    if (!Add(m_PnlCostsClient))                                                                                                                                                                                                                                                                                                                                                                                                       return false;
+    m_PnlCostsClient.ColorBackground(CONTROLS_DIALOG_COLOR_CLIENT_BG);
+    m_PnlCostsClient.ColorBorder(CONTROLS_DIALOG_COLOR_CLIENT_BORDER);
+    CostsPanelList.CreateListElementByName(m_PnlCostsClient, "m_PnlCostsClient");
+
+    // The costs of the planned position: per lot and per position size. The labels with the account currency get their final text in DisplayValues().
+    int costs_label_x = costs_client_x + first_column_start - (int)MathRound(3 * m_DPIScale); // A little closer to the edge than the edits' grid - the labels need the room.
+    int costs_lot_x = costs_client_x + first_column_start + costs_label_width + h_spacing;
+    int costs_ps_x = costs_lot_x + normal_edit_width + h_spacing;
+    y = costs_client_y + (int)MathRound(8 * m_DPIScale);
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsPerLot, costs_lot_x, y, costs_lot_x + normal_edit_width, y + element_height, "m_LblCostsPerLot", TRANSLATION_LABEL_COSTS_PER_LOT))                                                                                                                                                                                                                                                     return false;
+    if (!LabelCreate(CostsPanelList, m_LblCostsPerPS, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_LblCostsPerPS", TRANSLATION_LABEL_COSTS_PER_PS))                                                                                                                                                                                                                                                          return false;
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsSpreadPoints, costs_label_x, y, costs_lot_x - h_spacing, y + element_height, "m_LblCostsSpreadPoints", TRANSLATION_LABEL_SPREAD + ", " + TRANSLATION_LABEL_TAKEPROFIT_MULTIPLE_POINTS + ":"))                                                                                                                                                                                          return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsSpreadPoints, costs_lot_x, y, costs_lot_x + normal_edit_width, y + element_height, "m_EdtCostsSpreadPoints", ""))                                                                                                                                                                                                                                                                       return false;
+    m_EdtCostsSpreadPoints.ReadOnly(true);
+    m_EdtCostsSpreadPoints.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsSpread, costs_label_x, y, costs_lot_x - h_spacing, y + element_height, "m_LblCostsSpread", TRANSLATION_LABEL_SPREAD + ":"))                                                                                                                                                                                                                                                            return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsSpreadLot, costs_lot_x, y, costs_lot_x + normal_edit_width, y + element_height, "m_EdtCostsSpreadLot", ""))                                                                                                                                                                                                                                                                             return false;
+    m_EdtCostsSpreadLot.ReadOnly(true);
+    m_EdtCostsSpreadLot.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+    if (!EditCreate(CostsPanelList, m_EdtCostsSpreadPS, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsSpreadPS", ""))                                                                                                                                                                                                                                                                                 return false;
+    m_EdtCostsSpreadPS.ReadOnly(true);
+    m_EdtCostsSpreadPS.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsCommission, costs_label_x, y, costs_lot_x - h_spacing, y + element_height, "m_LblCostsCommission", TRANSLATION_LABEL_COSTS_COMMISSION + ":", TRANSLATION_TOOLTIP_COSTS_COMMISSION))                                                                                                                                                                                                    return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsCommissionLot, costs_lot_x, y, costs_lot_x + normal_edit_width, y + element_height, "m_EdtCostsCommissionLot", "", TRANSLATION_TOOLTIP_COSTS_COMMISSION))                                                                                                                                                                                                                               return false;
+    m_EdtCostsCommissionLot.ReadOnly(true);
+    m_EdtCostsCommissionLot.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+    if (!EditCreate(CostsPanelList, m_EdtCostsCommissionPS, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsCommissionPS", "", TRANSLATION_TOOLTIP_COSTS_COMMISSION))                                                                                                                                                                                                                                   return false;
+    m_EdtCostsCommissionPS.ReadOnly(true);
+    m_EdtCostsCommissionPS.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsTotal, costs_label_x, y, costs_lot_x - h_spacing, y + element_height, "m_LblCostsTotal", TRANSLATION_LABEL_TOTAL_COSTS + ":"))                                                                                                                                                                                                                                                         return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsTotalLot, costs_lot_x, y, costs_lot_x + normal_edit_width, y + element_height, "m_EdtCostsTotalLot", ""))                                                                                                                                                                                                                                                                               return false;
+    m_EdtCostsTotalLot.ReadOnly(true);
+    m_EdtCostsTotalLot.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+    if (!EditCreate(CostsPanelList, m_EdtCostsTotalPS, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsTotalPS", ""))                                                                                                                                                                                                                                                                                   return false;
+    m_EdtCostsTotalPS.ReadOnly(true);
+    m_EdtCostsTotalPS.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    // The total costs of the position as a percentage of what the position stands to gain, lose, and tie up - in the per position size column.
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsOfReward, costs_label_x, y, costs_ps_x - h_spacing, y + element_height, "m_LblCostsOfReward", TRANSLATION_LABEL_COSTS_OF_REWARD + ":", TRANSLATION_TOOLTIP_COSTS_OF_REWARD))                                                                                                                                                                                                           return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsOfReward, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsOfReward", "", TRANSLATION_TOOLTIP_COSTS_OF_REWARD))                                                                                                                                                                                                                                            return false;
+    m_EdtCostsOfReward.ReadOnly(true);
+    m_EdtCostsOfReward.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsOfRisk, costs_label_x, y, costs_ps_x - h_spacing, y + element_height, "m_LblCostsOfRisk", TRANSLATION_LABEL_COSTS_OF_RISK + ":", TRANSLATION_TOOLTIP_COSTS_OF_RISK))                                                                                                                                                                                                                   return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsOfRisk, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsOfRisk", "", TRANSLATION_TOOLTIP_COSTS_OF_RISK))                                                                                                                                                                                                                                                  return false;
+    m_EdtCostsOfRisk.ReadOnly(true);
+    m_EdtCostsOfRisk.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsOfAccount, costs_label_x, y, costs_ps_x - h_spacing, y + element_height, "m_LblCostsOfAccount", TRANSLATION_LABEL_COSTS_OF_ACCOUNT + ":", TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT))                                                                                                                                                                                                       return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsOfAccount, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsOfAccount", "", TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT))                                                                                                                                                                                                                                         return false;
+    m_EdtCostsOfAccount.ReadOnly(true);
+    m_EdtCostsOfAccount.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
+    y += element_height + v_spacing;
+
+    if (!LabelCreate(CostsPanelList, m_LblCostsOfMargin, costs_label_x, y, costs_ps_x - h_spacing, y + element_height, "m_LblCostsOfMargin", TRANSLATION_LABEL_COSTS_OF_MARGIN + ":", TRANSLATION_TOOLTIP_COSTS_OF_MARGIN))                                                                                                                                                                                                           return false;
+    if (!EditCreate(CostsPanelList, m_EdtCostsOfMargin, costs_ps_x, y, costs_ps_x + normal_edit_width, y + element_height, "m_EdtCostsOfMargin", "", TRANSLATION_TOOLTIP_COSTS_OF_MARGIN))                                                                                                                                                                                                                                            return false;
+    m_EdtCostsOfMargin.ReadOnly(true);
+    m_EdtCostsOfMargin.ColorBackground(CONTROLS_EDIT_COLOR_DISABLE);
+
     // Outside button for quick trading:
     if ((AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_LINE) || (AdditionalTradeButtons == ADDITIONAL_TRADE_BUTTONS_BOTH))
     {
@@ -1309,9 +1476,12 @@ bool CPositionSizeCalculator::InitObjects()
     if (ShowAdditionalMarginSettings)
     {
         if (!m_EdtMUBStartingBalance.TextAlign(align))                  return false;
-        if (!m_EdtMarginUtilizedCurrent.TextAlign(align))               return false;
-        if (!m_EdtMarginUtilizedPosition.TextAlign(align))              return false;
-        if (!m_EdtMarginUtilizedFuture.TextAlign(align))                return false;
+        if (!m_EdtCurMarginM.TextAlign(align))                          return false;
+        if (!m_EdtCurMarginP.TextAlign(align))                          return false;
+        if (!m_EdtPotMarginM.TextAlign(align))                          return false;
+        if (!m_EdtPotMarginP.TextAlign(align))                          return false;
+        if (!m_EdtPlannedMarginM.TextAlign(align))                      return false;
+        if (!m_EdtPlannedMarginP.TextAlign(align))                      return false;
     }
     if (!m_EdtSwapsNominalLong.TextAlign(align))                        return false;
     if (!m_EdtSwapsNominalShort.TextAlign(align))                       return false;
@@ -1362,6 +1532,17 @@ bool CPositionSizeCalculator::InitObjects()
             if (!m_EdtMaxMarginPercPerSymbol.TextAlign(align))          return false;
         }
     }
+    if (!m_EdtCostsSpreadPoints.TextAlign(align))                       return false;
+    if (!m_EdtCostsSpreadLot.TextAlign(align))                          return false;
+    if (!m_EdtCostsSpreadPS.TextAlign(align))                           return false;
+    if (!m_EdtCostsCommissionLot.TextAlign(align))                      return false;
+    if (!m_EdtCostsCommissionPS.TextAlign(align))                       return false;
+    if (!m_EdtCostsTotalLot.TextAlign(align))                           return false;
+    if (!m_EdtCostsTotalPS.TextAlign(align))                            return false;
+    if (!m_EdtCostsOfReward.TextAlign(align))                           return false;
+    if (!m_EdtCostsOfRisk.TextAlign(align))                             return false;
+    if (!m_EdtCostsOfMargin.TextAlign(align))                           return false;
+    if (!m_EdtCostsOfAccount.TextAlign(align))                          return false;
 
     HideRisk();
     HideMargin();
@@ -1374,6 +1555,9 @@ bool CPositionSizeCalculator::InitObjects()
     else if (sets.SelectedTab == MarginTab) ShowMargin();
     else if (sets.SelectedTab == SwapsTab) ShowSwaps();
     else if (sets.SelectedTab == TradingTab) ShowTrading();
+
+    if (sets.ShowCostsPanel) ShowCostsPanel();
+    else HideCostsPanel();
 
     InitControlsValues(); // Init values inside controls.
 
@@ -1502,6 +1686,9 @@ void CPositionSizeCalculator::InitControlsValues()
     // Margin
     if (ShowAdditionalMarginSettings)
     {
+        m_RgpIncludeOrdersMargin.Value(sets.IncludeOrders);
+        m_RgpIncludeSymbolsMargin.Value(sets.IncludeSymbols);
+        m_RgpIncludeDirectionsMargin.Value(sets.IncludeDirections);
         m_RgpMarginUtilizationBase.Value(sets.MarginUtilizationBase);
         if (sets.MarginUtilizationBase == MUB_STARTING_BALANCE)
         {
@@ -1631,6 +1818,7 @@ void CPositionSizeCalculator::MoveAndResize()
         break;
     }
     m_LblURL.Move(m_LblURL.Left(), ref_point + col_height);
+    m_BtnCosts.Move(m_BtnCosts.Left(), ref_point + col_height + v_spacing / 2 - (int)MathRound(2 * m_DPIScale)); // The same row as the URL.
     new_height = m_LblURL.Top() + col_height - Top();
 
     if (!m_minimized)
@@ -1640,6 +1828,7 @@ void CPositionSizeCalculator::MoveAndResize()
         // Needed only in case of initialization when actual panel maximization is avoided.
         if (NoPanelMaximization) Width((int)MathRound(350 * m_DPIScale));
     }
+    MoveCostsPanel(Top() + new_height - CONTROLS_BORDER_WIDTH); // The side panel sticks to the bottom of the panel, its frame line level with the panel's.
     NoPanelMaximization = false;
 }
 
@@ -1860,11 +2049,15 @@ bool CPositionSizeCalculator::DisplayValues()
     }
     if (ShowAdditionalMarginSettings)
     {
-    /* Margin Utilization Current  */ if (!m_EdtMarginUtilizedCurrent.Text(FormatDouble(DoubleToString(MarginUtilizedCurrent, 2), 2)))                                                   return false;
-    /* Margin Utilization Position */ if (!m_EdtMarginUtilizedPosition.Text(FormatDouble(DoubleToString(MarginUtilizedPosition, 2), 2)))                                                 return false;
-    /* Margin Utilization Future   */ if (!m_EdtMarginUtilizedFuture.Text(FormatDouble(DoubleToString(MarginUtilizedFuture, 2), 2)))                                                     return false;
-    /* Currency label    */ if (acc_currency != "")
+    /* Current Portfolio Margin    */ if (!m_EdtCurMarginM.Text(CMM))                                                                                                                    return false;
+    /* Current Portfolio Margin %  */ if (!m_EdtCurMarginP.Text(CMP))                                                                                                                    return false;
+    /* Potential Portfolio Margin  */ if (!m_EdtPotMarginM.Text(PMM))                                                                                                                    return false;
+    /* Potential Portfolio Margin %*/ if (!m_EdtPotMarginP.Text(PMP))                                                                                                                    return false;
+    /* Planned Position Margin     */ if (!m_EdtPlannedMarginM.Text(FormatDouble(DoubleToString(PlannedPositionMargin(), 2))))                                                            return false;
+    /* Planned Position Margin %   */ if (!m_EdtPlannedMarginP.Text(FormatDouble(DoubleToString(MarginUtilizedPosition, 2), 2)))                                                         return false;
+    /* Currency labels   */ if (acc_currency != "")
         {
+            if (!m_LblMarginMoney.Text(TRANSLATION_TAB_BUTTON_MARGIN + " " + acc_currency))                                                                                                   return false;
             if (!m_LblMarginUtilizedBaseCurrency.Text(TRANSLATION_LABEL_MU_BASE_CURRENCY + ", " + acc_currency + ":"))                                                                   return false;
         }
     /* Margin Utilization Base Update */ if (sets.MarginUtilizationBase == MUB_BALANCE) // Only needs updating if not set by user.
@@ -1898,6 +2091,28 @@ bool CPositionSizeCalculator::DisplayValues()
     /* Swaps Yearly Long PS          */ if (!m_EdtSwapsYearlyLongPS.Text(OutputSwapsYearlyLongPS))                                                                                       return false;
     /* Swaps Yearly Short PS         */ if (!m_EdtSwapsYearlyShortPS.Text(OutputSwapsYearlyShortPS))                                                                                     return false;
     /* Swaps Label Yearly per PS     */ if (!m_LblSwapsPerPSYearly.Text(OutputSwapsCurrencyYearlyPS))                                                                                    return false;
+
+    //=== Costs side panel
+    /* Costs currency labels     */ if (acc_currency != "")
+    {
+        if (!m_LblCostsSpread.Text(TRANSLATION_LABEL_SPREAD + ", " + acc_currency + ":"))                                                                                                return false;
+        if (!m_LblCostsCommission.Text(TRANSLATION_LABEL_COSTS_COMMISSION + ", " + acc_currency + ":"))                                                                                  return false;
+        if (!m_LblCostsTotal.Text(TRANSLATION_LABEL_TOTAL_COSTS + ", " + acc_currency + ":"))                                                                                            return false;
+    }
+    /* Costs per PS header       */ if (!m_LblCostsPerPS.Text(TRANSLATION_LABEL_COSTS_PER_PS + " (" + FormatDouble(DoubleToString(OutputPositionSize, LotStep_digits), LotStep_digits) + ")")) return false;
+    /* Spread, points            */ if (!m_EdtCostsSpreadPoints.Text(IntegerToString(CostsSpreadPoints)))                                                                                return false;
+    /* Spread per lot            */ if (!m_EdtCostsSpreadLot.Text(FormatDouble(DoubleToString(CostsSpreadLot, 2))))                                                                      return false;
+    /* Spread per position       */ if (!m_EdtCostsSpreadPS.Text(FormatDouble(DoubleToString(CostsSpreadPS, 2))))                                                                        return false;
+    /* Commission per lot        */ if (!m_EdtCostsCommissionLot.Text(FormatDouble(DoubleToString(CostsCommissionLot, 2))))                                                              return false;
+    /* Commission per position   */ if (!m_EdtCostsCommissionPS.Text(FormatDouble(DoubleToString(CostsCommissionPS, 2))))                                                                return false;
+    /* Total costs per lot       */ if (!m_EdtCostsTotalLot.Text(FormatDouble(DoubleToString(CostsTotalLot, 2))))                                                                        return false;
+    /* Total costs per position  */ if (!m_EdtCostsTotalPS.Text(FormatDouble(DoubleToString(CostsTotalPS, 2))))                                                                          return false;
+    /* Total costs, % of reward  */ if (!m_EdtCostsOfReward.Text(CostsOfReward))                                                                                                         return false;
+    /* Total costs, % of risk    */ if (!m_EdtCostsOfRisk.Text(CostsOfRisk))                                                                                                             return false;
+    /* Total costs, % of margin  */ if (!m_EdtCostsOfMargin.Text(CostsOfMargin))                                                                                                         return false;
+    /* Total costs, % of account */ if (!m_EdtCostsOfAccount.Text(CostsOfAccount))                                                                                                       return false;
+    UpdateCostsPanelLayout(); // The reward row comes and goes with the TP.
+    UpdateCostsButton(); // Keep the button's text and color in line with the side panel's state.
 
     //=== Trading
     /* Multiple TP levels         */
@@ -1954,6 +2169,8 @@ void CPositionSizeCalculator::Maximize()
         else if (sets.SelectedTab == SwapsTab) ShowSwaps();
         else if (sets.SelectedTab == TradingTab) ShowTrading();
     }
+    if ((!m_minimized) && (sets.ShowCostsPanel)) ShowCostsPanel(); // CAppDialog::Maximize() shows everything, the Costs side panel included.
+    else HideCostsPanel();
 
     MoveAndResize();
     if (remember_left != -1) Move(remember_left, remember_top);
@@ -2392,6 +2609,106 @@ void CPositionSizeCalculator::ShowTrading()
         if (!obj.Hidden) obj.Obj.Show();
     }
     m_LblURL.Show();
+}
+
+void CPositionSizeCalculator::ShowCostsPanel()
+{
+    for (CStringForList * obj = CostsPanelList.GetFirstNode(); obj != NULL; obj = CostsPanelList.GetNextNode())
+    {
+        obj.Obj.Show();
+    }
+    if (!CostsRewardRowShown) // No reward to relate the costs to - the row stays out.
+    {
+        m_LblCostsOfReward.Hide();
+        m_EdtCostsOfReward.Hide();
+    }
+    UpdateCostsButton();
+}
+
+void CPositionSizeCalculator::HideCostsPanel()
+{
+    for (CStringForList * obj = CostsPanelList.GetFirstNode(); obj != NULL; obj = CostsPanelList.GetNextNode())
+    {
+        obj.Obj.Hide();
+    }
+    UpdateCostsButton();
+}
+
+// The Costs button stays pressed (the selected tab's look) while the side panel is shown, and its arrows point where the panel is.
+void CPositionSizeCalculator::UpdateCostsButton()
+{
+    string text = TRANSLATION_BUTTON_COSTS + (sets.ShowCostsPanel ? " <<" : " >>");
+    color bg_color = sets.ShowCostsPanel ? CONTROLS_BUTTON_COLOR_ENABLE : CONTROLS_BUTTON_COLOR_DISABLE;
+    if (m_BtnCosts.Text() != text) m_BtnCosts.Text(text);
+    if (m_BtnCosts.ColorBackground() != bg_color) m_BtnCosts.ColorBackground(bg_color);
+}
+
+// Keeps the Costs side panel's bottom edge level with the panel's. bottom - the panel's bottom coordinate.
+void CPositionSizeCalculator::MoveCostsPanel(const int bottom)
+{
+    int dy = bottom - m_PnlCostsBack.Bottom();
+    if (dy == 0) return;
+    for (CStringForList * obj = CostsPanelList.GetFirstNode(); obj != NULL; obj = CostsPanelList.GetNextNode())
+    {
+        obj.Obj.Shift(0, dy);
+    }
+}
+
+// Shows the "Total costs as % of Reward" row only while there is a reward (an active TP). The rows above it move down over its place
+// and the side panel shrinks from the top - its bottom stays level with the panel's.
+void CPositionSizeCalculator::UpdateCostsPanelLayout()
+{
+    bool show_reward = (OutputReward > 0);
+    if (show_reward == CostsRewardRowShown) return;
+    CostsRewardRowShown = show_reward;
+    int dy = element_height + v_spacing; // One row.
+    if (show_reward) dy = -dy;
+    // The border, the frame, and the client area: the top edge moves, the bottom stays.
+    m_PnlCostsBorder.Shift(0, dy);
+    m_PnlCostsBorder.Height(m_PnlCostsBorder.Height() - dy);
+    m_PnlCostsBack.Shift(0, dy);
+    m_PnlCostsBack.Height(m_PnlCostsBack.Height() - dy);
+    m_PnlCostsClient.Shift(0, dy);
+    m_PnlCostsClient.Height(m_PnlCostsClient.Height() - dy);
+    // The rows above the reward row.
+    m_LblCostsPerLot.Shift(0, dy);
+    m_LblCostsPerPS.Shift(0, dy);
+    m_LblCostsSpreadPoints.Shift(0, dy);
+    m_EdtCostsSpreadPoints.Shift(0, dy);
+    m_LblCostsSpread.Shift(0, dy);
+    m_EdtCostsSpreadLot.Shift(0, dy);
+    m_EdtCostsSpreadPS.Shift(0, dy);
+    m_LblCostsCommission.Shift(0, dy);
+    m_EdtCostsCommissionLot.Shift(0, dy);
+    m_EdtCostsCommissionPS.Shift(0, dy);
+    m_LblCostsTotal.Shift(0, dy);
+    m_EdtCostsTotalLot.Shift(0, dy);
+    m_EdtCostsTotalPS.Shift(0, dy);
+    // The reward row itself keeps its place above the Risk row.
+    if ((show_reward) && (m_PnlCostsBack.IsVisible())) // Only if the side panel is displayed; ShowCostsPanel() takes care of the rest.
+    {
+        m_LblCostsOfReward.Show();
+        m_EdtCostsOfReward.Show();
+    }
+    else if (!show_reward)
+    {
+        m_LblCostsOfReward.Hide();
+        m_EdtCostsOfReward.Hide();
+    }
+}
+
+// Shows or hides the Costs side panel. The button's text and color follow in ShowCostsPanel()/HideCostsPanel().
+void CPositionSizeCalculator::SwitchCostsPanel()
+{
+    sets.ShowCostsPanel = !sets.ShowCostsPanel;
+    if (sets.ShowCostsPanel) ShowCostsPanel();
+    else HideCostsPanel();
+    RefreshValues(); // The costs are calculated along with the position size.
+}
+
+void CPositionSizeCalculator::OnClickBtnCosts()
+{
+    SwitchCostsPanel();
 }
 
 void CPositionSizeCalculator::DoPrefillAdditionalTPsBasedOnMain()
@@ -4343,6 +4660,11 @@ void CPositionSizeCalculator::OnClickBtnSpreadAdjustmentTP()
 void CPositionSizeCalculator::OnChangeRgpIncludeOrders()
 {
     sets.IncludeOrders = (INCLUDE_ORDERS)m_RgpIncludeOrders.Value();
+    if (ShowAdditionalMarginSettings)
+    {
+        m_RgpIncludeOrdersMargin.Value(sets.IncludeOrders); // The mirrored group on the Margin tab.
+        CalculateMarginUtilization(); // The planned position's margin depends on this setting.
+    }
     CalculatePortfolioRisk();
     DisplayValues();
 }
@@ -4370,6 +4692,7 @@ void CPositionSizeCalculator::OnChangeChkIgnoreOrdersWithoutTP()
 void CPositionSizeCalculator::OnChangeRgpIncludeSymbols()
 {
     sets.IncludeSymbols = (INCLUDE_SYMBOLS)m_RgpIncludeSymbols.Value();
+    if (ShowAdditionalMarginSettings) m_RgpIncludeSymbolsMargin.Value(sets.IncludeSymbols); // The mirrored group on the Margin tab.
     CalculatePortfolioRisk();
     DisplayValues();
 }
@@ -4377,7 +4700,34 @@ void CPositionSizeCalculator::OnChangeRgpIncludeSymbols()
 void CPositionSizeCalculator::OnChangeRgpIncludeDirections()
 {
     sets.IncludeDirections = (INCLUDE_DIRECTIONS)m_RgpIncludeDirections.Value();
+    if (ShowAdditionalMarginSettings) m_RgpIncludeDirectionsMargin.Value(sets.IncludeDirections); // The mirrored group on the Margin tab.
     CalculatePortfolioRisk();
+    DisplayValues();
+}
+
+// The Margin tab's radio groups switch the same settings as the Risk tab's ones.
+void CPositionSizeCalculator::OnChangeRgpIncludeOrdersMargin()
+{
+    sets.IncludeOrders = (INCLUDE_ORDERS)m_RgpIncludeOrdersMargin.Value();
+    m_RgpIncludeOrders.Value(sets.IncludeOrders); // The mirrored group on the Risk tab.
+    CalculateMarginUtilization(); // The planned position's margin depends on this setting.
+    CalculatePortfolioMargin();
+    DisplayValues();
+}
+
+void CPositionSizeCalculator::OnChangeRgpIncludeSymbolsMargin()
+{
+    sets.IncludeSymbols = (INCLUDE_SYMBOLS)m_RgpIncludeSymbolsMargin.Value();
+    m_RgpIncludeSymbols.Value(sets.IncludeSymbols); // The mirrored group on the Risk tab.
+    CalculatePortfolioMargin();
+    DisplayValues();
+}
+
+void CPositionSizeCalculator::OnChangeRgpIncludeDirectionsMargin()
+{
+    sets.IncludeDirections = (INCLUDE_DIRECTIONS)m_RgpIncludeDirectionsMargin.Value();
+    m_RgpIncludeDirections.Value(sets.IncludeDirections); // The mirrored group on the Risk tab.
+    CalculatePortfolioMargin();
     DisplayValues();
 }
 
@@ -4411,6 +4761,7 @@ void CPositionSizeCalculator::OnChangeRgpMarginUtilizationBase()
         // Values will be set via DisplayValues();
     }
     CalculateMarginUtilization();
+    CalculatePortfolioMargin();
     DisplayValues();
 }
 
@@ -4423,6 +4774,7 @@ void CPositionSizeCalculator::OnEndEditEdtMUBStartingBalance()
     sets.MUBStartingBalance = StringToDouble(s);
     m_EdtMUBStartingBalance.Text(FormatDouble(DoubleToString(sets.MUBStartingBalance, 2), 2));
     CalculateMarginUtilization();
+    CalculatePortfolioMargin();
     DisplayValues();
 }
 
@@ -4687,6 +5039,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
     FileWrite(fh, IntegerToString(sets.MarginUtilizationBase));
     FileWrite(fh, "MUBStartingBalance");
     FileWrite(fh, DoubleToString(sets.MUBStartingBalance));
+    FileWrite(fh, "ShowCostsPanel");
+    FileWrite(fh, IntegerToString(sets.ShowCostsPanel));
     FileWrite(fh, "MagicNumber");
     FileWrite(fh, IntegerToString(sets.MagicNumber));
     FileWrite(fh, "Commentary");
@@ -4926,6 +5280,8 @@ bool CPositionSizeCalculator::SaveSettingsOnDisk(string symbol = "")
         FileWrite(fh, IntegerToString(DefaultMarginUtilizationBase));
         FileWrite(fh, "Parameter_DefaultMUBStartingBalance");
         FileWrite(fh, DoubleToString(DefaultMUBStartingBalance));
+        FileWrite(fh, "Parameter_DefaultShowCostsPanel");
+        FileWrite(fh, IntegerToString(DefaultShowCostsPanel));
     }
 
     FileClose(fh);
@@ -5034,6 +5390,8 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             sets.MarginUtilizationBase = (MARGIN_UTILIZATION_BASE)StringToInteger(var_content);
         else if (var_name == "MUBStartingBalance")
             sets.MUBStartingBalance = StringToDouble(var_content);
+        else if (var_name == "ShowCostsPanel")
+            sets.ShowCostsPanel = (bool)StringToInteger(var_content);
         else if (var_name == "MagicNumber")
             sets.MagicNumber = (int)StringToInteger(var_content);
         else if (var_name == "Commentary")
@@ -5456,6 +5814,10 @@ bool CPositionSizeCalculator::LoadSettingsFromDisk()
             else if (var_name == "Parameter_DefaultMUBStartingBalance")
             {
                 if (MathAbs(StringToDouble(var_content) - DefaultMUBStartingBalance) > 0.005) sets.MUBStartingBalance = DefaultMUBStartingBalance;
+            }
+            else if (var_name == "Parameter_DefaultShowCostsPanel")
+            {
+                if (StringToInteger(var_content) != DefaultShowCostsPanel) sets.ShowCostsPanel = DefaultShowCostsPanel;
             }
         }
     }
@@ -6354,8 +6716,16 @@ long ChartWidth;
 
 //----
 string WarningEntry = "", WarningSL = "", WarningTP = "", AdditionalWarningTP[];
-double DisplayRisk, RiskMoney, PositionMargin, UsedMargin, FutureMargin, PreHedgingPositionMargin, PortfolioLossMoney = 0;
-double MarginUtilizedCurrent = 0, MarginUtilizedPosition = 0, MarginUtilizedFuture = 0, MarginUtilizedCurrentSymbolCurrency = 0, MarginUtilizedCurrentSymbol = 0;
+double DisplayRisk, RiskMoney, PositionMargin, UsedMargin, FutureMargin, PreHedgingPositionMargin, PortfolioLossMoney = 0, PortfolioPotentialLossMoney = 0; // Potential = with the planned trade added to the portfolio.
+double MarginUtilizedCurrent = 0, MarginUtilizedPosition = 0, MarginUtilizedFuture = 0; // Percentages of the margin utilization base: the current portfolio, the planned position, the potential portfolio.
+double PortfolioMarginMoney = 0, PortfolioPotentialMarginMoney = 0; // The current and the potential portfolio margin in the account currency.
+string CMM, CMP, PMM, PMP; // Margin tab outputs: the current and the potential portfolio margin in money and in percent.
+double SpreadCostPerLot = 0; // The spread paid on the entry, per lot, in the account currency.
+// Costs side panel outputs: the spread and the round-trip commission per lot and per position size, and the total costs of the position as a percentage of the reward, the risk, the margin, and the account size.
+int CostsSpreadPoints = 0;
+double CostsSpreadLot = 0, CostsSpreadPS = 0, CostsCommissionLot = 0, CostsCommissionPS = 0, CostsTotalLot = 0, CostsTotalPS = 0;
+string CostsOfReward = "", CostsOfRisk = "", CostsOfMargin = "", CostsOfAccount = "";
+bool CostsRewardRowShown = true; // The "Total costs as % of Reward" row is in the side panel's layout (created so).
 string InputRR, OutputRR, MainOutputRR, PLM, CPR, PRM, CPRew, PPMR, PPR, PPMRew, PPRew, CPL, PPL, CPRRR, PPRRR, AdditionalOutputRR[];
 string InputReward;
 double OutputReward, AdditionalOutputReward[], MainOutputReward;
@@ -7279,6 +7649,10 @@ void CalculateRiskAndPositionSize()
         UnitCost_reward = UnitCost;
     }
 
+    // The spread is paid on the entry - at the current rate, before the SL-based rate adjustment below.
+    SpreadCostPerLot = 0;
+    if (TickSize != 0) SpreadCostPerLot = CurrentSpread() * UnitCost / TickSize;
+
     // If account currency == pair's base currency, adjust UnitCost to future rate (SL). Works only for Forex pairs.
     if ((account_currency == BaseCurrency) && (ProfitCalcMode == 0) && (tStopLossLevel != 0))
     {
@@ -7453,11 +7827,18 @@ void CalculateRiskAndPositionSize()
 
     if ((sets.SelectedTab == RiskTab) && (!sets.IsPanelMinimized)) CalculatePortfolioRisk();
     // Should be done even on Main tab to calculate Maximum Position Size and change Main tab's position size field's color. Should also be done all the time when CapMaxPositionSizeBasedOnMargin or ShowAdditionalMarginSettings is set to true.
-    if ((((sets.SelectedTab == MarginTab) || (sets.SelectedTab == MainTab)) && (!sets.IsPanelMinimized)) || (CapMaxPositionSizeBasedOnMargin) || (ShowAdditionalMarginSettings))
+    // The Costs side panel needs the position margin too.
+    if ((((sets.SelectedTab == MarginTab) || (sets.SelectedTab == MainTab) || (sets.ShowCostsPanel)) && (!sets.IsPanelMinimized)) || (CapMaxPositionSizeBasedOnMargin) || (ShowAdditionalMarginSettings))
     {
         CalculateMargin();
-        if (ShowAdditionalMarginSettings) CalculateMarginUtilization();
+        if (ShowAdditionalMarginSettings)
+        {
+            CalculateMarginUtilization();
+            if ((sets.SelectedTab == MarginTab) && (!sets.IsPanelMinimized)) CalculatePortfolioMargin(); // The portfolio simulation - only when it is displayed. The Trading tab runs it when a trade is executed.
+        }
     }
+
+    CalculateCosts();
 }
 
 // Calculate future-rate-adjusted multiplier for reward unit cost.
@@ -7504,201 +7885,17 @@ double BrokerizePositionSize(const double position_size)
     return position_size;
 }
 
-// Calculates risk size and position size. Sets object values.
+// Calculates the portfolio risk and reward. Sets object values.
+// The calculation itself (an exact simulation of all included orders along all possible price paths) is in PortfolioRisk.mqh.
+// Current values are for the existing orders; potential values are for the existing orders with the planned trade added to the simulation.
 // Trading tab mode lets calculate quickly calculate percentage risk either as total or for a given symbol to use when executing a trade. 
 void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_for_trading_tab = CALCULATE_RISK_FOR_TRADING_TAB_NO)
 {
     PortfolioLossMoney = 0;
-    double PortfolioRewardMoney = 0;
+    PortfolioPotentialLossMoney = 0;
+    double PortfolioRewardMoney = 0, PortfolioPotentialRewardMoney = 0;
     double volume = 0;
-    int total = OrdersTotal();
-    for (int i = 0; i < total; i++)
-    {
-        double PointsLoss = 0;
-        double PointsReward = 0;
-        // Select an order.
-        if (!OrderSelect(i, SELECT_BY_POS)) continue;
-
-        // Skip orders based on the button status.
-        if (!calculate_risk_for_trading_tab)
-        {
-            if (((OrderType() == ORDER_TYPE_BUY) || (OrderType() == ORDER_TYPE_SELL)) && (sets.IncludeOrders == INCLUDE_ORDERS_PENDING)) continue;
-            if (((OrderType() == ORDER_TYPE_BUY_LIMIT) || (OrderType() == ORDER_TYPE_BUY_STOP) ||  (OrderType() == ORDER_TYPE_SELL_LIMIT) || (OrderType() == ORDER_TYPE_SELL_STOP)) && (sets.IncludeOrders == INCLUDE_ORDERS_OPEN)) continue;
-            
-            if (((OrderType() == ORDER_TYPE_BUY) || (OrderType() == ORDER_TYPE_BUY_LIMIT) || (OrderType() == ORDER_TYPE_BUY_STOP)) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_SELL)) continue;
-            if (((OrderType() == ORDER_TYPE_SELL) || (OrderType() == ORDER_TYPE_SELL_LIMIT) || (OrderType() == ORDER_TYPE_SELL_STOP)) && (sets.IncludeDirections == INCLUDE_DIRECTIONS_BUY)) continue;
-
-            if ((OrderSymbol() != Symbol()) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_CURRENT)) continue;
-            else if ((OrderSymbol() == Symbol()) && (sets.IncludeSymbols == INCLUDE_SYMBOLS_OTHER)) continue;
-            
-            if ((OrderStopLoss() == 0) && (sets.IgnoreOrdersWithoutSL)) continue;
-            if ((OrderTakeProfit() == 0) && (sets.IgnoreOrdersWithoutTP)) continue;
-        }
-        else if ((OrderSymbol() != Symbol()) && (calculate_risk_for_trading_tab == CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL)) continue;
-
-        // Buy
-        if ((OrderType() == ORDER_TYPE_BUY) || (OrderType() == ORDER_TYPE_BUY_LIMIT) || (OrderType() == ORDER_TYPE_BUY_STOP))
-        {
-            if (OrderStopLoss() == 0)
-            {
-                // Losing all the current value.
-                PointsLoss = OrderOpenPrice();
-            }
-            else
-            {
-                PointsLoss = OrderOpenPrice() - OrderStopLoss();
-            }
-            if (OrderTakeProfit() == 0)
-            {
-                // Potential reward is infinite.
-                PointsReward = DBL_MAX;
-            }
-            else
-            {
-                PointsReward = OrderTakeProfit() - OrderOpenPrice();
-            }
-            volume += OrderLots();
-        }
-        // Sell
-        else if ((OrderType() == ORDER_TYPE_SELL) || (OrderType() == ORDER_TYPE_SELL_LIMIT) || (OrderType() == ORDER_TYPE_SELL_STOP))
-        {
-            if (OrderStopLoss() == 0)
-            {
-                // Potential loss is infinite.
-                PointsLoss = DBL_MAX;
-            }
-            else
-            {
-                PointsLoss = OrderStopLoss() - OrderOpenPrice();
-            }
-            if (OrderTakeProfit() == 0)
-            {
-                // Gaining all way down.
-                PointsReward = OrderOpenPrice();
-            }
-            else
-            {
-                PointsReward = OrderOpenPrice() - OrderTakeProfit();
-            }
-            volume += OrderLots();
-        }
-
-        if ((PointsLoss != DBL_MAX) && (PortfolioLossMoney != DBL_MAX))
-        {
-            double TickSize_local = MarketInfo(OrderSymbol(), MODE_TICKSIZE);
-            double UnitCost;
-            // If Symbol is CFD.
-            if ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) == 1)
-                UnitCost = TickSize_local * SymbolInfoDouble(OrderSymbol(), SYMBOL_TRADE_CONTRACT_SIZE);
-            else UnitCost = MarketInfo(OrderSymbol(), MODE_TICKVALUE); // Non-CFD.
-
-            if ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) != 0) // Non-Forex might need to be adjusted.
-            {
-                // If profit currency is different from account currency.
-                string symbol_profit_currency = SymbolInfoString(OrderSymbol(), SYMBOL_CURRENCY_PROFIT);
-                if (symbol_profit_currency != account_currency)
-                {
-                    /*ENUM_ORDER_TYPE dir = (ENUM_ORDER_TYPE)OrderType();
-                    if ((dir == ORDER_TYPE_BUY_LIMIT) || (dir == ORDER_TYPE_BUY_STOP)) dir = OP_BUY;
-                    else if ((dir == ORDER_TYPE_SELL_LIMIT) || (dir == ORDER_TYPE_SELL_STOP)) dir = OP_SELL;*/
-                    if (symbol_profit_currency == ProfitCurrency) symbol_profit_currency = ""; // Same as global symbol - reference pair has already been found probably.
-                    double CCC = CalculateAdjustment(Loss, symbol_profit_currency);
-                    // Adjust the unit cost.
-                    UnitCost *= CCC;
-                }
-            }
-
-            if (TickSize_local == 0)
-            {
-                Print(TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE, OrderSymbol(), ". " + TRANSLATION_MESSAGE_LOOKS_LIKE);
-            }
-            else
-            {
-                // If account currency == pair's base currency, adjust UnitCost to future rate (SL). Works only for Forex pairs.
-                if ((account_currency == SymbolInfoString(OrderSymbol(), SYMBOL_CURRENCY_BASE)) && ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) == 0))
-                {
-                    double current_rate = 1, future_rate = 1;
-                    RefreshRates();
-                    if ((OrderType() == ORDER_TYPE_BUY) || (OrderType() == ORDER_TYPE_BUY_LIMIT) || (OrderType() == ORDER_TYPE_BUY_STOP))
-                    {
-                        current_rate = SymbolInfoDouble(OrderSymbol(), SYMBOL_ASK);
-                        future_rate = current_rate - PointsLoss;
-                    }
-                    else if ((OrderType() == ORDER_TYPE_SELL) || (OrderType() == ORDER_TYPE_SELL_LIMIT) || (OrderType() == ORDER_TYPE_SELL_STOP))
-                    {
-                        current_rate = SymbolInfoDouble(OrderSymbol(), SYMBOL_BID);
-                        future_rate = current_rate + PointsLoss;
-                    }
-                    if (MathAbs(OrderOpenPrice() - PointsLoss) < SymbolInfoDouble(OrderSymbol(), SYMBOL_POINT) / 2) PortfolioLossMoney = DBL_MAX; // Zero divide prevention + more accurate potential loss reporting. We can safely assume that if this currency pair reaches zero, our loss becomes incalculateable. This only works for Forex pairs (the future rate is known).
-                    else UnitCost *= (current_rate / future_rate);
-                }
-                if (PortfolioLossMoney != DBL_MAX) PortfolioLossMoney += OrderLots() * PointsLoss * UnitCost / TickSize_local - OrderCommission() - OrderSwap(); // Commission and swap is negative, everything else is positive, hence the minus sign.
-            }
-        }
-        else
-        {
-            // Infinite loss.
-            PortfolioLossMoney = DBL_MAX;
-        }
-
-        if ((PointsReward != DBL_MAX) && (PortfolioRewardMoney != DBL_MAX))
-        {
-            double TickSize_local = MarketInfo(OrderSymbol(), MODE_TICKSIZE);
-            double UnitCost;
-            // If Symbol is CFD.
-            if ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) == 1)
-                UnitCost = TickSize_local * SymbolInfoDouble(OrderSymbol(), SYMBOL_TRADE_CONTRACT_SIZE);
-            else UnitCost = MarketInfo(OrderSymbol(), MODE_TICKVALUE); // Non-CFD.
-
-            if ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) != 0) // Non-Forex might need to be adjusted.
-            {
-                // If profit currency is different from account currency.
-                string symbol_profit_currency = SymbolInfoString(OrderSymbol(), SYMBOL_CURRENCY_PROFIT);
-                if (symbol_profit_currency != account_currency)
-                {
-                    /*ENUM_ORDER_TYPE dir = (ENUM_ORDER_TYPE)OrderType();
-                    if ((dir == ORDER_TYPE_BUY_LIMIT) || (dir == ORDER_TYPE_BUY_STOP)) dir = OP_BUY;
-                    else if ((dir == ORDER_TYPE_SELL_LIMIT) || (dir == ORDER_TYPE_SELL_STOP)) dir = OP_SELL;*/
-                    if (symbol_profit_currency == ProfitCurrency) symbol_profit_currency = ""; // Same as global symbol - reference pair has already been found probably.
-                    double CCC = CalculateAdjustment(Profit, symbol_profit_currency);
-                    // Adjust the unit cost.
-                    UnitCost *= CCC;
-                }
-            }
-
-            if (TickSize_local == 0)
-            {
-                Print(TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE, OrderSymbol(), ". " + TRANSLATION_MESSAGE_LOOKS_LIKE);
-            }
-            else
-            {
-                // If account currency == pair's base currency, adjust UnitCost to future rate (TP). Works only for Forex pairs.
-                if ((account_currency == SymbolInfoString(OrderSymbol(), SYMBOL_CURRENCY_BASE)) && ((int)MarketInfo(OrderSymbol(), MODE_PROFITCALCMODE) == 0))
-                {
-                    double current_rate = 1, future_rate = 1;
-                    RefreshRates();
-                    if ((OrderType() == ORDER_TYPE_BUY) || (OrderType() == ORDER_TYPE_BUY_LIMIT) || (OrderType() == ORDER_TYPE_BUY_STOP))
-                    {
-                        current_rate = SymbolInfoDouble(OrderSymbol(), SYMBOL_ASK);
-                        future_rate = current_rate + PointsReward;
-                    }
-                    else if ((OrderType() == ORDER_TYPE_SELL) || (OrderType() == ORDER_TYPE_SELL_LIMIT) || (OrderType() == ORDER_TYPE_SELL_STOP))
-                    {
-                        current_rate = SymbolInfoDouble(OrderSymbol(), SYMBOL_BID);
-                        future_rate = current_rate - PointsReward;
-                    }
-                    if (MathAbs(OrderOpenPrice() - PointsReward) < SymbolInfoDouble(OrderSymbol(), SYMBOL_POINT) / 2) PortfolioRewardMoney = DBL_MAX; // Zero divide prevention + more accurate potential profit reporting. We can safely assume that if this currency pair reaches zero, our reward becomes incalculateable. This only works for Forex pairs (the future rate is known).
-                    else UnitCost *= (current_rate / future_rate);
-                }
-                if (PortfolioRewardMoney != DBL_MAX) PortfolioRewardMoney += OrderLots() * PointsReward * UnitCost / TickSize_local + OrderCommission() + OrderSwap();
-            }
-        }
-        else
-        {
-            // Infinite profit.
-            PortfolioRewardMoney = DBL_MAX;
-        }
-    }
+    PR_CalculatePortfolio(calculate_risk_for_trading_tab, PortfolioLossMoney, PortfolioRewardMoney, volume, PortfolioPotentialLossMoney, PortfolioPotentialRewardMoney);
 
     // If account size did not load yet.
     if (AccSize == 0) return;
@@ -7709,11 +7906,11 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     if (PortfolioLossMoney == DBL_MAX) CPR = "      " + TRANSLATION_MESSAGE_INFINITY;
     else CPR = FormatDouble(DoubleToString(PortfolioLossMoney / AccSize * 100, 2));
 
-    if (PortfolioLossMoney == DBL_MAX) PPMR = "      " + TRANSLATION_MESSAGE_INFINITY;
-    else PPMR = FormatDouble(DoubleToString(PortfolioLossMoney + OutputRiskMoney, 2));
+    if (PortfolioPotentialLossMoney == DBL_MAX) PPMR = "      " + TRANSLATION_MESSAGE_INFINITY;
+    else PPMR = FormatDouble(DoubleToString(PortfolioPotentialLossMoney, 2));
 
-    if (PortfolioLossMoney == DBL_MAX) PPR = "      " + TRANSLATION_MESSAGE_INFINITY;
-    else PPR = FormatDouble(DoubleToString((PortfolioLossMoney + OutputRiskMoney) / AccSize * 100, 2));
+    if (PortfolioPotentialLossMoney == DBL_MAX) PPR = "      " + TRANSLATION_MESSAGE_INFINITY;
+    else PPR = FormatDouble(DoubleToString(PortfolioPotentialLossMoney / AccSize * 100, 2));
 
     if (PortfolioRewardMoney == DBL_MAX) PRM = "      " + TRANSLATION_MESSAGE_INFINITY;
     else PRM = FormatDouble(DoubleToString(PortfolioRewardMoney, 2));
@@ -7721,11 +7918,11 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     if (PortfolioRewardMoney == DBL_MAX) CPRew = "      " + TRANSLATION_MESSAGE_INFINITY;
     else CPRew = FormatDouble(DoubleToString(PortfolioRewardMoney / AccSize * 100, 2));
 
-    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPMRew = "      " + TRANSLATION_MESSAGE_INFINITY;
-    else PPMRew = FormatDouble(DoubleToString(PortfolioRewardMoney + OutputReward, 2));
+    if (PortfolioPotentialRewardMoney == DBL_MAX) PPMRew = "      " + TRANSLATION_MESSAGE_INFINITY;
+    else PPMRew = FormatDouble(DoubleToString(PortfolioPotentialRewardMoney, 2));
 
-    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0)) PPRew = "      " + TRANSLATION_MESSAGE_INFINITY;
-    else PPRew = FormatDouble(DoubleToString((PortfolioRewardMoney + OutputReward) / AccSize * 100, 2));
+    if (PortfolioPotentialRewardMoney == DBL_MAX) PPRew = "      " + TRANSLATION_MESSAGE_INFINITY;
+    else PPRew = FormatDouble(DoubleToString(PortfolioPotentialRewardMoney / AccSize * 100, 2));
 
     CPL = FormatDouble(DoubleToString(volume, LotStep_digits), LotStep_digits);
     PPL = FormatDouble(DoubleToString(volume + OutputPositionSize, LotStep_digits), LotStep_digits);
@@ -7743,18 +7940,18 @@ void CalculatePortfolioRisk(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_
     }
     else CPRRR = FormatDouble(DoubleToString(PortfolioRewardMoney / PortfolioLossMoney, 2));
 
-    if ((PortfolioRewardMoney == DBL_MAX) || (OutputReward == 0))
+    if (PortfolioPotentialRewardMoney == DBL_MAX)
     {
-        if (PortfolioLossMoney == DBL_MAX) PPRRR = "-";
+        if (PortfolioPotentialLossMoney == DBL_MAX) PPRRR = "-";
         else PPRRR = TRANSLATION_MESSAGE_INFINITY;
     }
-    else if (PortfolioLossMoney == DBL_MAX) PPRRR = "0.00";
-    else if (PortfolioLossMoney + OutputRiskMoney == 0)
+    else if (PortfolioPotentialLossMoney == DBL_MAX) PPRRR = "0.00";
+    else if (PortfolioPotentialLossMoney == 0)
     {
-        if (PortfolioRewardMoney + OutputReward != 0) PPRRR = TRANSLATION_MESSAGE_INFINITY;
+        if (PortfolioPotentialRewardMoney != 0) PPRRR = TRANSLATION_MESSAGE_INFINITY;
         else PPRRR = "-";
     }
-    else PPRRR = FormatDouble(DoubleToString((PortfolioRewardMoney + OutputReward) / (PortfolioLossMoney + OutputRiskMoney), 2));
+    else PPRRR = FormatDouble(DoubleToString(PortfolioPotentialRewardMoney / PortfolioPotentialLossMoney, 2));
 }
 
 //+------------------------------------------------------------------+
@@ -7895,12 +8092,6 @@ void CalculateMargin()
         }
     }
 
-    // Margin utilization by symbol for the Trading tab restriction field.
-    if (ShowAdditionalMarginSettings && ShowMaxParametersOnTrading)
-    {
-        CalculateMarginUtilizationSymbol(Margin1Lot, HedgedRatio);
-    }
-
     // Was not found using partial hedge method.
     if ((MaxPositionSizeByMargin == -1) && (Margin1Lot != 0)) MaxPositionSizeByMargin = MaxPositionMargin / Margin1Lot;
 
@@ -7934,125 +8125,80 @@ void CalculateMargin()
     if (FutureMargin < 0) StopOut = true;
 }
 
-// Calculates margin utilization for the current symbol. Used only with ShowAdditionalMarginSettings.
-void CalculateMarginUtilizationSymbol(double margin1lot, double hedged_ratio)
+// The margin utilization base in the account currency: the balance, the starting balance set by the user, or the free margin.
+double MarginUtilizationBase()
 {
-    MarginUtilizedCurrentSymbolCurrency = 0;
-
-    // Cycle through all open orders on this Symbol to find directional volume.
-    // Most importantly, calculate used margin that isn't removed completely by hedging (i.e., when HedgedRatio > 0).
-    double volume = 0;
-    int type = -1;
-    double margin_sum = 0;
-    int total = OrdersTotal();
-    for (int i = 0; i < total; i++)
-    {
-        if (!OrderSelect(i, SELECT_BY_POS)) continue;
-
-        if (OrderSymbol() != Symbol()) continue;
-
-        if (OrderType() == OP_BUY)
-        {
-            if (type == OP_BUY)
-            {
-                volume += OrderLots();
-            }
-            else if (type == OP_SELL)
-            {
-                if (hedged_ratio > 0)
-                {
-                    double removed_volume = MathMin(volume, OrderLots());
-                    margin_sum += CalculateMarginByVolume(removed_volume * hedged_ratio, margin1lot); // Sum up removed volume's margin.
-                }
-                volume -= OrderLots();
-                if (volume < 0)
-                {
-                    type = OP_BUY;
-                    volume = -volume;
-                }
-            }
-            else if (type == -1)
-            {
-                volume = OrderLots();
-                type = OP_BUY;
-            }
-        }
-        else if (OrderType() == OP_SELL)
-        {
-            if (type == OP_SELL)
-            {
-                volume += OrderLots();
-            }
-            else if (type == OP_BUY)
-            {
-                if (hedged_ratio > 0)
-                {
-                    double removed_volume = MathMin(volume, OrderLots());
-                    margin_sum += CalculateMarginByVolume(removed_volume * hedged_ratio, margin1lot); // Sum up removed volume's margin.
-                }
-                volume -= OrderLots();
-                if (volume < 0)
-                {
-                    type = OP_SELL;
-                    volume = -volume;
-                }
-            }
-            else if (type == -1)
-            {
-                volume = OrderLots();
-                type = OP_SELL;
-            }
-        }
-    }
-    // Calculate margin for remaining unhedged volume.
-    margin_sum += CalculateMarginByVolume(volume, margin1lot);
-    MarginUtilizedCurrentSymbolCurrency = margin_sum;
+    if (sets.MarginUtilizationBase == MUB_STARTING_BALANCE) return sets.MUBStartingBalance;
+    if (sets.MarginUtilizationBase == MUB_BALANCE) return AccountInfoDouble(ACCOUNT_BALANCE);
+    return AccountInfoDouble(ACCOUNT_MARGIN_FREE);
 }
 
-// Used only by CalculateMarginUtilizationSymbol().
-double CalculateMarginByVolume(double volume, double margin1lot)
+// The planned position's margin in the account currency. A pending order is counted as if it executed now - unless only open orders are included.
+double PlannedPositionMargin()
 {
-    return volume * margin1lot;
+    if ((sets.EntryType != Instant) && (sets.IncludeOrders == INCLUDE_ORDERS_OPEN)) return 0;
+    return PositionMargin;
 }
 
-// Calculates margin utilization, setting global variables for current, position, and future utilized margin percentage.
+// Calculates the planned position's margin utilization (percentage of the base). Used only with ShowAdditionalMarginSettings.
 void CalculateMarginUtilization()
 {
-    double mu_base;
-    if (sets.MarginUtilizationBase == MUB_STARTING_BALANCE)
+    MarginUtilizedPosition = 0;
+    double mu_base = MarginUtilizationBase();
+    if (mu_base == 0) return;
+    MarginUtilizedPosition = PlannedPositionMargin() / mu_base * 100;
+}
+
+// The total costs of the planned position as a percentage of a base amount, formatted for the Costs side panel. Empty when there is no base.
+string CostsPercentage(const double costs, const double base_amount)
+{
+    if (base_amount <= 0) return "";
+    return FormatDouble(DoubleToString(costs / base_amount * 100, 2));
+}
+
+// Calculates the trading costs of the planned position for the Costs side panel: the spread and the round-trip commission (the one-way
+// commission is charged on the entry and on the exit), per lot and per position size, and the total costs of the position as a percentage
+// of its potential reward and risk (the Main tab's outputs), its margin (the Margin tab), and the account size (as chosen on the Main tab).
+void CalculateCosts()
+{
+    CostsSpreadPoints = 0;
+    if (_Point > 0) CostsSpreadPoints = (int)MathRound(CurrentSpread() / _Point);
+    CostsSpreadLot = SpreadCostPerLot;
+    CostsCommissionLot = 2 * CalculateCommission();
+    CostsTotalLot = CostsSpreadLot + CostsCommissionLot;
+    CostsSpreadPS = CostsSpreadLot * OutputPositionSize;
+    CostsCommissionPS = CostsCommissionLot * OutputPositionSize;
+    CostsTotalPS = CostsTotalLot * OutputPositionSize;
+    CostsOfReward = CostsPercentage(CostsTotalPS, OutputReward);
+    CostsOfRisk = CostsPercentage(CostsTotalPS, OutputRiskMoney);
+    CostsOfMargin = CostsPercentage(CostsTotalPS, PositionMargin);
+    CostsOfAccount = CostsPercentage(CostsTotalPS, AccSize);
+}
+
+// Calculates the portfolio margin. Sets object values.
+// The calculation itself (an exact simulation of all included orders along all possible price paths with the used margin evaluated at every
+// point) is in PortfolioMargin.mqh. Current values are for the existing orders; potential values are for the existing orders with the planned
+// trade added to the simulation. Percentages are of the margin utilization base.
+// Trading tab mode lets calculate quickly calculate margin utilization either as total or for a given symbol to use when executing a trade.
+void CalculatePortfolioMargin(const CALCULATE_RISK_FOR_TRADING_TAB calculate_risk_for_trading_tab = CALCULATE_RISK_FOR_TRADING_TAB_NO)
+{
+    PortfolioMarginMoney = 0;
+    PortfolioPotentialMarginMoney = 0;
+    PM_CalculatePortfolio(calculate_risk_for_trading_tab, PortfolioMarginMoney, PortfolioPotentialMarginMoney);
+
+    MarginUtilizedCurrent = 0;
+    MarginUtilizedFuture = 0;
+    double mu_base = MarginUtilizationBase();
+    if (mu_base != 0)
     {
-        mu_base = sets.MUBStartingBalance;
+        MarginUtilizedCurrent = PortfolioMarginMoney / mu_base * 100;
+        MarginUtilizedFuture = PortfolioPotentialMarginMoney / mu_base * 100;
     }
-    else if (sets.MarginUtilizationBase == MUB_BALANCE)
-    {
-        mu_base = AccountInfoDouble(ACCOUNT_BALANCE);
-    }
-    else
-    {
-        mu_base = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
-    }
-    
-    if (mu_base == 0)
-    {
-        MarginUtilizedCurrent = 0;
-        MarginUtilizedPosition = 0;
-        MarginUtilizedFuture = 0;
-        MarginUtilizedCurrentSymbol = 0;
-    }
-    else
-    {
-        MarginUtilizedCurrent = AccountInfoDouble(ACCOUNT_MARGIN) / mu_base * 100;
-        if (sets.EntryType == Instant)
-        {
-            MarginUtilizedPosition = PositionMargin / mu_base * 100;
-        }
-        else // Pending orders don't utilize margin until triggered.
-        {
-            MarginUtilizedPosition = 0;
-        }
-        MarginUtilizedFuture = MarginUtilizedCurrent + MarginUtilizedPosition;
-        MarginUtilizedCurrentSymbol = MarginUtilizedCurrentSymbolCurrency / mu_base * 100;
-    }
+
+    CMM = FormatDouble(DoubleToString(PortfolioMarginMoney, 2));
+    CMP = FormatDouble(DoubleToString(MarginUtilizedCurrent, 2));
+    PMM = FormatDouble(DoubleToString(PortfolioPotentialMarginMoney, 2));
+    PMP = FormatDouble(DoubleToString(MarginUtilizedFuture, 2));
 }
 
 //+------------------------------------------------------------------+

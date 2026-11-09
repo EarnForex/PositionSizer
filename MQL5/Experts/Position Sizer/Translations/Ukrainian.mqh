@@ -145,10 +145,6 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс розмір позиції по маржі"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "У лотах"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "Поточ."
-#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиція"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "Майб."
-#define TRANSLATION_LABEL_MU_PERC "Використ. маржі"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "Поч. баланс"
 #define TRANSLATION_RGP_MU_BALANCE "Баланс"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "Вільн. мар."
@@ -157,6 +153,9 @@
 #define TRANSLATION_TOOLTIP_MU_BASE "Основа для розрахунку проценту використання маржі"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "Поточний баланс, початковий баланс (задаєте ви) або вільна маржа"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значення основи для розрахунку проценту використання маржі у валюті рахунку"
+#define TRANSLATION_LABEL_PLANNED_POSITION "Заплан. позиція"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "Запланована позиція (з урахуванням власного плеча). Відкладений ордер почне використовувати маржу тілки після спрацювання."
+#define TRANSLATION_TOOLTIP_MU_PERC "Використання маржі"
 
 
 // Swaps tab
@@ -188,6 +187,7 @@
 #define TRANSLATION_BUTTON_TRADE "Відкр."
 #define TRANSLATION_LABEL_TRAILING_STOP "Трейлінг"
 #define TRANSLATION_LABEL_BREAKEVEN "Беззбиток"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "Позитивне значення для беззбитку по СЛ, негативне - по ТП."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "Меджик"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "Коментар"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "Автосуф."
@@ -341,6 +341,7 @@
 #define TRANSLATION_MESSAGE_TSL_APPLIED "Трейлінг-стоп застосовано до позиції"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM "Стоп-лос зсунуто з"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_TO "на"
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "Тейк-профіт зсунуто з"
 #define TRANSLATION_MESSAGE_POSITIONMODIFY_FAILED_BUY_BE "Функція PositionModify не змогла застосувати беззбиток на купівлю"
 #define TRANSLATION_MESSAGE_POSITIONMODIFY_FAILED_SELL_BE "Функція PositionModify не змогла застосувати беззбиток на продаж"
 #define TRANSLATION_MESSAGE_BE_APPLIED "Беззбиток застосовано до позиції"

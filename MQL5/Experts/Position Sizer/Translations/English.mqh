@@ -148,10 +148,6 @@
 #define TRANSLATION_LABEL_SYMBOL "Symbol"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Maximum position size by margin"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "In lots"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "Current"
-#define TRANSLATION_LABEL_MU_PERC_POSITION "Position"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "Future"
-#define TRANSLATION_LABEL_MU_PERC "Margin utilization"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "Start. balance"
 #define TRANSLATION_RGP_MU_BALANCE "Balance"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "Free margin"
@@ -160,6 +156,9 @@
 #define TRANSLATION_TOOLTIP_MU_BASE "Margin utilization base"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "Current balance, starting balance (set by you), or free margin"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "The value of margin utilization base in currency units"
+#define TRANSLATION_LABEL_PLANNED_POSITION "Planned position"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "The position being calculated (at the custom leverage, if set). A pending order will start using margin only upon triggering."
+#define TRANSLATION_TOOLTIP_MU_PERC "Margin utilization"
 
 // Swaps tab
 #define TRANSLATION_LABEL_TYPE "Type"
@@ -189,6 +188,7 @@
 #define TRANSLATION_BUTTON_TRADE "Trade"
 #define TRANSLATION_LABEL_TRAILING_STOP "Trailing stop"
 #define TRANSLATION_LABEL_BREAKEVEN "Breakeven"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "Positive for SL breakeven, negative for TP breakeven."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "Magic number"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "Order commentary"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "Auto-suffix"
@@ -227,6 +227,25 @@
 #define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Max margin %"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Max margin utilization"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Max margin utilization fuse"
+
+
+// Costs side panel
+#define TRANSLATION_BUTTON_COSTS "Costs"
+#define TRANSLATION_LABEL_TOTAL_COSTS "Total costs"
+#define TRANSLATION_LABEL_COSTS_PER_LOT "Per lot"
+#define TRANSLATION_LABEL_COSTS_PER_PS "Per PS"
+#define TRANSLATION_LABEL_COSTS_COMMISSION "Commission"
+#define TRANSLATION_LABEL_COSTS_OF_REWARD "Total costs as % of Reward"
+#define TRANSLATION_LABEL_COSTS_OF_RISK "Total costs as % of Risk"
+#define TRANSLATION_LABEL_COSTS_OF_MARGIN "Total costs as % of Margin"
+#define TRANSLATION_LABEL_COSTS_OF_ACCOUNT "Total costs as % of Account size"
+#define TRANSLATION_TOOLTIP_COSTS "Show/hide the trading costs of the planned position: the spread and the round-trip commission."
+#define TRANSLATION_TOOLTIP_COSTS_COMMISSION "The total (two-way) commission"
+#define TRANSLATION_TOOLTIP_COSTS_OF_REWARD "Total costs of the position as a percentage of its potential reward (Main tab)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_RISK "Total costs of the position as a percentage of its potential risk (Main tab)."
+#define TRANSLATION_TOOLTIP_COSTS_OF_MARGIN "Total costs of the position as a percentage of its margin (Margin tab)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT "Total costs of the position as a percentage of the chosen account size metric (Main tab)"
+
 
 // Chart objects
 #define TRANSLATION_TOOLTIP_STOP_PRICE_LINE "Stop Price (for Stop Limit orders)"
@@ -341,6 +360,7 @@
 #define TRANSLATION_MESSAGE_TSL_APPLIED "Trailing stop was applied to position"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM "Stop-Loss was moved from"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_TO "to"
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "Take-Profit was moved from"
 #define TRANSLATION_MESSAGE_POSITIONMODIFY_FAILED_BUY_BE "PositionModify failed for Buy breakeven"
 #define TRANSLATION_MESSAGE_POSITIONMODIFY_FAILED_SELL_BE "PositionModify failed for Sell breakeven"
 #define TRANSLATION_MESSAGE_BE_APPLIED "Breakeven was applied to position"
@@ -487,6 +507,7 @@
 #define INPUT_DESCRIPTION_DefaultStopLimitDistanceInPoints "StopLimitDistanceInPoints: Stop-limit price distance in points."
 #define INPUT_DESCRIPTION_DefaultMarginUtilizationBase "Margin utilization base."
 #define INPUT_DESCRIPTION_DefaultMUBStartingBalance "Starting balance for margin utilization base."
+#define INPUT_DESCRIPTION_DefaultShowCostsPanel "ShowCostsPanel: Show the Costs side panel by default?"
 #define INPUT_GROUP_DESCRIPTION_KEYBOARD_SHORTCUTS "Keyboard Shortcuts"
 #define INPUT_DESCRIPTION_____ "Case-insensitive hotkey. Supports Ctrl, Shift."
 #define INPUT_DESCRIPTION_TradeHotKey "TradeHotKey: Execute a trade."
@@ -500,6 +521,7 @@
 #define INPUT_DESCRIPTION_SwitchSLPointsLevelHotKey "SwitchSLPointsLevelHotKey: Switch SL between points and level."
 #define INPUT_DESCRIPTION_SwitchTPPointsLevelHotKey "SwitchTPPointsLevelHotKey: Switch TP between points and level."
 #define INPUT_DESCRIPTION_SwitchStopLimitPointsLevelHotKey "Switch stop-limit price between points and level."
+#define INPUT_DESCRIPTION_SwitchCostsPanelHotKey "SwitchCostsPanelHotKey: Show/hide the Costs side panel."
 #define INPUT_GROUP_DESCRIPTION_MISCELLANEOUS "Miscellaneous"
 #define INPUT_DESCRIPTION_TP_Multiplier "TP Multiplier for SL value (for take-profit button)."
 #define INPUT_DESCRIPTION_UseCommissionToSetTPDistance "UseCommissionToSetTPDistance: For TP button."

@@ -137,10 +137,6 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс розмір позиції по маржі"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "У лотах"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "Поточ."
-#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиція"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "Майб."
-#define TRANSLATION_LABEL_MU_PERC "Використ. маржі"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "Поч. баланс"
 #define TRANSLATION_RGP_MU_BALANCE "Баланс"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "Вільн. мар."
@@ -149,6 +145,9 @@
 #define TRANSLATION_TOOLTIP_MU_BASE "Основа для розрахунку проценту використання маржі"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "Поточний баланс, початковий баланс (задаєте ви) або вільна маржа"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значення основи для розрахунку проценту використання маржі у валюті рахунку"
+#define TRANSLATION_LABEL_PLANNED_POSITION "Заплан. позиція"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "Запланована позиція (з урахуванням власного плеча). Відкладений ордер почне використовувати маржу тілки після спрацювання."
+#define TRANSLATION_TOOLTIP_MU_PERC "Використання маржі"
 
 
 // Swaps tab
@@ -176,6 +175,7 @@
 #define TRANSLATION_BUTTON_TRADE "Відкр."
 #define TRANSLATION_LABEL_TRAILING_STOP "Трейлінг"
 #define TRANSLATION_LABEL_BREAKEVEN "Беззбиток"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "Позитивне значення для беззбитку по СЛ, негативне - по ТП."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "Меджик"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "Коментар"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "Автосуф."
@@ -214,6 +214,24 @@
 #define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "Макс маржа %"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "Максимальне використання маржі"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "Запобіжник по максимальному використанню маржі"
+
+
+// Costs side panel
+#define TRANSLATION_BUTTON_COSTS "Витр."
+#define TRANSLATION_LABEL_TOTAL_COSTS "Заг. витрати"
+#define TRANSLATION_LABEL_COSTS_PER_LOT "За лот"
+#define TRANSLATION_LABEL_COSTS_PER_PS "За РП"
+#define TRANSLATION_LABEL_COSTS_COMMISSION "Комісія"
+#define TRANSLATION_LABEL_COSTS_OF_REWARD "Заг. витрати у % від Прибутку"
+#define TRANSLATION_LABEL_COSTS_OF_RISK "Заг. витрати у % від Ризику"
+#define TRANSLATION_LABEL_COSTS_OF_MARGIN "Заг. витрати у % від Маржі"
+#define TRANSLATION_LABEL_COSTS_OF_ACCOUNT "Заг. витрати у % від Розм. рахунку"
+#define TRANSLATION_TOOLTIP_COSTS "Показати/сховати торгові витрати по позиції, що планується: спред і комісія в обидва кінці."
+#define TRANSLATION_TOOLTIP_COSTS_COMMISSION "Загальна (відкриття + закриття) комісія"
+#define TRANSLATION_TOOLTIP_COSTS_OF_REWARD "Загальні витрати по позиції у відсотках від її потенційного прибутку (Основна вкладка)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_RISK "Загальні витрати по позиції у відсотках від її потенційного ризику (Основна вкладка)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_MARGIN "Загальні витрати по позиції у відсотках від її маржі (вкладка Маржі)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT "Загальні витрати по позиції у відсотках від обраної метрики розміру рахунку (Основна вкладка)"
 
 
 // Chart objects
@@ -307,6 +325,7 @@
 #define TRANSLATION_MESSAGE_TSL_APPLIED "Трейлінг-стоп застосовано до позиції"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM "Стоп-лос зсунуто з"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_TO "на"
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "Тейк-профіт зсунуто з"
 #define TRANSLATION_MESSAGE_BE_APPLIED "Беззбиток застосовано до позиції"
 #define TRANSLATION_MESSAGE_BE_FOR "Беззбиток для "
 #define TRANSLATION_MESSAGE_ERROR_SETTING_TIMER "Помилка встановлення таймеру"

@@ -167,7 +167,8 @@ void Trade()
             }
         }
 
-        if (ShowAdditionalMarginSettings && sets.MaxMarginPerc > 0 && sets.EntryType == Instant)
+        // A pending order's margin counts as if it executed now - unless only open orders are included.
+        if (ShowAdditionalMarginSettings && sets.MaxMarginPerc > 0 && ((sets.EntryType == Instant) || (sets.IncludeOrders != INCLUDE_ORDERS_OPEN)))
         {
             if (MarginUtilizedPosition > sets.MaxMarginPerc)
             {
@@ -318,11 +319,12 @@ void Trade()
     
         if (sets.MaxRiskTotal > 0)
         {
+            // Potential risk = the portfolio with the planned trade (at its current size) added to the simulation.
             CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL);
             double risk = DBL_MAX;
-            if (PortfolioLossMoney != DBL_MAX)
+            if (PortfolioPotentialLossMoney != DBL_MAX)
             {
-                if (AccSize > 0) risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+                if (AccSize > 0) risk = PortfolioPotentialLossMoney / AccSize * 100;
                 if (risk > sets.MaxRiskTotal)
                 {
                     string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + ").";
@@ -333,17 +335,18 @@ void Trade()
                     }
                     else
                     {
+                        // The largest position size that keeps the potential risk within the limit. Zero if the current portfolio alone exceeds it.
                         double new_ps = 0;
-                        if (AccSize > 0) new_ps = (sets.MaxRiskTotal / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
+                        if ((AccSize > 0) && (PortfolioLossMoney != DBL_MAX) && (PortfolioLossMoney <= sets.MaxRiskTotal / 100 * AccSize)) new_ps = PR_FindMaxVolume(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL, sets.MaxRiskTotal / 100 * AccSize, PositionSize, PortfolioLossMoney);
                         if (new_ps >= MinLot)
                         {
-                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(new_ps);
                             PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
                             Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_RISK + " (" + DoubleToString(sets.MaxRiskTotal, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
                         }
                         else
                         {
+                            PositionSizeToArray(PositionSize); // Restore ArrayPositionSize[] after the search.
                             Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
                             return;
                         }
@@ -358,11 +361,12 @@ void Trade()
         }
         if (sets.MaxRiskPerSymbol > 0)
         {
+            // Potential risk = the symbol's orders with the planned trade (at its current size) added to the simulation.
             CalculatePortfolioRisk(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL);
             double risk = DBL_MAX;
-            if (PortfolioLossMoney != DBL_MAX)
+            if (PortfolioPotentialLossMoney != DBL_MAX)
             {
-                if (AccSize > 0) risk = (PortfolioLossMoney + OutputRiskMoney) / AccSize * 100;
+                if (AccSize > 0) risk = PortfolioPotentialLossMoney / AccSize * 100;
                 if (risk > sets.MaxRiskPerSymbol)
                 {
                     string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + ").";
@@ -373,16 +377,18 @@ void Trade()
                     }
                     else
                     {
-                        double new_ps = (sets.MaxRiskPerSymbol / 100 * AccSize - PortfolioLossMoney) * (OutputPositionSize / OutputRiskMoney);
+                        // The largest position size that keeps the potential risk within the limit. Zero if the symbol's current orders alone exceed it.
+                        double new_ps = 0;
+                        if ((AccSize > 0) && (PortfolioLossMoney != DBL_MAX) && (PortfolioLossMoney <= sets.MaxRiskPerSymbol / 100 * AccSize)) new_ps = PR_FindMaxVolume(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL, sets.MaxRiskPerSymbol / 100 * AccSize, PositionSize, PortfolioLossMoney);
                         if (new_ps >= MinLot)
                         {
-                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(new_ps);
                             PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
                             Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_POTENTIAL_RISK + " (" + DoubleToString(risk, 2) + ") >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_RISK + " (" + DoubleToString(sets.MaxRiskPerSymbol, 2) + "). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
                         }
                         else
                         {
+                            PositionSizeToArray(PositionSize); // Restore ArrayPositionSize[] after the search.
                             Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
                             return;
                         }
@@ -395,10 +401,12 @@ void Trade()
                 return;
             }
         }
-        if (ShowAdditionalMarginSettings && sets.EntryType == Instant)
+        if (ShowAdditionalMarginSettings)
         {
             if (sets.MaxMarginPercTotal > 0)
             {
+                // Potential margin utilization = the portfolio with the planned trade (at its current size) added to the simulation. A pending order counts when it triggers.
+                CalculatePortfolioMargin(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL);
                 if (MarginUtilizedFuture > sets.MaxMarginPercTotal)
                 {
                     string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercTotal, 2) + "%).";
@@ -409,16 +417,19 @@ void Trade()
                     }
                     else
                     {
-                        double new_ps = OutputPositionSize * (sets.MaxMarginPercTotal - MarginUtilizedCurrent) / MarginUtilizedPosition;
+                        // The largest position size that keeps the potential margin utilization within the limit. Zero if the current portfolio alone exceeds it.
+                        double new_ps = 0;
+                        double mu_base = MarginUtilizationBase();
+                        if ((mu_base > 0) && (PortfolioMarginMoney <= sets.MaxMarginPercTotal / 100 * mu_base)) new_ps = PM_FindMaxVolume(CALCULATE_RISK_FOR_TRADING_TAB_TOTAL, sets.MaxMarginPercTotal / 100 * mu_base, PositionSize, PortfolioMarginMoney);
                         if (new_ps >= MinLot)
                         {
-                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(new_ps);
                             PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
                             Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_TOTAL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercTotal, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
                         }
                         else
                         {
+                            PositionSizeToArray(PositionSize); // Restore ArrayPositionSize[] after the search.
                             Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
                             return;
                         }
@@ -427,11 +438,11 @@ void Trade()
             }
             if (sets.MaxMarginPercPerSymbol > 0)
             {
-                double margin_utilized_current_symbol = MarginUtilizedCurrentSymbol;
-                double margin_utilized_future_symbol = margin_utilized_current_symbol + MarginUtilizedPosition;
-                if (margin_utilized_future_symbol > sets.MaxMarginPercPerSymbol)
+                // Potential margin utilization = the symbol's orders with the planned trade (at its current size) added to the simulation.
+                CalculatePortfolioMargin(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL);
+                if (MarginUtilizedFuture > sets.MaxMarginPercPerSymbol)
                 {
-                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(margin_utilized_future_symbol, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%).";
+                    string alert_text = TRANSLATION_MESSAGE_NOT_TAKING_A_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%).";
                     if (!LessRestrictiveMaxLimits)
                     {
                         Alert(alert_text);
@@ -439,16 +450,19 @@ void Trade()
                     }
                     else
                     {
-                        double new_ps = OutputPositionSize * (sets.MaxMarginPercPerSymbol - margin_utilized_current_symbol) / MarginUtilizedPosition;
+                        // The largest position size that keeps the potential margin utilization within the limit. Zero if the symbol's current orders alone exceed it.
+                        double new_ps = 0;
+                        double mu_base = MarginUtilizationBase();
+                        if ((mu_base > 0) && (PortfolioMarginMoney <= sets.MaxMarginPercPerSymbol / 100 * mu_base)) new_ps = PM_FindMaxVolume(CALCULATE_RISK_FOR_TRADING_TAB_PER_SYMBOL, sets.MaxMarginPercPerSymbol / 100 * mu_base, PositionSize, PortfolioMarginMoney);
                         if (new_ps >= MinLot)
                         {
-                            PositionSize = Round(new_ps, LotStep_digits, RoundDown);
-                            PositionSize = AdjustPositionSizeByMinMaxStep(PositionSize);
+                            PositionSize = AdjustPositionSizeByMinMaxStep(new_ps);
                             PositionSizeToArray(PositionSize); // Re-fills ArrayPositionSize[].
-                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(margin_utilized_future_symbol, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
+                            Alert(TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE + " - " + TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(MarginUtilizedFuture, 2) + "%) >= " + TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION + " (" + DoubleToString(sets.MaxMarginPercPerSymbol, 2) + "%). " + TRANSLATION_MESSAGE_NEW_POSITION_SIZE + " = " + DoubleToString(PositionSize, LotStep_digits));
                         }
                         else
                         {
+                            PositionSizeToArray(PositionSize); // Restore ArrayPositionSize[] after the search.
                             Alert(alert_text + " " + TRANSLATION_MESSAGE_CANNOT_TAKE_SMALLER_TRADE);
                             return;
                         }
@@ -753,7 +767,9 @@ void DoTrailingStop()
     }
 }
 
-// Sets SL to breakeven based on the Magic number and symbol.
+// Sets SL/TP to breakeven based on the Magic number and symbol.
+// Positive BreakEvenPoints: the SL is moved to breakeven once the trade is in profit by that many points.
+// Negative BreakEvenPoints: the TP is moved to breakeven once the trade is in loss by that many points.
 void DoBreakEven()
 {
     if (!TerminalInfoInteger(TERMINAL_CONNECTED)) return;
@@ -781,8 +797,14 @@ void DoBreakEven()
             else // Check if already triggered. Order selected.
             {
                 double be_price = NormalizeDouble(StringToDouble(ObjectGetString(ChartID(), obj_name, OBJPROP_TOOLTIP)), _Digits);
-                if (((OrderType() == OP_BUY) && (OrderStopLoss() >= be_price)) // Already triggered.
-                 || ((OrderType() == OP_SELL) && (OrderStopLoss() <= be_price) && (OrderStopLoss() != 0)))
+                bool already_triggered;
+                if (sets.BreakEvenPoints > 0) // SL-based breakeven.
+                    already_triggered = ((OrderType() == OP_BUY) && (OrderStopLoss() >= be_price))
+                                     || ((OrderType() == OP_SELL) && (OrderStopLoss() <= be_price) && (OrderStopLoss() != 0));
+                else // TP-based breakeven (negative BE).
+                    already_triggered = ((OrderType() == OP_BUY) && (OrderTakeProfit() <= be_price) && (OrderTakeProfit() != 0))
+                                     || ((OrderType() == OP_SELL) && (OrderTakeProfit() >= be_price) && (OrderTakeProfit() != 0));
+                if (already_triggered)
                 {
                     ObjectDelete(ChartID(), obj_name); // Delete the line.
                     if (ShowMainLineLabels) ObjectDelete(ChartID(), ObjectPrefix + "BEL" + IntegerToString(ticket)); // Delete the label.
@@ -791,7 +813,7 @@ void DoBreakEven()
         }
     }
     
-    if (sets.BreakEvenPoints <= 0) return;
+    if (sets.BreakEvenPoints == 0) return;
     
     if ((!TerminalInfoInteger(TERMINAL_TRADE_ALLOWED)) || (!MQLInfoInteger(MQL_TRADE_ALLOWED))) return;
 
@@ -820,34 +842,73 @@ void DoBreakEven()
                 }
             }
 
-            if (OrderType() == OP_BUY)
+            if (sets.BreakEvenPoints > 0) // Positive BE: move the SL to breakeven once the trade is in profit by BreakEvenPoints.
             {
-                double BE_threshold = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenPoints * _Point, _Digits);
-                double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
-                if ((be_line_color != clrNONE) && (BE_price > OrderStopLoss())) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
-                if ((Bid >= BE_threshold) && (Bid >= BE_price) && (BE_price > OrderStopLoss())) // Only move to BE if the price reached the necessary threshold, the price is above the calculated BE price, and the current stop-loss is lower.
+                if (OrderType() == OP_BUY)
                 {
-                    double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
-                    // Write Open price to the SL field.
-                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
-                        Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
-                    else
-                        Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_BUY + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM + " " + DoubleToString(OrderStopLoss(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    double BE_threshold = NormalizeDouble(OrderOpenPrice() + sets.BreakEvenPoints * _Point, _Digits);
+                    double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
+                    if ((be_line_color != clrNONE) && (BE_price > OrderStopLoss())) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
+                    if ((Bid >= BE_threshold) && (Bid >= BE_price) && (BE_price > OrderStopLoss())) // Only move to BE if the price reached the necessary threshold, the price is above the calculated BE price, and the current stop-loss is lower.
+                    {
+                        double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
+                        // Write Open price to the SL field.
+                        if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
+                            Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
+                        else
+                            Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_BUY + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM + " " + DoubleToString(OrderStopLoss(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    }
+                }
+                else if (OrderType() == OP_SELL)
+                {
+                    double BE_threshold = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
+                    double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
+                    if ((be_line_color != clrNONE) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) DrawBELine(OrderTicket(), BE_threshold, BE_price);
+                    if ((Ask <= BE_threshold) && (Ask <= BE_price) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to BE if the price reached the necessary threshold, the price below the calculated BE price, and the current stop-loss is higher (or zero).
+                    {
+                        double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
+                        // Write Open price to the SL field.
+                        if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
+                            Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
+                        else
+                            Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_SELL + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM + " " + DoubleToString(OrderStopLoss(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    }
                 }
             }
-            else if (OrderType() == OP_SELL)
+            else // Negative BE: move the TP to breakeven once the trade is in loss by BreakEvenPoints.
             {
-                double BE_threshold = NormalizeDouble(OrderOpenPrice() - sets.BreakEvenPoints * _Point, _Digits);
-                double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
-                if ((be_line_color != clrNONE) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) DrawBELine(OrderTicket(), BE_threshold, BE_price);
-                if ((Ask <= BE_threshold) && (Ask <= BE_price) && ((BE_price < OrderStopLoss()) || (OrderStopLoss() == 0))) // Only move to BE if the price reached the necessary threshold, the price below the calculated BE price, and the current stop-loss is higher (or zero).
+                int be_loss_points = -sets.BreakEvenPoints;
+																								 
+                if (OrderType() == OP_BUY)
+																																																																					
                 {
-                    double prev_sl = OrderStopLoss(); // Remember old SL for reporting.
-                    // Write Open price to the SL field.
-                    if (!OrderModify(OrderTicket(), OrderOpenPrice(), BE_price, OrderTakeProfit(), OrderExpiration()))
-                        Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
-                    else
-                        Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_SELL + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM + " " + DoubleToString(OrderStopLoss(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    double BE_threshold = NormalizeDouble(OrderOpenPrice() - be_loss_points * _Point, _Digits);
+                    double BE_price = NormalizeDouble(OrderOpenPrice() + extra_be_distance, _Digits);
+                    bool not_triggered = (OrderTakeProfit() == 0) || (OrderTakeProfit() > BE_price); // The TP is still above the breakeven price (or there is no TP).
+                    if ((be_line_color != clrNONE) && (not_triggered)) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
+                    if ((Bid <= BE_threshold) && (not_triggered)) // Only move the TP to BE if the price reached the necessary loss threshold.
+                    {
+                        // Write the breakeven price to the TP field.
+                        if (!OrderModify(OrderTicket(), OrderOpenPrice(), OrderStopLoss(), BE_price, OrderExpiration()))
+                            Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
+                        else
+                            Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_BUY + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM + " " + DoubleToString(OrderTakeProfit(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    }
+                }
+                else if (OrderType() == OP_SELL)
+                {
+                    double BE_threshold = NormalizeDouble(OrderOpenPrice() + be_loss_points * _Point, _Digits);
+                    double BE_price = NormalizeDouble(OrderOpenPrice() - extra_be_distance, _Digits);
+                    bool not_triggered = (OrderTakeProfit() == 0) || (OrderTakeProfit() < BE_price); // The TP is still below the breakeven price (or there is no TP).
+                    if ((be_line_color != clrNONE) && (not_triggered)) DrawBELine(OrderTicket(), BE_threshold, BE_price); // Only draw if not triggered yet.
+                    if ((Ask >= BE_threshold) && (not_triggered)) // Only move the TP to BE if the price reached the necessary loss threshold.
+                    {
+                        // Write the breakeven price to the TP field.
+                        if (!OrderModify(OrderTicket(), OrderOpenPrice(), OrderStopLoss(), BE_price, OrderExpiration()))
+                            Print(TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER + ": " + ErrorDescription(GetLastError()) + ".");
+                        else
+                            Print(TRANSLATION_MESSAGE_BE_APPLIED + " - " + Symbol() + " " + TRANSLATION_MESSAGE_SELL + " #" + IntegerToString(OrderTicket()) + " " + TRANSLATION_LABEL_POSITION_SIZE + " = " + DoubleToString(OrderLots(), LotStep_digits) + ", " + TRANSLATION_LABEL_ENTRY + " = " + DoubleToString(OrderOpenPrice(), _Digits) + ", " + TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM + " " + DoubleToString(OrderTakeProfit(), _Digits) + " " + TRANSLATION_MESSAGE_SL_WAS_MOVED_TO + " " + DoubleToString(BE_price, _Digits) + ".");
+                    }
                 }
             }
         }

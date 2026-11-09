@@ -64,6 +64,7 @@ enum HOTKEY_ID
     HK_SwitchSLPointsLevel,
     HK_SwitchTPPointsLevel,
     HK_SwitchStopLimitPointsLevel,
+    HK_SwitchCostsPanel,
     HK_COUNT // Number of hotkeys - keep last.
 };
 
@@ -281,6 +282,7 @@ struct Settings
     ADDITIONAL_TP_SCHEME LastAdditionalTPScheme;
     MARGIN_UTILIZATION_BASE MarginUtilizationBase;
     double MUBStartingBalance;
+    bool ShowCostsPanel; // The Costs side panel is shown.
 } sets;
 
 // An object class for a list of panel objects with their names for fields located on a given tab of the panel. There will be one list per tab.

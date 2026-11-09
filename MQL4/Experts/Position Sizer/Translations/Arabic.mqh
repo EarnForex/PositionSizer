@@ -2,7 +2,7 @@
 #define DESCRIPTION_LINE_2 "يسمح بتنفيذ الصفقة اعتمادًا على نتائج العمليات الحسابية.\r\n"
 #define DESCRIPTION_LINE_3 "تحذير: لا يوجد ضمان. يُقدَم هذا المستشار الخبير \"كما هو\". استخدمه على مسؤوليتك الخاصة.\r\n"
 #define DESCRIPTION_LINE_4 "ملاحظة: الضغط على Shift+T سيؤدي إلى فتح صفقة."
- 
+
 // Tabs
 #define TRANSLATION_TAB_BUTTON_MAIN "الرئيسي"
 #define TRANSLATION_TAB_BUTTON_RISK "المخاطرة"
@@ -26,14 +26,14 @@
 
 // Stop-loss
 #define TRANSLATION_LABEL_STOPLOSS "إيقاف الخسارة"
-#define TRANSLATION_BUTTON_SL "إيقاف الخسارة، بالنقاط"
+#define TRANSLATION_BUTTON_SL "SL، بالنقاط"
 
 #define TRANSLATION_TOOLTIP_STOPLOSS_INCREASE "زيادة إيقاف الخسارة بـ 1 نقطة"
 #define TRANSLATION_TOOLTIP_STOPLOSS_DECREASE "تقليل إيقاف الخسارة بـ 1 نقطة"
 
 // Take-profit
 #define TRANSLATION_LABEL_TAKEPROFIT "أخذ الربح"
-#define TRANSLATION_BUTTON_TP "أخذ الربح"
+#define TRANSLATION_BUTTON_TP "TP"
 #define TRANSLATION_TOOLTIP_TP_MULTIPLIER "مُضاعف هدف الربح (TP) لقيمة إيقاف الخسارة (SL)"
 
 #define TRANSLATION_TOOLTIP_TAKEPROFIT_ADD "أضِف مستوى أخذ الربح"
@@ -57,11 +57,13 @@
 // ATR options
 #define TRANSLATION_LABEL_ATR_PERIOD "فترة ATR"
 #define TRANSLATION_BUTTON_ATR_PERIOD_CURRENT "الحالية"
-#define TRANSLATION_LABEL_ATR_SL_MULTIPLIER "مُضاعف SL "
-#define TRANSLATION_LABEL_ATR_TP_MULTIPLIER "مُضاعف TP "
-#define TRANSLATION_CHECKBOX_ATR_SA "تعديل السبريد"
+#define TRANSLATION_LABEL_ATR_SL_MULTIPLIER "مُضاعف SL"
+#define TRANSLATION_LABEL_ATR_TP_MULTIPLIER "مُضاعف TP"
+
+#define TRANSLATION_CHECKBOX_ATR_SA "SA"
 #define TRANSLATION_TOOLTIP_ATR_SA_SL "تطبيق تعديل السبريد على إيقاف الخسارة"
-#define TRANSLATION_TOOLTIP_ATR_SA_TP " تطبيق تعديل السبريد على أخذ الربح"
+#define TRANSLATION_TOOLTIP_ATR_SA_TP "تطبيق تعديل السبريد على أخذ الربح"
+
 #define TRANSLATION_LABEL_ATR_TIMEFRAME "إطار ATR الزمني"
 #define TRANSLATION_LABEL_ATR_VALUE "ATR"
 
@@ -69,8 +71,7 @@
 #define TRANSLATION_LABEL_ORDER_TYPE "نوع الأمر"
 #define TRANSLATION_BUTTON_ORDER_TYPE_INSTANT "فوري"
 #define TRANSLATION_BUTTON_ORDER_TYPE_PENDING "معلق"
-
-#define TRANSLATION_TOOLTIP_ORDER_TYPE "التبديل بين Instant وPending "
+#define TRANSLATION_TOOLTIP_ORDER_TYPE "التبديل بين الفوري والمعلق"
 
 // Hide/show lines
 #define TRANSLATION_BUTTON_HIDE_LINES "إخفاء الخطوط"
@@ -78,17 +79,15 @@
 
 // Commission
 #define TRANSLATION_LABEL_COMMISSION "العمولة لكل لوت (جانب واحد)"
-
 #define TRANSLATION_TOOLTIP_COMMISSION "بعملة الحساب أو %، لكل لوت قياسي"
 #define TRANSLATION_TOOLTIP_COMMISSION_TYPE "انقر للتبديل"
 
 // Account size
 #define TRANSLATION_BUTTON_ACCOUNT_BALANCE "رصيد الحساب"
-#define TRANSLATION_BUTTON_ACCOUNT_EQUITY "سهم الحساب"
+#define TRANSLATION_BUTTON_ACCOUNT_EQUITY "حقوق الملكية"
 #define TRANSLATION_BUTTON_BALANCE_MINUS_CPR "الرصيد - CPR"
-
-#define TRANSLATION_TOOLTIP_ACCOUNT_SIZE "التبديل بين الرصيد، والسهم، والرصيد مطروحًا منه مخاطرة المحفظة الحالية"
-#define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_CUSTOM "مجموعة الرصيد المخصص"
+#define TRANSLATION_TOOLTIP_ACCOUNT_SIZE "التبديل بين الرصيد، وحقوق الملكية، والرصيد مطروحًا منه مخاطرة المحفظة الحالية"
+#define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_CUSTOM "تم تعيين رصيد مخصص"
 #define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_ADD "أموال إضافية"
 #define TRANSLATION_TOOLTIP_ACCOUNT_SIZE_ASTERISK_SUB "الأموال المخصومة"
 
@@ -100,10 +99,11 @@
 #define TRANSLATION_LABEL_REWARD "العائد"
 #define TRANSLATION_LABEL_REWARD_RISK "العائد/المخاطرة"
 #define TRANSLATION_LABEL_POSITION_SIZE "حجم المركز"
-#define TRANSLATION_BUTTON_MAX_PS "الحد الأقصى لحجم المركز"
+#define TRANSLATION_BUTTON_MAX_PS "أقصى حجم"
 #define TRANSLATION_LABEL_POINT_VALUE "قيمة النقطة"
 #define TRANSLATION_TOOLTIP_INPUTS "الحقول في هذا العمود محسوبة بناءً على المدخلات"
 #define TRANSLATION_TOOLTIP_RESULT "الحقول في هذا العمود تأخذ في الاعتبار قيود الوسيط"
+
 
 // Risk tab
 #define TRANSLATION_LABEL_INCLUDE_ORDERS "تضمين الأوامر"
@@ -115,13 +115,13 @@
 #define TRANSLATION_CHECKBOX_IGNORE_ORDERS_WO_TP "تجاهل الأوامر بدون أخذ الربح"
 #define TRANSLATION_LABEL_INCLUDE_SYMBOLS "تضمين الرموز"
 #define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_ALL "الكل"
-#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "الحالي فقط"
-#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "الأخرى فقط"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_CURRENT "الحالي"
+#define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_OTHER "الأخرى"
 #define TRANSLATION_BUTTON_INCLUDE_SYMBOLS_TOOLTIP "التبديل بين الكل، الحالي، والأخرى."
 #define TRANSLATION_LABEL_INCLUDE_DIRECTIONS "تضمين"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "جميع الاتجاهات"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "شراء فقط"
-#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "بيع فقط"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_ALL "الكل"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_BUY "شراء"
+#define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_SELL "بيع"
 #define TRANSLATION_BUTTON_INCLUDE_DIRECTIONS_TOOLTIP "التبديل بين الكل، الشراء، والبيع."
 #define TRANSLATION_LABEL_LOTS "لوت"
 #define TRANSLATION_LABEL_CURRENT_PORTFOLIO "المحفظة الحالية"
@@ -131,29 +131,26 @@
 #define TRANSLATION_LABEL_CRRR_TOOLTIP "نسبة المخاطرة إلى العائد للمحفظة الحالية"
 #define TRANSLATION_LABEL_PRRR_TOOLTIP "نسبة المخاطرة إلى العائد للمحفظة المحتملة"
 
-
 // Margin tab
 #define TRANSLATION_LABEL_POSITION_MARGIN "هامش المركز"
-#define TRANSLATION_LABEL_FUTURE_USED_MARGIN "الهامش المستخدم المستقبلي"
-#define TRANSLATION_LABEL_FUTURE_FREE_MARGIN "الهامش الحر المستقبلي"
-#define TRANSLATION_LABEL_CUSTOM_LEVERAGE "الرافعة المالية المخصصة"
+#define TRANSLATION_LABEL_FUTURE_USED_MARGIN "الهامش المستخدم مستقبلًا"
+#define TRANSLATION_LABEL_FUTURE_FREE_MARGIN "الهامش الحر مستقبلًا"
+#define TRANSLATION_LABEL_CUSTOM_LEVERAGE "الرافعة المخصصة"
 #define TRANSLATION_LABEL_DEFAULT "افتراضي"
 #define TRANSLATION_LABEL_SYMBOL "الرمز"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "الحد الأقصى لحجم المركز بحسب الهامش"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "باللوت"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "حالي"
-#define TRANSLATION_LABEL_MU_PERC_POSITION "مركز"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "مستقبل"
-#define TRANSLATION_LABEL_MU_PERC "استخدام الهامش"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "رصيد افتتاحي"
 #define TRANSLATION_RGP_MU_BALANCE "الرصيد"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "الهامش الحر"
-#define TRANSLATION_LABEL_MU_BASE "الأساس"
+#define TRANSLATION_LABEL_MU_BASE "أساس"
 #define TRANSLATION_LABEL_MU_BASE_CURRENCY "قيمة الأساس"
 #define TRANSLATION_TOOLTIP_MU_BASE "أساس استخدام الهامش"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "الرصيد الحالي، رصيد افتتاحي (تحدده أنت)، أو الهامش الحر"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "قيمة أساس استخدام الهامش بوحدات العملة"
-
+#define TRANSLATION_LABEL_PLANNED_POSITION "المركز المخطط"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "المركز الذي يجري حسابه (بالرافعة المالية المخصصة، إن وُجدت). لا يبدأ الأمر المعلق في استخدام الهامش إلا عند تفعيله."
+#define TRANSLATION_TOOLTIP_MU_PERC "استخدام الهامش"
 
 // Swaps tab
 #define TRANSLATION_LABEL_TYPE "النوع"
@@ -167,7 +164,6 @@
 #define TRANSLATION_EDIT_WEEKDAY_THURSDAY "الخميس"
 #define TRANSLATION_EDIT_WEEKDAY_FRIDAY "الجمعة"
 #define TRANSLATION_EDIT_WEEKDAY_SATURDAY "السبت"
-
 #define TRANSLATION_LABEL_NOMINAL "الاسمي"
 #define TRANSLATION_LABEL_DAILY "اليومي"
 #define TRANSLATION_LABEL_YEARLY "السنوي"
@@ -175,32 +171,34 @@
 #define TRANSLATION_LABEL_PER_PS "لكل ح م"
 #define TRANSLATION_LABEL_BASE_CURRENCY "عملة الأساس"
 #define TRANSLATION_LABEL_MARGIN_CURRENCY "عملة الهامش"
+#define TRANSLATION_LABEL_PROFIT_CURRENCY "عملة الأرباح"
 
 
 // Trading tab
 #define TRANSLATION_BUTTON_TRADE "تداول"
 #define TRANSLATION_LABEL_TRAILING_STOP "إيقاف متحرك"
 #define TRANSLATION_LABEL_BREAKEVEN "التعادل"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "قيمة موجبة للتعادل عبر إيقاف الخسارة، وقيمة سالبة للتعادل عبر أخذ الربح."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "الرقم السحري"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "تعليق الأمر"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "لاحقة تلقائية"
 #define TRANSLATION_TOOLTIP_ORDER_AUTOSUFFIX "هل تريد إضافة رقم تصاعدي تلقائيًا إلى التعليق على كل صفقة جديدة؟"
-#define TRANSLATION_LABEL_MAX_NUMBER_OF_TRADES "الحد الأقصى لعدد الصفقات"
+#define TRANSLATION_LABEL_MAX_NUMBER_OF_TRADES "أقصى عدد صفقات"
 #define TRANSLATION_LABEL_TOTAL "الإجمالي"
 #define TRANSLATION_LABEL_PER_SYMBOL "لكل رمز"
-#define TRANSLATION_LABEL_MAX_VOLUME "الحد الأقصى لحجم التداول"
-#define TRANSLATION_LABEL_MAX_RISK "الحد الأقصى للمخاطرة"
+#define TRANSLATION_LABEL_MAX_VOLUME "أقصى حجم تداول"
+#define TRANSLATION_LABEL_MAX_RISK "أقصى مخاطرة"
 #define TRANSLATION_CHECKBOX_DISABLE_TRADING_LINES_HIDDEN "تعطيل التداول عندما تكون الخطوط مخفية"
 #define TRANSLATION_TOOLTIP_FILL_INWARD "تعبئة مستويات TPs إضافية على مسافة متساوية بين سعر الدخول وTP الرئيسي"
-#define TRANSLATION_TOOLTIP_FILL_OUTWARD "وضع مستويات TPs إضافية بين TP الرئيسي باستخدام نفس المسافة."
+#define TRANSLATION_TOOLTIP_FILL_OUTWARD "وضع مستويات TPs إضافية بعد TP الرئيسي باستخدام نفس المسافة."
 #define TRANSLATION_LABEL_SHARE "الحصة"
 #define TRANSLATION_TOOLTIP_SHARE "تعبئة حصة الحجم تلقائيًا"
 #define TRANSLATION_LABEL_POINTS "نقاط"
-#define TRANSLATION_LABEL_MAX_SLIPPAGE "الحد الأقصى للانزلاق السعري"
-#define TRANSLATION_LABEL_MAX_SPREAD "الحد الأقصى للسبريد"
-#define TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE "مسافة الدخول/SLالقصوى"
-#define TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE "مسافة الدخول/SLالأدنى"
-#define TRANSLATION_LABEL_MAX_RISK_PERCENTAGE "النسبة المئوية للمخاطرة القصوى"
+#define TRANSLATION_LABEL_MAX_SLIPPAGE "أقصى انزلاق سعري"
+#define TRANSLATION_LABEL_MAX_SPREAD "أقصى سبريد"
+#define TRANSLATION_LABEL_MAX_ENTRY_SL_DISTANCE "مسافة الدخول/SL القصوى"
+#define TRANSLATION_LABEL_MIN_ENTRY_SL_DISTANCE "مسافة الدخول/SL الدنيا"
+#define TRANSLATION_LABEL_MAX_RISK_PERCENTAGE "أقصى % للمخاطرة"
 #define TRANSLATION_CHECKBOX_SUBTRACT_OPEN_POSITIONS_VOLUME "اطرح حجم المراكز المفتوحة"
 #define TRANSLATION_CHECKBOX_SUBTRACT_PENDING_ORDERS_VOLUME "اطرح حجم الأوامر المعلقة"
 #define TRANSLATION_CHECKBOX_DO_NOT_APPLY_STOPLOSS "لا تُطبِق إيقاف الخسارة"
@@ -213,16 +211,34 @@
 #define TRANSLATION_TOOLTIP_ASK_FOR_CONFIRMATION "سيطلب المستشار الخبير التأكيد قبل فتح الصفقة."
 #define TRANSLATION_LABEL_EXPIRY "الانتهاء"
 #define TRANSLATION_TOOLTIP_EXPIRY "وقت الانتهاء بالدقائق للأمر المعلق التالي الذي تم إنشائه. الحد الأدنى = 10."
-#define TRANSLATION_LABEL_MINUTES "الحد الأدنى."
+#define TRANSLATION_LABEL_MINUTES "د."
 #define TRANSLATION_TOOLTIP_MINUTES "دقائق"
-#define TRANSLATION_LABEL_MAX_MARGIN "استخدام الهامش" // util. = utilization.
+#define TRANSLATION_LABEL_MAX_MARGIN "استخدام هامش"
 #define TRANSLATION_LABEL_MAX_MARGIN_PERCENTAGE "أقصى % للهامش"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION "أقصى استخدام للهامش"
 #define TRANSLATION_TOOLTIP_MAX_MARGIN_UTILIZATION_FUSE "مصهر أقصى استخدام للهامش"
 
 
+// Costs side panel
+#define TRANSLATION_BUTTON_COSTS "التكاليف"
+#define TRANSLATION_LABEL_TOTAL_COSTS "الإجمالي"
+#define TRANSLATION_LABEL_COSTS_PER_LOT "لكل لوت"
+#define TRANSLATION_LABEL_COSTS_PER_PS "لكل ح م"
+#define TRANSLATION_LABEL_COSTS_COMMISSION "العمولة"
+#define TRANSLATION_LABEL_COSTS_OF_REWARD "التكاليف كـ % من العائد"
+#define TRANSLATION_LABEL_COSTS_OF_RISK "التكاليف كـ % من المخاطرة"
+#define TRANSLATION_LABEL_COSTS_OF_MARGIN "التكاليف كـ % من الهامش"
+#define TRANSLATION_LABEL_COSTS_OF_ACCOUNT "التكاليف كـ % من حجم الحساب"
+#define TRANSLATION_TOOLTIP_COSTS "إظهار/إخفاء تكاليف تداول المركز المخطط: السبريد والعمولة ذهابًا وإيابًا."
+#define TRANSLATION_TOOLTIP_COSTS_COMMISSION "إجمالي العمولة (ذهابًا وإيابًا)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_REWARD "إجمالي تكاليف المركز كنسبة مئوية من عائده المحتمل (علامة التبويب الرئيسي)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_RISK "إجمالي تكاليف المركز كنسبة مئوية من مخاطرته المحتملة (علامة التبويب الرئيسي)."
+#define TRANSLATION_TOOLTIP_COSTS_OF_MARGIN "إجمالي تكاليف المركز كنسبة مئوية من هامشه (علامة التبويب الهامش)"
+#define TRANSLATION_TOOLTIP_COSTS_OF_ACCOUNT "إجمالي تكاليف المركز كنسبة مئوية من مقياس حجم الحساب المحدد (علامة التبويب الرئيسي)"
+
+
 // Chart objects
-#define TRANSLATION_TOOLTIP_SL_LABEL "مسافة إيقاف الخسارة، نقاط "
+#define TRANSLATION_TOOLTIP_SL_LABEL "مسافة إيقاف الخسارة، نقاط"
 #define TRANSLATION_TOOLTIP_TP_LABEL "مسافة أخذ الربح، نقاط"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL "مسافة الدخول، نقاط"
 #define TRANSLATION_TOOLTIP_ENTRY_LABEL_ADDITIONAL "حجم المركز، لوت"
@@ -233,9 +249,9 @@
 // Warnings
 #define TRANSLATION_LABEL_WARNING_TOO_CLOSE "قريب للغاية!"
 #define TRANSLATION_LABEL_WARNING_WRONG_VALUE "قيمة خاطئة!"
-#define TRANSLATION_LABEL_WARNING_INVALID_TP "قيمة TP  خاطئة"
-
+#define TRANSLATION_LABEL_WARNING_INVALID_TP "قيمة TP خاطئة"
 #define TRANSLATION_TOOLTIP_WARNING_PS "أكبر من الحد الأقصى لحجم المركز حسب الهامش!"
+
 
 // Messages
 #define TRANSLATION_MESSAGE_SL_SHOULD_BE_POSITIVE "يجب أن تكون قيمة إيقاف الخسارة موجبة."
@@ -250,9 +266,9 @@
 #define TRANSLATION_MESSAGE_NO_SETTINGS_FILE_TO_DELETE "لا يوجد ملف إعدادات لحذفه."
 #define TRANSLATION_MESSAGE_TRYING_TO_DELETE_FILE "محاولة حذف ملف الإعدادات."
 #define TRANSLATION_MESSAGE_FAILED_TO_DELETE_FILE "فشل في حذف الملف"
-#define TRANSLATION_MESSAGE_DELETED_SETTINGS " تم حذف ملف الإعدادات بنجاح."
-#define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "حذف كائنات اللوحة ذات البادئة المُكررة"
-#define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "تعذر استعادة حجم المزايدة السعرية لـ"
+#define TRANSLATION_MESSAGE_DELETED_SETTINGS "تم حذف ملف الإعدادات بنجاح."
+#define TRANSLATION_MESSAGE_DELETED_DUPLICATE_PANEL "تم حذف كائنات اللوحة المكررة ذات البادئة"
+#define TRANSLATION_MESSAGE_CANNOT_RETRIEVE_TICKSIZE "تعذر الحصول على حجم التيك لـ"
 #define TRANSLATION_MESSAGE_LOOKS_LIKE "يبدو أن الأداة المالية لم تعد متوفرة. قد لا تكون العملية الحسابية دقيقة."
 #define TRANSLATION_MESSAGE_MISCONFIGURED_SYMBOL "تكوين الرمز خاطئ في خادم التداول – تكلفة وحدة صفرية."
 #define TRANSLATION_MESSAGE_ALGO_TRADING_DISABLED_1 "التداول الآلي غير مفعل في خيارات المنصة! يرجى تفعيله عبر Tools->Options->Expert Advisors."
@@ -284,12 +300,12 @@
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_BUY_VOLUME "تم العثور على حجم الشراء الموجود"
 #define TRANSLATION_MESSAGE_FOUND_EXISTING_SELL_VOLUME "تم العثور على حجم البيع الموجود"
 #define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE "حجم المركز المُعدل"
-#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "حجم المركز المُعدل أقل من الصفر. لا يجري تنفيذ أي صفقة."
+#define TRANSLATION_MESSAGE_ADJUSTED_POSITION_SIZE_LESS_THAN_ZERO "حجم المركز المُعدل أقل من أو يساوي الصفر. لا يجري تنفيذ أي صفقة."
 #define TRANSLATION_MESSAGE_NTAT_TOTAL_VOLUME "إجمالي حجم التداول الحالي"
 #define TRANSLATION_MESSAGE_NTAT_NEW_POSITION_VOLUME "حجم المركز الجديد"
 #define TRANSLATION_MESSAGE_NTAT_MAXIMUM_TOTAL_VOLUME "الحد الأقصى لإجمالي الحجم المسموح به"
 #define TRANSLATION_MESSAGE_NTAT_PER_SYMBOL_VOLUME "الحجم الحالي لكل رمز"
-#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_PER_SYMBOL_VOLUME " الحد الأقصى لحجم المركز لكل رمز "
+#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_PER_SYMBOL_VOLUME "الحد الأقصى لحجم المركز لكل رمز"
 #define TRANSLATION_MESSAGE_BROKER_MINIMUM "الحد الأدنى لحجم المركز لدى الوسيط. لا يتم تنفيذ الصفقة."
 #define TRANSLATION_MESSAGE_BROKER_MAXIMUM "الحد الأقصى لحجم المركز لدى الوسيط. تقليل الحجم."
 #define TRANSLATION_MESSAGE_ERROR_SENDING_ORDER "خطأ في إرسال الأمر"
@@ -298,7 +314,7 @@
 #define TRANSLATION_MESSAGE_ORDER "الأمر"
 #define TRANSLATION_MESSAGE_EXECUTED "مُنفذ"
 #define TRANSLATION_MESSAGE_ERROR_OPENING_POSITION "خطأ في فتح المركز"
-#define TRANSLATION_MESSAGE_POSITION_SIZER_ON "مُحدد حجم المركز على"
+#define TRANSLATION_MESSAGE_POSITION_SIZER_ON "مُحدد حجم المركز على "
 #define TRANSLATION_MESSAGE_EXECUTE_TRADE "هل تريد تنفيذ الصفقة؟"
 #define TRANSLATION_MESSAGE_BUY "شراء"
 #define TRANSLATION_MESSAGE_BUY_STOP "شراء موقوف"
@@ -312,12 +328,13 @@
 #define TRANSLATION_MESSAGE_TSL_APPLIED "تم تطبيق الإيقاف المتحرك على المركز"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_FROM "تم تحريك إيقاف الخسارة من"
 #define TRANSLATION_MESSAGE_SL_WAS_MOVED_TO "إلى"
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "تم تحريك أخذ الربح من"
 #define TRANSLATION_MESSAGE_BE_APPLIED "تم تطبيق التعادل على المركز"
 #define TRANSLATION_MESSAGE_BE_FOR "نقطة التعادل لـ"
 #define TRANSLATION_MESSAGE_ERROR_SETTING_TIMER "خطأ في ضبط المؤقت"
 #define TRANSLATION_MESSAGE_FAILED_DELETE_INI "فشل في حذف ملف .ini للوحة حجم المركز"
-#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "الحد الأدنى لفترة انتهاء الصلاحية هو دقيقتين."
-#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "تم تحديد مربع الاختيار ’عدم تطبيق إيقاف الخسارة‘. "
+#define TRANSLATION_MESSAGE_MINIMUM_EXPIRY "الحد الأدنى لفترة انتهاء الصلاحية هو 10 دقائق."
+#define TRANSLATION_MESSAGE_DONOTAPPLLYSL_SET "تم تحديد مربع الاختيار ’عدم تطبيق إيقاف الخسارة‘."
 #define TRANSLATION_MESSAGE_DONOTAPPLLYTP_SET "تم تحديد مربع الاختيار ’عدم تطبيق أخذ الربح‘."
 #define TRANSLATION_MESSAGE_FAILED_TO_CREATE_OUTSIDE_BUTTON "فشل في إنشاء زر خارجي."
 #define TRANSLATION_MESSAGE_TAKING_SMALLER_TRADE "تنفيذ صفقة أصغر"
@@ -333,7 +350,7 @@
 #define TRANSLATION_MESSAGE_COULDNT_DETECT_PROPER_CURRENCY_PAIR "خطأ. تعذر الكشف عن زوج العملات المناسب لحساب التعديل باستخدام زوجين."
 #define TRANSLATION_MESSAGE_CROSS_CURRENCY "العملة التقاطعية"
 #define TRANSLATION_MESSAGE_CHARTS_PAIR_CURRENCY "عملة زوج الرسم البياني"
-#define TRANSLATION_MESSAGE_INFINITY "غير نهائي"
+#define TRANSLATION_MESSAGE_INFINITY "لا نهائي"
 #define TRANSLATION_MESSAGE_EXECUTION_FAILED "فشل التنفيذ."
 #define TRANSLATION_MESSAGE_FAILED_TO_FIND_ORDER "فشل العثور على الأمر لتطبيق SL/TP."
 #define TRANSLATION_MESSAGE_ERROR_MODIFYING_ORDER "خطأ في تعديل الأمر"
@@ -350,3 +367,12 @@
 #define TRANSLATION_MESSAGE_PER_SYMBOL_MARGIN_UTILIZATION "استخدام الهامش لكل رمز"
 #define TRANSLATION_MESSAGE_MAXIMUM_PER_SYMBOL_MARGIN_UTILIZATION "الحد الأقصى لاستخدام الهامش لكل رمز"
 #define TRANSLATION_MESSAGE_FAILED_TO_PLACE_SL_TP "فشل وضع أمر إيقاف الخسارة/جني الربح على الصفقة المفتوحة!"
+#define TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_INVALID "سعر دخول الأمر المعلق المحوَّل غير صالح"
+#define TRANSLATION_MESSAGE_NTAT_CONVERTED_PENDING_ORDER_ENTRY_CLOSE "سعر دخول الأمر المعلق المحوَّل قريب جدًا من سعر السوق الحالي."
+#define TRANSLATION_MESSAGE_NTAT_NEW_ENTRY_PRICE "سعر الدخول الجديد:"
+#define TRANSLATION_MESSAGE_NTAT_MARKET_PRICE "سعر السوق:"
+#define TRANSLATION_MESSAGE_NTAT_STOPS_LEVEL "مستوى الإيقاف (Stops level):"
+#define TRANSLATION_MESSAGE_NTAT_MAXIMUM_ENTRY_SL_DISTANCE_EXCEEDED "تم تجاوز الحد الأقصى لمسافة الدخول/SL"
+#define TRANSLATION_MESSAGE_NTAT_MINIMUM_ENTRY_SL_DISTANCE_NOT_REACHED "لم يتم بلوغ الحد الأدنى لمسافة الدخول/SL"
+#define TRANSLATION_MESSAGE_NTAT_REPLACING_MARKET_PENDING "استبدال أمر السوق بأمر معلق"
+#define TRANSLATION_MESSAGE_NTAT_POSITION_SIZE_RECALCULATED "أُعيد حساب حجم المركز بناءً على مسافة SL الجديدة"

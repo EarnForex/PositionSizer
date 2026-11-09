@@ -84,7 +84,7 @@ void ListenToChartEvents(string panel_id)
                 ((object_name == panel_id + "m_EdtTPMultiplier") && (AreDoublesDifferent(double_from_text, sets.TPMultiplier, 6))) ||
                 ((object_name == panel_id + "m_EdtCommissionSize") && (AreDoublesDifferent(double_from_text, sets.CommissionPerLot, 3))) ||
                 ((object_name == panel_id + "m_EdtRiskPIn") && (AreDoublesDifferent(double_from_text, sets.Risk))) ||
-                ((object_name == panel_id + "m_EdtRiskMIn") && (AreDoublesDifferent(double_from_stripped_text, sets.MoneyRisk, 2))) ||
+                ((object_name == panel_id + "m_EdtRiskMIn") && (AreDoublesDifferent(double_from_stripped_text, RiskMoney, 2))) || // Comparing with calculated value to avoid degradation when there are 3 TPs and the sum of shares is 99% and the value spirals down to 0.01.
                 ((object_name == panel_id + "m_EdtPosSize") && (AreDoublesDifferent(double_from_text, OutputPositionSize, 2))) ||
                 ((object_name == panel_id + "m_EdtATRPeriod") && (text != IntegerToString(sets.ATRPeriod))) ||
                 ((object_name == panel_id + "m_EdtATRMultiplierSL") && (AreDoublesDifferent(double_from_text, sets.ATRMultiplierSL, 2))) ||
@@ -125,6 +125,7 @@ void ListenToChartEvents(string panel_id)
             if (StringSubstr(object_name, 0, StringLen(panel_id + "m_EdtTradingTPEdit")) == panel_id + "m_EdtTradingTPEdit")
             {
                 int num = (int)StringToInteger(StringSubstr(object_name, StringLen(panel_id + "m_EdtTradingTPEdit"))) - 1;
+                if (num >= ArraySize(sets.TP)) continue; // This prevents an 'array out of range' error because when an additional TP is removed, its object stays hidden on the chart, whereas the sets.TP[] array is resized down.
                 if (AreDoublesDifferent(double_from_text, sets.TP[num]))
                 {
                     OnChartEvent(CHARTEVENT_CUSTOM + ON_END_EDIT, lparam, dparam, object_name);
@@ -134,6 +135,7 @@ void ListenToChartEvents(string panel_id)
             else if (StringSubstr(object_name, 0, StringLen(panel_id + "m_EdtTradingTPShareEdit")) == panel_id + "m_EdtTradingTPShareEdit")
             {
                 int num = (int)StringToInteger(StringSubstr(object_name, StringLen(panel_id + "m_EdtTradingTPShareEdit"))) - 1;
+                if (num >= ArraySize(sets.TPShare)) continue; // This prevents an 'array out of range' error because when an additional TP is removed, its object stays hidden on the chart, whereas the sets.TPShare[] array is resized down.
                 if (text != IntegerToString(sets.TPShare[num]))
                 {
                     OnChartEvent(CHARTEVENT_CUSTOM + ON_END_EDIT, lparam, dparam, object_name);
@@ -143,7 +145,7 @@ void ListenToChartEvents(string panel_id)
             else if (StringSubstr(object_name, 0, StringLen(panel_id + "m_EdtAdditionalTPEdits")) == panel_id + "m_EdtAdditionalTPEdits")
             {
                 int num = (int)StringToInteger(StringSubstr(object_name, StringLen(panel_id + "m_EdtAdditionalTPEdits"))) - 2; // -2 because, there is no 1st additional TP edit, there is a normal TP edit in its place. So, the chart object numbering starts at 2, which should be translated to 0th array element.
-                
+                if (num + 1 >= ArraySize(sets.TP)) continue; // This prevents an 'array out of range' error because when an additional TP is removed, its object stays hidden on the chart, whereas the sets.TP[] array is resized down.
                 if (((!sets.TPDistanceInPoints) && (AreDoublesDifferent(double_from_text, sets.TP[num + 1]))) ||
                     ((sets.TPDistanceInPoints) && (text != IntegerToString((int)MathRound(MathAbs(sets.TP[num + 1] - sets.EntryLevel) / _Point)))))
                 {
@@ -233,6 +235,24 @@ void ListenToChartEvents(string panel_id)
     {
         object_name = panel_id + "m_RgpMarginUtilizationBase";
         need_to_do = true;
+    }
+    else if (ShowAdditionalMarginSettings) // The Risk tab's radio groups mirrored on the Margin tab.
+    {
+        if (ProcessRadiogroupStateByChartObjects(panel_id + "m_RgpIncludeOrdersMargin", 3, sets.IncludeOrders, ExtDialog.m_RgpIncludeOrdersMargin))
+        {
+            object_name = panel_id + "m_RgpIncludeOrdersMargin";
+            need_to_do = true;
+        }
+        else if (ProcessRadiogroupStateByChartObjects(panel_id + "m_RgpIncludeSymbolsMargin", 3, sets.IncludeSymbols, ExtDialog.m_RgpIncludeSymbolsMargin))
+        {
+            object_name = panel_id + "m_RgpIncludeSymbolsMargin";
+            need_to_do = true;
+        }
+        else if (ProcessRadiogroupStateByChartObjects(panel_id + "m_RgpIncludeDirectionsMargin", 3, sets.IncludeDirections, ExtDialog.m_RgpIncludeDirectionsMargin))
+        {
+            object_name = panel_id + "m_RgpIncludeDirectionsMargin";
+            need_to_do = true;
+        }
     }
     if (need_to_do)
     {

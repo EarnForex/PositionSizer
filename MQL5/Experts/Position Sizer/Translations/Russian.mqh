@@ -145,10 +145,6 @@
 #define TRANSLATION_LABEL_SYMBOL "Символ"
 #define TRANSLATION_LABEL_MAX_PS_BY_MARGIN "Макс размер позиции по марже"
 #define TRANSLATION_TOOLTIP_MAX_PS_BY_MARGIN "В лотах"
-#define TRANSLATION_LABEL_MU_PERC_CURRENT "Текущ."
-#define TRANSLATION_LABEL_MU_PERC_POSITION "Позиция"
-#define TRANSLATION_LABEL_MU_PERC_FUTURE "Будущ."
-#define TRANSLATION_LABEL_MU_PERC "Исп. маржи"
 #define TRANSLATION_RGP_MU_STARTING_BALANCE "Нач. баланс"
 #define TRANSLATION_RGP_MU_BALANCE "Баланс"
 #define TRANSLATION_RGP_MU_FREE_MARGIN "Своб. марж."
@@ -157,6 +153,10 @@
 #define TRANSLATION_TOOLTIP_MU_BASE "Основа для процента использованной маржи"
 #define TRANSLATION_TOOLTIP_MU_BASE_RGP "Текущий баланс, начальный баланс (задается вами) или свободная маржа"
 #define TRANSLATION_TOOLTIP_MU_BASE_CURRENCY "Значение основы в валютных единицах для расчета процента использованной маржи"
+#define TRANSLATION_LABEL_PLANNED_POSITION "Позиция в расчете"
+#define TRANSLATION_TOOLTIP_PLANNED_POSITION "Позиция в расчете (с учетом заданного плеча). Отложенный ордер начнет использовать маржу только после срабатывания."
+#define TRANSLATION_TOOLTIP_MU_PERC "Использование маржи"
+
 
 // Swaps tab
 #define TRANSLATION_LABEL_TYPE "Тип"
@@ -187,6 +187,7 @@
 #define TRANSLATION_BUTTON_TRADE "Откр."
 #define TRANSLATION_LABEL_TRAILING_STOP "Трейлинг"
 #define TRANSLATION_LABEL_BREAKEVEN "Безубыток"
+#define TRANSLATION_TOOLTIP_BREAKEVEN "Положительное значение для безубытка по СЛ, отрицательное - по ТП."
 #define TRANSLATION_LABEL_MAGIC_NUMBER "Мэджик"
 #define TRANSLATION_LABEL_ORDER_COMMENTARY "Комментарий"
 #define TRANSLATION_LABEL_ORDER_AUTOSUFFIX "Автосуф."
@@ -343,6 +344,7 @@
 #define TRANSLATION_MESSAGE_POSITIONMODIFY_FAILED_SELL_BE "Функция PositionModify не смогла применить безубыток на продажу"
 #define TRANSLATION_MESSAGE_BE_APPLIED "Безубыток применен к позиции"
 #define TRANSLATION_MESSAGE_BE_FOR "Безубыток для "
+#define TRANSLATION_MESSAGE_TP_WAS_MOVED_FROM "Тейк-профит передвинут с"
 #define TRANSLATION_MESSAGE_ERROR_SETTING_TIMER "Ошибка установки таймера"
 #define TRANSLATION_MESSAGE_FAILED_DELETE_INI "Не удалось удалить ini-файл панели"
 #define TRANSLATION_MESSAGE_CANNOT_CONVERT "Не получается перевести"
